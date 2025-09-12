@@ -2,10 +2,12 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 
-	export let title: string;
-	export let value: number | string;
-	export let trend: string = '';
-	export let description: string = '';
+	let { title, value, trend = '', description = '' }: {
+		title: string;
+		value: number | string;
+		trend?: string;
+		description?: string;
+	} = $props();
 </script>
 
 <Card class="p-6">
