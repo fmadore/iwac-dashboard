@@ -1,0 +1,36 @@
+{
+  "generated_at": "2025-09-12T14:05:15.589249",
+  "total_records": 13255,
+  "records_with_country": 13255,
+  "subsets_processed": [
+    "articles",
+    "documents",
+    "audiovisual",
+    "publications"
+  ],
+  "countries": [
+    "",
+    "Benin",
+    "Burkina Faso",
+    "Bénin",
+    "Côte d'Ivoire",
+    "Niger",
+    "Nigeria",
+    "Togo"
+  ],
+  "document_types": [
+    "Article de presse",
+    "Audiovisuel",
+    "Document",
+    "Publication islamique"
+  ],
+  "subsets_with_newspaper": [
+    "articles",
+    "publications"
+  ],
+  "structure": {
+    "level_1": "Countries (from country column)",
+    "level_2": "Document types (mapped from subset names)",
+    "level_3": "Newspapers (only for articles and publications subsets)"
+  }
+}

@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 class IWACTreemapGenerator:
     """Generate treemap data from IWAC dataset for countries visualization"""
     
-    def __init__(self, output_dir: str = "../static/data"):
+    def __init__(self, output_dir: str = "static/data"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
@@ -217,8 +217,8 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='Generate treemap data from IWAC dataset')
-    parser.add_argument('--output-dir', default='../static/data', 
-                       help='Output directory for JSON files (default: ../static/data)')
+    parser.add_argument('--output-dir', default='static/data', 
+                       help='Output directory for JSON files (default: static/data)')
     
     args = parser.parse_args()
     
