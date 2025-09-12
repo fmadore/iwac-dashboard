@@ -3,19 +3,58 @@
 	import { itemsStore } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
 	import { Chart, Svg, Treemap } from 'layerchart';
+	import { base } from '$app/paths';
+	import type { HierarchyRectangularNode } from 'd3-hierarchy';
 
-	type HierarchyNode = {
+	interface TreemapData {
 		name: string;
-		value: number;
-		children?: HierarchyNode[];
-	};
+		value?: number;
+		children?: TreemapData[];
+	}
 
-	let selectedNode = $state<HierarchyNode | null>(null);
-	let hoveredNode = $state<any>(null);
+	let selectedNode = $state<TreemapData | null>(null);
+	let hoveredNode = $state<HierarchyRectangularNode<TreemapData> | null>(null);
+	let treemapData = $state<TreemapData | null>(null);
+	let isLoading = $state(true);
+	let loadingError = $state<string | null>(null);
 
-	const treemapData = $derived(getTreemapData($itemsStore.items));
+	// Load pre-computed treemap data
+	$effect(() => {
+		const loadData = async () => {
+			try {
+				isLoading = true;
+				loadingError = null;
+				
+				const response = await fetch(`${base}/data/treemap-countries.json`);
+				if (response.ok) {
+					const jsonData = await response.json();
+					// Use JSON data directly - LayerChart will create hierarchy internally
+					treemapData = jsonData;
+					console.log('✅ Loaded pre-computed treemap data from JSON file');
+				} else {
+					throw new Error(`Failed to fetch treemap data: ${response.status} ${response.statusText}`);
+				}
+			} catch (error) {
+				console.warn('Failed to load pre-computed treemap data, falling back to client-side processing:', error);
+				loadingError = error instanceof Error ? error.message : 'Unknown error';
+				
+				// Fallback to computing from itemsStore if pre-computed data not available
+				if ($itemsStore.items && $itemsStore.items.length > 0) {
+					const fallbackData = getTreemapData($itemsStore.items);
+					treemapData = fallbackData;
+					console.log('📊 Using fallback client-side treemap computation');
+				} else {
+					console.warn('No items available for fallback computation');
+				}
+			} finally {
+				isLoading = false;
+			}
+		};
 
-	function getTreemapData(items: any[]): HierarchyNode {
+		loadData();
+	});
+
+	function getTreemapData(items: any[]): TreemapData {
 		const countryMap = new Map();
 		
 		items.forEach(item => {
@@ -44,19 +83,19 @@
 		});
 		
 		// Transform to hierarchical structure for Treemap
-		const root: HierarchyNode = {
+		const root: TreemapData = {
 			name: 'Countries',
 			value: 0, // Will be calculated by LayerChart
 			children: Array.from(countryMap.values()).map(country => ({
 				...country,
 				children: Array.from(country.children.values())
-			})).sort((a, b) => b.value - a.value)
+			})).sort((a, b) => (b.value || 0) - (a.value || 0))
 		};
 		
 		return root;
 	}
 
-	function getNodeColor(node: any): string {
+	function getNodeColor(node: HierarchyRectangularNode<TreemapData>): string {
 		if (node.depth === 0) return 'hsl(var(--muted))'; // Root
 		if (node.depth === 1) {
 			// Country level - use different shades of primary
@@ -69,7 +108,8 @@
 	}
 
 	function getTotalValue(): number {
-		return treemapData.children?.reduce((sum, country) => sum + country.value, 0) || 1;
+		if (!treemapData || !treemapData.children) return 1;
+		return treemapData.children.reduce((sum: number, country: TreemapData) => sum + (country.value || 0), 0) || 1;
 	}
 </script>
 
@@ -82,70 +122,93 @@
 	<Card class="p-6">
 		<h3 class="text-xl font-semibold mb-6">Country Distribution</h3>
 		
-		<div class="h-96 w-full rounded-lg border bg-card overflow-hidden">
-			<Chart data={treemapData} padding={{ top: 4, bottom: 4, left: 4, right: 4 }}>
-				<Svg>
-					<Treemap let:nodes>
-						{#each nodes as node}
-							{#if node.depth > 0}
-								<rect
-									x={node.x0}
-									y={node.y0}
-									width={node.x1 - node.x0}
-									height={node.y1 - node.y0}
-									fill={getNodeColor(node)}
-									stroke="hsl(var(--background))"
-									stroke-width={node.depth === 1 ? "3" : "1"}
-									class="cursor-pointer transition-all duration-200 hover:brightness-110"
-									class:ring-2={selectedNode?.name === node.data.name}
-									class:ring-ring={selectedNode?.name === node.data.name}
-									role="button"
-									tabindex="0"
-									onclick={() => selectedNode = node.data}
-									onkeydown={(e) => e.key === 'Enter' && (selectedNode = node.data)}
-									onmouseenter={() => hoveredNode = node}
-									onmouseleave={() => hoveredNode = null}
-								/>
-								{#if (node.x1 - node.x0) > 80 && (node.y1 - node.y0) > 40}
-									<text
-										x={node.x0 + (node.x1 - node.x0) / 2}
-										y={node.y0 + (node.y1 - node.y0) / 2 - 8}
-										text-anchor="middle"
-										dominant-baseline="central"
-										class="text-xs font-semibold fill-white pointer-events-none drop-shadow-sm"
-										style="font-size: {Math.min(14, Math.max(10, (node.x1 - node.x0) / 8))}px"
-									>
-										{node.data.name}
-									</text>
-									<text
-										x={node.x0 + (node.x1 - node.x0) / 2}
-										y={node.y0 + (node.y1 - node.y0) / 2 + 8}
-										text-anchor="middle"
-										dominant-baseline="central"
-										class="text-xs fill-white/90 pointer-events-none drop-shadow-sm"
-										style="font-size: {Math.min(11, Math.max(8, (node.x1 - node.x0) / 12))}px"
-									>
-										{node.data.value} items
-									</text>
-									{#if node.depth === 1}
+		{#if isLoading}
+			<div class="h-96 w-full rounded-lg border bg-card flex items-center justify-center">
+				<div class="text-center">
+					<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+					<p class="text-muted-foreground">Loading treemap data...</p>
+				</div>
+			</div>
+		{:else if loadingError}
+			<div class="h-96 w-full rounded-lg border bg-card flex items-center justify-center">
+				<div class="text-center">
+					<p class="text-destructive mb-2">⚠️ Failed to load treemap data</p>
+					<p class="text-sm text-muted-foreground">{loadingError}</p>
+					<p class="text-xs text-muted-foreground mt-2">Using fallback client-side processing</p>
+				</div>
+			</div>
+		{:else if treemapData}
+			<div class="h-96 w-full rounded-lg border bg-card overflow-hidden">
+				<Chart data={treemapData} padding={{ top: 4, bottom: 4, left: 4, right: 4 }}>
+					<Svg>
+						<Treemap let:nodes>
+							{#each nodes as node}
+								{#if node.depth > 0}
+									<rect
+										x={node.x0}
+										y={node.y0}
+										width={node.x1 - node.x0}
+										height={node.y1 - node.y0}
+										fill={getNodeColor(node)}
+										stroke="hsl(var(--background))"
+										stroke-width={node.depth === 1 ? "3" : "1"}
+										class="cursor-pointer transition-all duration-200 hover:brightness-110"
+										class:ring-2={selectedNode?.name === node.data.name}
+										class:ring-ring={selectedNode?.name === node.data.name}
+										role="button"
+										tabindex="0"
+										onclick={() => selectedNode = node.data}
+										onkeydown={(e) => e.key === 'Enter' && (selectedNode = node.data)}
+										onmouseenter={() => hoveredNode = node}
+										onmouseleave={() => hoveredNode = null}
+									/>
+									{#if (node.x1 - node.x0) > 80 && (node.y1 - node.y0) > 40}
 										<text
 											x={node.x0 + (node.x1 - node.x0) / 2}
-											y={node.y0 + (node.y1 - node.y0) / 2 + 22}
+											y={node.y0 + (node.y1 - node.y0) / 2 - 8}
 											text-anchor="middle"
 											dominant-baseline="central"
-											class="text-xs fill-white/75 pointer-events-none drop-shadow-sm"
-											style="font-size: {Math.min(10, Math.max(7, (node.x1 - node.x0) / 15))}px"
+											class="text-xs font-semibold fill-white pointer-events-none drop-shadow-sm"
+											style="font-size: {Math.min(14, Math.max(10, (node.x1 - node.x0) / 8))}px"
 										>
-											{((node.data.value / getTotalValue()) * 100).toFixed(1)}%
+											{node.data.name}
 										</text>
+										<text
+											x={node.x0 + (node.x1 - node.x0) / 2}
+											y={node.y0 + (node.y1 - node.y0) / 2 + 8}
+											text-anchor="middle"
+											dominant-baseline="central"
+											class="text-xs fill-white/90 pointer-events-none drop-shadow-sm"
+											style="font-size: {Math.min(11, Math.max(8, (node.x1 - node.x0) / 12))}px"
+										>
+											{node.data.value || 0} items
+										</text>
+										{#if node.depth === 1}
+											<text
+												x={node.x0 + (node.x1 - node.x0) / 2}
+												y={node.y0 + (node.y1 - node.y0) / 2 + 22}
+												text-anchor="middle"
+												dominant-baseline="central"
+												class="text-xs fill-white/75 pointer-events-none drop-shadow-sm"
+												style="font-size: {Math.min(10, Math.max(7, (node.x1 - node.x0) / 15))}px"
+											>
+												{(((node.data.value || 0) / getTotalValue()) * 100).toFixed(1)}%
+											</text>
+										{/if}
 									{/if}
 								{/if}
-							{/if}
-						{/each}
-					</Treemap>
-				</Svg>
-			</Chart>
-		</div>
+							{/each}
+						</Treemap>
+					</Svg>
+				</Chart>
+			</div>
+		{:else}
+			<div class="h-96 w-full rounded-lg border bg-card flex items-center justify-center">
+				<div class="text-center">
+					<p class="text-muted-foreground">No treemap data available</p>
+				</div>
+			</div>
+		{/if}
 
 		<!-- Enhanced Information Panel -->
 		{#if selectedNode}
@@ -162,12 +225,12 @@
 				<div class="space-y-2 text-sm">
 					<div class="flex justify-between">
 						<span class="text-muted-foreground">Total items:</span>
-						<span class="font-medium">{selectedNode.value}</span>
+						<span class="font-medium">{selectedNode.value || 0}</span>
 					</div>
-					{#if selectedNode.children && treemapData.children}
+					{#if selectedNode.children && treemapData}
 						<div class="flex justify-between">
 							<span class="text-muted-foreground">Percentage of total:</span>
-							<span class="font-medium">{((selectedNode.value / getTotalValue()) * 100).toFixed(1)}%</span>
+							<span class="font-medium">{(((selectedNode.value || 0) / getTotalValue()) * 100).toFixed(1)}%</span>
 						</div>
 						<div class="flex justify-between">
 							<span class="text-muted-foreground">Document types:</span>
@@ -182,7 +245,7 @@
 							{#each selectedNode.children.slice(0, 6) as child}
 								<div class="flex justify-between bg-background/50 rounded px-2 py-1">
 									<span>{child.name}</span>
-									<span class="font-medium">{child.value}</span>
+									<span class="font-medium">{child.value || 0}</span>
 								</div>
 							{/each}
 							{#if selectedNode.children.length > 6}
@@ -205,10 +268,10 @@
 			<div class="fixed z-50 bg-popover border border-border rounded-md px-3 py-2 shadow-lg text-sm pointer-events-none"
 				 style="left: {hoveredNode.x0 + 10}px; top: {hoveredNode.y0 - 10}px;">
 				<div class="font-medium">{hoveredNode.data.name}</div>
-				<div class="text-muted-foreground">{hoveredNode.data.value} items</div>
+				<div class="text-muted-foreground">{hoveredNode.data.value || 0} items</div>
 				{#if hoveredNode.depth === 1}
 					<div class="text-xs text-muted-foreground">
-						{((hoveredNode.data.value / getTotalValue()) * 100).toFixed(1)}% of total
+						{(((hoveredNode.data.value || 0) / getTotalValue()) * 100).toFixed(1)}% of total
 					</div>
 				{/if}
 			</div>
