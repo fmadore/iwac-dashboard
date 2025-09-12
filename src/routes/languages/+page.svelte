@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { PieChart } from "layerchart";
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import * as Chart from "$lib/components/ui/chart/index.js";
@@ -8,21 +7,21 @@
 	import { itemsStore } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
 
-	// Reactive language distribution data
-	$: languageData = $itemsStore.items.reduce((acc, item) => {
+	// Reactive language distribution data using $derived
+	const languageData = $derived($itemsStore.items.reduce((acc, item) => {
 		const language = item.language || 'Unknown';
 		acc[language] = (acc[language] || 0) + 1;
 		return acc;
-	}, {} as Record<string, number>);
+	}, {} as Record<string, number>));
 
-	// Convert to chart data format for LayerChart
-	$: chartData = Object.entries(languageData)
+	// Convert to chart data format for LayerChart using $derived
+	const chartData = $derived(Object.entries(languageData)
 		.map(([language, count]) => ({
 			language,
 			count,
 			percentage: ((count / $itemsStore.items.length) * 100).toFixed(1)
 		}))
-		.sort((a, b) => b.count - a.count);
+		.sort((a, b) => b.count - a.count));
 
 	// Chart configuration for shadcn-svelte
 	const chartConfig = {
@@ -51,7 +50,7 @@
 		},
 	} satisfies Chart.ChartConfig;
 
-	onMount(() => {
+	$effect(() => {
 		// Only load if not already loaded
 		if ($itemsStore.items.length === 0 && !$itemsStore.loading) {
 			itemsStore.loadItems();

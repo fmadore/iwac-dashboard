@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { itemsStore } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
@@ -7,7 +6,9 @@
 	import LanguageToggle from '$lib/components/language-toggle.svelte';
 	import '../app.css';
 
-	onMount(() => {
+	let { children } = $props();
+
+	$effect(() => {
 		itemsStore.loadItems();
 	});
 </script>
@@ -23,7 +24,7 @@
 				</div>
 			</header>
 			<main class="flex-1 p-6 overflow-auto">
-				<slot />
+				{@render children?.()}
 			</main>
 		</Sidebar.Inset>
 	</Sidebar.Provider>

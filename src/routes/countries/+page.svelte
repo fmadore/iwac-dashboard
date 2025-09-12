@@ -6,9 +6,9 @@
 	import { itemsStore } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
 
-	let expandedCountries: Set<string> = new Set();
+	let expandedCountries = $state(new Set<string>());
 
-	$: countryData = getCountryData($itemsStore.items);
+	const countryData = $derived(getCountryData($itemsStore.items));
 
 	function getCountryData(items: any[]) {
 		const countryMap = new Map();
@@ -58,7 +58,8 @@
 		} else {
 			expandedCountries.add(country);
 		}
-		expandedCountries = expandedCountries;
+		// Trigger reactivity by reassigning
+		expandedCountries = new Set(expandedCountries);
 	}
 </script>
 
@@ -76,7 +77,7 @@
 				<div class="border rounded-lg">
 					<button
 						class="w-full flex items-center justify-between p-4 hover:bg-accent/5 transition-colors"
-						on:click={() => toggleCountry(country.name)}
+						onclick={() => toggleCountry(country.name)}
 					>
 						<div class="flex items-center gap-3">
 							{#if expandedCountries.has(country.name)}
