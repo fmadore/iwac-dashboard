@@ -40,11 +40,14 @@
 			.map(country => ({
 				...country,
 				percentage: (country.count / total) * 100,
-				children: Array.from(country.types.entries()).map(([type, count]: [string, number]) => ({
-					name: type,
-					count,
-					percentage: (count / country.count) * 100
-				}))
+				children: Array.from(country.types.entries()).map((entry): { name: string; count: number; percentage: number } => {
+					const [type, count] = entry as [string, number];
+					return {
+						name: type,
+						count,
+						percentage: (count / country.count) * 100
+					};
+				})
 			}))
 			.sort((a, b) => b.count - a.count);
 	}

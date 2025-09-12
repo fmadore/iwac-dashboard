@@ -98,19 +98,10 @@
 							<PieChart
 								data={chartData}
 								value="count"
-								name="language"
 								r={120}
 								innerRadius={50}
 								outerRadius={120}
-								fill={(d, i) => `hsl(var(--chart-${(i % 5) + 1}))`}
-								class="w-full h-full max-w-[300px] max-h-[300px]"
 							>
-								{#snippet tooltip(data)}
-									<div class="bg-background border rounded-lg shadow-lg p-2">
-										<p class="font-medium">{data.language}</p>
-										<p class="text-sm text-muted-foreground">{data.count} documents ({data.percentage}%)</p>
-									</div>
-								{/snippet}
 							</PieChart>
 						{:else}
 							<div class="flex items-center justify-center h-[200px] text-muted-foreground">
