@@ -4,7 +4,8 @@
 	import { t } from '$lib/stores/translationStore.js';
 	import { Chart, Svg, Treemap } from 'layerchart';
 	import { base } from '$app/paths';
-	import type { HierarchyRectangularNode } from 'd3-hierarchy';
+	import { hierarchy } from 'd3-hierarchy';
+	import type { HierarchyRectangularNode, HierarchyNode } from 'd3-hierarchy';
 
 	interface TreemapData {
 		name: string;
@@ -14,7 +15,7 @@
 
 	let selectedNode = $state<TreemapData | null>(null);
 	let hoveredNode = $state<HierarchyRectangularNode<TreemapData> | null>(null);
-	let treemapData = $state<TreemapData | null>(null);
+	let treemapData = $state<HierarchyNode<TreemapData> | null>(null);
 	let isLoading = $state(true);
 	let loadingError = $state<string | null>(null);
 
@@ -28,9 +29,12 @@
 				const response = await fetch(`${base}/data/treemap-countries.json`);
 				if (response.ok) {
 					const jsonData = await response.json();
-					// Use JSON data directly - LayerChart will create hierarchy internally
-					treemapData = jsonData;
-					console.log('✅ Loaded pre-computed treemap data from JSON file');
+					// Convert JSON data to d3-hierarchy structure
+					const hierarchyData = hierarchy(jsonData)
+						.sum(d => d.value || 0)
+						.sort((a, b) => (b.value || 0) - (a.value || 0));
+					treemapData = hierarchyData;
+					console.log('✅ Loaded and converted treemap data to d3-hierarchy');
 				} else {
 					throw new Error(`Failed to fetch treemap data: ${response.status} ${response.statusText}`);
 				}
@@ -41,7 +45,11 @@
 				// Fallback to computing from itemsStore if pre-computed data not available
 				if ($itemsStore.items && $itemsStore.items.length > 0) {
 					const fallbackData = getTreemapData($itemsStore.items);
-					treemapData = fallbackData;
+					// Convert fallback data to d3-hierarchy structure
+					const hierarchyData = hierarchy(fallbackData)
+						.sum(d => d.value || 0)
+						.sort((a, b) => (b.value || 0) - (a.value || 0));
+					treemapData = hierarchyData;
 					console.log('📊 Using fallback client-side treemap computation');
 				} else {
 					console.warn('No items available for fallback computation');
@@ -108,8 +116,8 @@
 	}
 
 	function getTotalValue(): number {
-		if (!treemapData || !treemapData.children) return 1;
-		return treemapData.children.reduce((sum: number, country: TreemapData) => sum + (country.value || 0), 0) || 1;
+		if (!treemapData) return 1;
+		return treemapData.value || 1;
 	}
 </script>
 
@@ -227,7 +235,7 @@
 						<span class="text-muted-foreground">Total items:</span>
 						<span class="font-medium">{selectedNode.value || 0}</span>
 					</div>
-					{#if selectedNode.children && treemapData}
+					{#if selectedNode.children && selectedNode.children.length > 0}
 						<div class="flex justify-between">
 							<span class="text-muted-foreground">Percentage of total:</span>
 							<span class="font-medium">{(((selectedNode.value || 0) / getTotalValue()) * 100).toFixed(1)}%</span>
