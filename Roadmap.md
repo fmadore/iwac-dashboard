@@ -2,7 +2,7 @@
 
 ## Overview
 
-This roadmap tracks the migration of the IWAC Database Overview from a custom D3.js-based visualization app to a modern dashboard using shadcn-svelte with Svelte 5. The new architecture features a sidebar navigation, integrated charts, and data tables while maintaining all existing functionality.
+This roadmap tracks the migration of the IWAC Database Overview from a custom D3.js-based visualization app to a modern dashboard using shadcn-svelte with **Svelte 5**. The new architecture features a sidebar navigation, integrated charts, and data tables while maintaining all existing functionality.
 
 ## Progress Summary
 
@@ -11,13 +11,14 @@ This roadmap tracks the migration of the IWAC Database Overview from a custom D3
 ## Phase 1: Project Setup & Foundation ✅ COMPLETED
 
 ### 1.1 Create New Svelte 5 Project ✅ COMPLETED
-- SvelteKit project with TypeScript
+- SvelteKit project with **Svelte 5** and TypeScript
 - Vite build system
 - ESLint, Prettier, Vitest, Playwright configured
 
 ### 1.2 Configure TypeScript for Svelte 5 ✅ COMPLETED
 - Auto-configured by SvelteKit template
 - Path aliases configured for `$lib/*`
+- **Svelte 5 runes/reactivity syntax used throughout the codebase**
 
 ### 1.3 Setup shadcn-svelte ✅ COMPLETED
 - TailwindCSS integration
@@ -187,10 +188,11 @@ This roadmap tracks the migration of the IWAC Database Overview from a custom D3
 
 ## Architecture Decisions
 
-### UI Framework: shadcn-svelte ✅
+### UI Framework: shadcn-svelte + Svelte 5 ✅
 - Provides consistent, accessible components
 - Easy theming and customization
 - Good TypeScript support
+- **Svelte 5 runes/reactivity model for all new code**
 
 ### Charts: TBD 🤔
 Options being considered:
@@ -207,6 +209,7 @@ Options being considered:
 ## Resources
 
 - [Svelte 5 Documentation](https://svelte.dev/docs)
+- [Svelte 5 Migration Guide](migration-guide-Svelte.txt)
 - [shadcn-svelte Documentation](https://www.shadcn-svelte.com/)
 - [SvelteKit Documentation](https://kit.svelte.dev/)
 - [TailwindCSS Documentation](https://tailwindcss.com/)

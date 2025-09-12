@@ -2,7 +2,7 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { ChevronRight, ChevronDown } from 'lucide-svelte';
+	import { ChevronRight, ChevronDown } from '@lucide/svelte';
 	import { itemsStore } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
 

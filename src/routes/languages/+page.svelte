@@ -52,7 +52,10 @@
 	} satisfies Chart.ChartConfig;
 
 	onMount(() => {
-		itemsStore.loadItems();
+		// Only load if not already loaded
+		if ($itemsStore.items.length === 0 && !$itemsStore.loading) {
+			itemsStore.loadItems();
+		}
 	});
 </script>
 
@@ -90,25 +93,31 @@
 					</Card.Description>
 				</Card.Header>
 				<Card.Content>
-					<Chart.Container config={chartConfig} class="mx-auto aspect-square max-h-[400px]">
-						<PieChart
-							data={chartData}
-							value="count"
-							legend
-							props={{
-								pie: {
-									innerRadius: 60,
-									padAngle: 0.02,
-								},
-							}}
-						>
-							{#snippet tooltip()}
-								<Chart.Tooltip
-									labelFormatter={(label) => `${label}`}
-								/>
-							{/snippet}
-						</PieChart>
-					</Chart.Container>
+					<div class="mx-auto aspect-square max-h-[400px] flex items-center justify-center">
+						{#if chartData.length > 0}
+							<PieChart
+								data={chartData}
+								value="count"
+								name="language"
+								r={120}
+								innerRadius={50}
+								outerRadius={120}
+								fill={(d, i) => `hsl(var(--chart-${(i % 5) + 1}))`}
+								class="w-full h-full max-w-[300px] max-h-[300px]"
+							>
+								{#snippet tooltip(data)}
+									<div class="bg-background border rounded-lg shadow-lg p-2">
+										<p class="font-medium">{data.language}</p>
+										<p class="text-sm text-muted-foreground">{data.count} documents ({data.percentage}%)</p>
+									</div>
+								{/snippet}
+							</PieChart>
+						{:else}
+							<div class="flex items-center justify-center h-[200px] text-muted-foreground">
+								No data available
+							</div>
+						{/if}
+					</div>
 				</Card.Content>
 				<Card.Footer class="flex-col items-start gap-2 text-sm">
 					<div class="flex gap-2 font-medium leading-none">

@@ -1,6 +1,7 @@
+
 # IWAC Database Overview Dashboard
 
-A modern dashboard for the IWAC Database Overview, built with SvelteKit, shadcn-svelte, and TypeScript.
+A modern dashboard for the IWAC Database Overview, built with SvelteKit, shadcn-svelte, Svelte 5, and TypeScript.
 
 ## Overview
 
@@ -22,9 +23,10 @@ npm run dev
 npm run dev -- --open
 ```
 
+
 ## Technology Stack
 
-- **Framework**: SvelteKit with TypeScript
+- **Framework**: SvelteKit with **Svelte 5** and TypeScript  
 - **UI Components**: shadcn-svelte
 - **Styling**: TailwindCSS
 - **Icons**: Lucide Svelte
@@ -62,6 +64,9 @@ npm run build
 ```
 
 You can preview the production build with `npm run preview`.
+
+
+> **Note:** This project requires Svelte 5. Please ensure you are using Svelte 5 and follow the [migration guide](migration-guide-Svelte.txt) if upgrading from Svelte 4.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 

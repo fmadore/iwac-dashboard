@@ -9,7 +9,7 @@
 		Tag,
 		BookOpen,
 		Home
-	} from 'lucide-svelte';
+	} from '@lucide/svelte';
 	import { page } from '$app/stores';
 	import { t } from '$lib/stores/translationStore.js';
 
@@ -32,10 +32,12 @@
 				<Sidebar.Menu>
 					{#each navItems as item}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton href={item.href} isActive={$page.url.pathname === item.href}>
-								<svelte:component this={item.icon} class="w-4 h-4" />
-								<span>{$t(item.label)}</span>
-							</Sidebar.MenuButton>
+							<a href={item.href} class="block w-full">
+								<Sidebar.MenuButton isActive={$page.url.pathname === item.href}>
+									<svelte:component this={item.icon} class="w-4 h-4" />
+									<span>{$t(item.label)}</span>
+								</Sidebar.MenuButton>
+							</a>
 						</Sidebar.MenuItem>
 					{/each}
 				</Sidebar.Menu>
