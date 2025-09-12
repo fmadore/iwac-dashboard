@@ -1,0 +1,4 @@
+datasets
+pandas
+huggingface-hub
+pyarrow
