@@ -31,7 +31,17 @@ export const translations = {
 		'common.search': 'Search...',
 		'common.export': 'Export',
 		'common.filter': 'Filter',
-		'common.reset': 'Reset'
+		'common.reset': 'Reset',
+		'table.search_placeholder': 'Search title, type, or country...',
+		'table.rows_count': '{0} rows',
+		'table.no_results': 'No results',
+		'table.load_error': 'Failed to load entities',
+		'table.title': 'Title',
+		'table.type': 'Type',
+		'table.frequency': 'Frequency',
+		'table.first': 'First occurrence',
+		'table.last': 'Last occurrence',
+		'table.countries': 'Countries'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -61,7 +71,17 @@ export const translations = {
 		'common.search': 'Rechercher...',
 		'common.export': 'Exporter',
 		'common.filter': 'Filtrer',
-		'common.reset': 'Réinitialiser'
+		'common.reset': 'Réinitialiser',
+		'table.search_placeholder': 'Rechercher un titre, un type ou un pays...',
+		'table.rows_count': '{0} lignes',
+		'table.no_results': 'Aucun résultat',
+		'table.load_error': 'Échec du chargement des entités',
+		'table.title': 'Titre',
+		'table.type': 'Type',
+		'table.frequency': 'Fréquence',
+		'table.first': 'Première occurrence',
+		'table.last': 'Dernière occurrence',
+		'table.countries': 'Pays'
 	}
 } as const;
 

@@ -4,11 +4,11 @@
   import { Card } from '$lib/components/ui/card/index.js';
   import { t } from '$lib/stores/translationStore.js';
   import { base } from '$app/paths';
+  import EntitiesTable from '$lib/components/entities-table.svelte';
 
-  let chartEl: HTMLDivElement | null = null;
-  let chart: any = null;
-  let echarts: any = null;
-  let unsubscribe: () => void;
+  let chartEl = $state<HTMLDivElement | null>(null);
+  let chart = $state<any>(null);
+  let echarts = $state<any>(null);
 
   type ChartData = { labels: string[]; values: number[] };
 
@@ -69,20 +69,52 @@
       .catch((err) => {
         console.error('Failed to load index-types.json', err);
       });
+    
+    // Handle window resize for chart responsiveness
+    const handleResize = () => {
+      if (chart) {
+        chart.resize();
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
     return () => {
+      window.removeEventListener('resize', handleResize);
       chart?.dispose();
       chart = null;
     };
   });
+
+  // Use effect to resize chart when it becomes available
+  $effect(() => {
+    if (chart && chartEl) {
+      // Small delay to ensure DOM is updated
+      setTimeout(() => {
+        chart.resize();
+      }, 100);
+    }
+  });
 </script>
 
-<div class="space-y-6">
+<div class="min-h-screen w-full p-4 space-y-6">
   <div>
     <h2 class="text-3xl font-bold tracking-tight">{$t('nav.index')}</h2>
     <p class="text-muted-foreground">Top entity types by count</p>
   </div>
 
-  <Card class="p-6">
-    <div bind:this={chartEl} class="h-[420px] w-full"></div>
-  </Card>
+  <!-- Vertical layout: chart on top, table below -->
+  <div class="space-y-6">
+    <!-- Chart Section -->
+    <div>
+      <Card class="p-4">
+        <div bind:this={chartEl} class="w-full h-[400px]"></div>
+      </Card>
+    </div>
+
+    <!-- Table Section -->
+    <div class="h-[600px] overflow-hidden">
+      <EntitiesTable />
+    </div>
+  </div>
 </div>
