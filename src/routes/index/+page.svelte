@@ -2,27 +2,15 @@
   import { onMount } from 'svelte';
   // Avoid direct type import from 'echarts' to prevent TS 2497; use any-typed dynamic modules instead.
   import { Card } from '$lib/components/ui/card/index.js';
-  import { itemsStore } from '$lib/stores/itemsStore.js';
   import { t } from '$lib/stores/translationStore.js';
+  import { base } from '$app/paths';
 
   let chartEl: HTMLDivElement | null = null;
   let chart: any = null;
   let echarts: any = null;
   let unsubscribe: () => void;
 
-  function buildData(items: any[]) {
-    const counts: Record<string, number> = {};
-    for (const it of items) {
-      const key = it.type || 'Unknown';
-      counts[key] = (counts[key] || 0) + 1;
-    }
-    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const top = entries.slice(0, 10);
-    return {
-      labels: top.map(([k]) => k),
-      values: top.map(([, v]) => v)
-    };
-  }
+  type ChartData = { labels: string[]; values: number[] };
 
   async function ensureChart() {
     if (!echarts) {
@@ -45,11 +33,11 @@
     }
   }
 
-  async function renderChart(items: any[]) {
+  async function renderChart(data: ChartData) {
     if (!chartEl) return;
     await ensureChart();
     if (!chart || !echarts) return;
-    const { labels, values } = buildData(items);
+    const { labels, values } = data;
     const option = {
       title: { text: $t('nav.index') },
       tooltip: { trigger: 'axis' },
@@ -72,13 +60,16 @@
   }
 
   onMount(() => {
-    unsubscribe = itemsStore.subscribe(($s) => {
-      if (!$s.loading && !$s.error) {
-        renderChart($s.items);
-      }
-    });
+    const url = `${base}/data/index-types.json`;
+    fetch(url)
+      .then((r) => r.json())
+      .then((json: ChartData) => {
+        renderChart({ labels: json.labels ?? [], values: json.values ?? [] });
+      })
+      .catch((err) => {
+        console.error('Failed to load index-types.json', err);
+      });
     return () => {
-      unsubscribe?.();
       chart?.dispose();
       chart = null;
     };
@@ -88,7 +79,7 @@
 <div class="space-y-6">
   <div>
     <h2 class="text-3xl font-bold tracking-tight">{$t('nav.index')}</h2>
-    <p class="text-muted-foreground">Top 10 document types by count</p>
+    <p class="text-muted-foreground">Top entity types by count</p>
   </div>
 
   <Card class="p-6">
