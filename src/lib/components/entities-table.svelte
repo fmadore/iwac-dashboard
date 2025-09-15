@@ -131,50 +131,50 @@
   }
 </script>
 
-<div class="h-full flex flex-col space-y-3">
-  <div class="flex items-center justify-between gap-3 flex-shrink-0">
+<div class="w-full flex flex-col space-y-3">
+  <div class="flex items-center justify-between gap-3 flex-shrink-0 flex-wrap">
     <Input
       placeholder={$t('table.search_placeholder')}
       bind:value={search}
-      class="max-w-md"
+      class="max-w-md min-w-0 flex-shrink"
     />
-    <div class="text-sm text-muted-foreground">
+    <div class="text-sm text-muted-foreground whitespace-nowrap">
       {loading ? $t('common.loading') : error ? error : `${startIndex + 1}-${endIndex} of ${sorted.length} entries`}
     </div>
   </div>
 
-  <div class="flex-1 overflow-hidden rounded-md border">
-    <div class="h-full overflow-auto">
-      <Table>
+  <div class="w-full overflow-hidden rounded-md border">
+    <div class="w-full overflow-auto max-h-[600px]">
+      <Table class="table-fixed w-full">
         <TableHeader class="sticky top-0 bg-background z-10">
           <TableRow>
-            <TableHead class="whitespace-nowrap">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2" onclick={() => setSort('Titre')}>
+            <TableHead class="w-[25%]">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('Titre')}>
                 {$t('table.title')} {sortKey === 'Titre' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </button>
             </TableHead>
-            <TableHead class="whitespace-nowrap">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2" onclick={() => setSort('Type')}>
+            <TableHead class="w-[15%]">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('Type')}>
                 {$t('table.type')} {sortKey === 'Type' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </button>
             </TableHead>
-            <TableHead class="whitespace-nowrap">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2" onclick={() => setSort('frequency')}>
+            <TableHead class="w-[10%]">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('frequency')}>
                 {$t('table.frequency')} {sortKey === 'frequency' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </button>
             </TableHead>
-            <TableHead class="whitespace-nowrap">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2" onclick={() => setSort('first_occurrence')}>
+            <TableHead class="w-[15%]">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('first_occurrence')}>
                 {$t('table.first')} {sortKey === 'first_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </button>
             </TableHead>
-            <TableHead class="whitespace-nowrap">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2" onclick={() => setSort('last_occurrence')}>
+            <TableHead class="w-[15%]">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('last_occurrence')}>
                 {$t('table.last')} {sortKey === 'last_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </button>
             </TableHead>
-            <TableHead class="whitespace-nowrap">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2" onclick={() => setSort('countries')}>
+            <TableHead class="w-[20%]">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('countries')}>
                 {$t('table.countries')} {sortKey === 'countries' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </button>
             </TableHead>
@@ -196,20 +196,20 @@
           {:else}
             {#each paginatedRows as r}
               <TableRow>
-                <TableCell class="min-w-[16rem]">
+                <TableCell class="truncate pr-2">
                   {#if r.Titre}
-                    <a href={entityUrl(r)} target="_blank" rel="noopener noreferrer" class="underline-offset-2 hover:underline">
+                    <a href={entityUrl(r)} target="_blank" rel="noopener noreferrer" class="underline-offset-2 hover:underline block truncate" title={r.Titre}>
                       {r.Titre}
                     </a>
                   {:else}
                     —
                   {/if}
                 </TableCell>
-                <TableCell class="whitespace-nowrap">{r.Type}</TableCell>
-                <TableCell class="whitespace-nowrap">{r.frequency}</TableCell>
-                <TableCell class="whitespace-nowrap">{r.first_occurrence}</TableCell>
-                <TableCell class="whitespace-nowrap">{r.last_occurrence}</TableCell>
-                <TableCell class="min-w-[12rem]">{r.countries}</TableCell>
+                <TableCell class="truncate pr-2" title={r.Type}>{r.Type}</TableCell>
+                <TableCell class="text-right pr-2">{r.frequency}</TableCell>
+                <TableCell class="truncate pr-2">{r.first_occurrence}</TableCell>
+                <TableCell class="truncate pr-2">{r.last_occurrence}</TableCell>
+                <TableCell class="truncate" title={r.countries}>{r.countries}</TableCell>
               </TableRow>
             {/each}
           {/if}
@@ -220,11 +220,11 @@
 
   <!-- Pagination Controls -->
   {#if !loading && !error && sorted.length > 0}
-    <div class="flex items-center justify-between space-x-2 py-4 flex-shrink-0">
-      <div class="text-sm text-muted-foreground">
+    <div class="flex items-center justify-between space-x-2 py-4 flex-shrink-0 flex-wrap gap-2">
+      <div class="text-sm text-muted-foreground whitespace-nowrap">
         Page {currentPage} of {totalPages}
       </div>
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center space-x-1 flex-wrap">
         <Button 
           variant="outline" 
           size="sm" 
@@ -240,6 +240,7 @@
               variant={currentPage === i + 1 ? "default" : "outline"}
               size="sm"
               onclick={() => goToPage(i + 1)}
+              class="min-w-[2rem]"
             >
               {i + 1}
             </Button>
@@ -250,12 +251,13 @@
             variant={currentPage === 1 ? "default" : "outline"}
             size="sm"
             onclick={() => goToPage(1)}
+            class="min-w-[2rem]"
           >
             1
           </Button>
           
           {#if currentPage > 3}
-            <span class="px-2">...</span>
+            <span class="px-1 text-sm text-muted-foreground">...</span>
           {/if}
           
           <!-- Show pages around current page -->
@@ -265,6 +267,7 @@
                 variant={currentPage === currentPage - 1 + i ? "default" : "outline"}
                 size="sm"
                 onclick={() => goToPage(currentPage - 1 + i)}
+                class="min-w-[2rem]"
               >
                 {currentPage - 1 + i}
               </Button>
@@ -272,7 +275,7 @@
           {/each}
           
           {#if currentPage < totalPages - 2}
-            <span class="px-2">...</span>
+            <span class="px-1 text-sm text-muted-foreground">...</span>
           {/if}
           
           <!-- Show last page -->
@@ -280,6 +283,7 @@
             variant={currentPage === totalPages ? "default" : "outline"}
             size="sm"
             onclick={() => goToPage(totalPages)}
+            class="min-w-[2rem]"
           >
             {totalPages}
           </Button>

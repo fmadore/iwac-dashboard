@@ -97,23 +97,23 @@
   });
 </script>
 
-<div class="min-h-screen w-full p-4 space-y-6">
+<div class="w-full max-w-none space-y-6 overflow-x-hidden">
   <div>
     <h2 class="text-3xl font-bold tracking-tight">{$t('nav.index')}</h2>
     <p class="text-muted-foreground">Top entity types by count</p>
   </div>
 
   <!-- Vertical layout: chart on top, table below -->
-  <div class="space-y-6">
+  <div class="space-y-6 w-full">
     <!-- Chart Section -->
-    <div>
-      <Card class="p-4">
+    <div class="w-full">
+      <Card class="p-4 w-full">
         <div bind:this={chartEl} class="w-full h-[400px]"></div>
       </Card>
     </div>
 
     <!-- Table Section -->
-    <div class="h-[600px] overflow-hidden">
+    <div class="w-full">
       <EntitiesTable />
     </div>
   </div>
