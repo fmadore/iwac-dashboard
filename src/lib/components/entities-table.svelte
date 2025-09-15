@@ -143,39 +143,39 @@
     </div>
   </div>
 
-  <div class="w-full overflow-hidden rounded-md border">
-    <div class="w-full overflow-auto max-h-[600px]">
-      <Table class="table-fixed w-full">
+  <div class="w-full rounded-md border">
+    <div class="w-full overflow-x-auto">
+      <Table class="w-full">
         <TableHeader class="sticky top-0 bg-background z-10">
           <TableRow>
-            <TableHead class="w-[25%]">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('Titre')}>
-                {$t('table.title')} {sortKey === 'Titre' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+            <TableHead class="w-1/4 min-w-0">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('Titre')}>
+                <span class="truncate block">{$t('table.title')} {sortKey === 'Titre' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
-            <TableHead class="w-[15%]">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('Type')}>
-                {$t('table.type')} {sortKey === 'Type' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+            <TableHead class="w-1/6 min-w-0">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('Type')}>
+                <span class="truncate block">{$t('table.type')} {sortKey === 'Type' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
-            <TableHead class="w-[10%]">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('frequency')}>
-                {$t('table.frequency')} {sortKey === 'frequency' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+            <TableHead class="w-20 min-w-0">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('frequency')}>
+                <span class="truncate block">{$t('table.frequency')} {sortKey === 'frequency' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
-            <TableHead class="w-[15%]">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('first_occurrence')}>
-                {$t('table.first')} {sortKey === 'first_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+            <TableHead class="w-1/6 min-w-0">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('first_occurrence')}>
+                <span class="truncate block">{$t('table.first')} {sortKey === 'first_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
-            <TableHead class="w-[15%]">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('last_occurrence')}>
-                {$t('table.last')} {sortKey === 'last_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+            <TableHead class="w-1/6 min-w-0">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('last_occurrence')}>
+                <span class="truncate block">{$t('table.last')} {sortKey === 'last_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
-            <TableHead class="w-[20%]">
-              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full truncate" onclick={() => setSort('countries')}>
-                {$t('table.countries')} {sortKey === 'countries' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+            <TableHead class="w-1/5 min-w-0">
+              <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('countries')}>
+                <span class="truncate block">{$t('table.countries')} {sortKey === 'countries' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
           </TableRow>
@@ -196,20 +196,30 @@
           {:else}
             {#each paginatedRows as r}
               <TableRow>
-                <TableCell class="truncate pr-2">
+                <TableCell class="w-1/4 min-w-0 max-w-0 p-2">
                   {#if r.Titre}
                     <a href={entityUrl(r)} target="_blank" rel="noopener noreferrer" class="underline-offset-2 hover:underline block truncate" title={r.Titre}>
                       {r.Titre}
                     </a>
                   {:else}
-                    —
+                    <span class="truncate block">—</span>
                   {/if}
                 </TableCell>
-                <TableCell class="truncate pr-2" title={r.Type}>{r.Type}</TableCell>
-                <TableCell class="text-right pr-2">{r.frequency}</TableCell>
-                <TableCell class="truncate pr-2">{r.first_occurrence}</TableCell>
-                <TableCell class="truncate pr-2">{r.last_occurrence}</TableCell>
-                <TableCell class="truncate" title={r.countries}>{r.countries}</TableCell>
+                <TableCell class="w-1/6 min-w-0 max-w-0 p-2">
+                  <span class="truncate block" title={r.Type}>{r.Type}</span>
+                </TableCell>
+                <TableCell class="w-20 min-w-0 max-w-0 text-right p-2">
+                  <span class="truncate block">{r.frequency}</span>
+                </TableCell>
+                <TableCell class="w-1/6 min-w-0 max-w-0 p-2">
+                  <span class="truncate block">{r.first_occurrence}</span>
+                </TableCell>
+                <TableCell class="w-1/6 min-w-0 max-w-0 p-2">
+                  <span class="truncate block">{r.last_occurrence}</span>
+                </TableCell>
+                <TableCell class="w-1/5 min-w-0 max-w-0 p-2">
+                  <span class="truncate block" title={r.countries}>{r.countries}</span>
+                </TableCell>
               </TableRow>
             {/each}
           {/if}
