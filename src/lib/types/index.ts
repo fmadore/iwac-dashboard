@@ -38,3 +38,17 @@ export interface ChartConfig {
 	data: any;
 	options?: any;
 }
+
+// Word cloud types
+export interface Word {
+	text: string;
+	size: number;
+	x?: number;
+	y?: number;
+	rotate?: number;
+	font?: string;
+	style?: string;
+	weight?: string;
+	color?: string;
+	padding?: number;
+}
