@@ -200,7 +200,19 @@
 
 	// Re-render when data or settings change
 	$effect(() => {
-		if (svgElement && d3 && data && colorScale && (window as any).d3?.layout?.cloud) {
+		// Read all reactive dependencies synchronously to ensure tracking
+		const currentData = data;
+		const currentWidth = width;
+		const currentHeight = height;
+		const currentColorScheme = colorScheme;
+		const currentMinFontSize = minFontSize;
+		const currentMaxFontSize = maxFontSize;
+		const currentPadding = padding;
+		const currentMinRotation = minRotation;
+		const currentMaxRotation = maxRotation;
+		const currentFontFamily = fontFamily;
+		
+		if (svgElement && d3 && currentData && colorScale && (window as any).d3?.layout?.cloud) {
 			renderWordCloud();
 		}
 	});
