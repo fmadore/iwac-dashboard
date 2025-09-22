@@ -29,6 +29,13 @@
   --chart-3: oklch(0.38 0.14 164);
   --chart-4: oklch(0.56 0.32 46);
   --chart-5: oklch(0.52 0.288 4);
+  --country-color-default: oklch(0.52 0.296 28);
+  --country-color-cote-divoire: oklch(0.74 0.19 70);
+  --country-color-burkina-faso: oklch(0.62 0.25 25);
+  --country-color-benin: oklch(0.66 0.17 150);
+  --country-color-togo: oklch(0.68 0.18 210);
+  --country-color-niger: oklch(0.82 0.14 85);
+  --country-color-nigeria: oklch(0.58 0.20 140);
   --sidebar: oklch(0.17 0.032 214);
   --sidebar-foreground: oklch(0.96 0.008 210);
   --sidebar-primary: oklch(0.52 0.296 28);
@@ -63,6 +70,13 @@
   --chart-3: oklch(0.46 0.18 162);
   --chart-4: oklch(0.58 0.304 46);
   --chart-5: oklch(0.50 0.28 4);
+  --country-color-default: oklch(0.58 0.3 28);
+  --country-color-cote-divoire: oklch(0.68 0.18 70);
+  --country-color-burkina-faso: oklch(0.56 0.22 25);
+  --country-color-benin: oklch(0.58 0.15 150);
+  --country-color-togo: oklch(0.6 0.16 210);
+  --country-color-niger: oklch(0.72 0.12 85);
+  --country-color-nigeria: oklch(0.52 0.18 140);
   --sidebar: oklch(0.10 0.018 220);
   --sidebar-foreground: oklch(0.96 0.025 210);
   --sidebar-primary: oklch(0.55 0.304 28);
