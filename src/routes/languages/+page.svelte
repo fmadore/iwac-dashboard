@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { PieChart } from "layerchart";
+	import PieChart from '$lib/components/charts/PieChart.svelte';
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
-	import * as Chart from "$lib/components/ui/chart/index.js";
 	import * as Card from "$lib/components/ui/card/index.js";
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { itemsStore } from '$lib/stores/itemsStore.js';
@@ -14,41 +13,24 @@
 		return acc;
 	}, {} as Record<string, number>));
 
-	// Convert to chart data format for LayerChart using $derived
+	// Convert to chart data format for our PieChart using $derived
 	const chartData = $derived(Object.entries(languageData)
-		.map(([language, count]) => ({
-			language,
-			count,
+		.map(([language, count], index) => ({
+			label: language,
+			value: count,
+			color: `var(--chart-${(index % 5) + 1})`,
 			percentage: ((count / $itemsStore.items.length) * 100).toFixed(1)
 		}))
-		.sort((a, b) => b.count - a.count));
+		.sort((a, b) => b.value - a.value));
 
-	// Chart configuration for shadcn-svelte
-	const chartConfig = {
-		count: {
-			label: "Documents",
-		},
-		French: {
-			label: "French",
-			color: "hsl(var(--chart-1))",
-		},
-		English: {
-			label: "English", 
-			color: "hsl(var(--chart-2))",
-		},
-		Spanish: {
-			label: "Spanish",
-			color: "hsl(var(--chart-3))",
-		},
-		German: {
-			label: "German",
-			color: "hsl(var(--chart-4))",
-		},
-		Unknown: {
-			label: "Unknown",
-			color: "hsl(var(--chart-5))",
-		},
-	} satisfies Chart.ChartConfig;
+	// Color configuration for consistency
+	const colorMap = $derived(() => {
+		const map: Record<string, string> = {};
+		chartData.forEach((item, index) => {
+			map[item.label] = `var(--chart-${(index % 5) + 1})`;
+		});
+		return map;
+	});
 
 	$effect(() => {
 		// Only load if not already loaded
@@ -96,12 +78,14 @@
 						{#if chartData.length > 0}
 							<PieChart
 								data={chartData}
-								value="count"
-								r={120}
-								innerRadius={50}
-								outerRadius={120}
-							>
-							</PieChart>
+								innerRadius={60}
+								outerRadius={160}
+								showLabels={true}
+								showValues={false}
+								animationDuration={1000}
+								padAngle={0.01}
+								cornerRadius={4}
+							/>
 						{:else}
 							<div class="flex items-center justify-center h-[200px] text-muted-foreground">
 								No data available
@@ -132,12 +116,12 @@
 								<div class="flex items-center gap-3">
 									<div 
 										class="w-4 h-4 rounded-full" 
-										style="background-color: hsl(var(--chart-{(index % 5) + 1}))"
+										style="background-color: {colorMap()[item.label]}"
 									></div>
-									<span class="font-medium">{item.language}</span>
+									<span class="font-medium">{item.label}</span>
 								</div>
 								<div class="text-right">
-									<p class="font-semibold">{item.count}</p>
+									<p class="font-semibold">{item.value}</p>
 									<p class="text-sm text-muted-foreground">{item.percentage}%</p>
 								</div>
 							</div>
