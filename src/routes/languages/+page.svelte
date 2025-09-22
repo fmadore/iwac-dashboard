@@ -3,40 +3,73 @@
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import * as Card from "$lib/components/ui/card/index.js";
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { itemsStore } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
+	import FacetPie from '$lib/components/facets/FacetPie.svelte';
+	import type { PageData } from './$types.js';
+	
+	let { data }: { data: PageData } = $props();
 
-	// Reactive language distribution data using $derived
-	const languageData = $derived($itemsStore.items.reduce((acc, item) => {
-		const language = item.language || 'Unknown';
-		acc[language] = (acc[language] || 0) + 1;
-		return acc;
-	}, {} as Record<string, number>));
-
-	// Convert to chart data format for our PieChart using $derived
-	const chartData = $derived(Object.entries(languageData)
-		.map(([language, count], index) => ({
-			label: language,
-			value: count,
-			color: `var(--chart-${(index % 5) + 1})`,
-			percentage: ((count / $itemsStore.items.length) * 100).toFixed(1)
-		}))
-		.sort((a, b) => b.value - a.value));
+	const chartData = $derived(() =>
+		(data.global?.data || [])
+			.map((item, index) => ({
+				label: item.label,
+				value: item.value,
+				color: `var(--chart-${(index % 5) + 1})`,
+				percentage: item.percentage?.toFixed?.(1) ?? undefined
+			}))
+			.sort((a, b) => b.value - a.value)
+	);
 
 	// Color configuration for consistency
 	const colorMap = $derived(() => {
 		const map: Record<string, string> = {};
-		chartData.forEach((item, index) => {
+		filteredChartData().forEach((item, index) => {
 			map[item.label] = `var(--chart-${(index % 5) + 1})`;
 		});
 		return map;
 	});
 
-	$effect(() => {
-		// Only load if not already loaded
-		if ($itemsStore.items.length === 0 && !$itemsStore.loading) {
-			itemsStore.loadItems();
+	// Facet selection state
+	let selectedType = $state<string>('');
+	let selectedCountry = $state<string>('');
+	
+	const typeOptions = $derived(() => data.types?.types ?? []);
+	const countryOptions = $derived(() => data.countries?.countries ?? []);
+	
+	// Main chart data that updates based on selected facets
+	const filteredChartData = $derived(() => {
+		let sourceData = data.global?.data || [];
+		
+		// Apply type filter
+		if (selectedType && data.types) {
+			const facet = data.types.facets[selectedType];
+			sourceData = facet ? facet.data : [];
 		}
+		
+		// Apply country filter
+		if (selectedCountry && data.countries) {
+			const facet = data.countries.facets[selectedCountry];
+			sourceData = facet ? facet.data : [];
+		}
+		
+		return sourceData.map((item, index) => ({
+			label: item.label,
+			value: item.value,
+			color: `var(--chart-${(index % 5) + 1})`,
+			percentage: item.percentage?.toFixed?.(1) ?? undefined
+		})).sort((a, b) => b.value - a.value);
+	});
+	
+	const totalDocs = $derived(() => {
+		if (selectedType && data.types) {
+			const facet = data.types.facets[selectedType];
+			return facet ? facet.total : 0;
+		}
+		if (selectedCountry && data.countries) {
+			const facet = data.countries.facets[selectedCountry];
+			return facet ? facet.total : 0;
+		}
+		return data.global?.total ?? 0;
 	});
 </script>
 
@@ -46,7 +79,47 @@
 		<p class="text-muted-foreground">{$t('chart.language_distribution_desc')}</p>
 	</div>
 
-	{#if $itemsStore.loading}
+	<!-- Filters -->
+	<Card.Root>
+		<Card.Header>
+			<Card.Title>Filters</Card.Title>
+			<Card.Description>Select filters to view specific language distributions</Card.Description>
+		</Card.Header>
+		<Card.Content>
+			<div class="flex gap-4 flex-wrap">
+				<div class="flex items-center gap-2">
+					<label for="typeSelect" class="text-sm font-medium">Type:</label>
+					<select id="typeSelect" bind:value={selectedType} class="border rounded px-3 py-1 min-w-[140px]">
+						<option value="">All Types</option>
+						{#each typeOptions() as opt}
+							<option value={opt}>{opt}</option>
+						{/each}
+					</select>
+				</div>
+				{#if countryOptions().length > 0}
+				<div class="flex items-center gap-2">
+					<label for="countrySelect" class="text-sm font-medium">Country:</label>
+					<select id="countrySelect" bind:value={selectedCountry} class="border rounded px-3 py-1 min-w-[140px]">
+						<option value="">All Countries</option>
+						{#each countryOptions() as opt}
+							<option value={opt}>{opt}</option>
+						{/each}
+					</select>
+				</div>
+				{/if}
+				{#if selectedType || selectedCountry}
+				<button 
+					class="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80"
+					onclick={() => { selectedType = ''; selectedCountry = ''; }}
+				>
+					Clear Filters
+				</button>
+				{/if}
+			</div>
+		</Card.Content>
+	</Card.Root>
+
+	{#if !data.global}
 		<Card.Root>
 			<Card.Content class="p-6">
 				<div class="space-y-4">
@@ -57,27 +130,31 @@
 				</div>
 			</Card.Content>
 		</Card.Root>
-	{:else if $itemsStore.error}
-		<Card.Root>
-			<Card.Content class="p-6">
-				<p class="text-destructive">{$t('common.error')}: {$itemsStore.error}</p>
-			</Card.Content>
-		</Card.Root>
 	{:else}
 		<div class="grid gap-6 md:grid-cols-2">
 			<!-- Pie Chart -->
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>{$t('chart.language_distribution')}</Card.Title>
+					<Card.Title>
+						{#if selectedType && selectedCountry}
+							Languages in {selectedType} - {selectedCountry}
+						{:else if selectedType}
+							Languages in {selectedType}
+						{:else if selectedCountry}
+							Languages in {selectedCountry}
+						{:else}
+							{$t('chart.language_distribution')}
+						{/if}
+					</Card.Title>
 					<Card.Description>
-						Total: {$itemsStore.items.length} {$t('chart.documents').toLowerCase()}
+						Total: {totalDocs()} {$t('chart.documents').toLowerCase()}
 					</Card.Description>
 				</Card.Header>
 				<Card.Content>
 					<div class="mx-auto aspect-square max-h-[400px] flex items-center justify-center">
-						{#if chartData.length > 0}
+						{#if filteredChartData().length > 0}
 							<PieChart
-								data={chartData}
+								data={filteredChartData()}
 								innerRadius={60}
 								outerRadius={160}
 								showLabels={true}
@@ -88,7 +165,7 @@
 							/>
 						{:else}
 							<div class="flex items-center justify-center h-[200px] text-muted-foreground">
-								No data available
+								No data available for selected filters
 							</div>
 						{/if}
 					</div>
@@ -98,7 +175,7 @@
 						Language distribution <TrendingUpIcon class="h-4 w-4" />
 					</div>
 					<div class="leading-none text-muted-foreground">
-						Showing distribution across {chartData.length} languages
+						Showing distribution across {filteredChartData().length} languages
 					</div>
 				</Card.Footer>
 			</Card.Root>
@@ -111,7 +188,7 @@
 				</Card.Header>
 				<Card.Content>
 					<div class="space-y-2">
-						{#each chartData as item, index}
+						{#each filteredChartData() as item, index}
 							<div class="flex items-center justify-between p-3 border rounded-lg">
 								<div class="flex items-center gap-3">
 									<div 
@@ -122,7 +199,9 @@
 								</div>
 								<div class="text-right">
 									<p class="font-semibold">{item.value}</p>
-									<p class="text-sm text-muted-foreground">{item.percentage}%</p>
+									{#if item.percentage}
+										<p class="text-sm text-muted-foreground">{item.percentage}%</p>
+									{/if}
 								</div>
 							</div>
 						{/each}
