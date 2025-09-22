@@ -26,6 +26,7 @@ export const translations = {
 		'chart.language_distribution_desc': 'Documents by language',
 		'chart.percentage': 'Percentage',
 		'chart.documents': 'Documents',
+		'chart.no_data': 'No data available',
 		'common.loading': 'Loading...',
 		'common.error': 'Error loading data',
 		'common.search': 'Search...',
@@ -66,6 +67,7 @@ export const translations = {
 		'chart.language_distribution_desc': 'Documents par langue',
 		'chart.percentage': 'Pourcentage',
 		'chart.documents': 'Documents',
+		'chart.no_data': 'Aucune donnees disponibles',
 		'common.loading': 'Chargement...',
 		'common.error': 'Erreur lors du chargement des données',
 		'common.search': 'Rechercher...',
@@ -93,3 +95,5 @@ export const t = derived(languageStore, ($lang) => {
 		return params.reduce((str, param, i) => str.replace(`{${i}}`, param), translation);
 	};
 });
+
+

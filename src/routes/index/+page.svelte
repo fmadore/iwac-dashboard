@@ -1,120 +1,77 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  // Avoid direct type import from 'echarts' to prevent TS 2497; use any-typed dynamic modules instead.
-  import { Card } from '$lib/components/ui/card/index.js';
-  import { t } from '$lib/stores/translationStore.js';
   import { base } from '$app/paths';
+  import { Card } from '$lib/components/ui/card/index.js';
   import EntitiesTable from '$lib/components/entities-table.svelte';
+  import BarChart from '$lib/components/charts/BarChart.svelte';
+  import { t } from '$lib/stores/translationStore.js';
 
-  let chartEl = $state<HTMLDivElement | null>(null);
-  let chart = $state<any>(null);
-  let echarts = $state<any>(null);
+  type ApiChartData = { labels?: string[]; values?: number[] };
+  type ChartDataItem = { category: string; documents: number };
 
-  type ChartData = { labels: string[]; values: number[] };
+  let chartData = $state<ChartDataItem[]>([]);
+  let isLoading = $state(true);
+  let fetchError = $state<string | null>(null);
 
-  async function ensureChart() {
-    if (!echarts) {
-      const coreMod: any = await import('echarts/core');
-      const chartsMod: any = await import('echarts/charts');
-      const compsMod: any = await import('echarts/components');
-      const renderersMod: any = await import('echarts/renderers');
-      echarts = coreMod;
-      coreMod.use([
-        chartsMod.BarChart,
-        compsMod.GridComponent,
-        compsMod.TooltipComponent,
-        compsMod.TitleComponent,
-        compsMod.LegendComponent,
-        renderersMod.CanvasRenderer
-      ]);
+  async function loadChartData() {
+    try {
+      const response = await fetch(`${base}/data/index-types.json`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      const payload = (await response.json()) as ApiChartData;
+      const labels = payload.labels ?? [];
+      const values = payload.values ?? [];
+
+      chartData = labels.map((category, index) => ({
+        category,
+        documents: values[index] ?? 0
+      }));
+      fetchError = null;
+    } catch (error) {
+      console.error('Failed to load index-types.json', error);
+      fetchError = $t('common.error');
+      chartData = [];
+    } finally {
+      isLoading = false;
     }
-    if (echarts && chartEl && !chart) {
-      chart = echarts.init(chartEl);
-    }
-  }
-
-  async function renderChart(data: ChartData) {
-    if (!chartEl) return;
-    await ensureChart();
-    if (!chart || !echarts) return;
-    const { labels, values } = data;
-    const option = {
-      title: { text: $t('nav.index') },
-      tooltip: { trigger: 'axis' },
-      grid: { left: 40, right: 20, top: 40, bottom: 40 },
-      xAxis: { type: 'category', data: labels, axisLabel: { interval: 0, rotate: 30 } },
-      yAxis: { type: 'value', name: $t('chart.documents') },
-      series: [
-        {
-          type: 'bar',
-          name: $t('chart.documents'),
-          data: values,
-          showBackground: true,
-          itemStyle: { color: '#4f46e5' },
-          emphasis: { focus: 'series' }
-        }
-      ]
-    };
-    chart.setOption(option);
-    chart.resize();
   }
 
   onMount(() => {
-    const url = `${base}/data/index-types.json`;
-    fetch(url)
-      .then((r) => r.json())
-      .then((json: ChartData) => {
-        renderChart({ labels: json.labels ?? [], values: json.values ?? [] });
-      })
-      .catch((err) => {
-        console.error('Failed to load index-types.json', err);
-      });
-    
-    // Handle window resize for chart responsiveness
-    const handleResize = () => {
-      if (chart) {
-        chart.resize();
-      }
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      chart?.dispose();
-      chart = null;
-    };
-  });
-
-  // Use effect to resize chart when it becomes available
-  $effect(() => {
-    if (chart && chartEl) {
-      // Small delay to ensure DOM is updated
-      setTimeout(() => {
-        chart.resize();
-      }, 100);
-    }
+    loadChartData();
   });
 </script>
 
-<div class="w-full max-w-none space-y-6 overflow-x-hidden">
+<div class="space-y-6">
   <div>
     <h2 class="text-3xl font-bold tracking-tight">{$t('nav.index')}</h2>
     <p class="text-muted-foreground">Top entity types by count</p>
   </div>
 
-  <!-- Vertical layout: chart on top, table below -->
-  <div class="space-y-6 w-full">
-    <!-- Chart Section -->
-    <div class="w-full">
-      <Card class="p-4 w-full">
-        <div bind:this={chartEl} class="w-full h-[400px]"></div>
-      </Card>
-    </div>
+  <Card class="p-4">
+    {#if isLoading}
+      <div class="grid h-96 place-items-center text-sm text-muted-foreground">
+        {$t('common.loading')}
+      </div>
+    {:else if fetchError}
+      <div class="grid h-96 place-items-center text-sm text-destructive">
+        {fetchError}
+      </div>
+    {:else if !chartData.length}
+      <div class="grid h-96 place-items-center text-sm text-muted-foreground">
+        {$t('chart.no_data')}
+      </div>
+    {:else}
+      <div class="w-full h-96">
+        <BarChart 
+          data={chartData}
+          barColor="var(--chart-1)"
+          hoverColor="var(--chart-2)"
+          maxLabelLength={10}
+          animationDuration={750}
+        />
+      </div>
+    {/if}
+  </Card>
 
-    <!-- Table Section -->
-    <div class="w-full">
-      <EntitiesTable />
-    </div>
-  </div>
+  <EntitiesTable />
 </div>

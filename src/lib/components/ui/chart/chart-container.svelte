@@ -78,3 +78,4 @@
 	<ChartStyle id={chartId} {config} />
 	{@render children?.()}
 </div>
+
