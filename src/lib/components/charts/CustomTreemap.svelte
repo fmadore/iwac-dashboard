@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import { scaleOrdinal } from 'd3-scale';
-	import { schemeSet2, schemeTableau10, schemePaired } from 'd3-scale-chromatic';
+	import { schemeSet2, schemeTableau10 } from 'd3-scale-chromatic';
 	import { select } from 'd3-selection';
 	import { zoom, zoomIdentity } from 'd3-zoom';
 	import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
@@ -101,6 +100,35 @@
 		interaction: { ...defaultConfig.interaction, ...config.interaction },
 		zoom: { ...defaultConfig.zoom, ...config.zoom }
 	}));
+
+	const COUNTRY_COLOR_MAP: Record<string, string> = {
+		'cote-divoire': 'var(--country-color-cote-divoire)',
+		'burkina-faso': 'var(--country-color-burkina-faso)',
+		'benin': 'var(--country-color-benin)',
+		'togo': 'var(--country-color-togo)',
+		'niger': 'var(--country-color-niger)',
+		'nigeria': 'var(--country-color-nigeria)'
+	};
+
+	const FALLBACK_COUNTRY_COLOR = 'var(--country-color-default)';
+
+	const slugifyCountry = (value: string | undefined | null): string => {
+		if (!value) return '';
+		const source = value.normalize ? value.normalize('NFKD') : value;
+		const normalized = source
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/\uFFFD/g, '')
+			.replace(/[’'`]/g, '')
+			.toLowerCase();
+		return normalized
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-+|-+$/g, '');
+	};
+
+	const getCountryCssVar = (name: string): string => {
+		const slug = slugifyCountry(name);
+		return COUNTRY_COLOR_MAP[slug] ?? FALLBACK_COUNTRY_COLOR;
+	};
 
 	// State
 	let containerElement: HTMLDivElement;
@@ -206,21 +234,56 @@
 		return value;
 	}
 
-	// Color scale using D3 categorical colors + design system
+	const activeCountryName = $derived(() => {
+		if (!currentRoot) return null;
+		let node: TreemapNode | null = currentRoot;
+		while (node) {
+			if (node.depth === 1) {
+				return node.data.name;
+			}
+			node = node.parent ?? null;
+		}
+		return null;
+	});
+
 	const colorScale = $derived(() => {
-		if (!hierarchyData()) return () => '#666';
+		if (!hierarchyData()) return () => FALLBACK_COUNTRY_COLOR;
 		
 		const rootNodes = hierarchyData()!.children || [];
-		const colorScheme = mergedConfig().colors.scheme;
+		const palette = mergedConfig().colors.scheme;
+		const fallbackColors = palette.length > 0 ? palette : [FALLBACK_COUNTRY_COLOR];
+		const fallbackForName = (name: string) => {
+			const slug = slugifyCountry(name);
+			if (!slug) return FALLBACK_COUNTRY_COLOR;
+			let hash = 7;
+			for (let i = 0; i < slug.length; i += 1) {
+				hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+			}
+			return fallbackColors[hash % fallbackColors.length];
+		};
 		
-		// Resolve CSS custom properties to actual color values only for var() colors
-		const resolvedColors = colorScheme.map(color => 
-			color.startsWith('var(') ? resolveCSSCustomProperty(color) : color
-		);
+		const assignedColors = new Map<string, string>();
+		for (const node of rootNodes) {
+			const colorVar = getCountryCssVar(node.data.name);
+			const colorValue = colorVar !== FALLBACK_COUNTRY_COLOR ? colorVar : fallbackForName(node.data.name);
+			assignedColors.set(node.data.name, colorValue);
+		}
 		
-		// Create a scale mapping root-level categories to colors
-		const categories = rootNodes.map(d => d.data.name);
-		return scaleOrdinal(resolvedColors).domain(categories);
+		return (name: string) => {
+			if (!name) return FALLBACK_COUNTRY_COLOR;
+			if (assignedColors.has(name)) {
+				return assignedColors.get(name)!;
+			}
+			const colorVar = getCountryCssVar(name);
+			if (colorVar !== FALLBACK_COUNTRY_COLOR) {
+				const resolved = colorVar;
+				assignedColors.set(name, resolved);
+				return resolved;
+			}
+			const fallback = fallbackForName(name);
+			assignedColors.set(name, fallback);
+			return fallback;
+		};
 	});
 
 	// Event handlers - PROPER DRILL-DOWN FUNCTIONALITY
@@ -331,48 +394,9 @@
 	}
 
 	function getNodeColor(node: TreemapNode): string {
-		// Find the root-level ancestor to determine color
-		let rootAncestor = node;
-		while (rootAncestor.parent && rootAncestor.parent !== hierarchyData()) {
-			rootAncestor = rootAncestor.parent;
-		}
-		
-		const baseColor = colorScale()(rootAncestor.data.name);
-		
-		// Adjust opacity for nested levels
-		const depthOpacity = node.depth > 1 ? 0.7 : 1;
-		
-		// Parse the color and adjust opacity
-		if (baseColor.startsWith('oklch(')) {
-			// Handle OKLCH colors by adjusting the alpha channel
-			const match = baseColor.match(/oklch\(([^)]+)\)/);
-			if (match) {
-				const values = match[1].split(' ');
-				if (values.length >= 3) {
-					return `oklch(${values[0]} ${values[1]} ${values[2]} / ${depthOpacity})`;
-				}
-			}
-		} else if (baseColor.startsWith('hsl(')) {
-			// Handle HSL colors
-			const match = baseColor.match(/hsl\(([^)]+)\)/);
-			if (match) {
-				const values = match[1].split(',').map(v => v.trim());
-				if (values.length >= 3) {
-					return `hsla(${values[0]}, ${values[1]}, ${values[2]}, ${depthOpacity})`;
-				}
-			}
-		} else if (baseColor.startsWith('rgb(')) {
-			// Handle RGB colors
-			const match = baseColor.match(/rgb\(([^)]+)\)/);
-			if (match) {
-				const values = match[1].split(',').map(v => v.trim());
-				if (values.length >= 3) {
-					return `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${depthOpacity})`;
-				}
-			}
-		}
-		
-		return baseColor;
+		const country = activeCountryName();
+		const colorKey = country ?? node.data.name ?? '';
+		return colorScale()(colorKey);
 	}
 
 	function shouldShowText(node: TreemapNode): boolean {
