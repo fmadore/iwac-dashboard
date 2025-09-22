@@ -118,6 +118,51 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Cursor styles for clickable elements */
+  button,
+  [role="button"],
+  [type="button"],
+  [type="submit"],
+  [type="reset"],
+  input[type="checkbox"],
+  input[type="radio"],
+  select,
+  a,
+  label[for],
+  summary,
+  [tabindex]:not([tabindex="-1"]),
+  [onclick],
+  [data-clickable="true"] {
+    cursor: pointer;
+  }
+  
+  /* Specific hover styles for interactive elements */
+  button:hover,
+  [role="button"]:hover,
+  [type="button"]:hover,
+  [type="submit"]:hover,
+  [type="reset"]:hover,
+  a:hover,
+  label[for]:hover,
+  summary:hover,
+  [tabindex]:not([tabindex="-1"]):hover,
+  [onclick]:hover,
+  [data-clickable="true"]:hover {
+    cursor: pointer;
+  }
+  
+  /* Disabled state cursor */
+  button:disabled,
+  [role="button"]:disabled,
+  [type="button"]:disabled,
+  [type="submit"]:disabled,
+  [type="reset"]:disabled,
+  input:disabled,
+  select:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }
 
 @keyframes accordion-down {
