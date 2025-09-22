@@ -143,6 +143,10 @@
   $effect(() => {
     if (svgElement && data.length > 0 && pieGenerator()) {
       updateChart();
+    } else if (svgElement && data.length === 0) {
+      // Clear chart when no data
+      const svg = select(svgElement);
+      svg.selectAll('*').remove();
     }
   });
 
@@ -152,7 +156,7 @@
     const svg = select(svgElement);
     const pieData = pieGenerator()(data);
     
-    // Clear previous content
+    // Clear previous content immediately to avoid deformation
     svg.selectAll('*').remove();
 
     // Create main group centered
@@ -167,24 +171,21 @@
       .append('g')
       .attr('class', 'slice');
 
-    // Add paths for slices
+    // Add paths for slices with immediate final state to avoid deformation
     const paths = slices
       .append('path')
       .attr('fill', (d: any, i: number) => d.data.color || colorScale(i.toString()))
       .style('stroke', 'var(--background)')
       .style('stroke-width', '2px')
       .style('cursor', 'pointer')
-      .attr('d', (d: any) => {
-        // Start from collapsed state for animation
-        const startArc = { startAngle: 0, endAngle: 0, innerRadius: radii().inner, outerRadius: radii().outer };
-        return arcGenerator()(startArc);
-      });
+      .style('opacity', 0)
+      .attr('d', (d: any) => arcGenerator()(d)); // Start with final shape
 
-    // Animate slices
+    // Simple fade-in animation instead of shape morphing
     paths
       .transition()
-      .duration(animationDuration)
-      .attr('d', (d: any) => arcGenerator()(d));
+      .duration(animationDuration * 0.5) // Shorter duration
+      .style('opacity', 1);
 
     // Add hover effects
     paths
@@ -241,8 +242,8 @@
         return centroid ? `translate(${centroid})` : '';
       })
       .transition()
-      .delay(animationDuration * 0.7)
-      .duration(animationDuration * 0.3)
+      .delay(animationDuration * 0.3) // Shorter delay
+      .duration(animationDuration * 0.2) // Shorter duration
       .style('opacity', 1);
   }
 
@@ -261,8 +262,8 @@
         return `translate(${centroid})`;
       })
       .transition()
-      .delay(animationDuration * 0.7)
-      .duration(animationDuration * 0.3)
+      .delay(animationDuration * 0.3) // Shorter delay
+      .duration(animationDuration * 0.2) // Shorter duration
       .style('opacity', 1);
   }
 
