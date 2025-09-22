@@ -102,7 +102,7 @@
 	}));
 
 	const COUNTRY_COLOR_MAP: Record<string, string> = {
-		'cote-divoire': 'var(--country-color-cote-divoire)',
+		'cote-d-ivoire': 'var(--country-color-cote-divoire)',
 		'burkina-faso': 'var(--country-color-burkina-faso)',
 		'benin': 'var(--country-color-benin)',
 		'togo': 'var(--country-color-togo)',
@@ -184,6 +184,17 @@
 
 		const layoutRoot = treemapLayout()(root);
 		
+		layoutRoot.each(node => {
+			if (node.depth === 1) {
+				const countryName = node.data.name ?? '';
+				const countrySlug = slugifyCountry(countryName);
+				node.each(descendant => {
+					(descendant.data as TreemapData & { __countryName?: string; __countrySlug?: string }).__countryName = countryName;
+					(descendant.data as TreemapData & { __countrySlug?: string }).__countrySlug = countrySlug;
+				});
+			}
+		});
+		
 		// Initialize currentRoot and breadcrumbs if not set
 		if (!currentRoot && layoutRoot) {
 			currentRoot = layoutRoot;
@@ -234,56 +245,9 @@
 		return value;
 	}
 
-	const activeCountryName = $derived(() => {
-		if (!currentRoot) return null;
-		let node: TreemapNode | null = currentRoot;
-		while (node) {
-			if (node.depth === 1) {
-				return node.data.name;
-			}
-			node = node.parent ?? null;
-		}
-		return null;
-	});
-
-	const colorScale = $derived(() => {
-		if (!hierarchyData()) return () => FALLBACK_COUNTRY_COLOR;
-		
-		const rootNodes = hierarchyData()!.children || [];
-		const palette = mergedConfig().colors.scheme;
-		const fallbackColors = palette.length > 0 ? palette : [FALLBACK_COUNTRY_COLOR];
-		const fallbackForName = (name: string) => {
-			const slug = slugifyCountry(name);
-			if (!slug) return FALLBACK_COUNTRY_COLOR;
-			let hash = 7;
-			for (let i = 0; i < slug.length; i += 1) {
-				hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
-			}
-			return fallbackColors[hash % fallbackColors.length];
-		};
-		
-		const assignedColors = new Map<string, string>();
-		for (const node of rootNodes) {
-			const colorVar = getCountryCssVar(node.data.name);
-			const colorValue = colorVar !== FALLBACK_COUNTRY_COLOR ? colorVar : fallbackForName(node.data.name);
-			assignedColors.set(node.data.name, colorValue);
-		}
-		
-		return (name: string) => {
-			if (!name) return FALLBACK_COUNTRY_COLOR;
-			if (assignedColors.has(name)) {
-				return assignedColors.get(name)!;
-			}
-			const colorVar = getCountryCssVar(name);
-			if (colorVar !== FALLBACK_COUNTRY_COLOR) {
-				const resolved = colorVar;
-				assignedColors.set(name, resolved);
-				return resolved;
-			}
-			const fallback = fallbackForName(name);
-			assignedColors.set(name, fallback);
-			return fallback;
-		};
+	const fallbackPalette = $derived(() => {
+		const scheme = mergedConfig().colors.scheme ?? [];
+		return scheme.length > 0 ? scheme : [FALLBACK_COUNTRY_COLOR];
 	});
 
 	// Event handlers - PROPER DRILL-DOWN FUNCTIONALITY
@@ -393,10 +357,28 @@
 		};
 	}
 
+	function resolveCountryColor(countryName: string): string {
+		if (!countryName) {
+			return resolveCSSCustomProperty(FALLBACK_COUNTRY_COLOR);
+		}
+		const cssToken = getCountryCssVar(countryName);
+		if (cssToken !== FALLBACK_COUNTRY_COLOR) {
+			return resolveCSSCustomProperty(cssToken);
+		}
+		const palette = fallbackPalette();
+		const slug = slugifyCountry(countryName);
+		let hash = 7;
+		for (let i = 0; i < slug.length; i += 1) {
+			hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+		}
+		const fallbackToken = palette[slug ? hash % palette.length : 0];
+		return resolveCSSCustomProperty(fallbackToken);
+	}
+
 	function getNodeColor(node: TreemapNode): string {
-		const country = activeCountryName();
-		const colorKey = country ?? node.data.name ?? '';
-		return colorScale()(colorKey);
+		const data = node.data as TreemapData & { __countryName?: string };
+		const countryName = data.__countryName ?? data.name ?? '';
+		return resolveCountryColor(countryName);
 	}
 
 	function shouldShowText(node: TreemapNode): boolean {
