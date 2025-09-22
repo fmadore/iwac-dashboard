@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { scaleOrdinal } from 'd3-scale';
+	import { schemeSet2, schemeTableau10, schemePaired } from 'd3-scale-chromatic';
 	import { select } from 'd3-selection';
 	import { zoom, zoomIdentity } from 'd3-zoom';
 	import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
@@ -41,6 +42,11 @@
 		round: true,
 		colors: {
 			scheme: [
+				// Use D3's Set2 scheme - great for distinct categories
+				...schemeSet2,
+				// Add more colors from other schemes if needed
+				...schemeTableau10.slice(0, 3),
+				// Fallback to design system colors
 				'var(--chart-1)',
 				'var(--chart-2)', 
 				'var(--chart-3)',
@@ -104,22 +110,26 @@
 	let currentRoot = $state<TreemapNode | null>(null);
 	let breadcrumbs = $state<TreemapNode[]>([]);
 	let zoomBehavior: any = null;
+	
+	// Reactive dimensions - use actual size for responsiveness
+	let actualWidth = $derived(() => width);
+	let actualHeight = $derived(() => height);
 
 	// Custom tiling function for zoom (based on Observable example)
 	function tile(node: any, x0: number, y0: number, x1: number, y1: number) {
-		treemapBinary(node, 0, 0, width, height);
+		treemapBinary(node, 0, 0, actualWidth(), actualHeight());
 		for (const child of node.children || []) {
-			child.x0 = x0 + child.x0 / width * (x1 - x0);
-			child.x1 = x0 + child.x1 / width * (x1 - x0);
-			child.y0 = y0 + child.y0 / height * (y1 - y0);
-			child.y1 = y0 + child.y1 / height * (y1 - y0);
+			child.x0 = x0 + child.x0 / actualWidth() * (x1 - x0);
+			child.x1 = x0 + child.x1 / actualWidth() * (x1 - x0);
+			child.y0 = y0 + child.y0 / actualHeight() * (y1 - y0);
+			child.y1 = y0 + child.y1 / actualHeight() * (y1 - y0);
 		}
 	}
 
 	// Computed values
 	const treemapLayout = $derived(() => {
 		const layout = treemap<TreemapData>()
-			.size([width, height])
+			.size([actualWidth(), actualHeight()])
 			.tile(tile)
 			.round(mergedConfig().round)
 			.paddingInner(mergedConfig().padding.inner)
@@ -157,7 +167,7 @@
 		if (currentRoot.children && currentRoot.children.length > 0) {
 			// Apply treemap layout to current root for proper positioning
 			const localTreemap = treemap<TreemapData>()
-				.size([width, height])
+				.size([actualWidth(), actualHeight()])
 				.tile(tile)
 				.round(mergedConfig().round)
 				.paddingInner(mergedConfig().padding.inner)
@@ -191,15 +201,17 @@
 		return value;
 	}
 
-	// Color scale using design system
+	// Color scale using D3 categorical colors + design system
 	const colorScale = $derived(() => {
 		if (!hierarchyData()) return () => '#666';
 		
 		const rootNodes = hierarchyData()!.children || [];
 		const colorScheme = mergedConfig().colors.scheme;
 		
-		// Resolve CSS custom properties to actual color values
-		const resolvedColors = colorScheme.map(color => resolveCSSCustomProperty(color));
+		// Resolve CSS custom properties to actual color values only for var() colors
+		const resolvedColors = colorScheme.map(color => 
+			color.startsWith('var(') ? resolveCSSCustomProperty(color) : color
+		);
 		
 		// Create a scale mapping root-level categories to colors
 		const categories = rootNodes.map(d => d.data.name);
@@ -230,7 +242,7 @@
 		
 		// Update breadcrumbs
 		const path: TreemapNode[] = [];
-		let current = node;
+		let current: TreemapNode | null = node;
 		while (current && current !== hierarchyData()) {
 			path.unshift(current);
 			current = current.parent || null;
@@ -253,7 +265,7 @@
 		
 		// Update breadcrumbs
 		const path: TreemapNode[] = [];
-		let current = targetNode;
+		let current: TreemapNode | null = targetNode;
 		while (current && current !== hierarchyData()) {
 			path.unshift(current);
 			current = current.parent || null;
@@ -398,33 +410,41 @@
 		// Bind data and create rectangles for current level
 		const currentNodes = nodes();
 
-		const rects = container.selectAll<SVGRectElement, TreemapNode>('rect')
+		// Use proper D3 selection without type constraints for flexibility
+		const rects = container.selectAll('rect')
 			.data(currentNodes)
 			.enter()
 			.append('rect')
-			.attr('x', (d: TreemapNode) => d.x0 || 0)
-			.attr('y', (d: TreemapNode) => d.y0 || 0)
-			.attr('width', (d: TreemapNode) => (d.x1 || 0) - (d.x0 || 0))
-			.attr('height', (d: TreemapNode) => (d.y1 || 0) - (d.y0 || 0))
-			.attr('fill', (d: TreemapNode) => getNodeColor(d))
+			.attr('x', (d: any) => d.x0 || 0)
+			.attr('y', (d: any) => d.y0 || 0)
+			.attr('width', (d: any) => (d.x1 || 0) - (d.x0 || 0))
+			.attr('height', (d: any) => (d.y1 || 0) - (d.y0 || 0))
+			.attr('fill', (d: any) => getNodeColor(d))
 			.attr('stroke', resolveCSSCustomProperty('var(--border)'))
 			.attr('stroke-width', 1)
 			.attr('class', 'treemap-node')
-			.style('cursor', (d: TreemapNode) => {
+			.style('cursor', (d: any) => {
 				return (d.children && d.children.length > 0) ? 'pointer' : 'default';
 			})
-			.on('click', (event: MouseEvent, d: TreemapNode) => handleNodeClick(d, event))
-			.on('mouseenter', (event: MouseEvent, d: TreemapNode) => handleNodeMouseEnter(d, event))
+			.on('click', function(event: any, d: any) { 
+				handleNodeClick(d, event as MouseEvent); 
+			})
+			.on('mouseenter', function(event: any, d: any) { 
+				handleNodeMouseEnter(d, event as MouseEvent); 
+			})
 			.on('mouseleave', handleNodeMouseLeave)
-			.on('mousemove', handleNodeMouseMove);
+			.on('mousemove', function(event: any) {
+				handleNodeMouseMove(event as MouseEvent);
+			});
 
 		// Add text labels
-		const texts = container.selectAll<SVGGElement, TreemapNode>('.node-text')
-			.data(currentNodes.filter(shouldShowText))
+		const filteredNodes = currentNodes.filter((node: any) => shouldShowText(node));
+		const texts = container.selectAll('.node-text')
+			.data(filteredNodes)
 			.enter()
 			.append('g')
 			.attr('class', 'node-text')
-			.attr('transform', (d: TreemapNode) => `translate(${((d.x0 || 0) + (d.x1 || 0)) / 2}, ${((d.y0 || 0) + (d.y1 || 0)) / 2})`)
+			.attr('transform', (d: any) => `translate(${((d.x0 || 0) + (d.x1 || 0)) / 2}, ${((d.y0 || 0) + (d.y1 || 0)) / 2})`)
 			.style('pointer-events', 'none')
 			.style('text-anchor', 'middle')
 			.style('dominant-baseline', 'central');
@@ -432,28 +452,28 @@
 		// Add title text
 		texts.append('text')
 			.attr('dy', '-0.3em')
-			.style('font-size', (d: TreemapNode) => `${getTextSize(d).title}px`)
+			.style('font-size', (d: any) => `${getTextSize(d).title}px`)
 			.style('font-weight', '600')
 			.style('fill', resolveCSSCustomProperty('var(--card-foreground)'))
 			.style('text-shadow', '0 1px 2px rgba(0,0,0,0.1)')
-			.text((d: TreemapNode) => d.data.name);
+			.text((d: any) => d.data.name);
 
 		// Add value text
 		texts.append('text')
 			.attr('dy', '1.2em')
-			.style('font-size', (d: TreemapNode) => `${getTextSize(d).subtitle}px`)
+			.style('font-size', (d: any) => `${getTextSize(d).subtitle}px`)
 			.style('font-weight', '500')
 			.style('fill', resolveCSSCustomProperty('var(--muted-foreground)'))
-			.text((d: TreemapNode) => formatValue(d.value || 0));
+			.text((d: any) => formatValue(d.value || 0));
 
 		// Add percentage for current level
 		if (currentRoot) {
 			texts.append('text')
 				.attr('dy', '2.3em')
-				.style('font-size', (d: TreemapNode) => `${getTextSize(d).subtitle - 1}px`)
+				.style('font-size', (d: any) => `${getTextSize(d).subtitle - 1}px`)
 				.style('fill', resolveCSSCustomProperty('var(--muted-foreground)'))
 				.style('text-shadow', '0 1px 2px rgba(0,0,0,0.1)')
-				.text((d: TreemapNode) => {
+				.text((d: any) => {
 					const total = currentRoot?.value || 1;
 					const percentage = ((d.value || 0) / total * 100).toFixed(1);
 					return `${percentage}%`;
@@ -490,8 +510,8 @@
 		const svg = select(svgElement);
 		
 		// Update all rectangles based on current hover/selection state
-		svg.selectAll<SVGRectElement, TreemapNode>('rect')
-			.style('filter', (d: TreemapNode) => {
+		svg.selectAll('rect')
+			.style('filter', function(d: any) {
 				if (selectedNode?.data.name === d.data.name) {
 					return 'brightness(0.75) saturate(1.5)';
 				}
@@ -500,7 +520,7 @@
 				}
 				return 'none';
 			})
-			.style('transform', (d: TreemapNode) => {
+			.style('transform', function(d: any) {
 				if (hoveredNode?.data.name === d.data.name) {
 					return 'scale(1.01)';
 				}
@@ -518,7 +538,7 @@
 <div 
 	bind:this={containerElement}
 	class="relative bg-card border border-border rounded-lg overflow-hidden shadow-sm"
-	style="width: {width}px; height: {height}px;"
+	style="width: {actualWidth()}px; height: {actualHeight()}px;"
 >
 	<!-- Breadcrumb Navigation -->
 	{#if breadcrumbs.length > 1}
@@ -530,7 +550,7 @@
 				<button
 					class="text-primary hover:text-primary/80 font-medium {index === breadcrumbs.length - 1 ? 'text-foreground cursor-default' : 'cursor-pointer'}"
 					class:pointer-events-none={index === breadcrumbs.length - 1}
-					on:click={() => navigateToBreadcrumb(crumb)}
+					onclick={() => navigateToBreadcrumb(crumb)}
 				>
 					{crumb.data.name}
 				</button>
@@ -540,8 +560,8 @@
 
 	<svg 
 		bind:this={svgElement}
-		{width} 
-		{height}
+		width={actualWidth()} 
+		height={actualHeight()}
 		class="w-full h-full"
 	>
 		<!-- Content will be rendered by D3 -->

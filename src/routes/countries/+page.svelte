@@ -121,14 +121,14 @@
 		<h3 class="text-xl font-semibold mb-6">Country Distribution</h3>
 		
 		{#if isLoading}
-			<div class="h-96 w-full rounded-lg border bg-card flex items-center justify-center">
+			<div class="h-[600px] w-full rounded-lg border bg-card flex items-center justify-center">
 				<div class="text-center">
 					<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
 					<p class="text-muted-foreground">Loading treemap data...</p>
 				</div>
 			</div>
 		{:else if loadingError}
-			<div class="h-96 w-full rounded-lg border bg-card flex items-center justify-center">
+			<div class="h-[600px] w-full rounded-lg border bg-card flex items-center justify-center">
 				<div class="text-center">
 					<p class="text-destructive mb-2">⚠️ Failed to load treemap data</p>
 					<p class="text-sm text-muted-foreground">{loadingError}</p>
@@ -136,30 +136,32 @@
 				</div>
 			</div>
 		{:else if treemapData}
-			<CustomTreemap 
-				data={treemapData}
-				width={800}
-				height={400}
-				bind:selectedNode
-				onNodeClick={handleNodeClick}
-				onNodeHover={handleNodeHover}
-				config={{
-					padding: {
-						inner: 3,
-						outer: 6,
-						top: 25,
-						right: 3,
-						bottom: 3,
-						left: 3
-					},
-					animation: {
-						duration: 400,
-						ease: 'ease-in-out'
-					}
-				}}
-			/>
+			<div class="w-full">
+				<CustomTreemap 
+					data={treemapData}
+					width={1200}
+					height={600}
+					bind:selectedNode
+					onNodeClick={handleNodeClick}
+					onNodeHover={handleNodeHover}
+					config={{
+						padding: {
+							inner: 3,
+							outer: 6,
+							top: 25,
+							right: 3,
+							bottom: 3,
+							left: 3
+						},
+						animation: {
+							duration: 400,
+							ease: 'ease-in-out'
+						}
+					}}
+				/>
+			</div>
 		{:else}
-			<div class="h-96 w-full rounded-lg border bg-card flex items-center justify-center">
+			<div class="h-[600px] w-full rounded-lg border bg-card flex items-center justify-center">
 				<div class="text-center">
 					<p class="text-muted-foreground">No treemap data available</p>
 				</div>
