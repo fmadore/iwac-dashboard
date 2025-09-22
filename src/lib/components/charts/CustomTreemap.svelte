@@ -142,11 +142,16 @@
 		return layout;
 	});
 
+	const valueAccessor = (node: TreemapData): number => {
+		// Ignore pre-aggregated values on parent nodes to avoid double counting
+		return node.children?.length ? 0 : node.value ?? 0;
+	};
+
 	const hierarchyData = $derived(() => {
 		if (!data) return null;
 		
 		const root = hierarchy(data)
-			.sum(d => d.value || 0)
+			.sum(valueAccessor)
 			.sort((a, b) => (b.value || 0) - (a.value || 0));
 
 		const layoutRoot = treemapLayout()(root);
@@ -179,7 +184,7 @@
 			
 			// Create a copy for local layout
 			const localRoot = hierarchy(currentRoot.data)
-				.sum(d => d.value || 0)
+				.sum(valueAccessor)
 				.sort((a, b) => (b.value || 0) - (a.value || 0));
 			
 			localTreemap(localRoot);
