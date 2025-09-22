@@ -69,6 +69,7 @@
 		"d3-shape": "^3.2.0",
 		"d3-transition": "^3.0.1",
 		"echarts": "^5.5.1",
-		"layerchart": "^1.0.11"
+		"layerchart": "^1.0.11",
+		"mode-watcher": "^1.1.0"
 	}
 }
