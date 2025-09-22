@@ -2,6 +2,8 @@
 	import PieChart from '$lib/components/charts/PieChart.svelte';
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import * as Card from "$lib/components/ui/card/index.js";
+	import * as Select from "$lib/components/ui/select/index.js";
+	import { Button } from "$lib/components/ui/button/index.js";
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.js';
 	import FacetPie from '$lib/components/facets/FacetPie.svelte';
@@ -35,6 +37,14 @@
 	
 	const typeOptions = $derived(() => data.types?.types ?? []);
 	const countryOptions = $derived(() => data.countries?.countries ?? []);
+	
+	// Display text for the selects
+	const typeDisplayText = $derived(() => 
+		selectedType ? typeOptions().find(opt => opt === selectedType) || selectedType : "All Types"
+	);
+	const countryDisplayText = $derived(() => 
+		selectedCountry ? countryOptions().find(opt => opt === selectedCountry) || selectedCountry : "All Countries"
+	);
 	
 	// Main chart data that updates based on selected facets
 	const filteredChartData = $derived(() => {
@@ -89,31 +99,46 @@
 			<div class="flex gap-4 flex-wrap">
 				<div class="flex items-center gap-2">
 					<label for="typeSelect" class="text-sm font-medium">Type:</label>
-					<select id="typeSelect" bind:value={selectedType} class="border rounded px-3 py-1 min-w-[140px]">
-						<option value="">All Types</option>
-						{#each typeOptions() as opt}
-							<option value={opt}>{opt}</option>
-						{/each}
-					</select>
+					<Select.Root bind:value={selectedType} type="single">
+						<Select.Trigger class="w-[180px]" id="typeSelect">
+							{typeDisplayText()}
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Group>
+								<Select.Item value="">All Types</Select.Item>
+								{#each typeOptions() as opt}
+									<Select.Item value={opt}>{opt}</Select.Item>
+								{/each}
+							</Select.Group>
+						</Select.Content>
+					</Select.Root>
 				</div>
 				{#if countryOptions().length > 0}
 				<div class="flex items-center gap-2">
 					<label for="countrySelect" class="text-sm font-medium">Country:</label>
-					<select id="countrySelect" bind:value={selectedCountry} class="border rounded px-3 py-1 min-w-[140px]">
-						<option value="">All Countries</option>
-						{#each countryOptions() as opt}
-							<option value={opt}>{opt}</option>
-						{/each}
-					</select>
+					<Select.Root bind:value={selectedCountry} type="single">
+						<Select.Trigger class="w-[180px]" id="countrySelect">
+							{countryDisplayText()}
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Group>
+								<Select.Item value="">All Countries</Select.Item>
+								{#each countryOptions() as opt}
+									<Select.Item value={opt}>{opt}</Select.Item>
+								{/each}
+							</Select.Group>
+						</Select.Content>
+					</Select.Root>
 				</div>
 				{/if}
 				{#if selectedType || selectedCountry}
-				<button 
-					class="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80"
+				<Button 
+					variant="secondary"
+					size="sm"
 					onclick={() => { selectedType = ''; selectedCountry = ''; }}
 				>
 					Clear Filters
-				</button>
+				</Button>
 				{/if}
 			</div>
 		</Card.Content>
@@ -182,25 +207,25 @@
 
 			<!-- Language Stats Table -->
 			<Card.Root>
-				<Card.Header>
-					<Card.Title>Language Statistics</Card.Title>
-					<Card.Description>Detailed breakdown by language</Card.Description>
+				<Card.Header class="pb-3">
+					<Card.Title class="text-lg">Language Statistics</Card.Title>
+					<Card.Description class="text-sm">Detailed breakdown by language</Card.Description>
 				</Card.Header>
-				<Card.Content>
-					<div class="space-y-2">
+				<Card.Content class="pt-0">
+					<div class="space-y-1">
 						{#each filteredChartData() as item, index}
-							<div class="flex items-center justify-between p-3 border rounded-lg">
-								<div class="flex items-center gap-3">
+							<div class="flex items-center justify-between p-2 border rounded text-sm">
+								<div class="flex items-center gap-2">
 									<div 
-										class="w-4 h-4 rounded-full" 
+										class="w-3 h-3 rounded-full flex-shrink-0" 
 										style="background-color: {colorMap()[item.label]}"
 									></div>
-									<span class="font-medium">{item.label}</span>
+									<span class="font-medium truncate">{item.label}</span>
 								</div>
-								<div class="text-right">
-									<p class="font-semibold">{item.value}</p>
+								<div class="text-right flex-shrink-0 ml-2">
+									<p class="font-semibold text-sm">{item.value}</p>
 									{#if item.percentage}
-										<p class="text-sm text-muted-foreground">{item.percentage}%</p>
+										<p class="text-xs text-muted-foreground">{item.percentage}%</p>
 									{/if}
 								</div>
 							</div>
