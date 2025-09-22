@@ -1,3 +1,6 @@
+// Export treemap types
+export type * from './treemap.js';
+
 export interface OmekaItem {
 	id: number;
 	title: string;
