@@ -1,0 +1,55 @@
+{
+  "total_records": 14276,
+  "languages": {
+    "count": 10,
+    "values": [
+      "Arabic",
+      "Dendi",
+      "English",
+      "French",
+      "German",
+      "Haoussa",
+      "Italian",
+      "Slovène",
+      "Spanish",
+      "Unknown"
+    ]
+  },
+  "countries": {
+    "count": 8,
+    "values": [
+      "Benin",
+      "Burkina Faso",
+      "Bénin",
+      "Côte D'Ivoire",
+      "Niger",
+      "Nigeria",
+      "Togo",
+      "Unknown"
+    ]
+  },
+  "types": {
+    "count": 5,
+    "values": [
+      "articles",
+      "audiovisual",
+      "documents",
+      "publications",
+      "references"
+    ]
+  },
+  "temporal": {
+    "min_year": null,
+    "max_year": null,
+    "records_with_dates": 0,
+    "coverage_percentage": 0.0
+  },
+  "subsets_processed": [
+    "articles",
+    "audiovisual",
+    "documents",
+    "publications",
+    "references"
+  ],
+  "generated_at": "2025-09-22T12:12:07.533435"
+}

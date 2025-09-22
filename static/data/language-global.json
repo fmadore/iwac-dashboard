@@ -1,0 +1,57 @@
+{
+  "data": [
+    {
+      "label": "French",
+      "value": 13796,
+      "percentage": 96.6
+    },
+    {
+      "label": "English",
+      "value": 382,
+      "percentage": 2.7
+    },
+    {
+      "label": "Haoussa",
+      "value": 43,
+      "percentage": 0.3
+    },
+    {
+      "label": "Arabic",
+      "value": 30,
+      "percentage": 0.2
+    },
+    {
+      "label": "Unknown",
+      "value": 13,
+      "percentage": 0.1
+    },
+    {
+      "label": "German",
+      "value": 6,
+      "percentage": 0.0
+    },
+    {
+      "label": "Dendi",
+      "value": 2,
+      "percentage": 0.0
+    },
+    {
+      "label": "Italian",
+      "value": 2,
+      "percentage": 0.0
+    },
+    {
+      "label": "Slovène",
+      "value": 1,
+      "percentage": 0.0
+    },
+    {
+      "label": "Spanish",
+      "value": 1,
+      "percentage": 0.0
+    }
+  ],
+  "total": 14276,
+  "languages": 10,
+  "generated_at": "2025-09-22T12:12:07.514808"
+}

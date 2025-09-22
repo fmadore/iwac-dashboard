@@ -10,8 +10,7 @@ Generates JSON files for pie chart facets under static/data:
 1) language-global.json        -> global language distribution for pie chart
 2) language-countries.json     -> language distribution by country facets
 3) language-types.json         -> language distribution by type facets
-4) language-temporal.json      -> language distribution over time facets
-5) language-metadata.json      -> metadata about the language facets
+4) language-metadata.json      -> metadata about the language facets
 
 The script processes these subsets:
 - articles
@@ -24,7 +23,6 @@ And creates faceted data for:
 - Language distribution (for pie charts)
 - Country filtering
 - Type filtering (corresponding to subsets)
-- Temporal analysis
 """
 
 from __future__ import annotations
@@ -51,19 +49,20 @@ DATASET_ID = "fmadore/islam-west-africa-collection"
 SUBSETS = ["articles", "audiovisual", "documents", "publications", "references"]
 
 
-def _normalize_language(value: Any) -> str:
-    """Normalize language values to consistent format."""
+def _normalize_languages(value: Any) -> List[str]:
+    """Split and normalize language values to a list of consistent names.
+
+    Handles lists and strings with common delimiters like | ; , / and
+    maps common codes or localized names to English names. Duplicates
+    are removed while preserving order.
+    """
     if value is None or (isinstance(value, float) and pd.isna(value)):
-        return "Unknown"
-    
-    lang = str(value).strip()
-    if not lang:
-        return "Unknown"
-    
-    # Normalize common language names
+        return ["Unknown"]
+
+    # Base mapping for common codes and localized names
     lang_mapping = {
         "fr": "French",
-        "en": "English", 
+        "en": "English",
         "ar": "Arabic",
         "es": "Spanish",
         "de": "German",
@@ -75,10 +74,35 @@ def _normalize_language(value: Any) -> str:
         "espagnol": "Spanish",
         "allemand": "German",
         "portugais": "Portuguese",
-        "italien": "Italian"
+        "italien": "Italian",
     }
-    
-    return lang_mapping.get(lang.lower(), lang.title())
+
+    tokens: List[str] = []
+
+    if isinstance(value, (list, tuple, set)):
+        for v in value:
+            if v is None or (isinstance(v, float) and pd.isna(v)):
+                continue
+            tokens.append(str(v))
+    else:
+        s = str(value).strip()
+        if not s:
+            return ["Unknown"]
+        import re
+        # Split on common separators (| ; , /)
+        tokens = [t for t in re.split(r"[|;,/]", s) if t is not None]
+
+    normalized: List[str] = []
+    for t in tokens:
+        name = str(t).strip()
+        if not name:
+            continue
+        mapped = lang_mapping.get(name.lower(), name.title())
+        normalized.append(mapped)
+
+    # Deduplicate while preserving order
+    deduped = list(dict.fromkeys(normalized))
+    return deduped if deduped else ["Unknown"]
 
 
 def _normalize_country(value: Any) -> List[str]:
@@ -169,20 +193,21 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
     
     for _, row in df.iterrows():
         # Extract and normalize data
-        language = _normalize_language(row.get(language_col) if language_col else None)
+        languages = _normalize_languages(row.get(language_col) if language_col else None)
         countries = _normalize_country(row.get(country_col) if country_col else None)
         year = _extract_year(row.get(date_col) if date_col else None)
         title = str(row.get(title_col, "")).strip() if title_col else ""
-        
-        # Create a record for each country (to handle multi-country items)
+
+        # Create a record for each country × language combination
         for country in countries:
-            records.append({
-                "language": language,
-                "country": country,
-                "type": subset_name,
-                "year": year,
-                "title": title[:100] if title else "",  # Truncate long titles
-            })
+            for language in languages:
+                records.append({
+                    "language": language,
+                    "country": country,
+                    "type": subset_name,
+                    "year": year,
+                    "title": title[:100] if title else "",
+                })
     
     logger.info(f"Processed {len(records)} records from '{subset_name}'")
     return records
@@ -427,10 +452,6 @@ def main():
     type_data = generate_type_facets(all_records)
     save_json(type_data, output_dir / "language-types.json")
     
-    logger.info("Generating temporal facets...")
-    temporal_data = generate_temporal_facets(all_records)
-    save_json(temporal_data, output_dir / "language-temporal.json")
-    
     logger.info("Generating metadata...")
     metadata = generate_metadata(all_records)
     save_json(metadata, output_dir / "language-metadata.json")
@@ -440,7 +461,6 @@ def main():
     logger.info("  - language-global.json (global distribution)")
     logger.info("  - language-countries.json (country facets)")
     logger.info("  - language-types.json (type facets)")  
-    logger.info("  - language-temporal.json (temporal facets)")
     logger.info("  - language-metadata.json (metadata)")
 
 
