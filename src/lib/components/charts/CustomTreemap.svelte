@@ -133,8 +133,9 @@
 	};
 
 	// State
-	let containerElement: HTMLDivElement;
-	let svgElement: SVGSVGElement;
+	let containerElement = $state<HTMLDivElement>();
+	let svgElement = $state<SVGSVGElement>();
+	let tooltipElement = $state<HTMLDivElement>();
 	let hoveredNode = $state<TreemapNode | null>(null);
 	let tooltipData = $state<{ node: TreemapNode; x: number; y: number } | null>(null);
 	let currentRoot = $state<TreemapNode | null>(null);
@@ -183,8 +184,9 @@
 		if (!data) return null;
 		
 		// Create a deep copy with metadata to avoid mutating state in $derived
-		const enrichData = (node: TreemapData, countryName?: string, countrySlug?: string): TreemapData & { __countryName?: string; __countrySlug?: string } => {
-			const isCountryLevel = !node.children && node.name && !countryName;
+		const enrichData = (node: TreemapData, depth: number = 0, countryName?: string, countrySlug?: string): TreemapData & { __countryName?: string; __countrySlug?: string } => {
+			// Country level is at depth 1 (children of root "Countries" node)
+			const isCountryLevel = depth === 1;
 			const newCountryName = isCountryLevel ? node.name : countryName;
 			const newCountrySlug = isCountryLevel ? slugifyCountry(node.name ?? '') : countrySlug;
 			
@@ -192,7 +194,7 @@
 				...node,
 				__countryName: newCountryName,
 				__countrySlug: newCountrySlug,
-				children: node.children?.map(child => enrichData(child, newCountryName, newCountrySlug))
+				children: node.children?.map(child => enrichData(child, depth + 1, newCountryName, newCountrySlug))
 			};
 		};
 		
@@ -231,7 +233,7 @@
 				.paddingBottom(mergedConfig().padding.bottom)
 				.paddingLeft(mergedConfig().padding.left);
 			
-			// Create a copy for local layout
+			// Create a copy for local layout - currentRoot.data already has __countryName metadata
 			const localRoot = hierarchy(currentRoot.data)
 				.sum(valueAccessor)
 				.sort((a, b) => (b.value || 0) - (a.value || 0));
@@ -338,12 +340,16 @@
 		hoveredNode = node;
 		onNodeHover?.(node);
 		
-		if (mergedConfig().interaction.tooltip) {
+		if (mergedConfig().interaction.tooltip && containerElement) {
 			const rect = containerElement.getBoundingClientRect();
+			const mouseX = event.clientX - rect.left;
+			const mouseY = event.clientY - rect.top;
+			const { x, y } = calculateTooltipPosition(mouseX, mouseY);
+			
 			tooltipData = {
 				node,
-				x: event.clientX - rect.left,
-				y: event.clientY - rect.top
+				x,
+				y
 			};
 		}
 	}
@@ -357,13 +363,17 @@
 	}
 
 	function handleNodeMouseMove(event: MouseEvent) {
-		if (!mergedConfig().interaction.tooltip || !tooltipData) return;
+		if (!mergedConfig().interaction.tooltip || !tooltipData || !containerElement) return;
 		
 		const rect = containerElement.getBoundingClientRect();
+		const mouseX = event.clientX - rect.left;
+		const mouseY = event.clientY - rect.top;
+		const { x, y } = calculateTooltipPosition(mouseX, mouseY);
+		
 		tooltipData = {
 			...tooltipData,
-			x: event.clientX - rect.left,
-			y: event.clientY - rect.top
+			x,
+			y
 		};
 	}
 
@@ -413,6 +423,44 @@
 		if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
 		if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
 		return value.toString();
+	}
+
+	// Calculate tooltip position to keep it within bounds
+	function calculateTooltipPosition(mouseX: number, mouseY: number): { x: number; y: number } {
+		if (!tooltipElement || !containerElement) {
+			return { x: mouseX + 10, y: mouseY - 10 };
+		}
+
+		const tooltipRect = tooltipElement.getBoundingClientRect();
+		const containerRect = containerElement.getBoundingClientRect();
+		
+		const tooltipWidth = tooltipRect.width || 200; // fallback width
+		const tooltipHeight = tooltipRect.height || 100; // fallback height
+		
+		let x = mouseX + 10; // default offset to right
+		let y = mouseY - 10; // default offset up
+		
+		// Check right boundary - if tooltip would overflow, position it to the left of cursor
+		if (x + tooltipWidth > actualWidth) {
+			x = mouseX - tooltipWidth - 10;
+		}
+		
+		// Check left boundary
+		if (x < 0) {
+			x = 10;
+		}
+		
+		// Check top boundary - if tooltip would overflow top, position it below cursor
+		if (y - tooltipHeight < 0) {
+			y = mouseY + 20; // position below cursor
+		}
+		
+		// Check bottom boundary
+		if (y + tooltipHeight > actualHeight) {
+			y = actualHeight - tooltipHeight - 10;
+		}
+		
+		return { x, y };
 	}
 
 	// Separate render function for cleaner drill-down
@@ -615,8 +663,9 @@
 	<!-- Tooltip -->
 	{#if tooltipData && mergedConfig().interaction.tooltip}
 		<div 
-			class="absolute z-50 bg-popover border border-border rounded-md px-3 py-2 shadow-lg text-sm pointer-events-none transition-all duration-200"
-			style="left: {tooltipData.x + 10}px; top: {tooltipData.y - 10}px; transform: translateY(-100%);"
+			bind:this={tooltipElement}
+			class="absolute z-50 bg-popover border border-border rounded-md px-3 py-2 shadow-lg text-sm pointer-events-none transition-all duration-200 max-w-xs"
+			style="left: {tooltipData.x}px; top: {tooltipData.y}px;"
 		>
 			<div class="font-medium text-popover-foreground">{tooltipData.node.data.name}</div>
 			<div class="text-muted-foreground">{formatValue(tooltipData.node.value || 0)} items</div>
