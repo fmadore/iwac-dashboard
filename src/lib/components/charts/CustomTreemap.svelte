@@ -597,7 +597,7 @@
 					class:pointer-events-none={index === breadcrumbs.length - 1}
 					onclick={() => navigateToBreadcrumb(crumb)}
 				>
-					{crumb.data.name}
+					{index === 0 ? 'Islam West Africa Collection' : crumb.data.name}
 				</button>
 			{/each}
 		</div>
