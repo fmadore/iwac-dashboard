@@ -136,11 +136,10 @@
 				</div>
 			</div>
 		{:else if treemapData}
-			<div class="w-full">
+			<div class="w-full h-[600px]">
 				<CustomTreemap 
 					data={treemapData}
-					width={1200}
-					height={600}
+					responsive={true}
 					bind:selectedNode
 					onNodeClick={handleNodeClick}
 					onNodeHover={handleNodeHover}

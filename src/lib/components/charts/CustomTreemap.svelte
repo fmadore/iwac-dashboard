@@ -11,6 +11,7 @@
 		data: TreemapData;
 		width?: number;
 		height?: number;
+		responsive?: boolean;
 		config?: Partial<TreemapConfig>;
 		onNodeClick?: (node: TreemapNode) => void;
 		onNodeHover?: (node: TreemapNode | null) => void;
@@ -21,6 +22,7 @@
 		data,
 		width = 800,
 		height = 600,
+		responsive = false,
 		config = {},
 		onNodeClick,
 		onNodeHover,
@@ -138,26 +140,28 @@
 	let currentRoot = $state<TreemapNode | null>(null);
 	let breadcrumbs = $state<TreemapNode[]>([]);
 	let zoomBehavior: any = null;
+	let containerWidth = $state<number>(width);
+	let containerHeight = $state<number>(height);
 	
-	// Reactive dimensions - use actual size for responsiveness
-	let actualWidth = $derived(() => width);
-	let actualHeight = $derived(() => height);
+	// Reactive dimensions - use container size if responsive, otherwise use props
+	let actualWidth = $derived(responsive ? containerWidth : width);
+	let actualHeight = $derived(responsive ? containerHeight : height);
 
 	// Custom tiling function for zoom (based on Observable example)
 	function tile(node: any, x0: number, y0: number, x1: number, y1: number) {
-		treemapBinary(node, 0, 0, actualWidth(), actualHeight());
+		treemapBinary(node, 0, 0, actualWidth, actualHeight);
 		for (const child of node.children || []) {
-			child.x0 = x0 + child.x0 / actualWidth() * (x1 - x0);
-			child.x1 = x0 + child.x1 / actualWidth() * (x1 - x0);
-			child.y0 = y0 + child.y0 / actualHeight() * (y1 - y0);
-			child.y1 = y0 + child.y1 / actualHeight() * (y1 - y0);
+			child.x0 = x0 + child.x0 / actualWidth * (x1 - x0);
+			child.x1 = x0 + child.x1 / actualWidth * (x1 - x0);
+			child.y0 = y0 + child.y0 / actualHeight * (y1 - y0);
+			child.y1 = y0 + child.y1 / actualHeight * (y1 - y0);
 		}
 	}
 
 	// Computed values
 	const treemapLayout = $derived(() => {
 		const layout = treemap<TreemapData>()
-			.size([actualWidth(), actualHeight()])
+			.size([actualWidth, actualHeight])
 			.tile(tile)
 			.round(mergedConfig().round)
 			.paddingInner(mergedConfig().padding.inner)
@@ -175,33 +179,39 @@
 		return node.children?.length ? 0 : node.value ?? 0;
 	};
 
-	const hierarchyData = $derived(() => {
+	const hierarchyData = $derived.by(() => {
 		if (!data) return null;
 		
-		const root = hierarchy(data)
+		// Create a deep copy with metadata to avoid mutating state in $derived
+		const enrichData = (node: TreemapData, countryName?: string, countrySlug?: string): TreemapData & { __countryName?: string; __countrySlug?: string } => {
+			const isCountryLevel = !node.children && node.name && !countryName;
+			const newCountryName = isCountryLevel ? node.name : countryName;
+			const newCountrySlug = isCountryLevel ? slugifyCountry(node.name ?? '') : countrySlug;
+			
+			return {
+				...node,
+				__countryName: newCountryName,
+				__countrySlug: newCountrySlug,
+				children: node.children?.map(child => enrichData(child, newCountryName, newCountrySlug))
+			};
+		};
+		
+		const enrichedData = enrichData(data);
+		
+		const root = hierarchy(enrichedData)
 			.sum(valueAccessor)
 			.sort((a, b) => (b.value || 0) - (a.value || 0));
 
-		const layoutRoot = treemapLayout()(root);
-		
-		layoutRoot.each(node => {
-			if (node.depth === 1) {
-				const countryName = node.data.name ?? '';
-				const countrySlug = slugifyCountry(countryName);
-				node.each(descendant => {
-					(descendant.data as TreemapData & { __countryName?: string; __countrySlug?: string }).__countryName = countryName;
-					(descendant.data as TreemapData & { __countrySlug?: string }).__countrySlug = countrySlug;
-				});
-			}
-		});
-		
-		// Initialize currentRoot and breadcrumbs if not set
-		if (!currentRoot && layoutRoot) {
-			currentRoot = layoutRoot;
-			breadcrumbs = [layoutRoot];
+		return treemapLayout()(root);
+	});
+
+	// Initialize currentRoot and breadcrumbs when hierarchyData is ready
+	$effect(() => {
+		const rootData = hierarchyData;
+		if (!currentRoot && rootData) {
+			currentRoot = rootData;
+			breadcrumbs = [rootData];
 		}
-		
-		return layoutRoot;
 	});
 
 	const nodes = $derived(() => {
@@ -211,7 +221,7 @@
 		if (currentRoot.children && currentRoot.children.length > 0) {
 			// Apply treemap layout to current root for proper positioning
 			const localTreemap = treemap<TreemapData>()
-				.size([actualWidth(), actualHeight()])
+				.size([actualWidth, actualHeight])
 				.tile(tile)
 				.round(mergedConfig().round)
 				.paddingInner(mergedConfig().padding.inner)
@@ -267,7 +277,7 @@
 	}
 
 	function drillDown(node: TreemapNode) {
-		if (!hierarchyData()) return;
+		if (!hierarchyData) return;
 		
 		// Update current root to show this node's children
 		currentRoot = node;
@@ -275,13 +285,13 @@
 		// Update breadcrumbs
 		const path: TreemapNode[] = [];
 		let current: TreemapNode | null = node;
-		while (current && current !== hierarchyData()) {
+		while (current && current !== hierarchyData) {
 			path.unshift(current);
 			current = current.parent || null;
 		}
 		// Add the top-level root if we're not already there
-		if (hierarchyData() && !path.includes(hierarchyData()!)) {
-			path.unshift(hierarchyData()!);
+		if (hierarchyData && !path.includes(hierarchyData)) {
+			path.unshift(hierarchyData);
 		}
 		breadcrumbs = path;
 		
@@ -290,7 +300,7 @@
 	}
 
 	function navigateToBreadcrumb(targetNode: TreemapNode) {
-		if (!hierarchyData()) return;
+		if (!hierarchyData) return;
 		
 		// Set the target as the new root
 		currentRoot = targetNode;
@@ -298,12 +308,12 @@
 		// Update breadcrumbs
 		const path: TreemapNode[] = [];
 		let current: TreemapNode | null = targetNode;
-		while (current && current !== hierarchyData()) {
+		while (current && current !== hierarchyData) {
 			path.unshift(current);
 			current = current.parent || null;
 		}
-		if (hierarchyData() && !path.includes(hierarchyData()!)) {
-			path.unshift(hierarchyData()!);
+		if (hierarchyData && !path.includes(hierarchyData)) {
+			path.unshift(hierarchyData);
 		}
 		breadcrumbs = path;
 		
@@ -312,11 +322,11 @@
 	}
 
 	function zoomToRoot() {
-		if (!hierarchyData()) return;
+		if (!hierarchyData) return;
 		
 		// Reset to the original root
-		currentRoot = hierarchyData()!;
-		breadcrumbs = [hierarchyData()!];
+		currentRoot = hierarchyData;
+		breadcrumbs = [hierarchyData];
 		
 		// Re-render
 		renderTreemap();
@@ -510,7 +520,7 @@
 
 	// Reactive updates - simplified to just call renderTreemap
 	$effect(() => {
-		if (!svgElement || !hierarchyData()) return;
+		if (!svgElement || !hierarchyData) return;
 		renderTreemap();
 	});
 
@@ -539,6 +549,28 @@
 			});
 	});
 
+	// ResizeObserver for responsive behavior
+	$effect(() => {
+		if (!responsive || !containerElement) return;
+
+		const resizeObserver = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const { width: newWidth, height: newHeight } = entry.contentRect;
+				// Only update if dimensions actually changed to avoid unnecessary re-renders
+				if (newWidth !== containerWidth || newHeight !== containerHeight) {
+					containerWidth = newWidth;
+					containerHeight = newHeight;
+				}
+			}
+		});
+
+		resizeObserver.observe(containerElement);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
+	});
+
 	// Cleanup
 	onDestroy(() => {
 		tooltipData = null;
@@ -549,7 +581,9 @@
 <div 
 	bind:this={containerElement}
 	class="relative bg-card border border-border rounded-lg overflow-hidden shadow-sm"
-	style="width: {actualWidth()}px; height: {actualHeight()}px;"
+	class:w-full={responsive}
+	class:h-full={responsive}
+	style={responsive ? '' : `width: ${actualWidth}px; height: ${actualHeight}px;`}
 >
 	<!-- Breadcrumb Navigation -->
 	{#if breadcrumbs.length > 1}
@@ -571,8 +605,8 @@
 
 	<svg 
 		bind:this={svgElement}
-		width={actualWidth()} 
-		height={actualHeight()}
+		width={actualWidth} 
+		height={actualHeight}
 		class="w-full h-full"
 	>
 		<!-- Content will be rendered by D3 -->
@@ -586,9 +620,9 @@
 		>
 			<div class="font-medium text-popover-foreground">{tooltipData.node.data.name}</div>
 			<div class="text-muted-foreground">{formatValue(tooltipData.node.value || 0)} items</div>
-			{#if tooltipData.node.depth === 1 && hierarchyData()}
+			{#if tooltipData.node.depth === 1 && hierarchyData}
 				<div class="text-xs text-muted-foreground">
-					{(((tooltipData.node.value || 0) / (hierarchyData()!.value || 1)) * 100).toFixed(1)}% of total
+					{(((tooltipData.node.value || 0) / (hierarchyData.value || 1)) * 100).toFixed(1)}% of total
 				</div>
 			{/if}
 			{#if tooltipData.node.children && tooltipData.node.children.length > 0}
