@@ -23,7 +23,7 @@
 		data = [],
 		width = 800,
 		height = 400,
-		backgroundColor = '#ffffff',
+		backgroundColor = 'transparent',
 		fontFamily = 'Inter, sans-serif',
 		colorScheme = 'category10',
 		minRotation = -45,
@@ -174,7 +174,7 @@
 			.append('text')
 			.style('font-size', (d: Word) => `${d.size}px`)
 			.style('font-family', fontFamily)
-			.style('fill', (d: Word) => d.color || '#000')
+			.style('fill', (d: Word) => d.color)
 			.style('cursor', 'pointer')
 			.attr('text-anchor', 'middle')
 			.attr('transform', (d: Word) => `translate(${d.x || 0},${d.y || 0})rotate(${d.rotate || 0})`)

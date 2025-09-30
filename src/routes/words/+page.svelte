@@ -279,7 +279,6 @@
 						data={currentData}
 						width={800}
 						height={400}
-						backgroundColor="#ffffff"
 						colorScheme="category10"
 						fontFamily="Inter, sans-serif"
 						minFontSize={12}
