@@ -277,8 +277,7 @@
 				<div class="flex justify-center">
 					<WordCloud
 						data={currentData}
-						width={800}
-						height={400}
+						aspectRatio={2}
 						colorScheme="category10"
 						fontFamily="Inter, sans-serif"
 						minFontSize={12}

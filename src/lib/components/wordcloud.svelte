@@ -5,8 +5,7 @@
 
 	interface Props {
 		data?: [string, number][];
-		width?: number;
-		height?: number;
+		aspectRatio?: number; // width / height ratio (default 2:1)
 		backgroundColor?: string;
 		fontFamily?: string;
 		colorScheme?: 'category10' | 'set3' | 'dark2' | 'accent' | 'pastel1' | 'pastel2' | 'set1' | 'set2' | 'tableau10';
@@ -21,8 +20,7 @@
 
 	const {
 		data = [],
-		width = 800,
-		height = 400,
+		aspectRatio = 2,
 		backgroundColor = 'transparent',
 		fontFamily = 'Inter, sans-serif',
 		colorScheme = 'category10',
@@ -35,11 +33,15 @@
 		click = null
 	}: Props = $props();
 
+	let containerElement: HTMLDivElement;
 	let svgElement: SVGSVGElement;
 	let d3: any;
 	let colorScale: string[];
 	let isRendering = $state(false);
 	let words = $state<Word[]>([]);
+	let containerWidth = $state(800);
+	let containerHeight = $state(400);
+	let resizeObserver: ResizeObserver | null = null;
 
 	onMount(async () => {
 		if (browser) {
@@ -57,12 +59,41 @@
 				// Load d3-cloud library
 				await loadD3Cloud();
 				
+				// Set up ResizeObserver to detect container size changes
+				if (containerElement) {
+					resizeObserver = new ResizeObserver((entries) => {
+						for (const entry of entries) {
+							const { width, height } = entry.contentRect;
+							if (width > 0 && height > 0) {
+								containerWidth = width;
+								containerHeight = height;
+							}
+						}
+					});
+					resizeObserver.observe(containerElement);
+					
+					// Get initial size
+					const rect = containerElement.getBoundingClientRect();
+					if (rect.width > 0) {
+						containerWidth = rect.width;
+						containerHeight = rect.width / aspectRatio;
+					}
+				}
+				
 				// Initial render
 				renderWordCloud();
 			} catch (error) {
 				console.error('Failed to load d3 libraries:', error);
 			}
 		}
+		
+		// Cleanup on unmount
+		return () => {
+			if (resizeObserver) {
+				resizeObserver.disconnect();
+				resizeObserver = null;
+			}
+		};
 	});
 
 	async function loadD3Cloud() {
@@ -142,9 +173,9 @@
 			return;
 		}
 		
-		// Create cloud layout using the correct d3.layout.cloud API
+		// Create cloud layout using the correct d3.layout.cloud API with current container size
 		const layout = cloudLayout()
-			.size([width, height])
+			.size([containerWidth, containerHeight])
 			.words(wordData)
 			.padding(padding)
 			.rotate(() => Math.random() * (maxRotation - minRotation) + minRotation)
@@ -161,12 +192,12 @@
 
 	function drawWords(placedWords: Word[]) {
 		const svg = d3.select(svgElement)
-			.attr('width', width)
-			.attr('height', height)
+			.attr('viewBox', `0 0 ${containerWidth} ${containerHeight}`)
+			.attr('preserveAspectRatio', 'xMidYMid meet')
 			.style('background-color', backgroundColor);
 		
 		const g = svg.append('g')
-			.attr('transform', `translate(${width / 2},${height / 2})`);
+			.attr('transform', `translate(${containerWidth / 2},${containerHeight / 2})`);
 		
 		const text = g.selectAll('text')
 			.data(placedWords)
@@ -198,12 +229,12 @@
 			.style('opacity', 1);
 	}
 
-	// Re-render when data or settings change
+	// Re-render when data or settings change, or container size changes
 	$effect(() => {
 		// Read all reactive dependencies synchronously to ensure tracking
 		const currentData = data;
-		const currentWidth = width;
-		const currentHeight = height;
+		const currentWidth = containerWidth;
+		const currentHeight = containerHeight;
 		const currentColorScheme = colorScheme;
 		const currentMinFontSize = minFontSize;
 		const currentMaxFontSize = maxFontSize;
@@ -223,11 +254,11 @@
 	}
 </script>
 
-<div class="wordcloud-container" style="width: {width}px; height: {height}px;">
+<div class="wordcloud-container" bind:this={containerElement}>
 	<svg
 		bind:this={svgElement}
 		class="wordcloud-svg"
-		style="max-width: 100%; height: auto; background-color: {backgroundColor};"
+		style="background-color: {backgroundColor};"
 	></svg>
 	
 	{#if isRendering}
@@ -247,6 +278,9 @@
 <style>
 	.wordcloud-container {
 		position: relative;
+		width: 100%;
+		aspect-ratio: 2 / 1;
+		min-height: 300px;
 		border: 1px solid hsl(var(--border));
 		border-radius: 0.5rem;
 		overflow: hidden;
