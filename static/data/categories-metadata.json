@@ -8,11 +8,10 @@
     "year_count": 79
   },
   "countries": {
-    "count": 8,
+    "count": 7,
     "values": [
       "Benin",
       "Burkina Faso",
-      "Bénin",
       "Côte D'Ivoire",
       "Niger",
       "Nigeria",
@@ -22,7 +21,6 @@
     "with_individual_files": [
       "Benin",
       "Burkina Faso",
-      "Bénin",
       "Côte D'Ivoire",
       "Niger",
       "Nigeria",
@@ -30,13 +28,24 @@
     ]
   },
   "document_types": {
-    "count": 5,
+    "count": 16,
     "values": [
+      "Article d'encyclopédie",
+      "Article de blog",
+      "Article de revue",
       "Audiovisuel",
+      "Chapitre de livre",
+      "Communication scientifique",
+      "Compte rendu de livre",
       "Document",
       "Islamic Periodical",
+      "Livre",
+      "Mémoire de licence",
+      "Mémoire de maitrise",
       "Press Article",
-      "Reference"
+      "Rapport",
+      "Thèse de doctorat",
+      "Working paper"
     ]
   },
   "subsets": {
@@ -60,7 +69,6 @@
     "countries": [
       "categories-benin.json",
       "categories-burkina-faso.json",
-      "categories-bénin.json",
       "categories-côte-d'ivoire.json",
       "categories-niger.json",
       "categories-nigeria.json",
@@ -90,5 +98,5 @@
       "fr": "Référence"
     }
   },
-  "generated_at": "2025-09-30T14:12:31.192062"
+  "generated_at": "2025-09-30T14:57:32.217443"
 }

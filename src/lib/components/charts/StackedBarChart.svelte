@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	// @ts-ignore - echarts uses UMD exports
 	import * as echarts from 'echarts';
-	import { languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { languageStore, t } from '$lib/stores/translationStore.svelte.js';
 
 	interface SeriesData {
 		name: string;
@@ -130,6 +130,12 @@
 
 		const _ = languageStore.current; // Track language changes
 
+		// Translate series names
+		const translatedSeriesNames = series.map((s) => {
+			const translationKey = `type.${s.name}`;
+			return t(translationKey) !== translationKey ? t(translationKey) : s.name;
+		});
+
 		// Get current theme colors - resolve CSS variables properly
 		const textColor = getCSSVariable('--foreground');
 		const borderColor = getCSSVariable('--border');
@@ -158,7 +164,7 @@
 				}
 			},
 			legend: {
-				data: series.map((s) => s.name),
+				data: translatedSeriesNames,
 				top: title ? 40 : 10,
 				textStyle: {
 					color: textColor
@@ -201,8 +207,8 @@
 					}
 				}
 			},
-			series: series.map((s) => ({
-				name: s.name,
+			series: series.map((s, index) => ({
+				name: translatedSeriesNames[index],
 				type: 'bar',
 				stack: 'total',
 				data: s.data,

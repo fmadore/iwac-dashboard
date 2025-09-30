@@ -263,12 +263,14 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
             "newspapers": 0,
             "audiovisual_duration": 0,
             "references_count": 0,
-            "index_entries": 0
+            "index_entries": 0,
+            "reference_types": 0
         },
         "by_dataset": {},
         "by_country": {},
         "by_language": {},
         "by_type": {},
+        "by_reference_type": {},
         "recent_items": []
     }
     
@@ -277,6 +279,7 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     all_languages = set()
     all_types = set()
     all_newspapers = set()
+    all_reference_types = set()
     all_items = []
     
     # Traiter chaque dataset
@@ -318,6 +321,21 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
         if config in ["articles", "publications"]:
             newspapers = get_unique_values(df, "newspaper")
             all_newspapers.update(newspapers)
+        
+        # Collecter les types de références (pour references)
+        if config == "references":
+            reference_types = get_unique_values(df, "type")
+            all_reference_types.update(reference_types)
+            
+            # Statistiques par type de référence
+            for ref_type in reference_types:
+                if ref_type not in overview_stats["by_reference_type"]:
+                    overview_stats["by_reference_type"][ref_type] = {
+                        "total_records": 0
+                    }
+                
+                ref_type_df = df[df["type"] == ref_type]
+                overview_stats["by_reference_type"][ref_type]["total_records"] += len(ref_type_df)
         
         # Statistiques par pays (only for content datasets, not index/references)
         if config in ["articles", "publications", "documents", "audiovisual"]:
@@ -362,11 +380,25 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
                 "total_records": overview_stats["by_dataset"][config]["total_records"]
             }
     
+    # Calculate total document types:
+    # - For non-references subsets: count each subset as 1 type
+    # - For references: count each reference sub-type separately
+    total_document_types = 0
+    
+    # Count base document types (excluding references and index)
+    for config in ["articles", "publications", "documents", "audiovisual"]:
+        if config in overview_stats["by_dataset"]:
+            total_document_types += 1
+    
+    # Add all reference sub-types
+    total_document_types += len(all_reference_types)
+    
     # Finaliser les totaux
     overview_stats["summary"]["countries"] = len(all_countries)
     overview_stats["summary"]["languages"] = len(all_languages)
-    overview_stats["summary"]["types"] = len([t for t in configs if t in overview_stats["by_dataset"]])
+    overview_stats["summary"]["types"] = total_document_types
     overview_stats["summary"]["newspapers"] = len(all_newspapers)
+    overview_stats["summary"]["reference_types"] = len(all_reference_types)
     
     # Add audiovisual duration, references count, and index entries
     if "audiovisual" in overview_stats["by_dataset"]:
@@ -380,6 +412,7 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     overview_stats["summary"]["country_list"] = sorted(all_countries)
     overview_stats["summary"]["language_list"] = sorted(all_languages)
     overview_stats["summary"]["type_list"] = sorted([t for t in configs if t in overview_stats["by_dataset"]])
+    overview_stats["summary"]["reference_type_list"] = sorted(all_reference_types)
     
     # Trier et limiter les items récents
     all_items.sort(key=lambda x: x["created_date"], reverse=True)

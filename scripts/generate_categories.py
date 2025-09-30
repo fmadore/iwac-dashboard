@@ -138,8 +138,9 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
     
     country_col = find_column(["country", "Country", "countries", "Countries", "pays", "Pays"])
     date_col = find_column(["date", "Date", "created", "published", "pub_date", "year", "Year", "année"])
+    type_col = find_column(["type", "Type", "document_type", "DocumentType"])
     
-    # Get document type labels
+    # Get document type labels (defaults)
     type_labels = SUBSET_TO_TYPE.get(subset_name, {"en": subset_name.title(), "fr": subset_name.title()})
     
     records = []
@@ -159,12 +160,28 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
         if country_col:
             countries = _normalize_country(row.get(country_col))
         
+        # For references subset, use actual type value if available
+        if subset_name == "references" and type_col:
+            actual_type = row.get(type_col)
+            if actual_type and isinstance(actual_type, str) and actual_type.strip():
+                actual_type = actual_type.strip()
+                # Use the actual type value for both English and French
+                # (assuming the type values are language-neutral or already in the data)
+                type_en = actual_type
+                type_fr = actual_type
+            else:
+                type_en = type_labels["en"]
+                type_fr = type_labels["fr"]
+        else:
+            type_en = type_labels["en"]
+            type_fr = type_labels["fr"]
+        
         # Create a record for each country (for faceted data)
         for country in countries:
             records.append({
                 "subset": subset_name,
-                "type_en": type_labels["en"],
-                "type_fr": type_labels["fr"],
+                "type_en": type_en,
+                "type_fr": type_fr,
                 "year": year,
                 "country": country,
             })

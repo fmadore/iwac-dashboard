@@ -21,9 +21,11 @@ export interface OverviewSummary {
 	audiovisual_duration: number;
 	references_count: number;
 	index_entries: number;
+	reference_types: number;
 	country_list: string[];
 	language_list: string[];
 	type_list: string[];
+	reference_type_list: string[];
 }
 
 export interface DatasetStats {

@@ -124,7 +124,27 @@ export const translations = {
 		'words.min_frequency': 'Min Frequency',
 		'words.characters': 'characters',
 		'words.occurrences': 'occurrences',
-		'words.year_range': '{0}-{1}'
+		'words.year_range': '{0}-{1}',
+		// Document types
+		'type.Press Article': 'Press Article',
+		'type.Islamic Periodical': 'Islamic Periodical',
+		'type.Document': 'Document',
+		'type.Audiovisuel': 'Audiovisual',
+		// Reference types
+		'type.Article de revue': 'Journal Article',
+		'type.Livre': 'Book',
+		'type.Chapitre de livre': 'Book Chapter',
+		'type.Thèse de doctorat': 'Doctoral Thesis',
+		'type.Mémoire de maitrise': 'Master\'s Thesis',
+		'type.Rapport': 'Report',
+		'type.Communication scientifique': 'Conference Paper',
+		'type.Compte rendu de livre': 'Book Review',
+		'type.Article d\'encyclopédie': 'Encyclopedia Article',
+		'type.Article de blog': 'Blog Article',
+		'type.Mémoire de licence': 'Bachelor\'s Thesis',
+		'type.Working paper': 'Working Paper',
+		'overview.reference_types': 'Reference Types',
+		'overview.reference_types_desc': 'Different types of bibliographic references'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -249,7 +269,27 @@ export const translations = {
 		'words.min_frequency': 'Fréquence minimale',
 		'words.characters': 'caractères',
 		'words.occurrences': 'occurrences',
-		'words.year_range': '{0}-{1}'
+		'words.year_range': '{0}-{1}',
+		// Document types
+		'type.Press Article': 'Article de presse',
+		'type.Islamic Periodical': 'Périodique islamique',
+		'type.Document': 'Document',
+		'type.Audiovisuel': 'Audiovisuel',
+		// Reference types
+		'type.Article de revue': 'Article de revue',
+		'type.Livre': 'Livre',
+		'type.Chapitre de livre': 'Chapitre de livre',
+		'type.Thèse de doctorat': 'Thèse de doctorat',
+		'type.Mémoire de maitrise': 'Mémoire de maitrise',
+		'type.Rapport': 'Rapport',
+		'type.Communication scientifique': 'Communication scientifique',
+		'type.Compte rendu de livre': 'Compte rendu de livre',
+		'type.Article d\'encyclopédie': 'Article d\'encyclopédie',
+		'type.Article de blog': 'Article de blog',
+		'type.Mémoire de licence': 'Mémoire de licence',
+		'type.Working paper': 'Working paper',
+		'overview.reference_types': 'Types de références',
+		'overview.reference_types_desc': 'Différents types de références bibliographiques'
 	}
 } as const;
 

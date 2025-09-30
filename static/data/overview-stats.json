@@ -1,7 +1,7 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-09-30T14:51:13.457492",
+    "generated_at": "2025-09-30T15:03:11.006556",
     "script_version": "1.0"
   },
   "summary": {
@@ -11,11 +11,12 @@
     "total_duration_minutes": 9315,
     "countries": 6,
     "languages": 9,
-    "types": 6,
+    "types": 16,
     "newspapers": 74,
     "audiovisual_duration": 9315,
     "references_count": 864,
     "index_entries": 4572,
+    "reference_types": 12,
     "country_list": [
       "Benin",
       "Burkina Faso",
@@ -42,6 +43,20 @@
       "index",
       "publications",
       "references"
+    ],
+    "reference_type_list": [
+      "Article d'encyclopédie",
+      "Article de blog",
+      "Article de revue",
+      "Chapitre de livre",
+      "Communication scientifique",
+      "Compte rendu de livre",
+      "Livre",
+      "Mémoire de licence",
+      "Mémoire de maitrise",
+      "Rapport",
+      "Thèse de doctorat",
+      "Working paper"
     ]
   },
   "by_dataset": {
@@ -223,6 +238,44 @@
     },
     "index": {
       "total_records": 4572
+    }
+  },
+  "by_reference_type": {
+    "Article d'encyclopédie": {
+      "total_records": 15
+    },
+    "Article de blog": {
+      "total_records": 5
+    },
+    "Article de revue": {
+      "total_records": 298
+    },
+    "Chapitre de livre": {
+      "total_records": 246
+    },
+    "Communication scientifique": {
+      "total_records": 19
+    },
+    "Compte rendu de livre": {
+      "total_records": 18
+    },
+    "Livre": {
+      "total_records": 101
+    },
+    "Mémoire de licence": {
+      "total_records": 5
+    },
+    "Mémoire de maitrise": {
+      "total_records": 62
+    },
+    "Rapport": {
+      "total_records": 49
+    },
+    "Thèse de doctorat": {
+      "total_records": 42
+    },
+    "Working paper": {
+      "total_records": 4
     }
   },
   "recent_items": []
