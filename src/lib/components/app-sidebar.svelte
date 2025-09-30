@@ -14,13 +14,16 @@
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 
-	const navItems = [
+	const overviewItems = [
 		{ href: `${base}/`, icon: Home, label: 'nav.overview' },
 		{ href: `${base}/countries`, icon: Globe2, label: 'nav.countries' },
 		{ href: `${base}/languages`, icon: Languages, label: 'nav.languages' },
 		{ href: `${base}/timeline`, icon: Calendar, label: 'nav.timeline' },
 		{ href: `${base}/entities`, icon: FileType, label: 'nav.entities' },
-		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' },
+		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' }
+	];
+
+	const textualAnalysisItems = [
 		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' }
 	];
 </script>
@@ -43,10 +46,29 @@
 	</Sidebar.Header>
 	<Sidebar.Content>
 		<Sidebar.Group>
-			<Sidebar.GroupLabel>Navigation</Sidebar.GroupLabel>
+			<Sidebar.GroupLabel>{t('nav.overview')}</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
-					{#each navItems as item}
+					{#each overviewItems as item}
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
+								{#snippet child({ props })}
+									<a href={item.href} {...props}>
+										<item.icon class="w-4 h-4" />
+										<span>{t(item.label)}</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					{/each}
+				</Sidebar.Menu>
+			</Sidebar.GroupContent>
+		</Sidebar.Group>
+		<Sidebar.Group>
+			<Sidebar.GroupLabel>{t('nav.textual_analysis')}</Sidebar.GroupLabel>
+			<Sidebar.GroupContent>
+				<Sidebar.Menu>
+					{#each textualAnalysisItems as item}
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
