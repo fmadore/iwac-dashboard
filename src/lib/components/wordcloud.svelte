@@ -43,22 +43,32 @@
 	let containerHeight = $state(400);
 	let resizeObserver: ResizeObserver | null = null;
 
-	onMount(async () => {
-		if (browser) {
+	onMount(() => {
+		if (!browser) {
+			return;
+		}
+
+		let active = true;
+
+		const initialise = async () => {
 			try {
 				// Import d3-selection, d3-scale-chromatic, and d3-transition
-				const [d3Module, chromatic, transition] = await Promise.all([
+				const [d3Module, chromatic, _transition] = await Promise.all([
 					import('d3-selection'),
 					import('d3-scale-chromatic'),
 					import('d3-transition')
 				]);
-				
+
+				if (!active) return;
+
 				d3 = d3Module;
 				colorScale = getColorScale(chromatic);
-				
+
 				// Load d3-cloud library
 				await loadD3Cloud();
-				
+
+				if (!active) return;
+
 				// Set up ResizeObserver to detect container size changes
 				if (containerElement) {
 					resizeObserver = new ResizeObserver((entries) => {
@@ -71,7 +81,7 @@
 						}
 					});
 					resizeObserver.observe(containerElement);
-					
+
 					// Get initial size
 					const rect = containerElement.getBoundingClientRect();
 					if (rect.width > 0) {
@@ -79,16 +89,19 @@
 						containerHeight = rect.width / aspectRatio;
 					}
 				}
-				
+
 				// Initial render
 				renderWordCloud();
 			} catch (error) {
 				console.error('Failed to load d3 libraries:', error);
 			}
-		}
-		
+		};
+
+		initialise();
+
 		// Cleanup on unmount
 		return () => {
+			active = false;
 			if (resizeObserver) {
 				resizeObserver.disconnect();
 				resizeObserver = null;

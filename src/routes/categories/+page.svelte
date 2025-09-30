@@ -55,14 +55,14 @@
 	const selectedCountry = $derived(urlSync.filters.country);
 	
 	// Year range as derived value that reads from URL or defaults
-	const yearRange = $derived<[number, number]>(() => {
+	const yearRange = $derived<[number, number]>((() => {
 		const min = urlSync.filters.yearMin;
 		const max = urlSync.filters.yearMax;
 		if (min !== undefined && max !== undefined) {
 			return [min, max];
 		}
 		return [metadata?.temporal.min_year || 1912, metadata?.temporal.max_year || 2025];
-	});
+	})());
 
 	async function loadData() {
 		try {
@@ -97,7 +97,7 @@
 		}
 	}
 
-	async function loadCountryData(country: string) {
+	async function loadCountryData(country: string | undefined) {
 		if (!country) {
 			countryData = null;
 			return;
@@ -131,7 +131,7 @@
 		const data = activeData();
 		if (!data) return null;
 
-		const [minYear, maxYear] = yearRange();
+		const [minYear, maxYear] = yearRange;
 		const yearIndices: number[] = [];
 		const filteredYears: number[] = [];
 
@@ -253,10 +253,11 @@
 					{#if metadata}
 						<div class="space-y-2">
 							<div class="text-sm font-medium">
-								{t('filters.year_range')}: {yearRange()[0]} - {yearRange()[1]}
+								{t('filters.year_range')}: {yearRange[0]} - {yearRange[1]}
 							</div>
 							<Slider
-								value={yearRange()}
+								type="multiple"
+								value={yearRange}
 								onValueChange={handleYearRangeChange}
 								min={metadata.temporal.min_year}
 								max={metadata.temporal.max_year}

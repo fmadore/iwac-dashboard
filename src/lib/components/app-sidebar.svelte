@@ -24,7 +24,8 @@
 	];
 
 	const textualAnalysisItems = [
-		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' }
+		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' },
+		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' }
 	];
 </script>
 
