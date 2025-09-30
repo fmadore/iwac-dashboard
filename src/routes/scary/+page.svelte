@@ -389,6 +389,9 @@
 						position: 'right',
 						color: foregroundColor,
 						formatter: '{c}'
+					},
+					emphasis: {
+						disabled: true
 					}
 				}
 			]
@@ -485,6 +488,9 @@
 						position: 'right',
 						color: foregroundColor,
 						formatter: '{c}'
+					},
+					emphasis: {
+						disabled: true
 					}
 				}
 			]

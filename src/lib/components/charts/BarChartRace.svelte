@@ -385,6 +385,9 @@
 						color: foregroundColor,
 						formatter: '{c}'
 					},
+					emphasis: {
+						disabled: true
+					},
 					animationDuration: animationDuration,
 					animationEasing: 'cubicOut'
 				}
