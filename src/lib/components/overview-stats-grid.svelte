@@ -42,7 +42,7 @@
 	<!-- Content Statistics -->
 	<div>
 		<h2 class="mb-4 text-xl font-semibold">{t('overview.content_stats')}</h2>
-		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 			<StatsCard
 				title={t('overview.total_words')}
 				value={summary.total_words.toLocaleString()}
@@ -67,6 +67,11 @@
 				title={t('overview.references')}
 				value={(summary.references_count || 0).toLocaleString()}
 				description={t('overview.references_desc')}
+			/>
+			<StatsCard
+				title={t('overview.index_entries')}
+				value={(summary.index_entries || 0).toLocaleString()}
+				description={t('overview.index_entries_desc')}
 			/>
 		</div>
 	</div>

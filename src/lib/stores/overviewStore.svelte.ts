@@ -20,6 +20,7 @@ export interface OverviewSummary {
 	newspapers: number;
 	audiovisual_duration: number;
 	references_count: number;
+	index_entries: number;
 	country_list: string[];
 	language_list: string[];
 	type_list: string[];

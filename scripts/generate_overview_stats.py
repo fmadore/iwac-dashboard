@@ -243,7 +243,7 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     """
     logger = logging.getLogger(__name__)
     
-    configs = ["articles", "publications", "documents", "audiovisual", "references"]
+    configs = ["articles", "publications", "documents", "audiovisual", "references", "index"]
     
     # Structure de données pour les résultats
     overview_stats = {
@@ -262,7 +262,8 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
             "types": 0,
             "newspapers": 0,
             "audiovisual_duration": 0,
-            "references_count": 0
+            "references_count": 0,
+            "index_entries": 0
         },
         "by_dataset": {},
         "by_country": {},
@@ -367,11 +368,13 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     overview_stats["summary"]["types"] = len([t for t in configs if t in overview_stats["by_dataset"]])
     overview_stats["summary"]["newspapers"] = len(all_newspapers)
     
-    # Add audiovisual duration and references count
+    # Add audiovisual duration, references count, and index entries
     if "audiovisual" in overview_stats["by_dataset"]:
         overview_stats["summary"]["audiovisual_duration"] = overview_stats["by_dataset"]["audiovisual"].get("total_duration_minutes", 0)
     if "references" in overview_stats["by_dataset"]:
         overview_stats["summary"]["references_count"] = overview_stats["by_dataset"]["references"].get("total_records", 0)
+    if "index" in overview_stats["by_dataset"]:
+        overview_stats["summary"]["index_entries"] = overview_stats["by_dataset"]["index"].get("total_records", 0)
     
     # Ajouter les listes de valeurs uniques
     overview_stats["summary"]["country_list"] = sorted(all_countries)

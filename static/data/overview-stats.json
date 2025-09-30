@@ -1,20 +1,21 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-09-30T14:13:12.268038",
+    "generated_at": "2025-09-30T14:51:13.457492",
     "script_version": "1.0"
   },
   "summary": {
-    "total_items": 14119,
+    "total_items": 18691,
     "total_words": 26203064,
     "total_pages": 23738,
     "total_duration_minutes": 9315,
     "countries": 6,
     "languages": 9,
-    "types": 5,
+    "types": 6,
     "newspapers": 74,
     "audiovisual_duration": 9315,
     "references_count": 864,
+    "index_entries": 4572,
     "country_list": [
       "Benin",
       "Burkina Faso",
@@ -38,6 +39,7 @@
       "articles",
       "audiovisual",
       "documents",
+      "index",
       "publications",
       "references"
     ]
@@ -84,6 +86,14 @@
       "total_pages": 44077,
       "records_with_word_count": 136,
       "records_with_page_count": 184,
+      "records_with_ocr": 0
+    },
+    "index": {
+      "total_records": 4572,
+      "total_words": 0,
+      "total_pages": 0,
+      "records_with_word_count": 0,
+      "records_with_page_count": 0,
       "records_with_ocr": 0
     }
   },
@@ -210,6 +220,9 @@
     },
     "references": {
       "total_records": 864
+    },
+    "index": {
+      "total_records": 4572
     }
   },
   "recent_items": []
