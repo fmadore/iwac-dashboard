@@ -115,7 +115,18 @@ export function useUrlSync() {
 
 	return {
 		get filters() {
-			return filters;
+			// Force reactivity by reading updateTrigger
+			const _ = updateTrigger;
+			
+			return {
+				country: urlManager.get('country') as string | undefined,
+				type: urlManager.get('type') as string | undefined,
+				yearMin: urlManager.get('yearMin') as number | undefined,
+				yearMax: urlManager.get('yearMax') as number | undefined,
+				search: urlManager.get('search') as string | undefined,
+				view: urlManager.get('view') as string | undefined,
+				year: urlManager.get('year') as string | undefined,
+			};
 		},
 		setFilter,
 		setFilters,

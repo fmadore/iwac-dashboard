@@ -40,8 +40,8 @@
 
 	// Controls from URL
 	const viewMode = $derived((urlSync.filters.view as 'global' | 'country' | 'temporal') || 'global');
-	const selectedCountry = $derived(urlSync.filters.country || '');
-	const selectedYear = $derived(urlSync.filters.year ? String(urlSync.filters.year) : '');
+	const selectedCountry = $derived(urlSync.filters.country);
+	const selectedYear = $derived(urlSync.filters.year ? String(urlSync.filters.year) : undefined);
 
 	// Computed values using $derived
 	let currentData = $derived(
@@ -133,11 +133,19 @@
 	}
 
 	function handleCountryChange(value: string | undefined) {
-		urlSync.setFilter('country', value || '');
+		if (value && value !== 'select-country') {
+			urlSync.setFilter('country', value);
+		} else {
+			urlSync.clearFilter('country');
+		}
 	}
 
 	function handleYearChange(value: string | undefined) {
-		urlSync.setFilter('year', value || '');
+		if (value && value !== 'select-year') {
+			urlSync.setFilter('year', value);
+		} else {
+			urlSync.clearFilter('year');
+		}
 	}
 
 	onMount(loadWordCloudData);
@@ -194,11 +202,12 @@
 				</div>
 
 				{#if viewMode === 'country' && availableCountries.length > 0}
-					<Select.Root value={selectedCountry} onValueChange={handleCountryChange}>
+					<Select.Root type="single" value={selectedCountry ?? 'select-country'} onValueChange={(v) => handleCountryChange(v === 'select-country' ? undefined : v)}>
 						<Select.Trigger class="w-48">
 							{selectedCountry || 'Select country'}
 						</Select.Trigger>
 						<Select.Content>
+							<Select.Item value="select-country">Select country</Select.Item>
 							{#each availableCountries as country}
 								<Select.Item value={country}>{country}</Select.Item>
 							{/each}
@@ -207,11 +216,12 @@
 				{/if}
 
 				{#if viewMode === 'temporal' && availableYears.length > 0}
-					<Select.Root value={selectedYear} onValueChange={handleYearChange}>
+					<Select.Root type="single" value={selectedYear ?? 'select-year'} onValueChange={(v) => handleYearChange(v === 'select-year' ? undefined : v)}>
 						<Select.Trigger class="w-32">
 							{selectedYear || 'Select year'}
 						</Select.Trigger>
 						<Select.Content>
+							<Select.Item value="select-year">Select year</Select.Item>
 							{#each availableYears as year}
 								<Select.Item value={String(year)}>{year}</Select.Item>
 							{/each}
