@@ -51,6 +51,12 @@
   --chart-8: oklch(0.60 0.16 325);
   --chart-9: oklch(0.65 0.18 90);
   --chart-10: oklch(0.50 0.14 145);
+  --chart-11: oklch(0.68 0.16 35);
+  --chart-12: oklch(0.58 0.14 270);
+  --chart-13: oklch(0.62 0.12 180);
+  --chart-14: oklch(0.56 0.16 310);
+  --chart-15: oklch(0.72 0.14 65);
+  --chart-16: oklch(0.54 0.16 220);
   
   /* Country colors */
   --country-color-default: oklch(0.63 0.15 55);
@@ -117,6 +123,12 @@
   --chart-8: oklch(0.62 0.16 325);
   --chart-9: oklch(0.68 0.18 90);
   --chart-10: oklch(0.53 0.14 145);
+  --chart-11: oklch(0.70 0.16 35);
+  --chart-12: oklch(0.60 0.14 270);
+  --chart-13: oklch(0.64 0.12 180);
+  --chart-14: oklch(0.58 0.16 310);
+  --chart-15: oklch(0.74 0.14 65);
+  --chart-16: oklch(0.56 0.16 220);
   
   /* Country colors - adjusted for dark theme */
   --country-color-default: oklch(0.66 0.16 55);
@@ -171,6 +183,12 @@
   --color-chart-8: var(--chart-8);
   --color-chart-9: var(--chart-9);
   --color-chart-10: var(--chart-10);
+  --color-chart-11: var(--chart-11);
+  --color-chart-12: var(--chart-12);
+  --color-chart-13: var(--chart-13);
+  --color-chart-14: var(--chart-14);
+  --color-chart-15: var(--chart-15);
+  --color-chart-16: var(--chart-16);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
