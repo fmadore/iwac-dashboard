@@ -93,7 +93,9 @@ export const translations = {
 		'overview.audiovisual_duration': 'Audiovisual Duration',
 		'overview.audiovisual_duration_desc': 'Total minutes of audiovisual content',
 		'overview.references': 'References',
-		'overview.references_desc': 'Bibliographic references'
+		'overview.references_desc': 'Bibliographic references',
+		'fullscreen.enter': 'Enter fullscreen',
+		'fullscreen.exit': 'Exit fullscreen'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -187,7 +189,9 @@ export const translations = {
 		'overview.audiovisual_duration': 'Durée audiovisuelle',
 		'overview.audiovisual_duration_desc': 'Minutes totales de contenu audiovisuel',
 		'overview.references': 'Références',
-		'overview.references_desc': 'Références bibliographiques'
+		'overview.references_desc': 'Références bibliographiques',
+		'fullscreen.enter': 'Plein écran',
+		'fullscreen.exit': 'Quitter le plein écran'
 	}
 } as const;
 

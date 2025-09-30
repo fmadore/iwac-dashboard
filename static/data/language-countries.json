@@ -35,7 +35,7 @@
       "data": [
         {
           "label": "French",
-          "value": 2134,
+          "value": 2136,
           "percentage": 99.9
         },
         {
@@ -44,7 +44,7 @@
           "percentage": 0.1
         }
       ],
-      "total": 2136,
+      "total": 2138,
       "languages": 2
     },
     "Togo": {
@@ -151,17 +151,33 @@
       "total": 111,
       "languages": 5
     },
+    "Unknown": {
+      "data": [
+        {
+          "label": "English",
+          "value": 9,
+          "percentage": 69.2
+        },
+        {
+          "label": "French",
+          "value": 4,
+          "percentage": 30.8
+        }
+      ],
+      "total": 13,
+      "languages": 2
+    },
     "Bénin": {
       "data": [
         {
           "label": "French",
-          "value": 67,
-          "percentage": 68.4
+          "value": 65,
+          "percentage": 67.7
         },
         {
           "label": "English",
           "value": 30,
-          "percentage": 30.6
+          "percentage": 31.2
         },
         {
           "label": "German",
@@ -169,24 +185,8 @@
           "percentage": 1.0
         }
       ],
-      "total": 98,
+      "total": 96,
       "languages": 3
-    },
-    "Unknown": {
-      "data": [
-        {
-          "label": "English",
-          "value": 8,
-          "percentage": 66.7
-        },
-        {
-          "label": "French",
-          "value": 4,
-          "percentage": 33.3
-        }
-      ],
-      "total": 12,
-      "languages": 2
     }
   },
   "countries": [
@@ -199,5 +199,5 @@
     "Togo",
     "Unknown"
   ],
-  "generated_at": "2025-09-22T12:12:07.520346"
+  "generated_at": "2025-09-30T14:13:07.261965"
 }

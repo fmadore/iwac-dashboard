@@ -1,24 +1,23 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-09-30T11:22:04.651829",
+    "generated_at": "2025-09-30T14:13:12.268038",
     "script_version": "1.0"
   },
   "summary": {
-    "total_items": 14118,
-    "total_words": 23935772,
+    "total_items": 14119,
+    "total_words": 26203064,
     "total_pages": 23738,
     "total_duration_minutes": 9315,
-    "countries": 7,
+    "countries": 6,
     "languages": 9,
     "types": 5,
     "newspapers": 74,
     "audiovisual_duration": 9315,
-    "references_count": 863,
+    "references_count": 864,
     "country_list": [
       "Benin",
       "Burkina Faso",
-      "Bénin",
       "Côte d'Ivoire",
       "Niger",
       "Nigeria",
@@ -80,20 +79,21 @@
       "average_duration_minutes": 207
     },
     "references": {
-      "total_records": 863,
-      "total_words": 0,
+      "total_records": 864,
+      "total_words": 2267292,
       "total_pages": 44077,
-      "records_with_word_count": 0,
+      "records_with_word_count": 136,
       "records_with_page_count": 184,
       "records_with_ocr": 0
     }
   },
   "by_country": {
     "Benin": {
-      "total_records": 2136,
+      "total_records": 2138,
       "by_dataset": {
         "articles": 2003,
-        "publications": 133
+        "publications": 133,
+        "documents": 2
       }
     },
     "Burkina Faso": {
@@ -126,12 +126,6 @@
         "documents": 4
       }
     },
-    "Bénin": {
-      "total_records": 2,
-      "by_dataset": {
-        "documents": 2
-      }
-    },
     "Nigeria": {
       "total_records": 45,
       "by_dataset": {
@@ -141,11 +135,11 @@
   },
   "by_language": {
     "Anglais": {
-      "total_records": 307,
+      "total_records": 308,
       "by_dataset": {
         "articles": 7,
         "audiovisual": 1,
-        "references": 299
+        "references": 300
       }
     },
     "Dendi": {
@@ -215,7 +209,7 @@
       "total_records": 45
     },
     "references": {
-      "total_records": 863
+      "total_records": 864
     }
   },
   "recent_items": []

@@ -1,9 +1,9 @@
 {
-  "total_records": 14216,
-  "unique_months": 13,
+  "total_records": 14217,
+  "unique_months": 14,
   "month_range": {
     "min": "2024-03",
-    "max": "2025-08"
+    "max": "2025-09"
   },
   "countries": [
     "Benin",
@@ -29,7 +29,7 @@
     "audiovisual": 45,
     "documents": 26,
     "publications": 1501,
-    "references": 961
+    "references": 962
   },
   "subsets_processed": [
     "articles",
@@ -38,5 +38,5 @@
     "publications",
     "references"
   ],
-  "generated_at": "2025-09-30T10:37:44.440610"
+  "generated_at": "2025-09-30T14:13:58.337161"
 }
