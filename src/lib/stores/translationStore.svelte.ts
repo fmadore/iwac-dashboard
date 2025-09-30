@@ -1,5 +1,3 @@
-import { type Writable, writable, derived } from 'svelte/store';
-
 export type Language = 'en' | 'fr';
 
 export const translations = {
@@ -194,12 +192,10 @@ export const translations = {
 class LanguageStore {
 	current = $state<Language>('en');
 
-	get t() {
-		// Return a function that accesses the current language reactively
-		return (key: string, params: any[] = []) => {
-			const translation = translations[this.current]?.[key as keyof typeof translations[typeof this.current]] || key;
-			return params.reduce((str, param, i) => str.replace(`{${i}}`, param), translation);
-		};
+	t(key: string, params: any[] = []) {
+		// Access current language reactively
+		const translation = translations[this.current]?.[key as keyof typeof translations[typeof this.current]] || key;
+		return params.reduce((str, param, i) => str.replace(`{${i}}`, param), translation);
 	}
 
 	set(lang: Language) {
@@ -208,6 +204,11 @@ class LanguageStore {
 }
 
 export const languageStore = new LanguageStore();
-export const t = $derived(languageStore.t);
+
+// Export a function that returns the translation function
+export function t(key: string, params: any[] = []) {
+	return languageStore.t(key, params);
+}
+
 
 

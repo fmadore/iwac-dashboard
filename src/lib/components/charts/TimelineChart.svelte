@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	// @ts-ignore - echarts uses UMD exports
 	import * as echarts from 'echarts';
-	import { t, languageStore } from '$lib/stores/translationStore.js';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
 	let { months = [], monthlyAdditions = [], cumulativeTotal = [] } = $props<{
 		months: string[];
@@ -242,7 +242,7 @@
 		if (!browser || !chartContainer || months.length === 0) return;
 		
 		// Track all dependencies that should trigger re-render
-		const _ = $languageStore;
+		const _ = languageStore.current;
 		const _months = months;
 		const _additions = monthlyAdditions;
 		const _cumulative = cumulativeTotal;

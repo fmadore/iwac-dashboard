@@ -5,7 +5,7 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { t } from '$lib/stores/translationStore.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 	import StackedBarChart from '$lib/components/charts/StackedBarChart.svelte';
 
 	interface SeriesData {
@@ -158,8 +158,8 @@
 
 <div class="space-y-6">
 	<div>
-		<h2 class="text-3xl font-bold tracking-tight">{$t('nav.categories')}</h2>
-		<p class="text-muted-foreground">{$t('categories.description')}</p>
+		<h2 class="text-3xl font-bold tracking-tight">{t('nav.categories')}</h2>
+		<p class="text-muted-foreground">{t('categories.description')}</p>
 	</div>
 
 	{#if loading}
@@ -175,7 +175,7 @@
 		<Card.Root>
 			<Card.Content class="py-12">
 				<div class="text-center">
-					<p class="text-destructive">{$t('errors.failed_to_load')}: {error}</p>
+					<p class="text-destructive">{t('errors.failed_to_load')}: {error}</p>
 				</div>
 			</Card.Content>
 		</Card.Root>
@@ -183,22 +183,22 @@
 		<!-- Filters -->
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>{$t('filters.title')}</Card.Title>
-				<Card.Description>{$t('filters.description')}</Card.Description>
+				<Card.Title>{t('filters.title')}</Card.Title>
+				<Card.Description>{t('filters.description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<div class="space-y-6">
 					<!-- Country Filter -->
 					<div class="flex items-center gap-4 flex-wrap">
 						<div class="flex items-center gap-2">
-							<label for="countrySelect" class="text-sm font-medium">{$t('filters.country')}:</label>
+							<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
 							<Select.Root bind:value={selectedCountry} type="single">
 								<Select.Trigger class="w-[200px]" id="countrySelect">
 									{countryDisplayText()}
 								</Select.Trigger>
 								<Select.Content>
 									<Select.Group>
-										<Select.Item value="">{$t('filters.all_countries')}</Select.Item>
+										<Select.Item value="">{t('filters.all_countries')}</Select.Item>
 										{#each countryOptions() as country}
 											<Select.Item value={country}>{country}</Select.Item>
 										{/each}
@@ -212,7 +212,7 @@
 								size="sm"
 								onclick={() => { selectedCountry = ''; }}
 							>
-								{$t('filters.clear')}
+								{t('filters.clear')}
 							</Button>
 						{/if}
 					</div>
@@ -221,7 +221,7 @@
 					{#if metadata}
 						<div class="space-y-2">
 							<div class="text-sm font-medium">
-								{$t('filters.year_range')}: {yearRange[0]} - {yearRange[1]}
+								{t('filters.year_range')}: {yearRange[0]} - {yearRange[1]}
 							</div>
 							<Slider
 								bind:value={yearRange}
@@ -245,19 +245,19 @@
 		<div class="grid gap-4 md:grid-cols-3">
 			<Card.Root>
 				<Card.Header class="pb-2">
-					<Card.Description>{$t('categories.total_records')}</Card.Description>
+					<Card.Description>{t('categories.total_records')}</Card.Description>
 					<Card.Title class="text-3xl">{filteredData()!.total_records.toLocaleString()}</Card.Title>
 				</Card.Header>
 			</Card.Root>
 			<Card.Root>
 				<Card.Header class="pb-2">
-					<Card.Description>{$t('categories.year_range')}</Card.Description>
+					<Card.Description>{t('categories.year_range')}</Card.Description>
 					<Card.Title class="text-3xl">{filteredData()!.year_range.min} - {filteredData()!.year_range.max}</Card.Title>
 				</Card.Header>
 			</Card.Root>
 			<Card.Root>
 				<Card.Header class="pb-2">
-					<Card.Description>{$t('categories.document_types')}</Card.Description>
+					<Card.Description>{t('categories.document_types')}</Card.Description>
 					<Card.Title class="text-3xl">{filteredData()!.series.length}</Card.Title>
 				</Card.Header>
 			</Card.Root>
@@ -268,12 +268,12 @@
 			<Card.Header>
 				<Card.Title>
 					{#if selectedCountry}
-						{$t('categories.chart_title')} - {selectedCountry}
+						{t('categories.chart_title')} - {selectedCountry}
 					{:else}
-						{$t('categories.chart_title')}
+						{t('categories.chart_title')}
 					{/if}
 				</Card.Title>
-				<Card.Description>{$t('categories.chart_description')}</Card.Description>
+				<Card.Description>{t('categories.chart_description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<StackedBarChart

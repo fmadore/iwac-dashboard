@@ -4,7 +4,7 @@
   import { Card } from '$lib/components/ui/card/index.js';
   import EntitiesTable from '$lib/components/entities-table.svelte';
   import EChartsBarChart from '$lib/components/charts/EChartsBarChart.svelte';
-  import { t, languageStore } from '$lib/stores/translationStore.js';
+  import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
   type ApiChartData = { labels?: string[]; values?: number[] };
   type ChartDataItem = { category: string; documents: number; originalKey: string };
@@ -26,7 +26,7 @@
   // Reactive chart data that updates with language changes
   const chartData = $derived.by(() => {
     // Access languageStore to make this reactive
-    const currentLang = $languageStore;
+    const currentLang = languageStore.current;
     
     const translated = rawChartData.map(item => ({
       category: entityTranslationMap[item.category] ? $t(entityTranslationMap[item.category]) : item.category,
@@ -48,7 +48,7 @@
   );
 
   const totalIndexItemsLabel = $derived.by(() => {
-    const currentLang = $languageStore;
+    const currentLang = languageStore.current;
     const locale = currentLang === 'fr' ? 'fr-FR' : 'en-US';
     return totalIndexItems.toLocaleString(locale);
   });
@@ -83,14 +83,14 @@
 
 <div class="space-y-6">
   <div>
-    <h2 class="text-3xl font-bold tracking-tight">{$t('nav.index')}</h2>
-    <p class="text-muted-foreground">{$t('index.top_entity_types_subtitle', [totalIndexItemsLabel])}</p>
+    <h2 class="text-3xl font-bold tracking-tight">{t('nav.index')}</h2>
+    <p class="text-muted-foreground">{t('index.top_entity_types_subtitle', [totalIndexItemsLabel])}</p>
   </div>
 
   <Card class="p-4">
     {#if isLoading}
       <div class="grid h-96 place-items-center text-sm text-muted-foreground">
-        {$t('common.loading')}
+        {t('common.loading')}
       </div>
     {:else if fetchError}
       <div class="grid h-96 place-items-center text-sm text-destructive">
@@ -98,7 +98,7 @@
       </div>
     {:else if !chartData.length}
       <div class="grid h-96 place-items-center text-sm text-muted-foreground">
-        {$t('chart.no_data')}
+        {t('chart.no_data')}
       </div>
     {:else}
       <div class="w-full h-96">

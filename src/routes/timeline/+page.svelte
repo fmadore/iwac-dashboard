@@ -5,10 +5,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import TimelineChart from '$lib/components/charts/TimelineChart.svelte';
-	import { t } from '$lib/stores/translationStore.js';
-
-	// Prerender this page
-	export const prerender = true;
+	import { t } from '$lib/stores/translationStore.svelte.js';
 
 	interface TimelineData {
 		months: string[];
@@ -152,8 +149,8 @@
 
 <div class="space-y-6">
 	<div>
-		<h2 class="text-3xl font-bold tracking-tight">{$t('timeline.title')}</h2>
-		<p class="text-muted-foreground">{$t('timeline.description')}</p>
+		<h2 class="text-3xl font-bold tracking-tight">{t('timeline.title')}</h2>
+		<p class="text-muted-foreground">{t('timeline.description')}</p>
 	</div>
 
 	{#if loading}
@@ -166,7 +163,7 @@
 	{:else if error}
 		<Card.Root class="p-6">
 			<div class="text-center py-12">
-				<h3 class="text-xl font-semibold mb-2 text-destructive">{$t('common.error')}</h3>
+				<h3 class="text-xl font-semibold mb-2 text-destructive">{t('common.error')}</h3>
 				<p class="text-muted-foreground">{error}</p>
 			</div>
 		</Card.Root>
@@ -174,21 +171,21 @@
 		<!-- Filters -->
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>{$t('filters.title')}</Card.Title>
-				<Card.Description>{$t('filters.description')}</Card.Description>
+				<Card.Title>{t('filters.title')}</Card.Title>
+				<Card.Description>{t('filters.description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<div class="flex items-center gap-4 flex-wrap">
 					<!-- Type Filter -->
 					<div class="flex items-center gap-2">
-						<label for="typeSelect" class="text-sm font-medium">{$t('timeline.by_type')}:</label>
+						<label for="typeSelect" class="text-sm font-medium">{t('timeline.by_type')}:</label>
 						<Select.Root bind:value={selectedType} type="single">
 							<Select.Trigger class="w-[200px]" id="typeSelect">
 								{selectedTypeLabel || $t('filters.all_countries')}
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Group>
-									<Select.Item value="">{$t('filters.all_countries')}</Select.Item>
+									<Select.Item value="">{t('filters.all_countries')}</Select.Item>
 									{#each typeOptions as type}
 										<Select.Item value={type}>{type}</Select.Item>
 									{/each}
@@ -199,14 +196,14 @@
 
 					<!-- Country Filter -->
 					<div class="flex items-center gap-2">
-						<label for="countrySelect" class="text-sm font-medium">{$t('filters.country')}:</label>
+						<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
 						<Select.Root bind:value={selectedCountry} type="single">
 							<Select.Trigger class="w-[200px]" id="countrySelect">
 								{selectedCountry || $t('filters.all_countries')}
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Group>
-									<Select.Item value="">{$t('filters.all_countries')}</Select.Item>
+									<Select.Item value="">{t('filters.all_countries')}</Select.Item>
 									{#each countryOptions as country}
 										<Select.Item value={country}>{country}</Select.Item>
 									{/each}
@@ -221,7 +218,7 @@
 							size="sm"
 							onclick={clearFilters}
 						>
-							{$t('filters.clear')}
+							{t('filters.clear')}
 						</Button>
 					{/if}
 				</div>
@@ -232,7 +229,7 @@
 		<div class="grid gap-4 md:grid-cols-3">
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium">{$t('timeline.total_records')}</Card.Title>
+					<Card.Title class="text-sm font-medium">{t('timeline.total_records')}</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">{activeData.total_records.toLocaleString()}</div>
@@ -241,7 +238,7 @@
 
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium">{$t('timeline.month_range')}</Card.Title>
+					<Card.Title class="text-sm font-medium">{t('timeline.month_range')}</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">
@@ -252,7 +249,7 @@
 
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium">{$t('timeline.monthly_additions')}</Card.Title>
+					<Card.Title class="text-sm font-medium">{t('timeline.monthly_additions')}</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">
@@ -268,14 +265,14 @@
 			<Card.Header>
 				<Card.Title>
 					{#if selectedType}
-						{$t('timeline.chart_title')} - {selectedTypeLabel}
+						{t('timeline.chart_title')} - {selectedTypeLabel}
 					{:else if selectedCountry}
-						{$t('timeline.chart_title')} - {selectedCountry}
+						{t('timeline.chart_title')} - {selectedCountry}
 					{:else}
-						{$t('timeline.chart_title')}
+						{t('timeline.chart_title')}
 					{/if}
 				</Card.Title>
-				<Card.Description>{$t('timeline.chart_description')}</Card.Description>
+				<Card.Description>{t('timeline.chart_description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<TimelineChart

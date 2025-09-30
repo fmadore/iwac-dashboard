@@ -5,7 +5,7 @@
 	import * as Select from "$lib/components/ui/select/index.js";
 	import { Button } from "$lib/components/ui/button/index.js";
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { t } from '$lib/stores/translationStore.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 	import FacetPie from '$lib/components/facets/FacetPie.svelte';
 	import type { PageData } from './$types.js';
 	
@@ -85,8 +85,8 @@
 
 <div class="space-y-6">
 	<div>
-		<h2 class="text-3xl font-bold tracking-tight">{$t('nav.languages')}</h2>
-		<p class="text-muted-foreground">{$t('chart.language_distribution_desc')}</p>
+		<h2 class="text-3xl font-bold tracking-tight">{t('nav.languages')}</h2>
+		<p class="text-muted-foreground">{t('chart.language_distribution_desc')}</p>
 	</div>
 
 	<!-- Filters -->
@@ -168,11 +168,11 @@
 						{:else if selectedCountry}
 							Languages in {selectedCountry}
 						{:else}
-							{$t('chart.language_distribution')}
+							{t('chart.language_distribution')}
 						{/if}
 					</Card.Title>
 					<Card.Description>
-						Total: {totalDocs()} {$t('chart.documents').toLowerCase()}
+						Total: {totalDocs()} {t('chart.documents').toLowerCase()}
 					</Card.Description>
 				</Card.Header>
 				<Card.Content>

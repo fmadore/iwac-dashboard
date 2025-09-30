@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
-	import { t } from '$lib/stores/translationStore.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 	import WordCloud from '$lib/components/wordcloud.svelte';
 
 	// Data interfaces
@@ -125,7 +125,7 @@
 
 <div class="space-y-6">
 	<div>
-		<h2 class="text-3xl font-bold tracking-tight">{$t('nav.words')}</h2>
+		<h2 class="text-3xl font-bold tracking-tight">{t('nav.words')}</h2>
 		<p class="text-muted-foreground">
 			Explore word frequencies from French articles in the Islam West Africa Collection
 		</p>

@@ -1,19 +1,30 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { Card } from '$lib/components/ui/card/index.js';
-	import { itemsStore, statsData } from '$lib/stores/itemsStore.js';
-	import { t } from '$lib/stores/translationStore.js';
-	import StatsCard from '$lib/components/stats-card.svelte';
+	import { overviewStore } from '$lib/stores/overviewStore.svelte.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
+	import OverviewStatsGrid from '$lib/components/overview-stats-grid.svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+
+	// Svelte 5: Get store values directly as state
+	const loading = $derived(overviewStore.loading);
+	const error = $derived(overviewStore.error);
+	const summary = $derived(overviewStore.summary);
+	const recentItems = $derived(overviewStore.recentItems);
+
+	// Load on mount using $effect
+	$effect(() => {
+		overviewStore.load();
+	});
 </script>
 
 <div class="space-y-6">
 	<div>
-		<h2 class="text-3xl font-bold tracking-tight">{$t('nav.overview')}</h2>
-		<p class="text-muted-foreground">{$t('stats.total_items_desc')}</p>
+		<h2 class="text-3xl font-bold tracking-tight">{t('nav.overview')}</h2>
+		<p class="text-muted-foreground">{t('overview.description')}</p>
 	</div>
 
-	{#if $itemsStore.loading}
+	{#if loading}
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			{#each Array(4) as _}
 				<Card class="p-6">
@@ -23,45 +34,23 @@
 				</Card>
 			{/each}
 		</div>
-	{:else if $itemsStore.error}
+	{:else if error}
 		<Card class="p-6">
-			<p class="text-destructive">{$t('common.error')}: {$itemsStore.error}</p>
+			<p class="text-destructive">{t('overview.error')}: {error}</p>
 		</Card>
-	{:else}
-		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-			<StatsCard
-				title={$t('stats.total_items')}
-				value={$statsData.totalItems}
-				trend="+12.5%"
-				description={$t('stats.total_items_desc')}
-			/>
-			<StatsCard
-				title={$t('stats.countries')}
-				value={$statsData.countries}
-				description={$t('stats.countries_desc')}
-			/>
-			<StatsCard
-				title={$t('stats.languages')}
-				value={$statsData.languages}
-				description={$t('stats.languages_desc')}
-			/>
-			<StatsCard
-				title={$t('stats.types')}
-				value={$statsData.types}
-				description={$t('stats.types_desc')}
-			/>
-		</div>
+	{:else if summary}
+		<OverviewStatsGrid {summary} />
 
 		<div class="grid gap-4 md:grid-cols-2">
 			<Card class="p-6">
-				<h3 class="text-lg font-semibold mb-4">{$t('chart.recent_additions')}</h3>
+				<h3 class="text-lg font-semibold mb-4">{t('chart.recent_additions')}</h3>
 				<div class="h-[200px] flex items-center justify-center text-muted-foreground">
 					Chart placeholder - Coming soon
 				</div>
 			</Card>
 			<Card class="p-6 cursor-pointer transition-colors hover:bg-muted/50">
-				<a href="/languages" class="block">
-					<h3 class="text-lg font-semibold mb-4">{$t('chart.language_distribution')}</h3>
+				<a href="{base}/languages" class="block">
+					<h3 class="text-lg font-semibold mb-4">{t('chart.language_distribution')}</h3>
 					<div class="h-[200px] flex flex-col items-center justify-center text-muted-foreground">
 						<div class="text-6xl mb-2">🥧</div>
 						<p class="text-sm">View pie chart →</p>
@@ -71,22 +60,28 @@
 		</div>
 
 		<Card class="p-6">
-			<h3 class="text-lg font-semibold mb-4">Recent Items</h3>
-			<div class="space-y-2">
-				{#each $itemsStore.items as item}
-					<div class="flex items-center justify-between p-3 border rounded-lg">
-						<div>
-							<h4 class="font-medium">{item.title}</h4>
-							<p class="text-sm text-muted-foreground">
-								{item.country} • {item.language} • {item.type}
-							</p>
+			<h3 class="text-lg font-semibold mb-4">{t('overview.recent_items')}</h3>
+			{#if recentItems.length > 0}
+				<div class="space-y-2">
+					{#each recentItems as item}
+						<div class="flex items-center justify-between p-3 border rounded-lg">
+							<div>
+								<h4 class="font-medium">{item.title}</h4>
+								<p class="text-sm text-muted-foreground">
+									{item.country} • {item.language} • {item.type}
+								</p>
+							</div>
+							{#if item.created_date}
+								<div class="text-sm text-muted-foreground">
+									{new Date(item.created_date).toLocaleDateString()}
+								</div>
+							{/if}
 						</div>
-						<div class="text-sm text-muted-foreground">
-							{new Date(item.created_date).toLocaleDateString()}
-						</div>
-					</div>
-				{/each}
-			</div>
+					{/each}
+				</div>
+			{:else}
+				<p class="text-sm text-muted-foreground">{t('overview.no_recent_items')}</p>
+			{/if}
 		</Card>
 	{/if}
 </div>

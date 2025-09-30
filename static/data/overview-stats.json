@@ -1,18 +1,20 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-09-30T10:45:43.321918",
+    "generated_at": "2025-09-30T11:22:04.651829",
     "script_version": "1.0"
   },
   "summary": {
-    "total_items": 13255,
+    "total_items": 14118,
     "total_words": 23935772,
     "total_pages": 23738,
     "total_duration_minutes": 9315,
     "countries": 7,
-    "languages": 8,
-    "types": 4,
+    "languages": 9,
+    "types": 5,
     "newspapers": 74,
+    "audiovisual_duration": 9315,
+    "references_count": 863,
     "country_list": [
       "Benin",
       "Burkina Faso",
@@ -23,24 +25,23 @@
       "Togo"
     ],
     "language_list": [
+      "Allemand",
       "Anglais",
       "Arabe",
-      "Arabe|Haoussa",
       "Dendi",
+      "Espagnol",
       "Français",
       "Haoussa",
-      "Haoussa|Anglais",
-      "Haoussa|Arabe"
+      "Italien",
+      "Slovène"
     ],
     "type_list": [
       "articles",
       "audiovisual",
       "documents",
-      "publications"
-    ],
-    "word_count_coverage_percent": 99.29,
-    "page_count_coverage_percent": 54.75,
-    "ocr_coverage_percent": 99.29
+      "publications",
+      "references"
+    ]
   },
   "by_dataset": {
     "articles": {
@@ -77,6 +78,14 @@
       "total_duration_minutes": 9315,
       "records_with_duration": 45,
       "average_duration_minutes": 207
+    },
+    "references": {
+      "total_records": 863,
+      "total_words": 0,
+      "total_pages": 44077,
+      "records_with_word_count": 0,
+      "records_with_page_count": 184,
+      "records_with_ocr": 0
     }
   },
   "by_country": {
@@ -132,10 +141,11 @@
   },
   "by_language": {
     "Anglais": {
-      "total_records": 8,
+      "total_records": 307,
       "by_dataset": {
         "articles": 7,
-        "audiovisual": 1
+        "audiovisual": 1,
+        "references": 299
       }
     },
     "Dendi": {
@@ -145,23 +155,19 @@
       }
     },
     "Français": {
-      "total_records": 13189,
+      "total_records": 13726,
       "by_dataset": {
         "articles": 11664,
         "publications": 1499,
-        "documents": 26
+        "documents": 26,
+        "references": 537
       }
     },
     "Arabe": {
       "total_records": 2,
       "by_dataset": {
-        "publications": 2
-      }
-    },
-    "Arabe|Haoussa": {
-      "total_records": 1,
-      "by_dataset": {
-        "audiovisual": 1
+        "publications": 2,
+        "audiovisual": 0
       }
     },
     "Haoussa": {
@@ -170,16 +176,28 @@
         "audiovisual": 10
       }
     },
-    "Haoussa|Anglais": {
+    "Allemand": {
       "total_records": 5,
       "by_dataset": {
-        "audiovisual": 5
+        "references": 5
       }
     },
-    "Haoussa|Arabe": {
-      "total_records": 27,
+    "Espagnol": {
+      "total_records": 1,
       "by_dataset": {
-        "audiovisual": 27
+        "references": 1
+      }
+    },
+    "Italien": {
+      "total_records": 2,
+      "by_dataset": {
+        "references": 2
+      }
+    },
+    "Slovène": {
+      "total_records": 1,
+      "by_dataset": {
+        "references": 1
       }
     }
   },
@@ -195,6 +213,9 @@
     },
     "audiovisual": {
       "total_records": 45
+    },
+    "references": {
+      "total_records": 863
     }
   },
   "recent_items": []

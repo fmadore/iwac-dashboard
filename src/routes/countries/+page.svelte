@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '$lib/components/ui/card/index.js';
-	import { itemsStore } from '$lib/stores/itemsStore.js';
-	import { t } from '$lib/stores/translationStore.js';
+	import { itemsStore } from '$lib/stores/itemsStore.svelte.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 	import CustomTreemap from '$lib/components/charts/CustomTreemap.svelte';
 	import { base } from '$app/paths';
 	import type { TreemapData, TreemapNode } from '$lib/types/index.js';
@@ -31,8 +31,8 @@
 				loadingError = error instanceof Error ? error.message : 'Unknown error';
 				
 				// Fallback to computing from itemsStore if pre-computed data not available
-				if ($itemsStore.items && $itemsStore.items.length > 0) {
-					const fallbackData = getTreemapData($itemsStore.items);
+				if (itemsStore.items && itemsStore.items.length > 0) {
+					const fallbackData = getTreemapData(itemsStore.items);
 					treemapData = fallbackData;
 					console.log('📊 Using fallback client-side treemap computation');
 				} else {
@@ -113,7 +113,7 @@
 
 <div class="space-y-6">
 	<div>
-		<h2 class="text-3xl font-bold tracking-tight">{$t('nav.countries')}</h2>
+		<h2 class="text-3xl font-bold tracking-tight">{t('nav.countries')}</h2>
 		<p class="text-muted-foreground">Distribution of documents by country</p>
 	</div>
 

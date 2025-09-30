@@ -3,7 +3,7 @@
   import { base } from '$app/paths';
   import { Input } from '$lib/components/ui/input/index.js';
   import { Button } from '$lib/components/ui/button/index.js';
-  import { t, languageStore } from '$lib/stores/translationStore.js';
+  import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
   import {
     Table,
     TableHeader,
@@ -38,7 +38,7 @@
 
   const enBase = 'https://islam.zmo.de/s/westafrica/item/';
   const frBase = 'https://islam.zmo.de/s/afrique_ouest/item/';
-  const itemBase = $derived($languageStore === 'fr' ? frBase : enBase);
+  const itemBase = $derived(languageStore.current === 'fr' ? frBase : enBase);
 
   function entityUrl(r: EntityRow): string {
     const id = r['o:id'];
@@ -134,7 +134,7 @@
 <div class="w-full flex flex-col space-y-3">
   <div class="flex items-center justify-between gap-3 flex-shrink-0 flex-wrap">
     <Input
-      placeholder={$t('table.search_placeholder')}
+      placeholder={t('table.search_placeholder')}
       bind:value={search}
       class="max-w-md min-w-0 flex-shrink"
     />
@@ -150,32 +150,32 @@
           <TableRow>
             <TableHead class="w-1/4 min-w-0">
               <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('Titre')}>
-                <span class="truncate block">{$t('table.title')} {sortKey === 'Titre' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                <span class="truncate block">{t('table.title')} {sortKey === 'Titre' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
             <TableHead class="w-1/6 min-w-0">
               <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('Type')}>
-                <span class="truncate block">{$t('table.type')} {sortKey === 'Type' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                <span class="truncate block">{t('table.type')} {sortKey === 'Type' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
             <TableHead class="w-20 min-w-0">
               <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('frequency')}>
-                <span class="truncate block">{$t('table.frequency')} {sortKey === 'frequency' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                <span class="truncate block">{t('table.frequency')} {sortKey === 'frequency' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
             <TableHead class="w-1/6 min-w-0">
               <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('first_occurrence')}>
-                <span class="truncate block">{$t('table.first')} {sortKey === 'first_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                <span class="truncate block">{t('table.first')} {sortKey === 'first_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
             <TableHead class="w-1/6 min-w-0">
               <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('last_occurrence')}>
-                <span class="truncate block">{$t('table.last')} {sortKey === 'last_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                <span class="truncate block">{t('table.last')} {sortKey === 'last_occurrence' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
             <TableHead class="w-1/5 min-w-0">
               <button type="button" class="cursor-pointer hover:underline underline-offset-2 text-left w-full" onclick={() => setSort('countries')}>
-                <span class="truncate block">{$t('table.countries')} {sortKey === 'countries' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                <span class="truncate block">{t('table.countries')} {sortKey === 'countries' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
               </button>
             </TableHead>
           </TableRow>
@@ -183,7 +183,7 @@
         <TableBody>
           {#if loading}
             <TableRow>
-              <TableCell colspan={6}>{$t('common.loading')}</TableCell>
+              <TableCell colspan={6}>{t('common.loading')}</TableCell>
             </TableRow>
           {:else if error}
             <TableRow>
@@ -191,7 +191,7 @@
             </TableRow>
           {:else if sorted.length === 0}
             <TableRow>
-              <TableCell colspan={6}>{$t('table.no_results')}</TableCell>
+              <TableCell colspan={6}>{t('table.no_results')}</TableCell>
             </TableRow>
           {:else}
             {#each paginatedRows as r}

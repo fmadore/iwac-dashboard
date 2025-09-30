@@ -158,6 +158,16 @@ def get_unique_values(df: pd.DataFrame, column_name: str) -> List[str]:
     
     values = df[column_name].dropna()
     values = values[values != ""]
+    
+    # For language column, split by pipe and flatten
+    if column_name == "language":
+        unique_languages = set()
+        for val in values:
+            # Split by pipe and strip whitespace
+            langs = [lang.strip() for lang in str(val).split('|')]
+            unique_languages.update(langs)
+        return sorted(unique_languages)
+    
     return sorted(values.unique().tolist())
 
 
@@ -233,7 +243,7 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     """
     logger = logging.getLogger(__name__)
     
-    configs = ["articles", "publications", "documents", "audiovisual"]
+    configs = ["articles", "publications", "documents", "audiovisual", "references"]
     
     # Structure de données pour les résultats
     overview_stats = {
@@ -250,7 +260,9 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
             "countries": 0,
             "languages": 0,
             "types": 0,
-            "newspapers": 0
+            "newspapers": 0,
+            "audiovisual_duration": 0,
+            "references_count": 0
         },
         "by_dataset": {},
         "by_country": {},
@@ -282,7 +294,10 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
         # Ajouter aux totaux
         overview_stats["summary"]["total_items"] += dataset_stats["total_records"]
         overview_stats["summary"]["total_words"] += dataset_stats["total_words"]
-        overview_stats["summary"]["total_pages"] += dataset_stats["total_pages"]
+        
+        # Exclude references from page count
+        if config != "references":
+            overview_stats["summary"]["total_pages"] += dataset_stats["total_pages"]
         
         if "total_duration_minutes" in dataset_stats:
             overview_stats["summary"]["total_duration_minutes"] += dataset_stats["total_duration_minutes"]
@@ -292,7 +307,9 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
         languages = get_unique_values(df, "language")
         types = get_unique_values(df, "type")
         
-        all_countries.update(countries)
+        # Only collect countries from actual content datasets (not index/references)
+        if config in ["articles", "publications", "documents", "audiovisual"]:
+            all_countries.update(countries)
         all_languages.update(languages)
         all_types.update(config)  # Le type de dataset lui-même
         
@@ -301,17 +318,18 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
             newspapers = get_unique_values(df, "newspaper")
             all_newspapers.update(newspapers)
         
-        # Statistiques par pays
-        for country in countries:
-            if country not in overview_stats["by_country"]:
-                overview_stats["by_country"][country] = {
-                    "total_records": 0,
-                    "by_dataset": {}
-                }
-            
-            country_df = df[df["country"] == country]
-            overview_stats["by_country"][country]["total_records"] += len(country_df)
-            overview_stats["by_country"][country]["by_dataset"][config] = len(country_df)
+        # Statistiques par pays (only for content datasets, not index/references)
+        if config in ["articles", "publications", "documents", "audiovisual"]:
+            for country in countries:
+                if country not in overview_stats["by_country"]:
+                    overview_stats["by_country"][country] = {
+                        "total_records": 0,
+                        "by_dataset": {}
+                    }
+                
+                country_df = df[df["country"] == country]
+                overview_stats["by_country"][country]["total_records"] += len(country_df)
+                overview_stats["by_country"][country]["by_dataset"][config] = len(country_df)
         
         # Statistiques par langue
         for language in languages:
@@ -349,6 +367,12 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     overview_stats["summary"]["types"] = len([t for t in configs if t in overview_stats["by_dataset"]])
     overview_stats["summary"]["newspapers"] = len(all_newspapers)
     
+    # Add audiovisual duration and references count
+    if "audiovisual" in overview_stats["by_dataset"]:
+        overview_stats["summary"]["audiovisual_duration"] = overview_stats["by_dataset"]["audiovisual"].get("total_duration_minutes", 0)
+    if "references" in overview_stats["by_dataset"]:
+        overview_stats["summary"]["references_count"] = overview_stats["by_dataset"]["references"].get("total_records", 0)
+    
     # Ajouter les listes de valeurs uniques
     overview_stats["summary"]["country_list"] = sorted(all_countries)
     overview_stats["summary"]["language_list"] = sorted(all_languages)
@@ -373,10 +397,6 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
             ds.get("records_with_ocr", 0) 
             for ds in overview_stats["by_dataset"].values()
         )
-        
-        overview_stats["summary"]["word_count_coverage_percent"] = round((total_with_words / total) * 100, 2)
-        overview_stats["summary"]["page_count_coverage_percent"] = round((total_with_pages / total) * 100, 2)
-        overview_stats["summary"]["ocr_coverage_percent"] = round((total_with_ocr / total) * 100, 2)
     
     logger.info(f"\n{'='*50}")
     logger.info("STATISTIQUES GLOBALES")

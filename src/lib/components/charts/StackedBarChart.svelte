@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	// @ts-ignore - echarts uses UMD exports
 	import * as echarts from 'echarts';
-	import { languageStore } from '$lib/stores/translationStore.js';
+	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 
 	interface SeriesData {
 		name: string;
@@ -128,7 +128,7 @@
 	function updateChart() {
 		if (!chartInstance || series.length === 0) return;
 
-		const _ = $languageStore; // Track language changes
+		const _ = languageStore.current; // Track language changes
 
 		// Get current theme colors - resolve CSS variables properly
 		const textColor = getCSSVariable('--foreground');
@@ -269,7 +269,7 @@
 
 	// Re-render chart when language or data changes
 	$effect(() => {
-		const _ = $languageStore;
+		const _ = languageStore.current;
 		if (chartInstance && series.length > 0) {
 			updateChart();
 		}

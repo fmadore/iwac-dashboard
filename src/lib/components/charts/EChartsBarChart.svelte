@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
-  import { t, languageStore } from '$lib/stores/translationStore.js';
-  import type { Language } from '$lib/stores/translationStore.js';
+  import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+  import type { Language } from '$lib/stores/translationStore.svelte.js';
 
   interface ChartDataItem {
     category: string;
@@ -164,7 +164,7 @@
 
   // Update chart when data or language changes
   $effect(() => {
-    const currentLang = $languageStore;
+    const currentLang = languageStore.current;
     const currentData = data;
     const categoriesSignature = currentData
       .map((item) => `${item.category}::${item.documents}`)
@@ -306,7 +306,7 @@
         },
         formatter: (params: any) => {
           const param = params[0];
-          return `${param.name}<br/><strong>${param.value}</strong> ${$t('chart.documents').toLowerCase()}`;
+          return `${param.name}<br/><strong>${param.value}</strong> ${t('chart.documents').toLowerCase()}`;
         }
       },
       series: [
@@ -389,7 +389,7 @@
   class="w-full bg-card text-card-foreground"
   style="height: {height}px;"
   role="img"
-  aria-label={$t('chart.documents_by_category_aria')}
+  aria-label={t('chart.documents_by_category_aria')}
 ></div>
 
 <style>
