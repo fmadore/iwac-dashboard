@@ -41,24 +41,6 @@
 	{:else if summary}
 		<OverviewStatsGrid {summary} />
 
-		<div class="grid gap-4 md:grid-cols-2">
-			<Card class="p-6">
-				<h3 class="text-lg font-semibold mb-4">{t('chart.recent_additions')}</h3>
-				<div class="h-[200px] flex items-center justify-center text-muted-foreground">
-					Chart placeholder - Coming soon
-				</div>
-			</Card>
-			<Card class="p-6 cursor-pointer transition-colors hover:bg-muted/50">
-				<a href="{base}/languages" class="block">
-					<h3 class="text-lg font-semibold mb-4">{t('chart.language_distribution')}</h3>
-					<div class="h-[200px] flex flex-col items-center justify-center text-muted-foreground">
-						<div class="text-6xl mb-2">🥧</div>
-						<p class="text-sm">View pie chart →</p>
-					</div>
-				</a>
-			</Card>
-		</div>
-
 		<Card class="p-6">
 			<h3 class="text-lg font-semibold mb-4">{t('overview.recent_items')}</h3>
 			{#if recentItems.length > 0}
