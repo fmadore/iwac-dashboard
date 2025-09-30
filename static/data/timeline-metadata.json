@@ -1,0 +1,42 @@
+{
+  "total_records": 14216,
+  "unique_months": 13,
+  "month_range": {
+    "min": "2024-03",
+    "max": "2025-08"
+  },
+  "countries": [
+    "Benin",
+    "Burkina Faso",
+    "Bénin",
+    "Côte D'Ivoire",
+    "Niger",
+    "Nigeria",
+    "Togo",
+    "Unknown"
+  ],
+  "country_count": 8,
+  "types": [
+    "Audiovisuel",
+    "Document",
+    "Islamic Periodical",
+    "Press Article",
+    "Reference"
+  ],
+  "type_count": 5,
+  "subset_counts": {
+    "articles": 11683,
+    "audiovisual": 45,
+    "documents": 26,
+    "publications": 1501,
+    "references": 961
+  },
+  "subsets_processed": [
+    "articles",
+    "audiovisual",
+    "documents",
+    "publications",
+    "references"
+  ],
+  "generated_at": "2025-09-30T10:22:18.797467"
+}
