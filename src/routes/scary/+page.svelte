@@ -51,6 +51,70 @@
 	let chartContainer = $state<HTMLDivElement | null>(null);
 	let barChartRace = $state<any>(null);
 
+	// Color management for consistent term colors
+	const termColorMap = new Map<string, string>();
+	const chartColors = [
+		'--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5',
+		'--chart-6', '--chart-7', '--chart-8', '--chart-9', '--chart-10',
+		'--chart-11', '--chart-12', '--chart-13', '--chart-14', '--chart-15', '--chart-16'
+	];
+
+	// Canvas for parsing CSS colors
+	const colorParsingCanvas = browser ? document.createElement('canvas') : null;
+	const colorParsingContext = colorParsingCanvas?.getContext('2d', { willReadFrequently: false });
+
+	function parseColor(value: string): string | null {
+		if (!colorParsingContext) return null;
+		try {
+			colorParsingContext.fillStyle = '#000000';
+			colorParsingContext.fillStyle = value;
+			return colorParsingContext.fillStyle || null;
+		} catch (error) {
+			return null;
+		}
+	}
+
+	function getCSSVariable(variable: string): string {
+		if (!browser) return '#000000';
+		const root = document.documentElement;
+		const value = getComputedStyle(root).getPropertyValue(variable).trim();
+
+		if (value) {
+			const parsed = parseColor(value);
+			if (parsed) {
+				return parsed;
+			}
+		}
+
+		const fallbackMap: Record<string, string> = {
+			'--chart-1': '#e8590c',
+			'--chart-2': '#2563eb',
+			'--chart-3': '#16a34a',
+			'--chart-4': '#f59e0b',
+			'--chart-5': '#dc2626',
+			'--foreground': '#09090b',
+			'--muted-foreground': '#71717a',
+			'--background': '#ffffff',
+			'--popover': '#ffffff',
+			'--popover-foreground': '#09090b',
+			'--border': '#e4e4e7'
+		};
+
+		return fallbackMap[variable] || value || '#666666';
+	}
+
+	function getColorForTerm(term: string): string {
+		if (termColorMap.has(term)) {
+			return termColorMap.get(term)!;
+		}
+
+		const colorVar = chartColors[termColorMap.size % chartColors.length];
+		const resolvedColor = getCSSVariable(colorVar);
+		termColorMap.set(term, resolvedColor);
+		
+		return resolvedColor;
+	}
+
 	// Controls from URL
 	const viewMode = $derived((urlSync.filters.view as 'race' | 'country' | 'global') || 'race');
 	const selectedCountry = $derived(urlSync.filters.country);
@@ -243,12 +307,27 @@
 		const terms = data.data.map(([term]) => term);
 		const values = data.data.map(([, count]) => count);
 
+		// Resolve CSS variables
+		const foregroundColor = getCSSVariable('--foreground');
+		const borderColor = getCSSVariable('--border');
+		const popoverBg = getCSSVariable('--popover');
+		const popoverFg = getCSSVariable('--popover-foreground');
+
+		// Create data array with individual colors
+		const barData = data.data.map(([term, count]) => ({
+			value: count,
+			itemStyle: {
+				color: getColorForTerm(term),
+				borderRadius: [0, 4, 4, 0]
+			}
+		}));
+
 		const option = {
 			title: {
 				text: `${t('scary.country_chart_title', [selectedCountry])}`,
 				left: 'center',
 				textStyle: {
-					color: 'var(--foreground)'
+					color: foregroundColor
 				}
 			},
 			tooltip: {
@@ -256,10 +335,10 @@
 				axisPointer: {
 					type: 'shadow'
 				},
-				backgroundColor: 'var(--popover)',
-				borderColor: 'var(--border)',
+				backgroundColor: popoverBg,
+				borderColor: borderColor,
 				textStyle: {
-					color: 'var(--popover-foreground)'
+					color: popoverFg
 				}
 			},
 			grid: {
@@ -273,11 +352,18 @@
 				type: 'value',
 				axisLine: {
 					lineStyle: {
-						color: 'var(--border)'
+						color: borderColor,
+						opacity: 1
 					}
 				},
 				axisLabel: {
-					color: 'var(--foreground)'
+					color: foregroundColor
+				},
+				splitLine: {
+					lineStyle: {
+						color: borderColor,
+						opacity: 0.3
+					}
 				}
 			},
 			yAxis: {
@@ -286,24 +372,23 @@
 				inverse: true,
 				axisLine: {
 					lineStyle: {
-						color: 'var(--border)'
+						color: borderColor,
+						opacity: 1
 					}
 				},
 				axisLabel: {
-					color: 'var(--foreground)'
+					color: foregroundColor
 				}
 			},
 			series: [
 				{
 					type: 'bar',
-					data: values,
-					itemStyle: {
-						color: 'var(--chart-2)'
-					},
+					data: barData,
 					label: {
 						show: true,
 						position: 'right',
-						color: 'var(--foreground)'
+						color: foregroundColor,
+						formatter: '{c}'
 					}
 				}
 			]
@@ -318,12 +403,27 @@
 		const terms = globalData.data.map(([term]) => term);
 		const values = globalData.data.map(([, count]) => count);
 
+		// Resolve CSS variables
+		const foregroundColor = getCSSVariable('--foreground');
+		const borderColor = getCSSVariable('--border');
+		const popoverBg = getCSSVariable('--popover');
+		const popoverFg = getCSSVariable('--popover-foreground');
+
+		// Create data array with individual colors
+		const barData = globalData.data.map(([term, count]) => ({
+			value: count,
+			itemStyle: {
+				color: getColorForTerm(term),
+				borderRadius: [0, 4, 4, 0]
+			}
+		}));
+
 		const option = {
 			title: {
 				text: t('scary.global_chart_title'),
 				left: 'center',
 				textStyle: {
-					color: 'var(--foreground)'
+					color: foregroundColor
 				}
 			},
 			tooltip: {
@@ -331,10 +431,10 @@
 				axisPointer: {
 					type: 'shadow'
 				},
-				backgroundColor: 'var(--popover)',
-				borderColor: 'var(--border)',
+				backgroundColor: popoverBg,
+				borderColor: borderColor,
 				textStyle: {
-					color: 'var(--popover-foreground)'
+					color: popoverFg
 				}
 			},
 			grid: {
@@ -348,11 +448,18 @@
 				type: 'value',
 				axisLine: {
 					lineStyle: {
-						color: 'var(--border)'
+						color: borderColor,
+						opacity: 1
 					}
 				},
 				axisLabel: {
-					color: 'var(--foreground)'
+					color: foregroundColor
+				},
+				splitLine: {
+					lineStyle: {
+						color: borderColor,
+						opacity: 0.3
+					}
 				}
 			},
 			yAxis: {
@@ -361,24 +468,23 @@
 				inverse: true,
 				axisLine: {
 					lineStyle: {
-						color: 'var(--border)'
+						color: borderColor,
+						opacity: 1
 					}
 				},
 				axisLabel: {
-					color: 'var(--foreground)'
+					color: foregroundColor
 				}
 			},
 			series: [
 				{
 					type: 'bar',
-					data: values,
-					itemStyle: {
-						color: 'var(--chart-3)'
-					},
+					data: barData,
 					label: {
 						show: true,
 						position: 'right',
-						color: 'var(--foreground)'
+						color: foregroundColor,
+						formatter: '{c}'
 					}
 				}
 			]

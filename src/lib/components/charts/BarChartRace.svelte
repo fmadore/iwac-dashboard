@@ -385,11 +385,6 @@
 						color: foregroundColor,
 						formatter: '{c}'
 					},
-					emphasis: {
-						itemStyle: {
-							opacity: 0.8
-						}
-					},
 					animationDuration: animationDuration,
 					animationEasing: 'cubicOut'
 				}
