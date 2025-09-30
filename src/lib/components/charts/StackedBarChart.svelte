@@ -28,6 +28,9 @@
 
 	let chartContainer: HTMLDivElement;
 	let chartInstance: any = null;
+	let themeClass = $state(''); // Track theme changes for reactivity
+	let resizeObserver: ResizeObserver | undefined;
+	let previousThemeClass: string | null = null;
 
 	// Canvas for parsing CSS colors
 	const colorParsingCanvas = browser ? document.createElement('canvas') : null;
@@ -86,7 +89,20 @@
 
 	const typeColors = $derived({ ...defaultColorVars, ...colors });
 
-	function initChart() {
+	function attachResizeObserver() {
+		if (!chartContainer || resizeObserver) return;
+		resizeObserver = new ResizeObserver(() => {
+			chartInstance?.resize();
+		});
+		resizeObserver.observe(chartContainer);
+	}
+
+	function detachResizeObserver() {
+		resizeObserver?.disconnect();
+		resizeObserver = undefined;
+	}
+
+	async function initChart() {
 		if (!chartContainer) return;
 
 		if (chartInstance) {
@@ -94,7 +110,19 @@
 		}
 
 		chartInstance = echarts.init(chartContainer);
+		attachResizeObserver();
 		updateChart();
+	}
+
+	function destroyChart() {
+		detachResizeObserver();
+		chartInstance?.dispose();
+		chartInstance = null;
+	}
+
+	async function reinitializeChart() {
+		destroyChart();
+		await initChart();
 	}
 
 	function updateChart() {
@@ -190,23 +218,53 @@
 		chartInstance.setOption(option);
 	}
 
-	function handleResize() {
-		if (chartInstance) {
-			chartInstance.resize();
-		}
-	}
-
 	onMount(() => {
+		if (!browser) return;
+
 		initChart();
 
-		window.addEventListener('resize', handleResize);
-
 		return () => {
-			window.removeEventListener('resize', handleResize);
-			if (chartInstance) {
-				chartInstance.dispose();
-			}
+			destroyChart();
 		};
+	});
+
+	// Watch for theme changes (light/dark mode) via MutationObserver
+	onMount(() => {
+		if (browser) {
+			// Initialize theme class
+			themeClass = document.documentElement.className;
+
+			const observer = new MutationObserver(() => {
+				themeClass = document.documentElement.className;
+			});
+
+			observer.observe(document.documentElement, {
+				attributes: true,
+				attributeFilter: ['class']
+			});
+
+			return () => observer.disconnect();
+		}
+	});
+
+	// Update chart when theme changes
+	$effect(() => {
+		if (!browser) {
+			return;
+		}
+
+		const currentTheme = themeClass;
+		if (currentTheme === previousThemeClass) {
+			return;
+		}
+
+		previousThemeClass = currentTheme;
+
+		if (!chartInstance) {
+			return;
+		}
+
+		reinitializeChart();
 	});
 
 	// Re-render chart when language or data changes
