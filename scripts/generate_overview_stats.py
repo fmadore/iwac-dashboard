@@ -15,7 +15,7 @@ Usage
     python generate_overview_stats.py [--repo MON_USER/MON_DATASET] [--output-dir OUTPUT_DIR]
 
 Exemple:
-    python generate_overview_stats.py --repo fmadore/islam-west-africa-collection --output-dir ../static/data
+    python generate_overview_stats.py --repo fmadore/islam-west-africa-collection --output-dir static/data
 
 Variables d'environnement
 -------------------------
@@ -27,6 +27,7 @@ import logging
 import os
 import re
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, Any, Optional, List
 from datasets import load_dataset
 from huggingface_hub import HfFolder, login
@@ -391,6 +392,23 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     return overview_stats
 
 
+def save_json(data: Any, path: Path) -> None:
+    """Save data as JSON file."""
+    logger = logging.getLogger(__name__)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    try:
+        abs_path = path.resolve()
+        cwd = Path.cwd().resolve()
+        display = abs_path.relative_to(cwd)
+    except Exception:
+        display = path
+    
+    logger.info(f"Wrote {display}")
+
+
 def main():
     configure_logging()
     logger = logging.getLogger(__name__)
@@ -405,14 +423,14 @@ def main():
     )
     parser.add_argument(
         "--output-dir",
-        default="../static/data",
+        default="static/data",
         help="Répertoire de sortie pour le fichier JSON"
     )
     
     args = parser.parse_args()
     
     repo_id = args.repo
-    output_dir = args.output_dir
+    output_dir = Path(args.output_dir)
     
     # Authentification avec le Hub
     token = os.getenv("HF_TOKEN") or HfFolder.get_token()
@@ -428,20 +446,10 @@ def main():
     # Calculer les statistiques
     overview_stats = calculate_overview_stats(repo_id, token)
     
-    # Sauvegarder dans static/data ET build/data (comme les autres scripts)
-    output_dirs = [output_dir, "../build/data"]
+    # Sauvegarder le fichier JSON
+    save_json(overview_stats, output_dir / "overview-stats.json")
     
-    for out_dir in output_dirs:
-        os.makedirs(out_dir, exist_ok=True)
-        output_file = os.path.join(out_dir, "overview-stats.json")
-        try:
-            with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(overview_stats, f, indent=2, ensure_ascii=False)
-            logger.info(f"✅ Statistiques sauvegardées dans: {output_file}")
-        except Exception as e:
-            logger.error(f"❌ Erreur lors de la sauvegarde dans {output_file}: {e}")
-    
-    logger.info("\n🎉 Script terminé avec succès!")
+    logger.info("✅ Overview statistics generation completed successfully!")
 
 
 if __name__ == "__main__":
