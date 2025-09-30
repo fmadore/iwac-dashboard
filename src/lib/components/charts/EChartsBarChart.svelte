@@ -314,15 +314,7 @@
             }
           })),
           emphasis: {
-            focus: 'series',
-            itemStyle: {
-              borderWidth: 2,
-              borderColor: foregroundColor,
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowOffsetY: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.3)'
-            }
+            disabled: true
           },
           animationDuration: animationDuration,
           animationEasing: 'cubicOut'
