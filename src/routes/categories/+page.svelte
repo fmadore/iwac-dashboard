@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Select from '$lib/components/ui/select/index.js';
+	import { Slider } from '$lib/components/ui/slider/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.js';
 	import StackedBarChart from '$lib/components/charts/StackedBarChart.svelte';
@@ -20,17 +23,56 @@
 		};
 	}
 
-	let data = $state<CategoryData | null>(null);
+	interface MetadataResponse {
+		total_records: number;
+		temporal: {
+			min_year: number;
+			max_year: number;
+			year_count: number;
+		};
+		countries: {
+			count: number;
+			values: string[];
+			with_individual_files: string[];
+		};
+		document_types: {
+			count: number;
+			values: string[];
+		};
+	}
+
+	let globalData = $state<CategoryData | null>(null);
+	let countryData = $state<CategoryData | null>(null);
+	let metadata = $state<MetadataResponse | null>(null);
 	let loading = $state(true);
 	let error = $state<string | null>(null);
+
+	// Filter states
+	let selectedCountry = $state<string>('');
+	let yearRange = $state<[number, number]>([1912, 2025]);
 
 	async function loadData() {
 		try {
 			loading = true;
 			error = null;
-			const response = await fetch(`${base}/data/categories-global.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			data = await response.json();
+			
+			// Load global data and metadata
+			const [globalResponse, metadataResponse] = await Promise.all([
+				fetch(`${base}/data/categories-global.json`),
+				fetch(`${base}/data/categories-metadata.json`)
+			]);
+			
+			if (!globalResponse.ok || !metadataResponse.ok) {
+				throw new Error('Failed to load data');
+			}
+			
+			globalData = await globalResponse.json();
+			metadata = await metadataResponse.json();
+			
+			// Set initial year range from metadata
+			if (metadata) {
+				yearRange = [metadata.temporal.min_year, metadata.temporal.max_year];
+			}
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load data';
 			console.error('Error loading categories data:', e);
@@ -39,9 +81,79 @@
 		}
 	}
 
+	async function loadCountryData(country: string) {
+		if (!country) {
+			countryData = null;
+			return;
+		}
+		
+		try {
+			const filename = country.toLowerCase().replace(/\s+/g, '-');
+			const response = await fetch(`${base}/data/categories-${filename}.json`);
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+			countryData = await response.json();
+		} catch (e) {
+			console.error(`Error loading country data for ${country}:`, e);
+			countryData = null;
+		}
+	}
+
+	// Watch for country selection changes
+	$effect(() => {
+		loadCountryData(selectedCountry);
+	});
+
 	$effect(() => {
 		loadData();
 	});
+
+	// Get active data based on country selection
+	const activeData = $derived(() => selectedCountry ? countryData : globalData);
+
+	// Filter data by year range
+	const filteredData = $derived(() => {
+		const data = activeData();
+		if (!data) return null;
+
+		const [minYear, maxYear] = yearRange;
+		const yearIndices: number[] = [];
+		const filteredYears: number[] = [];
+
+		data.years.forEach((year, index) => {
+			if (year >= minYear && year <= maxYear) {
+				yearIndices.push(index);
+				filteredYears.push(year);
+			}
+		});
+
+		const filteredSeries = data.series.map((s) => ({
+			name: s.name,
+			data: yearIndices.map((i) => s.data[i])
+		}));
+
+		const total = filteredSeries.reduce(
+			(sum, s) => sum + s.data.reduce((a, b) => a + b, 0),
+			0
+		);
+
+		return {
+			years: filteredYears,
+			series: filteredSeries,
+			total_records: total,
+			year_range: {
+				min: Math.min(...filteredYears),
+				max: Math.max(...filteredYears)
+			}
+		};
+	});
+
+	const countryDisplayText = $derived(() => 
+		selectedCountry || 'All Countries'
+	);
+
+	const countryOptions = $derived(() => 
+		metadata?.countries.with_individual_files ?? []
+	);
 </script>
 
 <div class="space-y-6">
@@ -67,25 +179,86 @@
 				</div>
 			</Card.Content>
 		</Card.Root>
-	{:else if data}
+	{:else if filteredData()}
+		<!-- Filters -->
+		<Card.Root>
+			<Card.Header>
+				<Card.Title>{$t('filters.title')}</Card.Title>
+				<Card.Description>{$t('filters.description')}</Card.Description>
+			</Card.Header>
+			<Card.Content>
+				<div class="space-y-6">
+					<!-- Country Filter -->
+					<div class="flex items-center gap-4 flex-wrap">
+						<div class="flex items-center gap-2">
+							<label for="countrySelect" class="text-sm font-medium">{$t('filters.country')}:</label>
+							<Select.Root bind:value={selectedCountry} type="single">
+								<Select.Trigger class="w-[200px]" id="countrySelect">
+									{countryDisplayText()}
+								</Select.Trigger>
+								<Select.Content>
+									<Select.Group>
+										<Select.Item value="">{$t('filters.all_countries')}</Select.Item>
+										{#each countryOptions() as country}
+											<Select.Item value={country}>{country}</Select.Item>
+										{/each}
+									</Select.Group>
+								</Select.Content>
+							</Select.Root>
+						</div>
+						{#if selectedCountry}
+							<Button 
+								variant="secondary"
+								size="sm"
+								onclick={() => { selectedCountry = ''; }}
+							>
+								{$t('filters.clear')}
+							</Button>
+						{/if}
+					</div>
+
+					<!-- Year Range Slider -->
+					{#if metadata}
+						<div class="space-y-2">
+							<div class="text-sm font-medium">
+								{$t('filters.year_range')}: {yearRange[0]} - {yearRange[1]}
+							</div>
+							<Slider
+								bind:value={yearRange}
+								min={metadata.temporal.min_year}
+								max={metadata.temporal.max_year}
+								step={1}
+								type="multiple"
+								class="w-full"
+							/>
+							<div class="flex justify-between text-xs text-muted-foreground">
+								<span>{metadata.temporal.min_year}</span>
+								<span>{metadata.temporal.max_year}</span>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</Card.Content>
+		</Card.Root>
+
 		<!-- Stats Cards -->
 		<div class="grid gap-4 md:grid-cols-3">
 			<Card.Root>
 				<Card.Header class="pb-2">
 					<Card.Description>{$t('categories.total_records')}</Card.Description>
-					<Card.Title class="text-3xl">{data.total_records.toLocaleString()}</Card.Title>
+					<Card.Title class="text-3xl">{filteredData()!.total_records.toLocaleString()}</Card.Title>
 				</Card.Header>
 			</Card.Root>
 			<Card.Root>
 				<Card.Header class="pb-2">
 					<Card.Description>{$t('categories.year_range')}</Card.Description>
-					<Card.Title class="text-3xl">{data.year_range.min} - {data.year_range.max}</Card.Title>
+					<Card.Title class="text-3xl">{filteredData()!.year_range.min} - {filteredData()!.year_range.max}</Card.Title>
 				</Card.Header>
 			</Card.Root>
 			<Card.Root>
 				<Card.Header class="pb-2">
 					<Card.Description>{$t('categories.document_types')}</Card.Description>
-					<Card.Title class="text-3xl">{data.series.length}</Card.Title>
+					<Card.Title class="text-3xl">{filteredData()!.series.length}</Card.Title>
 				</Card.Header>
 			</Card.Root>
 		</div>
@@ -93,14 +266,19 @@
 		<!-- Stacked Bar Chart -->
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>{$t('categories.chart_title')}</Card.Title>
+				<Card.Title>
+					{#if selectedCountry}
+						{$t('categories.chart_title')} - {selectedCountry}
+					{:else}
+						{$t('categories.chart_title')}
+					{/if}
+				</Card.Title>
 				<Card.Description>{$t('categories.chart_description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<StackedBarChart
-					title={$t('categories.stacked_chart_title')}
-					years={data.years}
-					series={data.series}
+					years={filteredData()!.years}
+					series={filteredData()!.series}
 					height="600px"
 				/>
 			</Card.Content>

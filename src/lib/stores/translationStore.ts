@@ -58,6 +58,15 @@ export const translations = {
 		'categories.document_types': 'Document Types',
 		'categories.chart_title': 'Stacked Bar Chart by Type',
 		'categories.chart_description': 'Temporal distribution of document types across the collection',
+		'categories.type_distribution': 'Type Distribution',
+		'categories.by_country': 'Categories by Country',
+		'categories.click_to_view': 'Click to view details',
+		'filters.title': 'Filters',
+		'filters.description': 'Select filters to view specific distributions',
+		'filters.country': 'Country',
+		'filters.all_countries': 'All Countries',
+		'filters.year_range': 'Year Range',
+		'filters.clear': 'Clear Filters',
 		'errors.failed_to_load': 'Failed to load data'
 	},
 	fr: {
@@ -115,6 +124,15 @@ export const translations = {
 		'categories.document_types': 'Types de documents',
 		'categories.chart_title': 'Graphique en barres empilées par type',
 		'categories.chart_description': 'Distribution temporelle des types de documents dans la collection',
+		'categories.type_distribution': 'Répartition des types',
+		'categories.by_country': 'Catégories par pays',
+		'categories.click_to_view': 'Cliquez pour voir les détails',
+		'filters.title': 'Filtres',
+		'filters.description': 'Sélectionnez des filtres pour afficher des distributions spécifiques',
+		'filters.country': 'Pays',
+		'filters.all_countries': 'Tous les pays',
+		'filters.year_range': 'Période',
+		'filters.clear': 'Effacer les filtres',
 		'errors.failed_to_load': 'Échec du chargement des données'
 	}
 } as const;
