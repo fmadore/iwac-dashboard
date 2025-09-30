@@ -3,6 +3,7 @@
     "Persons",
     "Locations",
     "Organizations",
+    "Authority Files",
     "Events",
     "Topics"
   ],
@@ -10,8 +11,9 @@
     2719,
     682,
     410,
+    312,
     235,
     214
   ],
-  "total": 4260
+  "total": 4572
 }
