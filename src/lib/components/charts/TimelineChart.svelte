@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	// @ts-ignore - echarts uses UMD exports
 	import * as echarts from 'echarts';
-	import type { EChartsOption } from 'echarts';
 	import { t, languageStore } from '$lib/stores/translationStore.js';
 
 	let { months = [], monthlyAdditions = [], cumulativeTotal = [] } = $props<{
@@ -9,6 +9,19 @@
 		monthlyAdditions: number[];
 		cumulativeTotal: number[];
 	}>();
+
+	// Filter data to start from April 2024 (2024-04)
+	const startMonth = '2024-04';
+	const filteredData = $derived(() => {
+		const startIndex = months.findIndex(m => m >= startMonth);
+		if (startIndex === -1) return { months, monthlyAdditions, cumulativeTotal };
+		
+		return {
+			months: months.slice(startIndex),
+			monthlyAdditions: monthlyAdditions.slice(startIndex),
+			cumulativeTotal: cumulativeTotal.slice(startIndex)
+		};
+	});
 
 	let chartContainer: HTMLDivElement;
 	let chartInstance: echarts.ECharts | null = null;
@@ -37,8 +50,9 @@
 		chartInstance = echarts.init(chartContainer);
 
 		const colors = getThemeColors();
+		const filtered = filteredData();
 
-		const option: EChartsOption = {
+		const option: echarts.EChartsOption = {
 			tooltip: {
 				trigger: 'axis',
 				axisPointer: {
@@ -70,7 +84,7 @@
 			xAxis: [
 				{
 					type: 'category',
-					data: months,
+					data: filtered.months,
 					axisPointer: {
 						type: 'shadow'
 					},
@@ -135,7 +149,7 @@
 				{
 					name: $t('timeline.monthly_additions'),
 					type: 'bar',
-					data: monthlyAdditions,
+					data: filtered.monthlyAdditions,
 					itemStyle: {
 						color: `hsl(${colors.chart1})`
 					},
@@ -147,7 +161,7 @@
 					name: $t('timeline.cumulative_total'),
 					type: 'line',
 					yAxisIndex: 1,
-					data: cumulativeTotal,
+					data: filtered.cumulativeTotal,
 					itemStyle: {
 						color: `hsl(${colors.chart2})`
 					},
