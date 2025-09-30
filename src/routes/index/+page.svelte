@@ -3,15 +3,35 @@
   import { base } from '$app/paths';
   import { Card } from '$lib/components/ui/card/index.js';
   import EntitiesTable from '$lib/components/entities-table.svelte';
-  import BarChart from '$lib/components/charts/BarChart.svelte';
-  import { t } from '$lib/stores/translationStore.js';
+  import EChartsBarChart from '$lib/components/charts/EChartsBarChart.svelte';
+  import { t, languageStore } from '$lib/stores/translationStore.js';
 
   type ApiChartData = { labels?: string[]; values?: number[] };
-  type ChartDataItem = { category: string; documents: number };
+  type ChartDataItem = { category: string; documents: number; originalKey: string };
 
-  let chartData = $state<ChartDataItem[]>([]);
+  let rawChartData = $state<{ category: string; documents: number }[]>([]);
   let isLoading = $state(true);
   let fetchError = $state<string | null>(null);
+
+  // Map English entity names to translation keys
+  const entityTranslationMap: Record<string, string> = {
+    'Events': 'entity.events',
+    'Locations': 'entity.locations',
+    'Organizations': 'entity.organizations',
+    'Persons': 'entity.persons',
+    'Topics': 'entity.topics'
+  };
+
+  // Reactive chart data that updates with language changes
+  const chartData = $derived(() => {
+    // Access languageStore to make this reactive
+    const _ = $languageStore;
+    return rawChartData.map(item => ({
+      category: entityTranslationMap[item.category] ? $t(entityTranslationMap[item.category]) : item.category,
+      documents: item.documents,
+      originalKey: item.category // Keep original for color mapping
+    }));
+  });
 
   async function loadChartData() {
     try {
@@ -22,7 +42,7 @@
       const labels = payload.labels ?? [];
       const values = payload.values ?? [];
 
-      chartData = labels.map((category, index) => ({
+      rawChartData = labels.map((category, index) => ({
         category,
         documents: values[index] ?? 0
       }));
@@ -30,7 +50,7 @@
     } catch (error) {
       console.error('Failed to load index-types.json', error);
       fetchError = $t('common.error');
-      chartData = [];
+      rawChartData = [];
     } finally {
       isLoading = false;
     }
@@ -56,18 +76,17 @@
       <div class="grid h-96 place-items-center text-sm text-destructive">
         {fetchError}
       </div>
-    {:else if !chartData.length}
+    {:else if !chartData().length}
       <div class="grid h-96 place-items-center text-sm text-muted-foreground">
         {$t('chart.no_data')}
       </div>
     {:else}
       <div class="w-full h-96">
-        <BarChart 
-          data={chartData}
-          barColor="var(--chart-1)"
-          hoverColor="var(--chart-2)"
-          maxLabelLength={10}
+        <EChartsBarChart 
+          data={chartData()}
+          height={384}
           animationDuration={750}
+          useMultipleColors={true}
         />
       </div>
     {/if}

@@ -42,7 +42,12 @@ export const translations = {
 		'table.frequency': 'Frequency',
 		'table.first': 'First occurrence',
 		'table.last': 'Last occurrence',
-		'table.countries': 'Countries'
+		'table.countries': 'Countries',
+		'entity.events': 'Events',
+		'entity.locations': 'Locations',
+		'entity.organizations': 'Organizations',
+		'entity.persons': 'Persons',
+		'entity.topics': 'Topics'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -83,7 +88,12 @@ export const translations = {
 		'table.frequency': 'Fréquence',
 		'table.first': 'Première occurrence',
 		'table.last': 'Dernière occurrence',
-		'table.countries': 'Pays'
+		'table.countries': 'Pays',
+		'entity.events': 'Événements',
+		'entity.locations': 'Lieux',
+		'entity.organizations': 'Organisations',
+		'entity.persons': 'Personnes',
+		'entity.topics': 'Sujets'
 	}
 } as const;
 
