@@ -1,0 +1,120 @@
+{
+  "generated_at": "2025-09-30T16:37:16.398057",
+  "total_articles": 10547,
+  "term_families": [
+    "radicalisation",
+    "extrémisme",
+    "intégrisme",
+    "fondamentalisme",
+    "islamisme",
+    "obscurantisme",
+    "terrorisme",
+    "djihadisme",
+    "salafisme",
+    "fanatisme",
+    "endoctrinement",
+    "wahhabisme"
+  ],
+  "term_families_count": 12,
+  "total_variants": 58,
+  "countries": [
+    "Benin",
+    "Burkina Faso",
+    "Côte d'Ivoire",
+    "Niger",
+    "Togo"
+  ],
+  "year_range": [
+    1970,
+    2024
+  ],
+  "data_structure": {
+    "temporal": "Scary term occurrences by year for bar chart race",
+    "countries": "Scary term occurrences grouped by country",
+    "global": "Overall scary term occurrences across all articles"
+  },
+  "term_definitions": {
+    "radicalisation": [
+      "radical",
+      "radicaliser",
+      "radicalisation",
+      "radicalisme",
+      "radicalisé",
+      "radicalisée",
+      "radicalisant",
+      "radicalité"
+    ],
+    "extrémisme": [
+      "extrême",
+      "extrémisme",
+      "extrémiste",
+      "extrémistes"
+    ],
+    "intégrisme": [
+      "intégrisme",
+      "intégriste",
+      "intégristes"
+    ],
+    "fondamentalisme": [
+      "fondamental",
+      "fondamentale",
+      "fondamentalisme",
+      "fondamentaliste",
+      "fondamentalistes"
+    ],
+    "islamisme": [
+      "islamisme",
+      "islamiste",
+      "islamistes"
+    ],
+    "obscurantisme": [
+      "obscurantisme",
+      "obscurantiste",
+      "obscurantistes"
+    ],
+    "terrorisme": [
+      "terrorisme",
+      "terroriste",
+      "terroristes"
+    ],
+    "djihadisme": [
+      "djihad",
+      "djihadisme",
+      "djihadiste",
+      "djihadistes",
+      "jihad",
+      "jihadisme",
+      "jihadiste",
+      "jihadistes"
+    ],
+    "salafisme": [
+      "salaf",
+      "salafisme",
+      "salafiste",
+      "salafistes"
+    ],
+    "fanatisme": [
+      "fanatique",
+      "fanatisme",
+      "fanatiser",
+      "fanatisé",
+      "fanatisée"
+    ],
+    "endoctrinement": [
+      "endoctriner",
+      "endoctrinement",
+      "endoctriné",
+      "endoctrinée",
+      "endoctrinés",
+      "endoctrinées"
+    ],
+    "wahhabisme": [
+      "wahhabisme",
+      "wahhabite",
+      "wahhabites",
+      "wahabia",
+      "wahabite",
+      "wahhâbisme"
+    ]
+  }
+}
