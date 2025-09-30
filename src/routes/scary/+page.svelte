@@ -119,6 +119,25 @@
 	const viewMode = $derived((urlSync.filters.view as 'race' | 'country' | 'global') || 'race');
 	const selectedCountry = $derived(urlSync.filters.country);
 
+	// Helper function to get correct French preposition for country names
+	function getCountryPreposition(country: string | undefined): string {
+		if (!country) return 'en';
+		// Only Côte d'Ivoire uses "en", all others use "au"
+		return country === "Côte d'Ivoire" ? 'en' : 'au';
+	}
+
+	// Get localized country title
+	function getCountryChartTitle(country: string | undefined): string {
+		if (!country) return t('scary.country_chart_title', ['']);
+		
+		if (languageStore.current === 'fr') {
+			const prep = getCountryPreposition(country);
+			return `Termes "inquiétants" ${prep} ${country}`;
+		}
+		
+		return t('scary.country_chart_title', [country]);
+	}
+
 	// Computed values
 	const availableYears = $derived(
 		metadata?.year_range ? 
@@ -324,7 +343,7 @@
 
 		const option = {
 			title: {
-				text: `${t('scary.country_chart_title', [selectedCountry])}`,
+				text: getCountryChartTitle(selectedCountry),
 				left: 'center',
 				textStyle: {
 					color: foregroundColor
@@ -676,7 +695,7 @@
 						{#if viewMode === 'race'}
 							{t('scary.chart_title')}
 						{:else if viewMode === 'country'}
-							{t('scary.country_chart_title', [selectedCountry])}
+							{getCountryChartTitle(selectedCountry)}
 						{:else}
 							{t('scary.global_chart_title')}
 						{/if}
