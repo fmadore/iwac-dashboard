@@ -1,0 +1,201 @@
+{
+  "metadata": {
+    "repository": "fmadore/islam-west-africa-collection",
+    "generated_at": "2025-09-30T10:45:43.321918",
+    "script_version": "1.0"
+  },
+  "summary": {
+    "total_items": 13255,
+    "total_words": 23935772,
+    "total_pages": 23738,
+    "total_duration_minutes": 9315,
+    "countries": 7,
+    "languages": 8,
+    "types": 4,
+    "newspapers": 74,
+    "country_list": [
+      "Benin",
+      "Burkina Faso",
+      "Bénin",
+      "Côte d'Ivoire",
+      "Niger",
+      "Nigeria",
+      "Togo"
+    ],
+    "language_list": [
+      "Anglais",
+      "Arabe",
+      "Arabe|Haoussa",
+      "Dendi",
+      "Français",
+      "Haoussa",
+      "Haoussa|Anglais",
+      "Haoussa|Arabe"
+    ],
+    "type_list": [
+      "articles",
+      "audiovisual",
+      "documents",
+      "publications"
+    ],
+    "word_count_coverage_percent": 99.29,
+    "page_count_coverage_percent": 54.75,
+    "ocr_coverage_percent": 99.29
+  },
+  "by_dataset": {
+    "articles": {
+      "total_records": 11683,
+      "total_words": 7601993,
+      "total_pages": 7272,
+      "records_with_word_count": 11682,
+      "records_with_page_count": 5730,
+      "records_with_ocr": 11682
+    },
+    "publications": {
+      "total_records": 1501,
+      "total_words": 16263031,
+      "total_pages": 16168,
+      "records_with_word_count": 1453,
+      "records_with_page_count": 1501,
+      "records_with_ocr": 1453
+    },
+    "documents": {
+      "total_records": 26,
+      "total_words": 70748,
+      "total_pages": 298,
+      "records_with_word_count": 26,
+      "records_with_page_count": 26,
+      "records_with_ocr": 26
+    },
+    "audiovisual": {
+      "total_records": 45,
+      "total_words": 0,
+      "total_pages": 0,
+      "records_with_word_count": 0,
+      "records_with_page_count": 0,
+      "records_with_ocr": 0,
+      "total_duration_minutes": 9315,
+      "records_with_duration": 45,
+      "average_duration_minutes": 207
+    }
+  },
+  "by_country": {
+    "Benin": {
+      "total_records": 2136,
+      "by_dataset": {
+        "articles": 2003,
+        "publications": 133
+      }
+    },
+    "Burkina Faso": {
+      "total_records": 4138,
+      "by_dataset": {
+        "articles": 3659,
+        "publications": 460,
+        "documents": 19
+      }
+    },
+    "Côte d'Ivoire": {
+      "total_records": 4200,
+      "by_dataset": {
+        "articles": 3390,
+        "publications": 810
+      }
+    },
+    "Niger": {
+      "total_records": 1075,
+      "by_dataset": {
+        "articles": 1061,
+        "publications": 14
+      }
+    },
+    "Togo": {
+      "total_records": 1658,
+      "by_dataset": {
+        "articles": 1570,
+        "publications": 84,
+        "documents": 4
+      }
+    },
+    "Bénin": {
+      "total_records": 2,
+      "by_dataset": {
+        "documents": 2
+      }
+    },
+    "Nigeria": {
+      "total_records": 45,
+      "by_dataset": {
+        "audiovisual": 45
+      }
+    }
+  },
+  "by_language": {
+    "Anglais": {
+      "total_records": 8,
+      "by_dataset": {
+        "articles": 7,
+        "audiovisual": 1
+      }
+    },
+    "Dendi": {
+      "total_records": 2,
+      "by_dataset": {
+        "articles": 2
+      }
+    },
+    "Français": {
+      "total_records": 13189,
+      "by_dataset": {
+        "articles": 11664,
+        "publications": 1499,
+        "documents": 26
+      }
+    },
+    "Arabe": {
+      "total_records": 2,
+      "by_dataset": {
+        "publications": 2
+      }
+    },
+    "Arabe|Haoussa": {
+      "total_records": 1,
+      "by_dataset": {
+        "audiovisual": 1
+      }
+    },
+    "Haoussa": {
+      "total_records": 10,
+      "by_dataset": {
+        "audiovisual": 10
+      }
+    },
+    "Haoussa|Anglais": {
+      "total_records": 5,
+      "by_dataset": {
+        "audiovisual": 5
+      }
+    },
+    "Haoussa|Arabe": {
+      "total_records": 27,
+      "by_dataset": {
+        "audiovisual": 27
+      }
+    }
+  },
+  "by_type": {
+    "articles": {
+      "total_records": 11683
+    },
+    "publications": {
+      "total_records": 1501
+    },
+    "documents": {
+      "total_records": 26
+    },
+    "audiovisual": {
+      "total_records": 45
+    }
+  },
+  "recent_items": []
+}
