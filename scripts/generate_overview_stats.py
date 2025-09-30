@@ -428,18 +428,18 @@ def main():
     # Calculer les statistiques
     overview_stats = calculate_overview_stats(repo_id, token)
     
-    # Créer le répertoire de sortie si nécessaire
-    os.makedirs(output_dir, exist_ok=True)
+    # Sauvegarder dans static/data ET build/data (comme les autres scripts)
+    output_dirs = [output_dir, "../build/data"]
     
-    # Sauvegarder le fichier JSON
-    output_file = os.path.join(output_dir, "overview-stats.json")
-    try:
-        with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(overview_stats, f, indent=2, ensure_ascii=False)
-        logger.info(f"\n✅ Statistiques sauvegardées dans: {output_file}")
-    except Exception as e:
-        logger.error(f"❌ Erreur lors de la sauvegarde: {e}")
-        return
+    for out_dir in output_dirs:
+        os.makedirs(out_dir, exist_ok=True)
+        output_file = os.path.join(out_dir, "overview-stats.json")
+        try:
+            with open(output_file, 'w', encoding='utf-8') as f:
+                json.dump(overview_stats, f, indent=2, ensure_ascii=False)
+            logger.info(f"✅ Statistiques sauvegardées dans: {output_file}")
+        except Exception as e:
+            logger.error(f"❌ Erreur lors de la sauvegarde dans {output_file}: {e}")
     
     logger.info("\n🎉 Script terminé avec succès!")
 
