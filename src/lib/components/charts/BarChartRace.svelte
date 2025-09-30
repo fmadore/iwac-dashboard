@@ -319,10 +319,13 @@
 
 		const option = {
 			title: {
-				text: formattedTitle,
+				text: String(currentPeriod),
 				left: 'center',
+				top: 10,
 				textStyle: {
-					color: foregroundColor
+					color: foregroundColor,
+					fontSize: 24,
+					fontWeight: 'bold'
 				}
 			},
 			tooltip: {
@@ -337,9 +340,9 @@
 				}
 			},
 			grid: {
-				left: '15%',
+				left: '5%',
 				right: '10%',
-				bottom: '10%',
+				bottom: '5%',
 				top: '15%',
 				containLabel: true
 			},

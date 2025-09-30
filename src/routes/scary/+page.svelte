@@ -671,32 +671,25 @@
 		<!-- Chart -->
 		<Card.Root class="p-6">
 			<div class="space-y-4">
-				<div class="flex items-center justify-between">
-					<div>
-						<h3 class="text-lg font-semibold">
-							{#if viewMode === 'race'}
-								{t('scary.chart_title')}
-							{:else if viewMode === 'country'}
-								{t('scary.country_chart_title', [selectedCountry])}
-							{:else}
-								{t('scary.global_chart_title')}
-							{/if}
-						</h3>
-						<p class="text-sm text-muted-foreground">
-							{#if viewMode === 'race'}
-								{t('scary.chart_description')}
-							{:else if viewMode === 'country'}
-								{t('scary.country_chart_description')}
-							{:else}
-								{t('scary.global_chart_description')}
-							{/if}
-						</p>
-					</div>
-					{#if metadata}
-						<Badge variant="secondary">
-							{t('words.updated')}: {new Date(metadata.generated_at).toLocaleDateString()}
-						</Badge>
-					{/if}
+				<div>
+					<h3 class="text-lg font-semibold">
+						{#if viewMode === 'race'}
+							{t('scary.chart_title')}
+						{:else if viewMode === 'country'}
+							{t('scary.country_chart_title', [selectedCountry])}
+						{:else}
+							{t('scary.global_chart_title')}
+						{/if}
+					</h3>
+					<p class="text-sm text-muted-foreground">
+						{#if viewMode === 'race'}
+							{t('scary.chart_description')}
+						{:else if viewMode === 'country'}
+							{t('scary.country_chart_description')}
+						{:else}
+							{t('scary.global_chart_description')}
+						{/if}
+					</p>
 				</div>
 
 				{#if viewMode === 'race'}
