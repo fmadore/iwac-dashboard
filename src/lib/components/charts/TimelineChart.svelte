@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	// @ts-ignore - echarts uses UMD exports
 	import * as echarts from 'echarts';
 	import { t, languageStore } from '$lib/stores/translationStore.js';
@@ -24,23 +25,36 @@
 	});
 
 	let chartContainer: HTMLDivElement;
-	let chartInstance: echarts.ECharts | null = null;
+	let chartInstance: any = null;
+	let themeClass = $state('');
+	let resizeObserver: ResizeObserver | undefined;
 
-	function getThemeColors() {
-		const style = getComputedStyle(document.documentElement);
-		return {
-			foreground: style.getPropertyValue('--foreground').trim(),
-			muted: style.getPropertyValue('--muted-foreground').trim(),
-			border: style.getPropertyValue('--border').trim(),
-			chart1: style.getPropertyValue('--chart-1').trim(),
-			chart2: style.getPropertyValue('--chart-2').trim(),
-			popover: style.getPropertyValue('--popover').trim(),
-			popoverForeground: style.getPropertyValue('--popover-foreground').trim()
+	// Get computed CSS variable value (same as EChartsBarChart)
+	function getCSSVariable(variable: string): string {
+		if (!browser) return '#000000';
+		const root = document.documentElement;
+		const value = getComputedStyle(root).getPropertyValue(variable).trim();
+		
+		if (value) {
+			return value;
+		}
+
+		const fallbackMap: Record<string, string> = {
+			'--chart-1': '#e8590c',
+			'--chart-2': '#2563eb',
+			'--foreground': '#09090b',
+			'--muted-foreground': '#71717a',
+			'--background': '#ffffff',
+			'--popover': '#ffffff',
+			'--popover-foreground': '#09090b',
+			'--border': '#e4e4e7'
 		};
+
+		return fallbackMap[variable] || value || '#666666';
 	}
 
 	function initChart() {
-		if (!chartContainer) return;
+		if (!chartContainer || !browser) return;
 
 		// Dispose existing instance
 		if (chartInstance) {
@@ -49,8 +63,15 @@
 
 		chartInstance = echarts.init(chartContainer);
 
-		const colors = getThemeColors();
 		const filtered = filteredData();
+
+		// Get fresh CSS variables on each update (important for theme changes)
+		const foregroundColor = getCSSVariable('--foreground');
+		const borderColor = getCSSVariable('--border');
+		const popoverBg = getCSSVariable('--popover');
+		const popoverFg = getCSSVariable('--popover-foreground');
+		const chart1Color = getCSSVariable('--chart-1');
+		const chart2Color = getCSSVariable('--chart-2');
 
 		const option: echarts.EChartsOption = {
 			tooltip: {
@@ -58,19 +79,19 @@
 				axisPointer: {
 					type: 'cross',
 					crossStyle: {
-						color: colors.muted
+						color: borderColor
 					}
 				},
-				backgroundColor: `hsl(${colors.popover})`,
-				borderColor: `hsl(${colors.border})`,
+				backgroundColor: popoverBg,
+				borderColor: borderColor,
 				textStyle: {
-					color: `hsl(${colors.popoverForeground})`
+					color: popoverFg
 				}
 			},
 			legend: {
 				data: [$t('timeline.monthly_additions'), $t('timeline.cumulative_total')],
 				textStyle: {
-					color: `hsl(${colors.foreground})`
+					color: foregroundColor
 				},
 				top: 0
 			},
@@ -89,7 +110,7 @@
 						type: 'shadow'
 					},
 					axisLabel: {
-						color: `hsl(${colors.foreground})`,
+						color: foregroundColor,
 						rotate: 45,
 						formatter: (value: string) => {
 							// Format YYYY-MM to shorter form for readability
@@ -99,7 +120,14 @@
 					},
 					axisLine: {
 						lineStyle: {
-							color: `hsl(${colors.border})`
+							color: borderColor,
+							opacity: 1
+						}
+					},
+					axisTick: {
+						lineStyle: {
+							color: borderColor,
+							opacity: 1
 						}
 					}
 				}
@@ -109,19 +137,26 @@
 					type: 'value',
 					name: $t('timeline.monthly_additions'),
 					nameTextStyle: {
-						color: `hsl(${colors.foreground})`
+						color: foregroundColor
 					},
 					axisLabel: {
-						color: `hsl(${colors.foreground})`
+						color: foregroundColor
 					},
 					axisLine: {
 						lineStyle: {
-							color: `hsl(${colors.border})`
+							color: borderColor,
+							opacity: 1
+						}
+					},
+					axisTick: {
+						lineStyle: {
+							color: borderColor,
+							opacity: 1
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: `hsl(${colors.border})`,
+							color: borderColor,
 							opacity: 0.3
 						}
 					}
@@ -130,14 +165,21 @@
 					type: 'value',
 					name: $t('timeline.cumulative_total'),
 					nameTextStyle: {
-						color: `hsl(${colors.foreground})`
+						color: foregroundColor
 					},
 					axisLabel: {
-						color: `hsl(${colors.foreground})`
+						color: foregroundColor
 					},
 					axisLine: {
 						lineStyle: {
-							color: `hsl(${colors.border})`
+							color: borderColor,
+							opacity: 1
+						}
+					},
+					axisTick: {
+						lineStyle: {
+							color: borderColor,
+							opacity: 1
 						}
 					},
 					splitLine: {
@@ -151,10 +193,11 @@
 					type: 'bar',
 					data: filtered.monthlyAdditions,
 					itemStyle: {
-						color: `hsl(${colors.chart1})`
+						color: chart1Color,
+						borderRadius: [4, 4, 0, 0]
 					},
 					emphasis: {
-						focus: 'series'
+						disabled: true
 					}
 				},
 				{
@@ -163,64 +206,79 @@
 					yAxisIndex: 1,
 					data: filtered.cumulativeTotal,
 					itemStyle: {
-						color: `hsl(${colors.chart2})`
+						color: chart2Color
 					},
 					lineStyle: {
-						width: 3
+						width: 3,
+						color: chart2Color
 					},
 					smooth: true,
 					emphasis: {
-						focus: 'series'
+						disabled: true
 					}
 				}
 			]
 		};
 
-		chartInstance.setOption(option);
+		chartInstance.clear();
+		chartInstance.setOption(option, true);
+	}
 
-		// Handle window resize
-		const resizeObserver = new ResizeObserver(() => {
+	function attachResizeObserver() {
+		if (!chartContainer || resizeObserver) return;
+		resizeObserver = new ResizeObserver(() => {
 			chartInstance?.resize();
 		});
 		resizeObserver.observe(chartContainer);
+	}
 
-		return () => {
-			resizeObserver.disconnect();
-		};
+	function detachResizeObserver() {
+		resizeObserver?.disconnect();
+		resizeObserver = undefined;
 	}
 
 	// Re-render chart when language changes or data changes
 	$effect(() => {
-		if (chartContainer && months.length > 0) {
-			// Track language changes
-			const _ = $languageStore;
-			initChart();
-		}
+		if (!browser || !chartContainer || months.length === 0) return;
+		
+		// Track language changes
+		const _ = $languageStore;
+		initChart();
 	});
 
-	// Listen for theme changes
+	// Initialize chart and watch for theme changes
 	onMount(() => {
-		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		const handleThemeChange = () => {
-			if (chartInstance && months.length > 0) {
-				initChart();
+		if (!browser) return;
+
+		// Initialize theme class
+		themeClass = document.documentElement.className;
+
+		// Initialize chart
+		initChart();
+		attachResizeObserver();
+
+		// Watch for theme changes via MutationObserver
+		const themeObserver = new MutationObserver(() => {
+			const newTheme = document.documentElement.className;
+			if (newTheme !== themeClass) {
+				themeClass = newTheme;
+				if (chartInstance && months.length > 0) {
+					initChart(); // Reinitialize with new theme colors
+				}
 			}
-		};
+		});
 
-		mediaQuery.addEventListener('change', handleThemeChange);
-
-		// Also listen for manual theme changes via data-theme attribute
-		const observer = new MutationObserver(handleThemeChange);
-		observer.observe(document.documentElement, {
+		themeObserver.observe(document.documentElement, {
 			attributes: true,
-			attributeFilter: ['data-theme', 'class']
+			attributeFilter: ['class']
 		});
 
 		return () => {
-			mediaQuery.removeEventListener('change', handleThemeChange);
-			observer.disconnect();
+			themeObserver.disconnect();
+			detachResizeObserver();
 			if (chartInstance) {
 				chartInstance.dispose();
+				chartInstance = null;
 			}
 		};
 	});
