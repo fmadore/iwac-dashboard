@@ -50,7 +50,15 @@ export const translations = {
 		'entity.organizations': 'Organizations',
 		'entity.persons': 'Persons',
 		'entity.topics': 'Topics',
-		'index.top_entity_types_subtitle': 'Distribution of {0} index items by category'
+		'index.top_entity_types_subtitle': 'Distribution of {0} index items by category',
+		'categories.description': 'Document type distribution over time',
+		'categories.stacked_chart_title': 'Documents by Type Over Years',
+		'categories.total_records': 'Total Records',
+		'categories.year_range': 'Year Range',
+		'categories.document_types': 'Document Types',
+		'categories.chart_title': 'Stacked Bar Chart by Type',
+		'categories.chart_description': 'Temporal distribution of document types across the collection',
+		'errors.failed_to_load': 'Failed to load data'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -99,7 +107,15 @@ export const translations = {
 		'entity.organizations': 'Organisations',
 		'entity.persons': 'Personnes',
 		'entity.topics': 'Sujets',
-		'index.top_entity_types_subtitle': 'Répartition des {0} éléments de l\'index par catégorie'
+		'index.top_entity_types_subtitle': 'Répartition des {0} éléments de l\'index par catégorie',
+		'categories.description': 'Distribution des types de documents au fil du temps',
+		'categories.stacked_chart_title': 'Documents par type au fil des années',
+		'categories.total_records': 'Total des enregistrements',
+		'categories.year_range': 'Période',
+		'categories.document_types': 'Types de documents',
+		'categories.chart_title': 'Graphique en barres empilées par type',
+		'categories.chart_description': 'Distribution temporelle des types de documents dans la collection',
+		'errors.failed_to_load': 'Échec du chargement des données'
 	}
 } as const;
 
