@@ -68,6 +68,10 @@
       '--chart-4': '#f59e0b',
       '--chart-5': '#dc2626',
       '--chart-6': '#ec4899',
+      '--chart-7': '#06b6d4',
+      '--chart-8': '#f472b6',
+      '--chart-9': '#84cc16',
+      '--chart-10': '#10b981',
       '--foreground': '#09090b',
       '--muted-foreground': '#71717a',
       '--background': '#ffffff',
@@ -103,7 +107,7 @@
     }
 
     // Fallback to cycling through chart colors
-    const chartColors = ['--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5', '--chart-6'];
+    const chartColors = ['--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5', '--chart-6', '--chart-7', '--chart-8', '--chart-9', '--chart-10'];
     return getCSSVariable(chartColors[index % chartColors.length]);
   }
 

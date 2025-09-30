@@ -16,7 +16,7 @@
 			.map((item, index) => ({
 				label: item.label,
 				value: item.value,
-				color: `var(--chart-${(index % 5) + 1})`,
+				color: `var(--chart-${(index % 10) + 1})`,
 				percentage: item.percentage?.toFixed?.(1) ?? undefined
 			}))
 			.sort((a, b) => b.value - a.value)
@@ -26,7 +26,7 @@
 	const colorMap = $derived(() => {
 		const map: Record<string, string> = {};
 		filteredChartData().forEach((item, index) => {
-			map[item.label] = `var(--chart-${(index % 5) + 1})`;
+			map[item.label] = `var(--chart-${(index % 10) + 1})`;
 		});
 		return map;
 	});
@@ -65,7 +65,7 @@
 		return sourceData.map((item, index) => ({
 			label: item.label,
 			value: item.value,
-			color: `var(--chart-${(index % 5) + 1})`,
+			color: `var(--chart-${(index % 10) + 1})`,
 			percentage: item.percentage?.toFixed?.(1) ?? undefined
 		})).sort((a, b) => b.value - a.value);
 	});
