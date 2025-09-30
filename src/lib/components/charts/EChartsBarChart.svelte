@@ -67,6 +67,7 @@
       '--chart-3': '#16a34a',
       '--chart-4': '#f59e0b',
       '--chart-5': '#dc2626',
+      '--chart-6': '#ec4899',
       '--foreground': '#09090b',
       '--muted-foreground': '#71717a',
       '--background': '#ffffff',
@@ -80,11 +81,12 @@
 
   // Color mapping based on original English keys (language-independent)
   const categoryColorMap: Record<string, string> = {
-    'Events': '--chart-1',
+    'Persons': '--chart-1',
     'Locations': '--chart-2',
     'Organizations': '--chart-3',
-    'Persons': '--chart-4',
-    'Topics': '--chart-5'
+    'Authority Files': '--chart-4',
+    'Events': '--chart-5',
+    'Topics': '--chart-6'
   };
 
   // Get color for each category based on originalKey
@@ -101,7 +103,7 @@
     }
 
     // Fallback to cycling through chart colors
-    const chartColors = ['--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5'];
+    const chartColors = ['--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5', '--chart-6'];
     return getCSSVariable(chartColors[index % chartColors.length]);
   }
 
