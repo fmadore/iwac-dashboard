@@ -181,7 +181,7 @@
 						<label for="typeSelect" class="text-sm font-medium">{t('timeline.by_type')}:</label>
 						<Select.Root bind:value={selectedType} type="single">
 							<Select.Trigger class="w-[200px]" id="typeSelect">
-								{selectedTypeLabel || $t('filters.all_countries')}
+								{selectedTypeLabel || t('filters.all_countries')}
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Group>
@@ -199,7 +199,7 @@
 						<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
 						<Select.Root bind:value={selectedCountry} type="single">
 							<Select.Trigger class="w-[200px]" id="countrySelect">
-								{selectedCountry || $t('filters.all_countries')}
+								{selectedCountry || t('filters.all_countries')}
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Group>

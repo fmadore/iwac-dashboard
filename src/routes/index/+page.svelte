@@ -29,7 +29,7 @@
     const currentLang = languageStore.current;
     
     const translated = rawChartData.map(item => ({
-      category: entityTranslationMap[item.category] ? $t(entityTranslationMap[item.category]) : item.category,
+      category: entityTranslationMap[item.category] ? t(entityTranslationMap[item.category]) : item.category,
       documents: item.documents,
       originalKey: item.category // Keep original for color mapping
     }));
@@ -69,7 +69,7 @@
       fetchError = null;
     } catch (error) {
       console.error('Failed to load index-types.json', error);
-      fetchError = $t('common.error');
+      fetchError = t('common.error');
       rawChartData = [];
     } finally {
       isLoading = false;

@@ -54,7 +54,7 @@
       rows = json;
     } catch (e) {
       console.error(e);
-      error = $t('table.load_error');
+      error = t('table.load_error');
     } finally {
       loading = false;
     }
@@ -139,7 +139,7 @@
       class="max-w-md min-w-0 flex-shrink"
     />
     <div class="text-sm text-muted-foreground whitespace-nowrap">
-      {loading ? $t('common.loading') : error ? error : `${startIndex + 1}-${endIndex} of ${sorted.length} entries`}
+      {loading ? t('common.loading') : error ? error : `${startIndex + 1}-${endIndex} of ${sorted.length} entries`}
     </div>
   </div>
 

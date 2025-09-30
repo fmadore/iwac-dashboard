@@ -89,7 +89,7 @@
 				}
 			},
 			legend: {
-				data: [$t('timeline.monthly_additions'), $t('timeline.cumulative_total')],
+				data: [t('timeline.monthly_additions'), t('timeline.cumulative_total')],
 				textStyle: {
 					color: foregroundColor
 				},
@@ -135,7 +135,7 @@
 			yAxis: [
 				{
 					type: 'value',
-					name: $t('timeline.monthly_additions'),
+					name: t('timeline.monthly_additions'),
 					nameTextStyle: {
 						color: foregroundColor
 					},
@@ -163,7 +163,7 @@
 				},
 				{
 					type: 'value',
-					name: $t('timeline.cumulative_total'),
+					name: t('timeline.cumulative_total'),
 					nameTextStyle: {
 						color: foregroundColor
 					},
@@ -189,7 +189,7 @@
 			],
 			series: [
 				{
-					name: $t('timeline.monthly_additions'),
+					name: t('timeline.monthly_additions'),
 					type: 'bar',
 					data: filtered.monthlyAdditions,
 					itemStyle: {
@@ -201,7 +201,7 @@
 					}
 				},
 				{
-					name: $t('timeline.cumulative_total'),
+					name: t('timeline.cumulative_total'),
 					type: 'line',
 					yAxisIndex: 1,
 					data: filtered.cumulativeTotal,
