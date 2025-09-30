@@ -83,7 +83,7 @@
 
 <div class="space-y-6">
   <div>
-    <h2 class="text-3xl font-bold tracking-tight">{t('nav.index')}</h2>
+    <h2 class="text-3xl font-bold tracking-tight">{t('nav.entities')}</h2>
     <p class="text-muted-foreground">{t('index.top_entity_types_subtitle', [totalIndexItemsLabel])}</p>
   </div>
 
