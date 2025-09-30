@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
@@ -87,10 +88,10 @@
 
 			// Load all data files
 			const [globalResponse, countryResponse, temporalResponse, metadataResponse] = await Promise.all([
-				fetch('/data/wordcloud-global.json'),
-				fetch('/data/wordcloud-countries.json'),
-				fetch('/data/wordcloud-temporal.json'),
-				fetch('/data/wordcloud-metadata.json')
+				fetch(`${base}/data/wordcloud-global.json`),
+				fetch(`${base}/data/wordcloud-countries.json`),
+				fetch(`${base}/data/wordcloud-temporal.json`),
+				fetch(`${base}/data/wordcloud-metadata.json`)
 			]);
 
 			if (!globalResponse.ok) throw new Error('Failed to load global wordcloud data');

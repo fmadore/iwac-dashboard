@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import {
 		BarChart3,
@@ -14,13 +15,13 @@
 	import { t } from '$lib/stores/translationStore.js';
 
 	const navItems = [
-		{ href: '/', icon: Home, label: 'nav.overview' },
-		{ href: '/countries', icon: Globe2, label: 'nav.countries' },
-		{ href: '/languages', icon: Languages, label: 'nav.languages' },
-		{ href: '/timeline', icon: Calendar, label: 'nav.timeline' },
-		{ href: '/index', icon: FileType, label: 'nav.index' },
-		{ href: '/categories', icon: Tag, label: 'nav.categories' },
-		{ href: '/words', icon: BookOpen, label: 'nav.words' }
+		{ href: `${base}/`, icon: Home, label: 'nav.overview' },
+		{ href: `${base}/countries`, icon: Globe2, label: 'nav.countries' },
+		{ href: `${base}/languages`, icon: Languages, label: 'nav.languages' },
+		{ href: `${base}/timeline`, icon: Calendar, label: 'nav.timeline' },
+		{ href: `${base}/index`, icon: FileType, label: 'nav.index' },
+		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' },
+		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' }
 	];
 </script>
 

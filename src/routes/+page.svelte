@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { itemsStore, statsData } from '$lib/stores/itemsStore.js';
 	import { t } from '$lib/stores/translationStore.js';
