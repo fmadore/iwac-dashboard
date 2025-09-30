@@ -15,6 +15,7 @@
 
   // Map English entity names to translation keys
   const entityTranslationMap: Record<string, string> = {
+    'Authority Files': 'entity.authority files',
     'Events': 'entity.events',
     'Locations': 'entity.locations',
     'Organizations': 'entity.organizations',

@@ -237,7 +237,7 @@
       grid: {
         left: '3%',
         right: '4%',
-        bottom: '15%',
+        bottom: '20%',
         top: '10%',
         containLabel: true
       },
@@ -316,8 +316,12 @@
             }
           })),
           emphasis: {
+            focus: 'series',
             itemStyle: {
-              opacity: 0.8
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowOffsetY: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.3)'
             }
           },
           animationDuration: animationDuration,
