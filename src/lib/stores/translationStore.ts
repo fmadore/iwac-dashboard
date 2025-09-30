@@ -67,7 +67,19 @@ export const translations = {
 		'filters.all_countries': 'All Countries',
 		'filters.year_range': 'Year Range',
 		'filters.clear': 'Clear Filters',
-		'errors.failed_to_load': 'Failed to load data'
+		'errors.failed_to_load': 'Failed to load data',
+		'timeline.title': 'Collection Growth',
+		'timeline.description': 'Track how the IWAC collection has grown over time',
+		'timeline.monthly_additions': 'Monthly Additions',
+		'timeline.cumulative_total': 'Cumulative Total',
+		'timeline.total_records': 'Total Records',
+		'timeline.month_range': 'Time Period',
+		'timeline.chart_title': 'Collection Growth Over Time',
+		'timeline.chart_description': 'Monthly additions and cumulative total of documents in the collection',
+		'timeline.additions': 'Additions',
+		'timeline.total': 'Total',
+		'timeline.by_type': 'By Document Type',
+		'timeline.by_country': 'By Country'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -133,7 +145,19 @@ export const translations = {
 		'filters.all_countries': 'Tous les pays',
 		'filters.year_range': 'Période',
 		'filters.clear': 'Effacer les filtres',
-		'errors.failed_to_load': 'Échec du chargement des données'
+		'errors.failed_to_load': 'Échec du chargement des données',
+		'timeline.title': 'Croissance de la collection',
+		'timeline.description': 'Suivez l\'évolution de la collection IWAC au fil du temps',
+		'timeline.monthly_additions': 'Ajouts mensuels',
+		'timeline.cumulative_total': 'Total cumulatif',
+		'timeline.total_records': 'Total des enregistrements',
+		'timeline.month_range': 'Période temporelle',
+		'timeline.chart_title': 'Croissance de la collection au fil du temps',
+		'timeline.chart_description': 'Ajouts mensuels et total cumulatif des documents dans la collection',
+		'timeline.additions': 'Ajouts',
+		'timeline.total': 'Total',
+		'timeline.by_type': 'Par type de document',
+		'timeline.by_country': 'Par pays'
 	}
 } as const;
 
