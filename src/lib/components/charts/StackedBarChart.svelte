@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	// @ts-ignore - echarts uses UMD exports
 	import * as echarts from 'echarts';
 	import { languageStore } from '$lib/stores/translationStore.js';
 
@@ -25,7 +26,7 @@
 	}: Props = $props();
 
 	let chartContainer: HTMLDivElement;
-	let chartInstance: echarts.ECharts | null = null;
+	let chartInstance: any = null;
 
 	// Default colors for document types
 	const defaultColors: Record<string, string> = {
