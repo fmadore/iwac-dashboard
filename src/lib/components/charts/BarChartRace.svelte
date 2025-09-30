@@ -63,6 +63,12 @@
 		showLabels?: boolean;
 		
 		/**
+		 * Make data cumulative over time
+		 * @default false
+		 */
+		cumulative?: boolean;
+		
+		/**
 		 * Current period index (for external control)
 		 */
 		currentIndex?: number;
@@ -89,6 +95,7 @@
 		height = 600,
 		barColor = 'var(--chart-1)',
 		showLabels = true,
+		cumulative = false,
 		currentIndex = $bindable(0),
 		onPeriodChange,
 		onComplete
@@ -99,9 +106,89 @@
 	let chartInstance: any = null;
 	let isPlaying = $state(false);
 	let playInterval: number | null = null;
+	let themeClass = $state('');
+	let resizeObserver: ResizeObserver | undefined;
+	let previousThemeClass: string | null = null;
+
+	// Canvas for parsing CSS colors
+	const colorParsingCanvas = browser ? document.createElement('canvas') : null;
+	const colorParsingContext = colorParsingCanvas?.getContext('2d', { willReadFrequently: false });
 
 	// Derived current period
 	const currentPeriod = $derived(periods[currentIndex]);
+
+	// Get computed CSS variable value
+	function parseColor(value: string): string | null {
+		if (!colorParsingContext) return null;
+		try {
+			colorParsingContext.fillStyle = '#000000';
+			colorParsingContext.fillStyle = value;
+			return colorParsingContext.fillStyle || null;
+		} catch (error) {
+			return null;
+		}
+	}
+
+	function getCSSVariable(variable: string): string {
+		if (!browser) return '#000000';
+		const root = document.documentElement;
+		const value = getComputedStyle(root).getPropertyValue(variable).trim();
+
+		if (value) {
+			const parsed = parseColor(value);
+			if (parsed) {
+				return parsed;
+			}
+		}
+
+		const fallbackMap: Record<string, string> = {
+			'--chart-1': '#e8590c',
+			'--chart-2': '#2563eb',
+			'--chart-3': '#16a34a',
+			'--chart-4': '#f59e0b',
+			'--chart-5': '#dc2626',
+			'--foreground': '#09090b',
+			'--muted-foreground': '#71717a',
+			'--background': '#ffffff',
+			'--popover': '#ffffff',
+			'--popover-foreground': '#09090b',
+			'--border': '#e4e4e7'
+		};
+
+		return fallbackMap[variable] || value || '#666666';
+	}
+
+	// Compute cumulative data if needed
+	function getCumulativeData(): Record<string, { data: [string, number][]; year?: number; [key: string]: any }> {
+		if (!cumulative) return data;
+
+		const cumulativeData: Record<string, { data: [string, number][]; year?: number; [key: string]: any }> = {};
+		const termTotals: Map<string, number> = new Map();
+
+		for (let i = 0; i <= currentIndex; i++) {
+			const period = periods[i];
+			const periodData = data[String(period)];
+			
+			if (periodData && periodData.data) {
+				// Accumulate counts for each term
+				for (const [term, count] of periodData.data) {
+					const current = termTotals.get(term) || 0;
+					termTotals.set(term, current + count);
+				}
+			}
+		}
+
+		// Sort by total count and return top items
+		const sortedTerms = Array.from(termTotals.entries())
+			.sort((a, b) => b[1] - a[1]);
+
+		cumulativeData[String(currentPeriod)] = {
+			data: sortedTerms,
+			year: data[String(currentPeriod)]?.year
+		};
+
+		return cumulativeData;
+	}
 
 	/**
 	 * Initialize ECharts instance
@@ -121,28 +208,38 @@
 			// Initialize new chart instance
 			chartInstance = echarts.init(chartContainer);
 
+			// Attach resize observer
+			attachResizeObserver();
+
 			// Render initial chart
 			renderChart();
-
-			// Handle window resize
-			const handleResize = () => {
-				if (chartInstance) {
-					chartInstance.resize();
-				}
-			};
-			window.addEventListener('resize', handleResize);
-
-			// Return cleanup function
-			return () => {
-				window.removeEventListener('resize', handleResize);
-				if (chartInstance) {
-					chartInstance.dispose();
-					chartInstance = null;
-				}
-			};
 		} catch (err) {
 			console.error('Error initializing chart:', err);
 		}
+	}
+
+	function attachResizeObserver() {
+		if (!chartContainer || resizeObserver) return;
+		resizeObserver = new ResizeObserver(() => {
+			chartInstance?.resize();
+		});
+		resizeObserver.observe(chartContainer);
+	}
+
+	function detachResizeObserver() {
+		resizeObserver?.disconnect();
+		resizeObserver = undefined;
+	}
+
+	function destroyChart() {
+		detachResizeObserver();
+		chartInstance?.dispose();
+		chartInstance = null;
+	}
+
+	async function reinitializeChart() {
+		destroyChart();
+		await initChart();
 	}
 
 	/**
@@ -151,7 +248,10 @@
 	function renderChart() {
 		if (!chartInstance || !currentPeriod) return;
 
-		const periodData = data[String(currentPeriod)];
+		// Get data (cumulative or regular)
+		const displayData = cumulative ? getCumulativeData() : data;
+		const periodData = displayData[String(currentPeriod)];
+		
 		if (!periodData || !periodData.data || periodData.data.length === 0) {
 			return;
 		}
@@ -164,12 +264,21 @@
 		// Format title with current period
 		const formattedTitle = title.replace('{0}', String(currentPeriod));
 
+		// Resolve CSS variables to actual colors
+		const foregroundColor = getCSSVariable('--foreground');
+		const borderColor = getCSSVariable('--border');
+		const popoverBg = getCSSVariable('--popover');
+		const popoverFg = getCSSVariable('--popover-foreground');
+		const resolvedBarColor = barColor.startsWith('var(--') 
+			? getCSSVariable(barColor.slice(4, -1)) 
+			: barColor;
+
 		const option = {
 			title: {
 				text: formattedTitle,
 				left: 'center',
 				textStyle: {
-					color: 'var(--foreground)'
+					color: foregroundColor
 				}
 			},
 			tooltip: {
@@ -177,10 +286,10 @@
 				axisPointer: {
 					type: 'shadow'
 				},
-				backgroundColor: 'var(--popover)',
-				borderColor: 'var(--border)',
+				backgroundColor: popoverBg,
+				borderColor: borderColor,
 				textStyle: {
-					color: 'var(--popover-foreground)'
+					color: popoverFg
 				}
 			},
 			grid: {
@@ -194,11 +303,18 @@
 				type: 'value',
 				axisLine: {
 					lineStyle: {
-						color: 'var(--border)'
+						color: borderColor,
+						opacity: 1
 					}
 				},
 				axisLabel: {
-					color: 'var(--foreground)'
+					color: foregroundColor
+				},
+				splitLine: {
+					lineStyle: {
+						color: borderColor,
+						opacity: 0.3
+					}
 				}
 			},
 			yAxis: {
@@ -207,11 +323,12 @@
 				inverse: true,
 				axisLine: {
 					lineStyle: {
-						color: 'var(--border)'
+						color: borderColor,
+						opacity: 1
 					}
 				},
 				axisLabel: {
-					color: 'var(--foreground)'
+					color: foregroundColor
 				}
 			},
 			series: [
@@ -219,15 +336,23 @@
 					type: 'bar',
 					data: values,
 					itemStyle: {
-						color: barColor
+						color: resolvedBarColor,
+						borderRadius: [0, 4, 4, 0]
 					},
 					label: {
 						show: showLabels,
 						position: 'right',
-						color: 'var(--foreground)'
+						color: foregroundColor,
+						formatter: '{c}'
+					},
+					emphasis: {
+						itemStyle: {
+							color: resolvedBarColor,
+							opacity: 0.8
+						}
 					},
 					animationDuration: animationDuration,
-					animationEasing: 'linear'
+					animationEasing: 'cubicOut'
 				}
 			]
 		};
@@ -314,11 +439,7 @@
 	// Initialize chart on mount
 	$effect(() => {
 		if (browser && chartContainer) {
-			initChart().then((cleanup) => {
-				if (cleanup) {
-					return cleanup;
-				}
-			});
+			initChart();
 		}
 	});
 
@@ -327,9 +448,42 @@
 		const _ = currentIndex;
 		const _data = data;
 		const _period = currentPeriod;
+		const _cumulative = cumulative;
 
 		if (chartInstance) {
 			renderChart();
+		}
+	});
+
+	// Watch for theme changes
+	onMount(() => {
+		if (browser) {
+			themeClass = document.documentElement.className;
+
+			const observer = new MutationObserver(() => {
+				themeClass = document.documentElement.className;
+			});
+
+			observer.observe(document.documentElement, {
+				attributes: true,
+				attributeFilter: ['class']
+			});
+
+			return () => observer.disconnect();
+		}
+	});
+
+	// Reinitialize chart when theme changes
+	$effect(() => {
+		if (!browser) return;
+
+		const currentTheme = themeClass;
+		if (currentTheme === previousThemeClass) return;
+
+		previousThemeClass = currentTheme;
+
+		if (chartInstance) {
+			reinitializeChart();
 		}
 	});
 
@@ -344,9 +498,7 @@
 	onMount(() => {
 		return () => {
 			pause();
-			if (chartInstance) {
-				chartInstance.dispose();
-			}
+			destroyChart();
 		};
 	});
 

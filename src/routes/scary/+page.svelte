@@ -596,6 +596,7 @@
 						maxBars={10}
 						{height}
 						barColor="var(--chart-1)"
+						cumulative={true}
 						bind:currentIndex={currentYearIndex}
 						onPeriodChange={(index, period) => {
 							console.log(`Period changed to: ${period}`);
