@@ -22,7 +22,8 @@ const config = {
 		prerender: {
 			handleMissingId: 'warn',
 			handleHttpError: 'warn',
-			handleUnseenRoutes: 'warn'
+			handleUnseenRoutes: 'ignore',
+			crawl: true
 		}
 	}
 };

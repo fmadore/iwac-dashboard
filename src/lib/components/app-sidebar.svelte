@@ -19,7 +19,7 @@
 		{ href: `${base}/countries`, icon: Globe2, label: 'nav.countries' },
 		{ href: `${base}/languages`, icon: Languages, label: 'nav.languages' },
 		{ href: `${base}/timeline`, icon: Calendar, label: 'nav.timeline' },
-		{ href: `${base}/index`, icon: FileType, label: 'nav.index' },
+		{ href: `${base}/entities`, icon: FileType, label: 'nav.entities' },
 		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' },
 		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' }
 	];
