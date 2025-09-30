@@ -84,6 +84,7 @@ This project is an **Islam West Africa Collection (IWAC) Dashboard** - a static 
 --accent, --accent-foreground
 --destructive
 --border, --input, --ring
+--popover, --popover-foreground
 --chart-1, --chart-2, --chart-3, --chart-4, --chart-5
 --country-color-default
 --country-color-cote-divoire
@@ -102,6 +103,12 @@ This project is an **Islam West Africa Collection (IWAC) Dashboard** - a static 
   </div>
 </div>
 ```
+
+**Important for Charts/Visualizations:**
+- Use `--foreground` for all text/labels (readable in both light and dark themes)
+- Use `--border` for axis lines, grid lines, and borders
+- Use `--popover` and `--popover-foreground` for tooltips
+- Never hardcode colors like `#000000` or `#666666`
 
 #### ❌ WRONG:
 ```svelte
@@ -251,9 +258,16 @@ python generate_wordcloud.py
 
 ### 8. Internationalization (i18n)
 
-The project supports English and French via a simple store-based system.
+**The project is fully bilingual: English and French.** All user-facing text must be translatable.
 
-#### Usage:
+#### Translation System:
+- Uses a simple Svelte store-based system (`translationStore.ts`)
+- Translations defined in `src/lib/stores/translationStore.ts`
+- Language toggle component in header (`language-toggle.svelte`)
+- Default language: English (`en`)
+- Supported languages: `'en' | 'fr'`
+
+#### Usage Pattern:
 ```svelte
 <script>
   import { t, languageStore } from '$lib/stores/translationStore.js';
@@ -262,9 +276,64 @@ The project supports English and French via a simple store-based system.
 <h1>{$t('app.title')}</h1>
 <p>{$t('stats.total_items_desc')}</p>
 
-<!-- Toggle language -->
-{$languageStore} <!-- 'en' or 'fr' -->
+<!-- Check current language -->
+{#if $languageStore === 'en'}
+  <p>English content</p>
+{:else}
+  <p>Contenu français</p>
+{/if}
 ```
+
+#### Making Charts Reactive to Language Changes:
+Charts and visualizations must update when the language changes. Use `$derived` or `$effect` with `$languageStore`:
+
+```svelte
+<script>
+  import { t, languageStore } from '$lib/stores/translationStore.js';
+  
+  // Make labels reactive to language changes
+  const categoryLabels = $derived(() => {
+    const _ = $languageStore; // Track language changes
+    return data.map(d => $t(`category.${d.key}`));
+  });
+  
+  // Or use $effect to re-render chart
+  $effect(() => {
+    if (chartInstance) {
+      const _ = $languageStore; // Track language changes
+      updateChart(); // Re-render with new translations
+    }
+  });
+</script>
+```
+
+#### Adding New Translations:
+1. Add translation keys to both `en` and `fr` objects in `translationStore.ts`
+2. Use dot notation for namespacing (e.g., `'nav.overview'`, `'stats.total_items'`)
+3. Support parameter substitution with `{0}`, `{1}`, etc.
+
+```typescript
+// In translationStore.ts
+export const translations = {
+  en: {
+    'my.new_key': 'Hello {0}!',
+  },
+  fr: {
+    'my.new_key': 'Bonjour {0}!',
+  }
+};
+
+// In component
+{$t('my.new_key', ['World'])} // "Hello World!" or "Bonjour World!"
+```
+
+#### Important Rules:
+- ❌ **NEVER** hardcode English-only text in components
+- ✅ **ALWAYS** add translation keys for new user-facing text
+- ✅ **ALWAYS** provide both English AND French translations
+- ✅ Use the `$t()` function for all visible text
+- ✅ Make charts/visualizations reactive to `$languageStore` changes
+- ✅ Test with both languages when adding new features
 
 ### 9. Important Constraints
 
@@ -272,9 +341,10 @@ The project supports English and French via a simple store-based system.
 2. **No Server-Side Routes** - No `+server.ts` files or API routes
 3. **JSON Files Only** - Data must be in static JSON format
 4. **No Dynamic Imports of Data** - All data loaded via `fetch()` from static files
-5. **Mobile-First** - Always consider responsive design
-6. **Accessibility** - Use semantic HTML and ARIA attributes
-7. **TypeScript Strict** - Maintain type safety throughout
+5. **Bilingual Support Required** - All user-facing text must support English and French
+6. **Mobile-First** - Always consider responsive design
+7. **Accessibility** - Use semantic HTML and ARIA attributes
+8. **TypeScript Strict** - Maintain type safety throughout
 
 ### 10. Common Patterns
 
@@ -355,9 +425,10 @@ Before completing any task, verify:
 - ✅ Using CSS variables from our theme (no hardcoded colors)
 - ✅ Data loaded from static JSON files
 - ✅ Page has `export const prerender = true;`
+- ✅ All text uses `$t()` with translation keys (no hardcoded English text)
+- ✅ Both English and French translations provided
 - ✅ Responsive design (mobile-first)
 - ✅ TypeScript types defined
-- ✅ Internationalization keys used where appropriate
 - ✅ Accessibility attributes included
 
 ## Additional Notes
