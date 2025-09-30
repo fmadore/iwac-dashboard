@@ -1,17 +1,17 @@
 {
   "labels": [
-    "Personnes",
-    "Lieux",
-    "Organisations",
-    "Événements",
-    "Sujets"
+    "Persons",
+    "Locations",
+    "Organizations",
+    "Events",
+    "Topics"
   ],
   "values": [
     2719,
     682,
-    411,
+    410,
     235,
     214
   ],
-  "total": 4261
+  "total": 4260
 }

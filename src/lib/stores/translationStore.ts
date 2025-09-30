@@ -27,6 +27,7 @@ export const translations = {
 		'chart.percentage': 'Percentage',
 		'chart.documents': 'Documents',
 		'chart.no_data': 'No data available',
+		'chart.documents_by_category_aria': 'Bar chart showing document counts by category',
 		'common.loading': 'Loading...',
 		'common.error': 'Error loading data',
 		'common.search': 'Search...',
@@ -43,11 +44,13 @@ export const translations = {
 		'table.first': 'First occurrence',
 		'table.last': 'Last occurrence',
 		'table.countries': 'Countries',
+		'entity.authority files': 'Authority Files',
 		'entity.events': 'Events',
 		'entity.locations': 'Locations',
 		'entity.organizations': 'Organizations',
 		'entity.persons': 'Persons',
-		'entity.topics': 'Topics'
+		'entity.topics': 'Topics',
+		'index.top_entity_types_subtitle': 'Distribution of {0} index items by category'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
@@ -73,6 +76,7 @@ export const translations = {
 		'chart.percentage': 'Pourcentage',
 		'chart.documents': 'Documents',
 		'chart.no_data': 'Aucune donnees disponibles',
+		'chart.documents_by_category_aria': 'Diagramme en barres montrant le nombre de documents par catégorie',
 		'common.loading': 'Chargement...',
 		'common.error': 'Erreur lors du chargement des données',
 		'common.search': 'Rechercher...',
@@ -89,11 +93,13 @@ export const translations = {
 		'table.first': 'Première occurrence',
 		'table.last': 'Dernière occurrence',
 		'table.countries': 'Pays',
+		'entity.authority files': "Notices d'autorité",
 		'entity.events': 'Événements',
 		'entity.locations': 'Lieux',
 		'entity.organizations': 'Organisations',
 		'entity.persons': 'Personnes',
-		'entity.topics': 'Sujets'
+		'entity.topics': 'Sujets',
+		'index.top_entity_types_subtitle': 'Répartition des {0} éléments de l\'index par catégorie'
 	}
 } as const;
 

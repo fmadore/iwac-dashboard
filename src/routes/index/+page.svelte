@@ -23,14 +23,33 @@
   };
 
   // Reactive chart data that updates with language changes
-  const chartData = $derived(() => {
+  const chartData = $derived.by(() => {
     // Access languageStore to make this reactive
-    const _ = $languageStore;
-    return rawChartData.map(item => ({
+    const currentLang = $languageStore;
+    
+    const translated = rawChartData.map(item => ({
       category: entityTranslationMap[item.category] ? $t(entityTranslationMap[item.category]) : item.category,
       documents: item.documents,
       originalKey: item.category // Keep original for color mapping
     }));
+    
+    console.log('🌐 ChartData Derived', {
+      currentLang,
+      rawData: rawChartData.map(d => d.category),
+      translatedData: translated.map(d => d.category)
+    });
+    
+    return translated;
+  });
+
+  const totalIndexItems = $derived.by(() =>
+    rawChartData.reduce((sum, item) => sum + item.documents, 0)
+  );
+
+  const totalIndexItemsLabel = $derived.by(() => {
+    const currentLang = $languageStore;
+    const locale = currentLang === 'fr' ? 'fr-FR' : 'en-US';
+    return totalIndexItems.toLocaleString(locale);
   });
 
   async function loadChartData() {
@@ -64,7 +83,7 @@
 <div class="space-y-6">
   <div>
     <h2 class="text-3xl font-bold tracking-tight">{$t('nav.index')}</h2>
-    <p class="text-muted-foreground">Top entity types by count</p>
+    <p class="text-muted-foreground">{$t('index.top_entity_types_subtitle', [totalIndexItemsLabel])}</p>
   </div>
 
   <Card class="p-4">
@@ -76,14 +95,14 @@
       <div class="grid h-96 place-items-center text-sm text-destructive">
         {fetchError}
       </div>
-    {:else if !chartData().length}
+    {:else if !chartData.length}
       <div class="grid h-96 place-items-center text-sm text-muted-foreground">
         {$t('chart.no_data')}
       </div>
     {:else}
       <div class="w-full h-96">
         <EChartsBarChart 
-          data={chartData()}
+          data={chartData}
           height={384}
           animationDuration={750}
           useMultipleColors={true}

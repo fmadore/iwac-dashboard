@@ -112,12 +112,27 @@ def build_bar_chart_json(df: "pd.DataFrame") -> Dict[str, Any]:
     if not type_col:
         raise RuntimeError("Could not find a Type column in the index subset.")
 
-    # Exclude authority records for bar chart
-    filtered = df[df[type_col] != EXCLUDED_TYPE_FOR_BARCHART].copy()
-    counts = filtered[type_col].value_counts().sort_values(ascending=False)
+    # Include all records including authority records for bar chart
+    counts = df[type_col].value_counts().sort_values(ascending=False)
+
+    # Map French labels from HuggingFace dataset to English keys for i18n
+    french_to_english_keys = {
+        "Personnes": "Persons",
+        "Lieux": "Locations",
+        "Organisations": "Organizations",
+        "Événements": "Events",
+        "Sujets": "Topics",
+        "Notices d'autorité": "Authority Files",
+    }
+    
+    # Convert French labels to English keys
+    english_labels = [
+        french_to_english_keys.get(label, label)  # Use mapping or keep original if not found
+        for label in counts.index.tolist()
+    ]
 
     result = {
-        "labels": counts.index.tolist(),
+        "labels": english_labels,
         "values": counts.values.tolist(),
         "total": int(counts.sum()),
     }
