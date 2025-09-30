@@ -46,7 +46,11 @@
         4435,
         4436
       ],
-      "total_records": 4436
+      "total_records": 4436,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Benin": {
       "months": [
@@ -94,7 +98,11 @@
         2136,
         2136
       ],
-      "total_records": 2136
+      "total_records": 2136,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Togo": {
       "months": [
@@ -142,7 +150,11 @@
         1736,
         1736
       ],
-      "total_records": 1736
+      "total_records": 1736,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Côte D'Ivoire": {
       "months": [
@@ -190,7 +202,11 @@
         4425,
         4439
       ],
-      "total_records": 4439
+      "total_records": 4439,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Niger": {
       "months": [
@@ -238,7 +254,11 @@
         1286,
         1286
       ],
-      "total_records": 1286
+      "total_records": 1286,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Nigeria": {
       "months": [
@@ -286,7 +306,11 @@
         77,
         77
       ],
-      "total_records": 77
+      "total_records": 77,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Bénin": {
       "months": [
@@ -334,7 +358,11 @@
         94,
         94
       ],
-      "total_records": 94
+      "total_records": 94,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Unknown": {
       "months": [
@@ -382,7 +410,11 @@
         11,
         12
       ],
-      "total_records": 12
+      "total_records": 12,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     }
   },
   "countries": [
@@ -395,5 +427,5 @@
     "Togo",
     "Unknown"
   ],
-  "generated_at": "2025-09-30T10:22:18.787274"
+  "generated_at": "2025-09-30T10:37:44.432268"
 }

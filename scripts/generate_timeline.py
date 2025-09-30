@@ -250,7 +250,11 @@ def generate_type_faceted_timeline(all_records: List[Dict[str, Any]]) -> Dict[st
             "months": all_months,
             "monthly_additions": monthly_additions,
             "cumulative_total": cumulative_total,
-            "total_records": sum(month_data.values())
+            "total_records": sum(month_data.values()),
+            "month_range": {
+                "min": all_months[0] if all_months else None,
+                "max": all_months[-1] if all_months else None
+            }
         }
     
     result = {
@@ -302,7 +306,11 @@ def generate_country_faceted_timeline(all_records: List[Dict[str, Any]]) -> Dict
             "months": all_months,
             "monthly_additions": monthly_additions,
             "cumulative_total": cumulative_total,
-            "total_records": sum(month_data.values())
+            "total_records": sum(month_data.values()),
+            "month_range": {
+                "min": all_months[0] if all_months else None,
+                "max": all_months[-1] if all_months else None
+            }
         }
     
     result = {

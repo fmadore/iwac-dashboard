@@ -13,7 +13,7 @@
 
 	// Filter data to start from April 2024 (2024-04)
 	const startMonth = '2024-04';
-	const filteredData = $derived(() => {
+	const filteredData = $derived.by(() => {
 		const startIndex = months.findIndex(m => m >= startMonth);
 		if (startIndex === -1) return { months, monthlyAdditions, cumulativeTotal };
 		
@@ -63,7 +63,7 @@
 
 		chartInstance = echarts.init(chartContainer);
 
-		const filtered = filteredData();
+		const filtered = filteredData;
 
 		// Get fresh CSS variables on each update (important for theme changes)
 		const foregroundColor = getCSSVariable('--foreground');
@@ -237,12 +237,16 @@
 		resizeObserver = undefined;
 	}
 
-	// Re-render chart when language changes or data changes
+	// Re-render chart when language, theme, or data changes
 	$effect(() => {
 		if (!browser || !chartContainer || months.length === 0) return;
 		
-		// Track language changes
+		// Track all dependencies that should trigger re-render
 		const _ = $languageStore;
+		const _months = months;
+		const _additions = monthlyAdditions;
+		const _cumulative = cumulativeTotal;
+		
 		initChart();
 	});
 

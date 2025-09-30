@@ -48,7 +48,11 @@
         11669,
         11683
       ],
-      "total_records": 11683
+      "total_records": 11683,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Audiovisuel": {
       "label_en": "Audiovisuel",
@@ -98,7 +102,11 @@
         45,
         45
       ],
-      "total_records": 45
+      "total_records": 45,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Document": {
       "label_en": "Document",
@@ -148,7 +156,11 @@
         24,
         26
       ],
-      "total_records": 26
+      "total_records": 26,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Islamic Periodical": {
       "label_en": "Islamic Periodical",
@@ -198,7 +210,11 @@
         1501,
         1501
       ],
-      "total_records": 1501
+      "total_records": 1501,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     },
     "Reference": {
       "label_en": "Reference",
@@ -248,7 +264,11 @@
         961,
         961
       ],
-      "total_records": 961
+      "total_records": 961,
+      "month_range": {
+        "min": "2024-03",
+        "max": "2025-08"
+      }
     }
   },
   "types": [
@@ -258,5 +278,5 @@
     "Press Article",
     "Reference"
   ],
-  "generated_at": "2025-09-30T10:22:18.779626"
+  "generated_at": "2025-09-30T10:37:44.421619"
 }
