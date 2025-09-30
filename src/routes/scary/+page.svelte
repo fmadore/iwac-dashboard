@@ -595,7 +595,7 @@
 						title={raceChartTitle()}
 						maxBars={10}
 						{height}
-						barColor="var(--chart-1)"
+						useMultipleColors={true}
 						cumulative={true}
 						bind:currentIndex={currentYearIndex}
 						onPeriodChange={(index, period) => {

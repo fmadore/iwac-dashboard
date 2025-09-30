@@ -57,6 +57,12 @@
 		barColor?: string;
 		
 		/**
+		 * Use multiple colors for different items (each item gets a unique color)
+		 * @default true
+		 */
+		useMultipleColors?: boolean;
+		
+		/**
 		 * Enable/disable value labels on bars
 		 * @default true
 		 */
@@ -94,6 +100,7 @@
 		animationDuration = 500,
 		height = 600,
 		barColor = 'var(--chart-1)',
+		useMultipleColors = true,
 		showLabels = true,
 		cumulative = false,
 		currentIndex = $bindable(0),
@@ -190,6 +197,37 @@
 		return cumulativeData;
 	}
 
+	// Color assignment for consistent term colors
+	const termColorMap = $state(new Map<string, string>());
+	const chartColors = [
+		'--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5',
+		'--chart-6', '--chart-7', '--chart-8', '--chart-9', '--chart-10',
+		'--chart-11', '--chart-12', '--chart-13', '--chart-14', '--chart-15', '--chart-16'
+	];
+
+	/**
+	 * Get color for a specific term (consistent across periods)
+	 */
+	function getColorForTerm(term: string, index: number): string {
+		if (!useMultipleColors) {
+			return barColor.startsWith('var(--') 
+				? getCSSVariable(barColor.slice(4, -1)) 
+				: barColor;
+		}
+
+		// Check if term already has a color assigned
+		if (termColorMap.has(term)) {
+			return termColorMap.get(term)!;
+		}
+
+		// Assign a new color based on the term's position
+		const colorVar = chartColors[termColorMap.size % chartColors.length];
+		const resolvedColor = getCSSVariable(colorVar);
+		termColorMap.set(term, resolvedColor);
+		
+		return resolvedColor;
+	}
+
 	/**
 	 * Initialize ECharts instance
 	 */
@@ -269,9 +307,15 @@
 		const borderColor = getCSSVariable('--border');
 		const popoverBg = getCSSVariable('--popover');
 		const popoverFg = getCSSVariable('--popover-foreground');
-		const resolvedBarColor = barColor.startsWith('var(--') 
-			? getCSSVariable(barColor.slice(4, -1)) 
-			: barColor;
+
+		// Create data array with individual colors for each item
+		const barData = topItems.map(([term, value], index) => ({
+			value: value,
+			itemStyle: {
+				color: getColorForTerm(term, index),
+				borderRadius: [0, 4, 4, 0]
+			}
+		}));
 
 		const option = {
 			title: {
@@ -334,11 +378,7 @@
 			series: [
 				{
 					type: 'bar',
-					data: values,
-					itemStyle: {
-						color: resolvedBarColor,
-						borderRadius: [0, 4, 4, 0]
-					},
+					data: barData,
 					label: {
 						show: showLabels,
 						position: 'right',
@@ -347,7 +387,6 @@
 					},
 					emphasis: {
 						itemStyle: {
-							color: resolvedBarColor,
 							opacity: 0.8
 						}
 					},
