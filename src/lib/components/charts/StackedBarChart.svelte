@@ -229,7 +229,7 @@
 					color: getCSSVariable(typeColors[s.name] || '--chart-1')
 				},
 				emphasis: {
-					focus: 'series'
+					disabled: true
 				}
 			}))
 		};
