@@ -204,7 +204,7 @@ export const translations = {
 		'timeline.by_country': 'Par pays',
 		'overview.recent_items': 'Éléments récents',
 		'overview.no_recent_items': 'Aucun élément récent disponible',
-		'overview.primary_stats': 'Statistiques Principales',
+		'overview.primary_stats': 'Statistiques rincipales',
 		'overview.content_stats': 'Statistiques de Contenu',
 		'overview.total_words': 'Mots totaux',
 		'overview.total_words_desc': 'Mots dans tous les documents',
@@ -263,10 +263,8 @@ class LanguageStore {
 
 export const languageStore = new LanguageStore();
 
-// Export a function that returns the translation function
-export function t(key: string, params: any[] = []) {
-	return languageStore.t(key, params);
-}
+// Export the t function directly from the store instance to maintain reactivity
+export const t = (key: string, params: any[] = []) => languageStore.t(key, params);
 
 
 
