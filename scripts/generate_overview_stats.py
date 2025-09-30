@@ -295,8 +295,9 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
         dataset_stats = calculate_dataset_stats(df, config)
         overview_stats["by_dataset"][config] = dataset_stats
         
-        # Ajouter aux totaux
-        overview_stats["summary"]["total_items"] += dataset_stats["total_records"]
+        # Ajouter aux totaux (exclude index from total items count)
+        if config != "index":
+            overview_stats["summary"]["total_items"] += dataset_stats["total_records"]
         overview_stats["summary"]["total_words"] += dataset_stats["total_words"]
         
         # Exclude references from page count
