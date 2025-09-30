@@ -237,7 +237,7 @@
       grid: {
         left: '3%',
         right: '4%',
-        bottom: '20%',
+        bottom: '18%',
         top: '10%',
         containLabel: true
       },
@@ -245,12 +245,10 @@
         type: 'category',
         data: categories,
         axisLabel: {
+          interval: 0,
           rotate: 45,
           color: foregroundColor,
-          fontSize: 12,
-          formatter: (value: string) => {
-            return value.length > 10 ? value.substring(0, 10) + '...' : value;
-          }
+          fontSize: 12
         },
         axisLine: {
           lineStyle: {
