@@ -6,6 +6,10 @@
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import TimelineChart from '$lib/components/charts/TimelineChart.svelte';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
+
+	// Use URL sync hook
+	const urlSync = useUrlSync();
 
 	interface TimelineData {
 		months: string[];
@@ -61,9 +65,9 @@
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
-	// Filter states
-	let selectedCountry = $state<string>('');
-	let selectedType = $state<string>('');
+	// Filter states from URL
+	const selectedCountry = $derived(urlSync.filters.country);
+	const selectedType = $derived(urlSync.filters.type);
 
 	async function loadData() {
 		try {
@@ -128,8 +132,7 @@
 	});
 
 	const clearFilters = () => {
-		selectedCountry = '';
-		selectedType = '';
+		urlSync.clearFilters();
 	};
 
 	const hasActiveFilters = $derived(selectedCountry || selectedType);
@@ -145,6 +148,25 @@
 		// Use French or English label based on current language
 		return facet.label_fr || facet.label_en || selectedType;
 	});
+
+	// Handlers for filter changes - clear the other filter when selecting one
+	function handleCountryChange(value: string | undefined) {
+		if (value && value !== 'all-countries') {
+			// When selecting a country, clear type filter
+			urlSync.setFilters({ country: value, type: undefined });
+		} else {
+			urlSync.clearFilter('country');
+		}
+	}
+
+	function handleTypeChange(value: string | undefined) {
+		if (value && value !== 'all-types') {
+			// When selecting a type, clear country filter
+			urlSync.setFilters({ type: value, country: undefined });
+		} else {
+			urlSync.clearFilter('type');
+		}
+	}
 </script>
 
 <div class="space-y-6">
@@ -179,17 +201,15 @@
 					<!-- Type Filter -->
 					<div class="flex items-center gap-2">
 						<label for="typeSelect" class="text-sm font-medium">{t('timeline.by_type')}:</label>
-						<Select.Root bind:value={selectedType} type="single">
+						<Select.Root type="single" value={selectedType ?? 'all-types'} onValueChange={(v) => handleTypeChange(v === 'all-types' ? undefined : v)}>
 							<Select.Trigger class="w-[200px]" id="typeSelect">
-								{selectedTypeLabel || t('filters.all_countries')}
+								{selectedTypeLabel || t('filters.all_types')}
 							</Select.Trigger>
 							<Select.Content>
-								<Select.Group>
-									<Select.Item value="">{t('filters.all_countries')}</Select.Item>
-									{#each typeOptions as type}
-										<Select.Item value={type}>{type}</Select.Item>
-									{/each}
-								</Select.Group>
+								<Select.Item value="all-types">{t('filters.all_types')}</Select.Item>
+								{#each typeOptions as type}
+									<Select.Item value={type}>{type}</Select.Item>
+								{/each}
 							</Select.Content>
 						</Select.Root>
 					</div>
@@ -197,17 +217,15 @@
 					<!-- Country Filter -->
 					<div class="flex items-center gap-2">
 						<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
-						<Select.Root bind:value={selectedCountry} type="single">
+						<Select.Root type="single" value={selectedCountry ?? 'all-countries'} onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}>
 							<Select.Trigger class="w-[200px]" id="countrySelect">
 								{selectedCountry || t('filters.all_countries')}
 							</Select.Trigger>
 							<Select.Content>
-								<Select.Group>
-									<Select.Item value="">{t('filters.all_countries')}</Select.Item>
-									{#each countryOptions as country}
-										<Select.Item value={country}>{country}</Select.Item>
-									{/each}
-								</Select.Group>
+								<Select.Item value="all-countries">{t('filters.all_countries')}</Select.Item>
+								{#each countryOptions as country}
+									<Select.Item value={country}>{country}</Select.Item>
+								{/each}
 							</Select.Content>
 						</Select.Root>
 					</div>

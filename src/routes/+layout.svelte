@@ -5,6 +5,7 @@
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
 	import LanguageToggle from '$lib/components/language-toggle.svelte';
 	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import UrlStateSync from '$lib/components/url-state-sync.svelte';
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
 
@@ -16,6 +17,7 @@
 </script>
 
 <ModeWatcher />
+<UrlStateSync />
 <Sidebar.Provider>
 	<AppSidebar />
 	<Sidebar.Inset>

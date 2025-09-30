@@ -6,7 +6,11 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import WordCloud from '$lib/components/wordcloud.svelte';
+
+	// Use URL sync hook
+	const urlSync = useUrlSync();
 
 	// Data interfaces
 	interface WordCloudData {
@@ -34,10 +38,10 @@
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
-	// Controls
-	let viewMode = $state<'global' | 'country' | 'temporal'>('global');
-	let selectedCountry = $state('');
-	let selectedYear = $state('');
+	// Controls from URL
+	const viewMode = $derived((urlSync.filters.view as 'global' | 'country' | 'temporal') || 'global');
+	const selectedCountry = $derived(urlSync.filters.country || '');
+	const selectedYear = $derived(urlSync.filters.year ? String(urlSync.filters.year) : '');
 
 	// Computed values using $derived
 	let currentData = $derived(
@@ -104,12 +108,15 @@
 			temporalData = await temporalResponse.json();
 			metadata = await metadataResponse.json();
 
-			// Set default selections
-			if (availableCountries.length > 0) {
-				selectedCountry = availableCountries[0];
+			// Set default selections if not in URL
+			if (availableCountries.length > 0 && !urlSync.hasFilter('country')) {
+				urlSync.setFilter('country', availableCountries[0]);
 			}
-			if (availableYears.length > 0) {
-				selectedYear = String(availableYears[availableYears.length - 1]); // Most recent year
+			if (availableYears.length > 0 && !urlSync.hasFilter('year')) {
+				urlSync.setFilter('year', availableYears[availableYears.length - 1]); // Most recent year
+			}
+			if (!urlSync.hasFilter('view')) {
+				urlSync.setFilter('view', 'global');
 			}
 
 		} catch (err) {
@@ -118,6 +125,19 @@
 		} finally {
 			loading = false;
 		}
+	}
+
+	// Handlers for filter changes
+	function handleViewModeChange(value: string | undefined) {
+		urlSync.setFilter('view', value || 'global');
+	}
+
+	function handleCountryChange(value: string | undefined) {
+		urlSync.setFilter('country', value || '');
+	}
+
+	function handleYearChange(value: string | undefined) {
+		urlSync.setFilter('year', value || '');
 	}
 
 	onMount(loadWordCloudData);
@@ -153,28 +173,28 @@
 					<Button
 						variant={viewMode === 'global' ? 'default' : 'outline'}
 						size="sm"
-						onclick={() => viewMode = 'global'}
+						onclick={() => handleViewModeChange('global')}
 					>
 						Global
 					</Button>
 					<Button
 						variant={viewMode === 'country' ? 'default' : 'outline'}
 						size="sm"
-						onclick={() => viewMode = 'country'}
+						onclick={() => handleViewModeChange('country')}
 					>
 						By Country
 					</Button>
 					<Button
 						variant={viewMode === 'temporal' ? 'default' : 'outline'}
 						size="sm"
-						onclick={() => viewMode = 'temporal'}
+						onclick={() => handleViewModeChange('temporal')}
 					>
 						By Year
 					</Button>
 				</div>
 
 				{#if viewMode === 'country' && availableCountries.length > 0}
-					<Select.Root type="single" bind:value={selectedCountry}>
+					<Select.Root value={selectedCountry} onValueChange={handleCountryChange}>
 						<Select.Trigger class="w-48">
 							{selectedCountry || 'Select country'}
 						</Select.Trigger>
@@ -187,7 +207,7 @@
 				{/if}
 
 				{#if viewMode === 'temporal' && availableYears.length > 0}
-					<Select.Root type="single" bind:value={selectedYear}>
+					<Select.Root value={selectedYear} onValueChange={handleYearChange}>
 						<Select.Trigger class="w-32">
 							{selectedYear || 'Select year'}
 						</Select.Trigger>

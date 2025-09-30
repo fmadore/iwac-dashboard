@@ -6,7 +6,11 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import StackedBarChart from '$lib/components/charts/StackedBarChart.svelte';
+
+	// Use URL sync hook
+	const urlSync = useUrlSync();
 
 	interface SeriesData {
 		name: string;
@@ -47,9 +51,18 @@
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
-	// Filter states
-	let selectedCountry = $state<string>('');
-	let yearRange = $state<[number, number]>([1912, 2025]);
+	// Filter states from URL
+	const selectedCountry = $derived(urlSync.filters.country);
+	
+	// Year range as derived value that reads from URL or defaults
+	const yearRange = $derived<[number, number]>(() => {
+		const min = urlSync.filters.yearMin;
+		const max = urlSync.filters.yearMax;
+		if (min !== undefined && max !== undefined) {
+			return [min, max];
+		}
+		return [metadata?.temporal.min_year || 1912, metadata?.temporal.max_year || 2025];
+	});
 
 	async function loadData() {
 		try {
@@ -70,8 +83,11 @@
 			metadata = await metadataResponse.json();
 			
 			// Set initial year range from metadata
-			if (metadata) {
-				yearRange = [metadata.temporal.min_year, metadata.temporal.max_year];
+			if (metadata && !urlSync.hasFilter('yearMin') && !urlSync.hasFilter('yearMax')) {
+				urlSync.setFilters({
+					yearMin: metadata.temporal.min_year,
+					yearMax: metadata.temporal.max_year
+				});
 			}
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load data';
@@ -115,7 +131,7 @@
 		const data = activeData();
 		if (!data) return null;
 
-		const [minYear, maxYear] = yearRange;
+		const [minYear, maxYear] = yearRange();
 		const yearIndices: number[] = [];
 		const filteredYears: number[] = [];
 
@@ -147,13 +163,31 @@
 		};
 	});
 
-	const countryDisplayText = $derived(() => 
-		selectedCountry || 'All Countries'
-	);
-
 	const countryOptions = $derived(() => 
 		metadata?.countries.with_individual_files ?? []
 	);
+
+	// Handlers for filter changes
+	function handleCountryChange(value: string | undefined) {
+		if (value && value !== 'all-countries') {
+			urlSync.setFilter('country', value);
+		} else {
+			urlSync.clearFilter('country');
+		}
+	}
+
+	function handleYearRangeChange(value: number[]) {
+		if (value.length === 2) {
+			urlSync.setFilters({
+				yearMin: value[0],
+				yearMax: value[1]
+			});
+		}
+	}
+
+	function handleClearFilters() {
+		urlSync.clearFilters();
+	}
 </script>
 
 <div class="space-y-6">
@@ -192,17 +226,15 @@
 					<div class="flex items-center gap-4 flex-wrap">
 						<div class="flex items-center gap-2">
 							<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
-							<Select.Root bind:value={selectedCountry} type="single">
+							<Select.Root type="single" value={selectedCountry ?? 'all-countries'} onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}>
 								<Select.Trigger class="w-[200px]" id="countrySelect">
-									{countryDisplayText()}
+									{selectedCountry || t('filters.all_countries')}
 								</Select.Trigger>
 								<Select.Content>
-									<Select.Group>
-										<Select.Item value="">{t('filters.all_countries')}</Select.Item>
-										{#each countryOptions() as country}
-											<Select.Item value={country}>{country}</Select.Item>
-										{/each}
-									</Select.Group>
+									<Select.Item value="all-countries">{t('filters.all_countries')}</Select.Item>
+									{#each countryOptions() as country}
+										<Select.Item value={country}>{country}</Select.Item>
+									{/each}
 								</Select.Content>
 							</Select.Root>
 						</div>
@@ -210,7 +242,7 @@
 							<Button 
 								variant="secondary"
 								size="sm"
-								onclick={() => { selectedCountry = ''; }}
+								onclick={handleClearFilters}
 							>
 								{t('filters.clear')}
 							</Button>
@@ -221,14 +253,14 @@
 					{#if metadata}
 						<div class="space-y-2">
 							<div class="text-sm font-medium">
-								{t('filters.year_range')}: {yearRange[0]} - {yearRange[1]}
+								{t('filters.year_range')}: {yearRange()[0]} - {yearRange()[1]}
 							</div>
 							<Slider
-								bind:value={yearRange}
+								value={yearRange()}
+								onValueChange={handleYearRangeChange}
 								min={metadata.temporal.min_year}
 								max={metadata.temporal.max_year}
 								step={1}
-								type="multiple"
 								class="w-full"
 							/>
 							<div class="flex justify-between text-xs text-muted-foreground">

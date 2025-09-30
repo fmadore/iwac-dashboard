@@ -6,8 +6,12 @@
 	import { Button } from "$lib/components/ui/button/index.js";
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import FacetPie from '$lib/components/facets/FacetPie.svelte';
 	import type { PageData } from './$types.js';
+	
+	// Use URL sync hook
+	const urlSync = useUrlSync();
 	
 	let { data }: { data: PageData } = $props();
 
@@ -31,34 +35,26 @@
 		return map;
 	});
 
-	// Facet selection state
-	let selectedType = $state<string>('');
-	let selectedCountry = $state<string>('');
+	// Facet selection state from URL
+	const selectedType = $derived(urlSync.filters.type);
+	const selectedCountry = $derived(urlSync.filters.country);
 	
 	const typeOptions = $derived(() => data.types?.types ?? []);
 	const countryOptions = $derived(() => data.countries?.countries ?? []);
 	
-	// Display text for the selects
-	const typeDisplayText = $derived(() => 
-		selectedType ? typeOptions().find(opt => opt === selectedType) || selectedType : "All Types"
-	);
-	const countryDisplayText = $derived(() => 
-		selectedCountry ? countryOptions().find(opt => opt === selectedCountry) || selectedCountry : "All Countries"
-	);
-	
 	// Main chart data that updates based on selected facets
+	// Priority: country > type (only one can be active at a time)
 	const filteredChartData = $derived(() => {
 		let sourceData = data.global?.data || [];
 		
-		// Apply type filter
-		if (selectedType && data.types) {
-			const facet = data.types.facets[selectedType];
-			sourceData = facet ? facet.data : [];
-		}
-		
-		// Apply country filter
+		// Apply country filter first (higher priority)
 		if (selectedCountry && data.countries) {
 			const facet = data.countries.facets[selectedCountry];
+			sourceData = facet ? facet.data : [];
+		}
+		// Apply type filter only if no country is selected
+		else if (selectedType && data.types) {
+			const facet = data.types.facets[selectedType];
 			sourceData = facet ? facet.data : [];
 		}
 		
@@ -71,16 +67,40 @@
 	});
 	
 	const totalDocs = $derived(() => {
-		if (selectedType && data.types) {
-			const facet = data.types.facets[selectedType];
-			return facet ? facet.total : 0;
-		}
+		// Priority: country > type (only one can be active at a time)
 		if (selectedCountry && data.countries) {
 			const facet = data.countries.facets[selectedCountry];
 			return facet ? facet.total : 0;
 		}
+		if (selectedType && data.types) {
+			const facet = data.types.facets[selectedType];
+			return facet ? facet.total : 0;
+		}
 		return data.global?.total ?? 0;
 	});
+
+	// Handlers for filter changes
+	function handleTypeChange(value: string | undefined) {
+		if (value) {
+			// When selecting a type, clear country filter
+			urlSync.setFilters({ type: value, country: undefined });
+		} else {
+			urlSync.clearFilter('type');
+		}
+	}
+
+	function handleCountryChange(value: string | undefined) {
+		if (value) {
+			// When selecting a country, clear type filter
+			urlSync.setFilters({ country: value, type: undefined });
+		} else {
+			urlSync.clearFilter('country');
+		}
+	}
+
+	function handleClearFilters() {
+		urlSync.clearFilters();
+	}
 </script>
 
 <div class="space-y-6">
@@ -99,34 +119,30 @@
 			<div class="flex gap-4 flex-wrap">
 				<div class="flex items-center gap-2">
 					<label for="typeSelect" class="text-sm font-medium">Type:</label>
-					<Select.Root bind:value={selectedType} type="single">
+					<Select.Root type="single" value={selectedType ?? 'all-types'} onValueChange={(v) => handleTypeChange(v === 'all-types' ? undefined : v)}>
 						<Select.Trigger class="w-[180px]" id="typeSelect">
-							{typeDisplayText()}
+							{selectedType || 'All Types'}
 						</Select.Trigger>
 						<Select.Content>
-							<Select.Group>
-								<Select.Item value="">All Types</Select.Item>
-								{#each typeOptions() as opt}
-									<Select.Item value={opt}>{opt}</Select.Item>
-								{/each}
-							</Select.Group>
+							<Select.Item value="all-types">All Types</Select.Item>
+							{#each typeOptions() as opt}
+								<Select.Item value={opt}>{opt}</Select.Item>
+							{/each}
 						</Select.Content>
 					</Select.Root>
 				</div>
 				{#if countryOptions().length > 0}
 				<div class="flex items-center gap-2">
 					<label for="countrySelect" class="text-sm font-medium">Country:</label>
-					<Select.Root bind:value={selectedCountry} type="single">
+					<Select.Root type="single" value={selectedCountry ?? 'all-countries'} onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}>
 						<Select.Trigger class="w-[180px]" id="countrySelect">
-							{countryDisplayText()}
+							{selectedCountry || 'All Countries'}
 						</Select.Trigger>
 						<Select.Content>
-							<Select.Group>
-								<Select.Item value="">All Countries</Select.Item>
-								{#each countryOptions() as opt}
-									<Select.Item value={opt}>{opt}</Select.Item>
-								{/each}
-							</Select.Group>
+							<Select.Item value="all-countries">All Countries</Select.Item>
+							{#each countryOptions() as opt}
+								<Select.Item value={opt}>{opt}</Select.Item>
+							{/each}
 						</Select.Content>
 					</Select.Root>
 				</div>
@@ -135,7 +151,7 @@
 				<Button 
 					variant="secondary"
 					size="sm"
-					onclick={() => { selectedType = ''; selectedCountry = ''; }}
+					onclick={handleClearFilters}
 				>
 					Clear Filters
 				</Button>
