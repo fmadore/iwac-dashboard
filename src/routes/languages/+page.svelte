@@ -172,7 +172,7 @@
 			</Card.Content>
 		</Card.Root>
 	{:else}
-		<div class="grid gap-6 md:grid-cols-2">
+		<div class="grid gap-6 lg:grid-cols-2">
 			<!-- Pie Chart -->
 			<Card.Root>
 				<Card.Header class="pb-3">
