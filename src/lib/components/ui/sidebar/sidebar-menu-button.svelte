@@ -70,7 +70,7 @@
 {#snippet Button({ props }: { props?: Record<string, unknown> })}
 	{@const mergedProps = mergeProps(buttonProps, props)}
 	{#if child}
-		{@render child({ props: mergedProps })}
+		{@render child?.({ props: mergedProps })}
 	{:else}
 		<button bind:this={ref} {...mergedProps}>
 			{@render children?.()}
