@@ -13,6 +13,7 @@
  */
 
 import { browser } from '$app/environment';
+import { replaceState } from '$app/navigation';
 import type { Language } from './translationStore.svelte.js';
 
 export type Theme = 'light' | 'dark' | 'system';
@@ -230,14 +231,14 @@ class UrlManager {
 			}
 		});
 
-		// Update URL without page reload
+		// Update URL without page reload using SvelteKit's API
 		const newUrl = params.toString() 
 			? `${window.location.pathname}?${params.toString()}`
 			: window.location.pathname;
 
 		// Only update if URL actually changed
 		if (newUrl !== window.location.pathname + window.location.search) {
-			window.history.replaceState({}, '', newUrl);
+			replaceState(newUrl, {});
 		}
 	}
 
