@@ -311,18 +311,7 @@
             borderWidth: 2
           },
           emphasis: {
-            scale: true,
-            scaleSize: 5,
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.3)'
-            },
-            label: {
-              show: true,
-              fontSize: 12,
-              fontWeight: 600
-            }
+            disabled: true
           },
           animationType: 'scale',
           animationEasing: 'elasticOut',
