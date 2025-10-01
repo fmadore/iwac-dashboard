@@ -96,7 +96,7 @@
 			{#if typeof tooltipContent === "string"}
 				{tooltipContent}
 			{:else if tooltipContent}
-				{@render tooltipContent()}
+				{@render tooltipContent?.()}
 			{/if}
 		</Tooltip.Content>
 	</Tooltip.Root>

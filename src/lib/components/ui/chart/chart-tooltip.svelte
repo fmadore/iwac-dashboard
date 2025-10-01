@@ -76,7 +76,7 @@
 	{#if formattedLabel}
 		<div class={cn("font-medium", labelClassName)}>
 			{#if typeof formattedLabel === "function"}
-				{@render formattedLabel()}
+				{@render formattedLabel?.()}
 			{:else}
 				{formattedLabel}
 			{/if}
@@ -93,7 +93,7 @@
 		{...restProps}
 	>
 		{#if !nestLabel}
-			{@render TooltipLabel()}
+			{@render TooltipLabel?.()}
 		{/if}
 		<div class="grid gap-1.5">
 			{#each items as item, i (item.key ?? item.name ?? i)}
@@ -107,7 +107,7 @@
 					)}
 				>
 					{#if formatter && item.value !== undefined && item.name}
-						{@render formatter({
+						{@render formatter?.({
 							value: item.value,
 							name: item.name,
 							item,
@@ -140,7 +140,7 @@
 						>
 							<div class="grid gap-1.5">
 								{#if nestLabel}
-									{@render TooltipLabel()}
+									{@render TooltipLabel?.()}
 								{/if}
 								<span class="text-muted-foreground">
 									{itemConfig?.label || item.name}

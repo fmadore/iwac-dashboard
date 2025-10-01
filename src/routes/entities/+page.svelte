@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { Card } from '$lib/components/ui/card/index.js';
-  import EntitiesTable from '$lib/components/entities-table.svelte';
+  import EntitiesTable from './entities-table.svelte';
   import EChartsBarChart from '$lib/components/charts/EChartsBarChart.svelte';
   import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 

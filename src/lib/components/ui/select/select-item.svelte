@@ -30,7 +30,7 @@
 			{/if}
 		</span>
 		{#if childrenProp}
-			{@render childrenProp({ selected, highlighted })}
+			{@render childrenProp?.({ selected, highlighted })}
 		{:else}
 			{label || value}
 		{/if}
