@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Card from '$lib/components/ui/card/index.js';
-  import PieChart from '$lib/components/charts/PieChart.svelte';
+  import EChartsPieChart from '$lib/components/charts/EChartsPieChart.svelte';
 
   interface PieItem { label: string; value: number; color?: string }
 
@@ -14,15 +14,14 @@
   <Card.Content>
     <div class="mx-auto aspect-square max-h-[400px] flex items-center justify-center">
       {#if data.length > 0}
-        <PieChart
+        <EChartsPieChart
           data={data}
-          innerRadius={60}
-          outerRadius={160}
+          innerRadius="40%"
+          outerRadius="75%"
           showLabels={true}
           showValues={false}
           animationDuration={800}
-          padAngle={0.01}
-          cornerRadius={4}
+          minSlicePercent={0.5}
         />
       {:else}
         <div class="flex items-center justify-center h-[200px] text-muted-foreground">No data</div>

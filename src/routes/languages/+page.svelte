@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PieChart from '$lib/components/charts/PieChart.svelte';
+	import EChartsPieChart from '$lib/components/charts/EChartsPieChart.svelte';
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import * as Card from "$lib/components/ui/card/index.js";
 	import * as Select from "$lib/components/ui/select/index.js";
@@ -194,15 +194,14 @@
 				<Card.Content>
 					<div class="mx-auto aspect-square max-h-[400px] flex items-center justify-center">
 						{#if filteredChartData().length > 0}
-							<PieChart
+							<EChartsPieChart
 								data={filteredChartData()}
-								innerRadius={60}
-								outerRadius={160}
+								innerRadius="40%"
+								outerRadius="75%"
 								showLabels={true}
 								showValues={false}
 								animationDuration={1000}
-								padAngle={0.01}
-								cornerRadius={4}
+								minSlicePercent={0.5}
 							/>
 						{:else}
 							<div class="flex items-center justify-center h-[200px] text-muted-foreground">
