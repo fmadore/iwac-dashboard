@@ -91,5 +91,3 @@ You can preview the production build with `npm run preview`.
 - Dark mode support
 
 ## Contributing
-
-This project follows the migration roadmap outlined in `../Roadmap.md`. See the roadmap for current status and next steps.

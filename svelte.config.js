@@ -27,6 +27,9 @@ const config = {
 			handleHttpError: 'warn',
 			handleUnseenRoutes: 'ignore',
 			crawl: true
+		},
+		serviceWorker: {
+			register: false
 		}
 	}
 };

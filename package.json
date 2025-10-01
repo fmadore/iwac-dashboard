@@ -12,7 +12,8 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"generate-icons": "node scripts/generate-pwa-icons.js"
 	},
 	"type": "module",
 	"devDependencies": {
@@ -32,6 +33,7 @@
 		"@types/d3-hierarchy": "^3.1.7",
 		"@types/d3-scale-chromatic": "^3.1.0",
 		"@types/d3-selection": "^3.0.11",
+		"@vite-pwa/sveltekit": "^1.0.0",
 		"@vitest/browser": "^3.2.3",
 		"bits-ui": "^2.9.7",
 		"clsx": "^2.1.1",
@@ -44,6 +46,7 @@
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"publint": "^0.3.2",
+		"sharp": "^0.34.4",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwind-merge": "^3.3.1",
