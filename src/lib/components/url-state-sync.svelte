@@ -10,6 +10,7 @@
 -->
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { afterNavigate } from '$app/navigation';
 	import { urlManager } from '$lib/stores/urlManager.svelte.js';
 	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { mode, setMode } from 'mode-watcher';
@@ -18,10 +19,12 @@
 
 	let isInitialized = $state(false);
 
-	// Initialize from URL only once on mount
-	$effect(() => {
-		if (!browser || isInitialized) return;
+	// Wait for router to be initialized using afterNavigate
+	// This ensures replaceState is available before we try to sync state
+	afterNavigate(() => {
+		if (isInitialized) return;
 
+		// Read initial state from URL
 		const urlLang = urlManager.get('lang') as Language | undefined;
 		if (urlLang && (urlLang === 'en' || urlLang === 'fr')) {
 			languageStore.set(urlLang);
@@ -32,6 +35,8 @@
 			setMode(urlTheme as 'light' | 'dark' | 'system');
 		}
 
+		// Mark as initialized and enable URL writing
+		urlManager.enableUrlWriting();
 		isInitialized = true;
 	});
 

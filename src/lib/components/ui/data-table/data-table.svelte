@@ -243,7 +243,7 @@
                     class={`${column.width ?? ''} ${column.cellClass ?? ''} min-w-0 max-w-0 p-2 ${getAlignClass(column.align)}`}
                   >
                     {#if cellRenderer}
-                      {@render cellRenderer?.({ row, column, value })}
+                      {@render cellRenderer({ row, column, value })}
                     {:else}
                       <span class="truncate block" title={String(value ?? '')}>
                         {value ?? '—'}

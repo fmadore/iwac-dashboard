@@ -35,6 +35,7 @@ export interface UrlState {
 class UrlManager {
 	private state: UrlState = {};
 	private initialized = false;
+	private urlWritingEnabled = false;
 	private listeners: Set<() => void> = new Set();
 
 	constructor() {
@@ -43,6 +44,13 @@ class UrlManager {
 			this.readFromUrl();
 			this.initialized = true;
 		}
+	}
+
+	/**
+	 * Enable URL writing after router is initialized
+	 */
+	enableUrlWriting() {
+		this.urlWritingEnabled = true;
 	}
 
 	/**
@@ -220,7 +228,7 @@ class UrlManager {
 	 * Write current state to URL
 	 */
 	private writeToUrl() {
-		if (!browser) return;
+		if (!browser || !this.urlWritingEnabled) return;
 
 		const params = new URLSearchParams();
 
