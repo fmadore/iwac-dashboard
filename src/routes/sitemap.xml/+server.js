@@ -1,6 +1,6 @@
 import { base } from '$app/paths';
 
-const site = 'https://fmadore.github.io/iwac-dashboard';
+const site = 'https://fmadore.github.io';
 const pages = [
 	'',
 	'/countries',
