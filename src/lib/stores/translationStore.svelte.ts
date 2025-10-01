@@ -147,6 +147,11 @@ export const translations = {
 		'scary.global_chart_title': 'Overall "Scary" Terms Distribution',
 		'scary.global_chart_description': 'Total occurrences of "scary" terms across all articles',
 		'scary.term_definitions': 'Term Definitions',
+		// PWA
+		'pwa.offline_ready': 'App ready to work offline',
+		'pwa.update_available': 'New content available, click reload to update',
+		'pwa.reload': 'Reload',
+		'pwa.close': 'Close',
 		// Document types
 		'type.Press Article': 'Press Article',
 		'type.Islamic Periodical': 'Islamic Periodical',
@@ -314,6 +319,11 @@ export const translations = {
 		'scary.global_chart_title': 'Distribution globale des termes "inquiétants"',
 		'scary.global_chart_description': 'Occurrences totales des termes "inquiétants" dans tous les articles',
 		'scary.term_definitions': 'Définitions des termes',
+		// PWA
+		'pwa.offline_ready': 'Application prête à fonctionner hors ligne',
+		'pwa.update_available': 'Nouveau contenu disponible, cliquez sur recharger pour mettre à jour',
+		'pwa.reload': 'Recharger',
+		'pwa.close': 'Fermer',
 		// Document types
 		'type.Press Article': 'Article de presse',
 		'type.Islamic Periodical': 'Périodique islamique',

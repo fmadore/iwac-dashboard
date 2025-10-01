@@ -8,9 +8,30 @@
 	import FullscreenToggle from '$lib/components/fullscreen-toggle.svelte';
 	import UrlStateSync from '$lib/components/url-state-sync.svelte';
 	import { ModeWatcher } from 'mode-watcher';
+	import { onMount } from 'svelte';
+	import { pwaInfo } from 'virtual:pwa-info';
 	import '../app.css';
 
 	let { children } = $props();
+
+	// PWA manifest link tag
+	const webManifest = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
+
+	// Register service worker
+	onMount(async () => {
+		if (pwaInfo) {
+			const { registerSW } = await import('virtual:pwa-register');
+			registerSW({
+				immediate: true,
+				onRegistered(r) {
+					console.log('SW Registered:', r);
+				},
+				onRegisterError(error) {
+					console.log('SW registration error', error);
+				}
+			});
+		}
+	});
 
 	// Note: itemsStore is kept for legacy fallback support only
 	// All data is now loaded from pre-computed JSON files
@@ -18,6 +39,10 @@
 	// 	itemsStore.loadItems();
 	// });
 </script>
+
+<svelte:head>
+	{@html webManifest}
+</svelte:head>
 
 <ModeWatcher />
 <UrlStateSync />

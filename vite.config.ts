@@ -9,6 +9,7 @@ export default defineConfig({
 		sveltekit(),
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
+			injectRegister: 'auto',
 			includeAssets: ['apple-touch-icon.png', 'Logo ZMO.png'],
 			manifest: {
 				name: 'IWAC Database Overview',
@@ -17,8 +18,8 @@ export default defineConfig({
 				theme_color: '#ffffff',
 				background_color: '#ffffff',
 				display: 'standalone',
-				scope: '/',
-				start_url: '/',
+				scope: '/iwac-dashboard/',
+				start_url: '/iwac-dashboard/',
 				icons: [
 					{
 						src: '/pwa-192x192.png',
