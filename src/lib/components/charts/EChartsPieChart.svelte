@@ -114,12 +114,11 @@
     return fallbackMap[varName] || '#666666';
   }
 
-  // Keep track of grouped "Others" data for tooltip
-  let othersGroupDetails = $state<PieDataItem[]>([]);
-
-  // Process data to group small slices
-  const processedData = $derived(() => {
-    if (!data || data.length === 0) return [];
+  // Process data to group small slices and track "Others" details
+  const chartData = $derived.by(() => {
+    if (!data || data.length === 0) {
+      return { processedData: [], othersGroupDetails: [] };
+    }
     
     const total = data.reduce((sum, item) => sum + item.value, 0);
     const sortedData = [...data].sort((a, b) => b.value - a.value);
@@ -132,19 +131,20 @@
       const smallSlices = sortedData.slice(5);
       
       if (smallSlices.length > 0) {
-        othersGroupDetails = smallSlices; // Store for tooltip
         const othersValue = smallSlices.reduce((sum, item) => sum + item.value, 0);
-        return [
-          ...mainSlices,
-          {
-            label: `Others (${smallSlices.length} languages)`,
-            value: othersValue,
-            color: '--muted-foreground'
-          }
-        ];
+        return {
+          processedData: [
+            ...mainSlices,
+            {
+              label: `Others (${smallSlices.length} languages)`,
+              value: othersValue,
+              color: '--muted-foreground'
+            }
+          ],
+          othersGroupDetails: smallSlices
+        };
       }
-      othersGroupDetails = [];
-      return mainSlices;
+      return { processedData: mainSlices, othersGroupDetails: [] };
     }
     
     // For balanced data, use percentage threshold
@@ -163,21 +163,29 @@
     });
     
     if (smallSlices.length > 2) {
-      othersGroupDetails = smallSlices; // Store for tooltip
       const othersValue = smallSlices.reduce((sum, item) => sum + item.value, 0);
-      return [
-        ...mainSlices,
-        {
-          label: `Others (${smallSlices.length} languages)`,
-          value: othersValue,
-          color: '--muted-foreground'
-        }
-      ];
+      return {
+        processedData: [
+          ...mainSlices,
+          {
+            label: `Others (${smallSlices.length} languages)`,
+            value: othersValue,
+            color: '--muted-foreground'
+          }
+        ],
+        othersGroupDetails: smallSlices
+      };
     }
     
-    othersGroupDetails = [];
-    return [...mainSlices, ...smallSlices];
+    return {
+      processedData: [...mainSlices, ...smallSlices],
+      othersGroupDetails: []
+    };
   });
+
+  // Destructure the derived values
+  const processedData = $derived(chartData.processedData);
+  const othersGroupDetails = $derived(chartData.othersGroupDetails);
 
 
 
@@ -218,7 +226,7 @@
   }
 
   function updateChart() {
-    if (!chartInstance || processedData().length === 0) return;
+    if (!chartInstance || processedData.length === 0) return;
 
     // Get fresh CSS variables on each update
     const foreground = getCSSVariable('--foreground');
@@ -228,7 +236,7 @@
     const border = getCSSVariable('--border');
 
     // Convert data to ECharts format with resolved colors
-    const chartData = processedData().map((item, index) => {
+    const chartData = processedData.map((item, index) => {
       const colorVar = item.color || `--chart-${(index % 16) + 1}`;
       const resolvedColor = getCSSVariable(colorVar);
       return {
@@ -252,7 +260,7 @@
           // Check if this is the "Others" category
           if (name.startsWith('Others (') && othersGroupDetails.length > 0) {
             // Build detailed breakdown for Others
-            const total = processedData().reduce((sum, item) => sum + item.value, 0);
+            const total = processedData.reduce((sum, item) => sum + item.value, 0);
             const header = `<strong>${name}</strong><br/>${value} (${percent.toFixed(1)}%)<br/><br/>`;
             const details = othersGroupDetails
               .map(item => {
@@ -368,7 +376,7 @@
 
   // Update chart when data changes
   $effect(() => {
-    if (chartInstance && processedData().length > 0) {
+    if (chartInstance && processedData.length > 0) {
       updateChart();
     }
   });
