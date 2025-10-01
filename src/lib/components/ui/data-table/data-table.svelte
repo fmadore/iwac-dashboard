@@ -191,10 +191,10 @@
   <div class="w-full rounded-md border border-border">
     <div class="w-full overflow-x-auto">
       <Table class="w-full">
-        <TableHeader class="sticky top-0 bg-background z-10">
-          <TableRow>
+        <TableHeader class="sticky top-0 bg-muted/50 z-10">
+          <TableRow class="hover:bg-muted/50">
             {#each columns as column}
-              <TableHead class={`${column.width ?? ''} ${column.headerClass ?? ''} min-w-0`}>
+              <TableHead class={`${column.width ?? ''} ${column.headerClass ?? ''} min-w-0 font-semibold text-foreground`}>
                 {#if column.sortable !== false}
                   <button
                     type="button"
