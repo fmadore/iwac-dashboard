@@ -9,27 +9,32 @@
 	import UrlStateSync from '$lib/components/url-state-sync.svelte';
 	import { ModeWatcher } from 'mode-watcher';
 	import { onMount } from 'svelte';
-	import { pwaInfo } from 'virtual:pwa-info';
+	import { browser } from '$app/environment';
 	import '../app.css';
 
 	let { children } = $props();
 
-	// PWA manifest link tag
-	const webManifest = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
-
-	// Register service worker
+	// Register service worker only in browser
 	onMount(async () => {
-		if (pwaInfo) {
-			const { registerSW } = await import('virtual:pwa-register');
-			registerSW({
-				immediate: true,
-				onRegistered(r) {
-					console.log('SW Registered:', r);
-				},
-				onRegisterError(error) {
-					console.log('SW registration error', error);
+		if (browser) {
+			try {
+				const { pwaInfo } = await import('virtual:pwa-info');
+				if (pwaInfo) {
+					const { registerSW } = await import('virtual:pwa-register');
+					registerSW({
+						immediate: true,
+						onRegistered(r) {
+							console.log('SW Registered:', r);
+						},
+						onRegisterError(error) {
+							console.log('SW registration error', error);
+						}
+					});
 				}
-			});
+			} catch (e) {
+				// PWA not available in dev mode or if disabled
+				console.log('PWA not available:', e);
+			}
 		}
 	});
 
@@ -39,10 +44,6 @@
 	// 	itemsStore.loadItems();
 	// });
 </script>
-
-<svelte:head>
-	{@html webManifest}
-</svelte:head>
 
 <ModeWatcher />
 <UrlStateSync />
