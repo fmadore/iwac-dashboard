@@ -34,12 +34,6 @@
       originalKey: item.category // Keep original for color mapping
     }));
     
-    console.log('🌐 ChartData Derived', {
-      currentLang,
-      rawData: rawChartData.map(d => d.category),
-      translatedData: translated.map(d => d.category)
-    });
-    
     return translated;
   });
 
