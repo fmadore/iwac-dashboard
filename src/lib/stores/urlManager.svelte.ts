@@ -14,6 +14,7 @@
 
 import { browser } from '$app/environment';
 import { replaceState } from '$app/navigation';
+import { SvelteURL, SvelteURLSearchParams } from 'svelte/reactivity';
 import type { Language } from './translationStore.svelte.js';
 
 export type Theme = 'light' | 'dark' | 'system';
@@ -162,7 +163,7 @@ class UrlManager {
 	private readFromUrl() {
 		if (!browser) return;
 
-		const params = new URLSearchParams(window.location.search);
+		const params = new SvelteURLSearchParams(window.location.search);
 		const newState: UrlState = {};
 
 		// Language
@@ -230,7 +231,7 @@ class UrlManager {
 	private writeToUrl() {
 		if (!browser || !this.urlWritingEnabled) return;
 
-		const params = new URLSearchParams();
+		const params = new SvelteURLSearchParams();
 
 		// Add all non-empty values to params
 		Object.entries(this.state).forEach(([key, value]) => {
@@ -239,14 +240,20 @@ class UrlManager {
 			}
 		});
 
-		// Update URL without page reload using SvelteKit's API
-		const newUrl = params.toString()
-			? `${window.location.pathname}?${params.toString()}`
-			: window.location.pathname;
+		// Build the new URL with updated search params using SvelteURL for reactivity
+		const currentUrl = new SvelteURL(window.location.href);
+		const newSearch = params.toString();
 
-		// Only update if URL actually changed
-		if (newUrl !== window.location.pathname + window.location.search) {
-			replaceState(newUrl, {});
+		// Only update if URL search params actually changed
+		if (newSearch !== currentUrl.search.slice(1)) {
+			// Update URL using replaceState with empty string for current path
+			// This updates search params without navigation
+			// According to Svelte docs: passing empty string uses current URL
+			const url = new SvelteURL(window.location.origin + window.location.pathname);
+			url.search = newSearch;
+
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
+			replaceState(url.href, { ...this.state });
 		}
 	}
 

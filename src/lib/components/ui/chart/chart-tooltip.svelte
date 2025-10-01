@@ -5,7 +5,6 @@
 	import { Tooltip as TooltipPrimitive } from 'layerchart';
 	import type { Snippet } from 'svelte';
 
-	 
 	function defaultFormatter(value: any, _payload: TooltipPayload[]) {
 		return `${value}`;
 	}
@@ -34,8 +33,7 @@
 		hideIndicator?: boolean;
 		labelClassName?: string;
 		items?: TooltipPayload[];
-		labelFormatter?:  
-		((value: any, payload: TooltipPayload[]) => string | number | Snippet) | null;
+		labelFormatter?: ((value: any, payload: TooltipPayload[]) => string | number | Snippet) | null;
 		formatter?: Snippet<
 			[
 				{
