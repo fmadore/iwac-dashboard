@@ -27,10 +27,10 @@ class ItemsStore {
 			if (!response.ok) {
 				throw new Error(`Failed to load data: ${response.status} ${response.statusText}`);
 			}
-			
+
 			const data = await response.json();
 			// Extract items if it's wrapped in a structure
-			this.items = Array.isArray(data) ? data : (data.entities || []);
+			this.items = Array.isArray(data) ? data : data.entities || [];
 			this.loading = false;
 		} catch (err) {
 			this.items = [];
@@ -52,12 +52,16 @@ class ItemsStore {
 	}
 
 	get uniqueCountries(): string[] {
-		const countries = new Set(this.items.map((item) => item.country).filter((c): c is string => !!c));
+		const countries = new Set(
+			this.items.map((item) => item.country).filter((c): c is string => !!c)
+		);
 		return Array.from(countries).sort();
 	}
 
 	get uniqueLanguages(): string[] {
-		const languages = new Set(this.items.map((item) => item.language).filter((l): l is string => !!l));
+		const languages = new Set(
+			this.items.map((item) => item.language).filter((l): l is string => !!l)
+		);
 		return Array.from(languages).sort();
 	}
 

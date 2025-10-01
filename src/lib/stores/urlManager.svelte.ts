@@ -1,9 +1,9 @@
 /**
  * URL Manager - Svelte 5 Pattern
- * 
+ *
  * Manages synchronization between app state (language, theme, facets) and URL search parameters.
  * Uses plain JavaScript reactivity (not runes) to avoid component context requirements.
- * 
+ *
  * Features:
  * - Language (lang=en|fr)
  * - Theme (theme=light|dark)
@@ -67,7 +67,7 @@ class UrlManager {
 	 * Notify all listeners of state change
 	 */
 	private notify() {
-		this.listeners.forEach(listener => listener());
+		this.listeners.forEach((listener) => listener());
 	}
 
 	/**
@@ -99,7 +99,7 @@ class UrlManager {
 
 		// Update URL
 		this.writeToUrl();
-		
+
 		// Notify listeners
 		this.notify();
 	}
@@ -121,7 +121,7 @@ class UrlManager {
 
 		// Update URL
 		this.writeToUrl();
-		
+
 		// Notify listeners
 		this.notify();
 	}
@@ -141,7 +141,7 @@ class UrlManager {
 	 */
 	clearMany(keys: (keyof UrlState)[]) {
 		if (!browser) return;
-		keys.forEach(key => delete this.state[key]);
+		keys.forEach((key) => delete this.state[key]);
 		this.writeToUrl();
 		this.notify();
 	}
@@ -240,7 +240,7 @@ class UrlManager {
 		});
 
 		// Update URL without page reload using SvelteKit's API
-		const newUrl = params.toString() 
+		const newUrl = params.toString()
 			? `${window.location.pathname}?${params.toString()}`
 			: window.location.pathname;
 

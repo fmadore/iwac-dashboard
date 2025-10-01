@@ -18,13 +18,7 @@
 		colors?: Record<string, string>;
 	}
 
-	let {
-		title = '',
-		years = [],
-		series = [],
-		height = '600px',
-		colors = {}
-	}: Props = $props();
+	let { title = '', years = [], series = [], height = '600px', colors = {} }: Props = $props();
 
 	let chartContainer: HTMLDivElement;
 	let chartInstance: any = null;
@@ -83,15 +77,15 @@
 		// Base document types
 		'Press Article': '--chart-1',
 		'Islamic Periodical': '--chart-2',
-		'Document': '--chart-3',
-		'Audiovisuel': '--chart-4',
+		Document: '--chart-3',
+		Audiovisuel: '--chart-4',
 		// Reference types
 		'Article de revue': '--chart-5',
-		'Livre': '--chart-6',
+		Livre: '--chart-6',
 		'Chapitre de livre': '--chart-7',
 		'Thèse de doctorat': '--chart-8',
 		'Mémoire de maitrise': '--chart-9',
-		'Rapport': '--chart-10',
+		Rapport: '--chart-10',
 		'Communication scientifique': '--chart-11',
 		'Compte rendu de livre': '--chart-12',
 		"Article d'encyclopédie": '--chart-13',

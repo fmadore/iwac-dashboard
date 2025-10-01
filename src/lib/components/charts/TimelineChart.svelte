@@ -5,7 +5,11 @@
 	import * as echarts from 'echarts';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
-	let { months = [], monthlyAdditions = [], cumulativeTotal = [] } = $props<{
+	let {
+		months = [],
+		monthlyAdditions = [],
+		cumulativeTotal = []
+	} = $props<{
 		months: string[];
 		monthlyAdditions: number[];
 		cumulativeTotal: number[];
@@ -14,9 +18,9 @@
 	// Filter data to start from April 2024 (2024-04)
 	const startMonth = '2024-04';
 	const filteredData = $derived.by(() => {
-		const startIndex = months.findIndex(m => m >= startMonth);
+		const startIndex = months.findIndex((m) => m >= startMonth);
 		if (startIndex === -1) return { months, monthlyAdditions, cumulativeTotal };
-		
+
 		return {
 			months: months.slice(startIndex),
 			monthlyAdditions: monthlyAdditions.slice(startIndex),
@@ -34,7 +38,7 @@
 		if (!browser) return '#000000';
 		const root = document.documentElement;
 		const value = getComputedStyle(root).getPropertyValue(variable).trim();
-		
+
 		if (value) {
 			return value;
 		}
@@ -240,13 +244,13 @@
 	// Re-render chart when language, theme, or data changes
 	$effect(() => {
 		if (!browser || !chartContainer || months.length === 0) return;
-		
+
 		// Track all dependencies that should trigger re-render
 		const _ = languageStore.current;
 		const _months = months;
 		const _additions = monthlyAdditions;
 		const _cumulative = cumulativeTotal;
-		
+
 		initChart();
 	});
 

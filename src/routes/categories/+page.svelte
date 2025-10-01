@@ -53,35 +53,37 @@
 
 	// Filter states from URL
 	const selectedCountry = $derived(urlSync.filters.country);
-	
+
 	// Year range as derived value that reads from URL or defaults
-	const yearRange = $derived<[number, number]>((() => {
-		const min = urlSync.filters.yearMin;
-		const max = urlSync.filters.yearMax;
-		if (min !== undefined && max !== undefined) {
-			return [min, max];
-		}
-		return [metadata?.temporal.min_year || 1912, metadata?.temporal.max_year || 2025];
-	})());
+	const yearRange = $derived<[number, number]>(
+		(() => {
+			const min = urlSync.filters.yearMin;
+			const max = urlSync.filters.yearMax;
+			if (min !== undefined && max !== undefined) {
+				return [min, max];
+			}
+			return [metadata?.temporal.min_year || 1912, metadata?.temporal.max_year || 2025];
+		})()
+	);
 
 	async function loadData() {
 		try {
 			loading = true;
 			error = null;
-			
+
 			// Load global data and metadata
 			const [globalResponse, metadataResponse] = await Promise.all([
 				fetch(`${base}/data/categories-global.json`),
 				fetch(`${base}/data/categories-metadata.json`)
 			]);
-			
+
 			if (!globalResponse.ok || !metadataResponse.ok) {
 				throw new Error('Failed to load data');
 			}
-			
+
 			globalData = await globalResponse.json();
 			metadata = await metadataResponse.json();
-			
+
 			// Set initial year range from metadata
 			if (metadata && !urlSync.hasFilter('yearMin') && !urlSync.hasFilter('yearMax')) {
 				urlSync.setFilters({
@@ -102,7 +104,7 @@
 			countryData = null;
 			return;
 		}
-		
+
 		try {
 			const filename = country.toLowerCase().replace(/\s+/g, '-');
 			const response = await fetch(`${base}/data/categories-${filename}.json`);
@@ -124,7 +126,7 @@
 	});
 
 	// Get active data based on country selection
-	const activeData = $derived(() => selectedCountry ? countryData : globalData);
+	const activeData = $derived(() => (selectedCountry ? countryData : globalData));
 
 	// Filter data by year range
 	const filteredData = $derived(() => {
@@ -147,10 +149,7 @@
 			data: yearIndices.map((i) => s.data[i])
 		}));
 
-		const total = filteredSeries.reduce(
-			(sum, s) => sum + s.data.reduce((a, b) => a + b, 0),
-			0
-		);
+		const total = filteredSeries.reduce((sum, s) => sum + s.data.reduce((a, b) => a + b, 0), 0);
 
 		return {
 			years: filteredYears,
@@ -163,9 +162,7 @@
 		};
 	});
 
-	const countryOptions = $derived(() => 
-		metadata?.countries.with_individual_files ?? []
-	);
+	const countryOptions = $derived(() => metadata?.countries.with_individual_files ?? []);
 
 	// Handlers for filter changes
 	function handleCountryChange(value: string | undefined) {
@@ -223,10 +220,14 @@
 			<Card.Content>
 				<div class="space-y-6">
 					<!-- Country Filter -->
-					<div class="flex items-center gap-4 flex-wrap">
+					<div class="flex flex-wrap items-center gap-4">
 						<div class="flex items-center gap-2">
 							<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
-							<Select.Root type="single" value={selectedCountry ?? 'all-countries'} onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}>
+							<Select.Root
+								type="single"
+								value={selectedCountry ?? 'all-countries'}
+								onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}
+							>
 								<Select.Trigger class="w-[200px]" id="countrySelect">
 									{selectedCountry || t('filters.all_countries')}
 								</Select.Trigger>
@@ -239,11 +240,7 @@
 							</Select.Root>
 						</div>
 						{#if selectedCountry}
-							<Button 
-								variant="secondary"
-								size="sm"
-								onclick={handleClearFilters}
-							>
+							<Button variant="secondary" size="sm" onclick={handleClearFilters}>
 								{t('filters.clear')}
 							</Button>
 						{/if}
@@ -285,7 +282,9 @@
 			<Card.Root>
 				<Card.Header class="pb-2">
 					<Card.Description>{t('categories.year_range')}</Card.Description>
-					<Card.Title class="text-3xl">{filteredData()!.year_range.min} - {filteredData()!.year_range.max}</Card.Title>
+					<Card.Title class="text-3xl"
+						>{filteredData()!.year_range.min} - {filteredData()!.year_range.max}</Card.Title
+					>
 				</Card.Header>
 			</Card.Root>
 			<Card.Root>

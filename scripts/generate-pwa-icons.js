@@ -76,7 +76,7 @@ async function generateIcons() {
 		console.log('✅ Generated favicon-16x16.png');
 
 		console.log('\n🎉 All PWA icons generated successfully!');
-		console.log('\n📝 Note: Sharp doesn\'t create .ico files directly.');
+		console.log("\n📝 Note: Sharp doesn't create .ico files directly.");
 		console.log('   Using favicon.png instead (widely supported by modern browsers).');
 		console.log('   To create a true .ico file, use an online tool like favicon.io');
 		console.log('\nNext steps:');

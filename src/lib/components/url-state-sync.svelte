@@ -44,7 +44,7 @@
 	let previousLang = $state(languageStore.current);
 	$effect(() => {
 		if (!browser || !isInitialized) return;
-		
+
 		const currentLang = languageStore.current;
 		if (currentLang !== previousLang) {
 			urlManager.set('lang', currentLang);
@@ -56,7 +56,7 @@
 	let previousTheme = $state<string | undefined>(undefined);
 	$effect(() => {
 		if (!browser || !isInitialized) return;
-		
+
 		const currentMode = mode.current;
 		if (currentMode && currentMode !== previousTheme) {
 			urlManager.set('theme', currentMode as string);

@@ -8,82 +8,82 @@
 		 * Each key represents a time period or category
 		 */
 		data: Record<string, { data: [string, number][]; year?: number; [key: string]: any }>;
-		
+
 		/**
 		 * Array of time period keys in order (e.g., years)
 		 */
 		periods: (string | number)[];
-		
+
 		/**
 		 * Chart title template. Use {0} for dynamic period value
 		 * @default 'Chart - {0}'
 		 */
 		title?: string;
-		
+
 		/**
 		 * Maximum number of bars to show
 		 * @default 10
 		 */
 		maxBars?: number;
-		
+
 		/**
 		 * Auto-play on mount
 		 * @default false
 		 */
 		autoPlay?: boolean;
-		
+
 		/**
 		 * Animation interval in milliseconds
 		 * @default 1000
 		 */
 		interval?: number;
-		
+
 		/**
 		 * Animation duration for transitions
 		 * @default 500
 		 */
 		animationDuration?: number;
-		
+
 		/**
 		 * Chart height in pixels
 		 * @default 600
 		 */
 		height?: number;
-		
+
 		/**
 		 * Primary bar color (CSS variable or color string)
 		 * @default 'var(--chart-1)'
 		 */
 		barColor?: string;
-		
+
 		/**
 		 * Use multiple colors for different items (each item gets a unique color)
 		 * @default true
 		 */
 		useMultipleColors?: boolean;
-		
+
 		/**
 		 * Enable/disable value labels on bars
 		 * @default true
 		 */
 		showLabels?: boolean;
-		
+
 		/**
 		 * Make data cumulative over time
 		 * @default false
 		 */
 		cumulative?: boolean;
-		
+
 		/**
 		 * Current period index (for external control)
 		 */
 		currentIndex?: number;
-		
+
 		/**
 		 * Callback when period changes
 		 */
 		onPeriodChange?: (index: number, period: string | number) => void;
-		
+
 		/**
 		 * Callback when animation completes
 		 */
@@ -166,16 +166,22 @@
 	}
 
 	// Compute cumulative data if needed
-	function getCumulativeData(): Record<string, { data: [string, number][]; year?: number; [key: string]: any }> {
+	function getCumulativeData(): Record<
+		string,
+		{ data: [string, number][]; year?: number; [key: string]: any }
+	> {
 		if (!cumulative) return data;
 
-		const cumulativeData: Record<string, { data: [string, number][]; year?: number; [key: string]: any }> = {};
+		const cumulativeData: Record<
+			string,
+			{ data: [string, number][]; year?: number; [key: string]: any }
+		> = {};
 		const termTotals: Map<string, number> = new Map();
 
 		for (let i = 0; i <= currentIndex; i++) {
 			const period = periods[i];
 			const periodData = data[String(period)];
-			
+
 			if (periodData && periodData.data) {
 				// Accumulate counts for each term
 				for (const [term, count] of periodData.data) {
@@ -186,8 +192,7 @@
 		}
 
 		// Sort by total count and return top items
-		const sortedTerms = Array.from(termTotals.entries())
-			.sort((a, b) => b[1] - a[1]);
+		const sortedTerms = Array.from(termTotals.entries()).sort((a, b) => b[1] - a[1]);
 
 		cumulativeData[String(currentPeriod)] = {
 			data: sortedTerms,
@@ -200,9 +205,22 @@
 	// Color assignment for consistent term colors
 	const termColorMap = $state(new Map<string, string>());
 	const chartColors = [
-		'--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5',
-		'--chart-6', '--chart-7', '--chart-8', '--chart-9', '--chart-10',
-		'--chart-11', '--chart-12', '--chart-13', '--chart-14', '--chart-15', '--chart-16'
+		'--chart-1',
+		'--chart-2',
+		'--chart-3',
+		'--chart-4',
+		'--chart-5',
+		'--chart-6',
+		'--chart-7',
+		'--chart-8',
+		'--chart-9',
+		'--chart-10',
+		'--chart-11',
+		'--chart-12',
+		'--chart-13',
+		'--chart-14',
+		'--chart-15',
+		'--chart-16'
 	];
 
 	/**
@@ -210,9 +228,7 @@
 	 */
 	function getColorForTerm(term: string, index: number): string {
 		if (!useMultipleColors) {
-			return barColor.startsWith('var(--') 
-				? getCSSVariable(barColor.slice(4, -1)) 
-				: barColor;
+			return barColor.startsWith('var(--') ? getCSSVariable(barColor.slice(4, -1)) : barColor;
 		}
 
 		// Check if term already has a color assigned
@@ -224,7 +240,7 @@
 		const colorVar = chartColors[termColorMap.size % chartColors.length];
 		const resolvedColor = getCSSVariable(colorVar);
 		termColorMap.set(term, resolvedColor);
-		
+
 		return resolvedColor;
 	}
 
@@ -289,7 +305,7 @@
 		// Get data (cumulative or regular)
 		const displayData = cumulative ? getCumulativeData() : data;
 		const periodData = displayData[String(currentPeriod)];
-		
+
 		if (!periodData || !periodData.data || periodData.data.length === 0) {
 			return;
 		}
@@ -553,11 +569,7 @@
 </script>
 
 <div class="bar-chart-race">
-	<div
-		bind:this={chartContainer}
-		class="chart-container"
-		style="height: {height}px;"
-	></div>
+	<div bind:this={chartContainer} class="chart-container" style="height: {height}px;"></div>
 </div>
 
 <style>

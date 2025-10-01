@@ -39,34 +39,38 @@
 	let error = $state<string | null>(null);
 
 	// Controls from URL
-	const viewMode = $derived((urlSync.filters.view as 'global' | 'country' | 'temporal') || 'global');
+	const viewMode = $derived(
+		(urlSync.filters.view as 'global' | 'country' | 'temporal') || 'global'
+	);
 	const selectedCountry = $derived(urlSync.filters.country);
 	const selectedYear = $derived(urlSync.filters.year ? String(urlSync.filters.year) : undefined);
 
 	// Computed values using $derived
 	let currentData = $derived(
-		viewMode === 'country' && selectedCountry && countryData[selectedCountry] 
-			? countryData[selectedCountry].data 
+		viewMode === 'country' && selectedCountry && countryData[selectedCountry]
+			? countryData[selectedCountry].data
 			: viewMode === 'temporal' && selectedYear && temporalData[selectedYear]
-			? temporalData[selectedYear].data
-			: globalData?.data || []
+				? temporalData[selectedYear].data
+				: globalData?.data || []
 	);
-	
+
 	let currentMetrics = $derived(
-		viewMode === 'country' && selectedCountry && countryData[selectedCountry] 
+		viewMode === 'country' && selectedCountry && countryData[selectedCountry]
 			? countryData[selectedCountry]
 			: viewMode === 'temporal' && selectedYear && temporalData[selectedYear]
-			? temporalData[selectedYear]
-			: globalData
+				? temporalData[selectedYear]
+				: globalData
 	);
-	
+
 	let availableCountries = $derived(metadata?.countries || []);
 	let availableYears = $derived(metadata?.years || []);
 
 	function getCurrentData(): [string, number][] {
 		switch (viewMode) {
 			case 'country':
-				return selectedCountry && countryData[selectedCountry] ? countryData[selectedCountry].data : [];
+				return selectedCountry && countryData[selectedCountry]
+					? countryData[selectedCountry].data
+					: [];
 			case 'temporal':
 				return selectedYear && temporalData[selectedYear] ? temporalData[selectedYear].data : [];
 			default:
@@ -77,7 +81,9 @@
 	function getCurrentMetrics() {
 		switch (viewMode) {
 			case 'country':
-				return selectedCountry && countryData[selectedCountry] ? countryData[selectedCountry] : null;
+				return selectedCountry && countryData[selectedCountry]
+					? countryData[selectedCountry]
+					: null;
 			case 'temporal':
 				return selectedYear && temporalData[selectedYear] ? temporalData[selectedYear] : null;
 			default:
@@ -91,12 +97,13 @@
 			error = null;
 
 			// Load all data files
-			const [globalResponse, countryResponse, temporalResponse, metadataResponse] = await Promise.all([
-				fetch(`${base}/data/wordcloud-global.json`),
-				fetch(`${base}/data/wordcloud-countries.json`),
-				fetch(`${base}/data/wordcloud-temporal.json`),
-				fetch(`${base}/data/wordcloud-metadata.json`)
-			]);
+			const [globalResponse, countryResponse, temporalResponse, metadataResponse] =
+				await Promise.all([
+					fetch(`${base}/data/wordcloud-global.json`),
+					fetch(`${base}/data/wordcloud-countries.json`),
+					fetch(`${base}/data/wordcloud-temporal.json`),
+					fetch(`${base}/data/wordcloud-metadata.json`)
+				]);
 
 			if (!globalResponse.ok) throw new Error('Failed to load global wordcloud data');
 			if (!countryResponse.ok) throw new Error('Failed to load country wordcloud data');
@@ -118,7 +125,6 @@
 			if (!urlSync.hasFilter('view')) {
 				urlSync.setFilter('view', 'global');
 			}
-
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Failed to load wordcloud data';
 			console.error('Error loading wordcloud data:', err);
@@ -161,62 +167,71 @@
 
 	{#if loading}
 		<Card class="p-6">
-			<div class="text-center py-12">
-				<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+			<div class="py-12 text-center">
+				<div class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
 				<p class="text-muted-foreground">{t('words.loading')}</p>
 			</div>
 		</Card>
 	{:else if error}
 		<Card class="p-6">
-			<div class="text-center py-12">
-				<p class="text-destructive mb-4">{t('common.error')}: {error}</p>
+			<div class="py-12 text-center">
+				<p class="mb-4 text-destructive">{t('common.error')}: {error}</p>
 				<Button onclick={loadWordCloudData}>{t('words.retry')}</Button>
 			</div>
 		</Card>
 	{:else}
 		<!-- Controls -->
 		<Card class="p-6">
-			<div class="flex flex-wrap gap-4 items-center">
-			<div class="flex gap-2">
-				<Button
-					variant={viewMode === 'global' ? 'default' : 'outline'}
-					size="sm"
-					onclick={() => handleViewModeChange('global')}
-				>
-					{t('words.global')}
-				</Button>
-				<Button
-					variant={viewMode === 'country' ? 'default' : 'outline'}
-					size="sm"
-					onclick={() => handleViewModeChange('country')}
-				>
-					{t('words.by_country')}
-				</Button>
-				<Button
-					variant={viewMode === 'temporal' ? 'default' : 'outline'}
-					size="sm"
-					onclick={() => handleViewModeChange('temporal')}
-				>
-					{t('words.by_year')}
-				</Button>
-			</div>			{#if viewMode === 'country' && availableCountries.length > 0}
-				<Select.Root type="single" value={selectedCountry ?? 'select-country'} onValueChange={(v) => handleCountryChange(v === 'select-country' ? undefined : v)}>
-					<Select.Trigger class="w-48">
-						{selectedCountry || t('words.select_country')}
-					</Select.Trigger>
-					<Select.Content>
-						<Select.Item value="select-country">{t('words.select_country')}</Select.Item>
-						{#each availableCountries as country}
-							<Select.Item value={country}>{country}</Select.Item>
-						{/each}
-					</Select.Content>
-				</Select.Root>
-			{/if}
-			
-			{#if viewMode === 'temporal' && availableYears.length > 0}
-				<Select.Root type="single" value={selectedYear ?? 'select-year'} onValueChange={(v) => handleYearChange(v === 'select-year' ? undefined : v)}>
-					<Select.Trigger class="w-32">
-						{selectedYear || t('words.select_year')}
+			<div class="flex flex-wrap items-center gap-4">
+				<div class="flex gap-2">
+					<Button
+						variant={viewMode === 'global' ? 'default' : 'outline'}
+						size="sm"
+						onclick={() => handleViewModeChange('global')}
+					>
+						{t('words.global')}
+					</Button>
+					<Button
+						variant={viewMode === 'country' ? 'default' : 'outline'}
+						size="sm"
+						onclick={() => handleViewModeChange('country')}
+					>
+						{t('words.by_country')}
+					</Button>
+					<Button
+						variant={viewMode === 'temporal' ? 'default' : 'outline'}
+						size="sm"
+						onclick={() => handleViewModeChange('temporal')}
+					>
+						{t('words.by_year')}
+					</Button>
+				</div>
+				{#if viewMode === 'country' && availableCountries.length > 0}
+					<Select.Root
+						type="single"
+						value={selectedCountry ?? 'select-country'}
+						onValueChange={(v) => handleCountryChange(v === 'select-country' ? undefined : v)}
+					>
+						<Select.Trigger class="w-48">
+							{selectedCountry || t('words.select_country')}
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Item value="select-country">{t('words.select_country')}</Select.Item>
+							{#each availableCountries as country}
+								<Select.Item value={country}>{country}</Select.Item>
+							{/each}
+						</Select.Content>
+					</Select.Root>
+				{/if}
+
+				{#if viewMode === 'temporal' && availableYears.length > 0}
+					<Select.Root
+						type="single"
+						value={selectedYear ?? 'select-year'}
+						onValueChange={(v) => handleYearChange(v === 'select-year' ? undefined : v)}
+					>
+						<Select.Trigger class="w-32">
+							{selectedYear || t('words.select_year')}
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Item value="select-year">Select year</Select.Item>
@@ -231,7 +246,7 @@
 
 		<!-- Metrics -->
 		{#if currentMetrics}
-			<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
 				<Card class="p-4">
 					<div class="text-2xl font-bold">{currentMetrics.total_articles.toLocaleString()}</div>
 					<p class="text-xs text-muted-foreground">{t('words.articles')}</p>
@@ -296,7 +311,7 @@
 
 				{#if currentData.length > 0}
 					<div class="mt-6">
-						<h4 class="text-sm font-medium mb-3">{t('words.top_words')}</h4>
+						<h4 class="mb-3 text-sm font-medium">{t('words.top_words')}</h4>
 						<div class="flex flex-wrap gap-2">
 							{#each currentData.slice(0, 20) as [word, frequency]}
 								<Badge variant="outline" class="text-xs">
@@ -312,17 +327,40 @@
 		<!-- Data Info -->
 		{#if metadata}
 			<Card class="p-6">
-				<h3 class="text-lg font-semibold mb-4">{t('words.dataset_info')}</h3>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+				<h3 class="mb-4 text-lg font-semibold">{t('words.dataset_info')}</h3>
+				<div class="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
 					<div>
-						<p><span class="font-medium">{t('words.language_filter')}:</span> {metadata.language_filter}</p>
-						<p><span class="font-medium">{t('words.min_word_length')}:</span> {metadata.min_word_length} {t('words.characters')}</p>
-						<p><span class="font-medium">{t('words.min_frequency')}:</span> {metadata.min_frequency} {t('words.occurrences')}</p>
+						<p>
+							<span class="font-medium">{t('words.language_filter')}:</span>
+							{metadata.language_filter}
+						</p>
+						<p>
+							<span class="font-medium">{t('words.min_word_length')}:</span>
+							{metadata.min_word_length}
+							{t('words.characters')}
+						</p>
+						<p>
+							<span class="font-medium">{t('words.min_frequency')}:</span>
+							{metadata.min_frequency}
+							{t('words.occurrences')}
+						</p>
 					</div>
 					<div>
-						<p><span class="font-medium">{t('stats.countries')}:</span> {metadata.countries.length}</p>
-						<p><span class="font-medium">{t('categories.year_range')}:</span> {metadata.years.length} ({t('words.year_range', [Math.min(...metadata.years), Math.max(...metadata.years)])})</p>
-						<p><span class="font-medium">{t('words.articles')}:</span> {metadata.total_articles.toLocaleString()}</p>
+						<p>
+							<span class="font-medium">{t('stats.countries')}:</span>
+							{metadata.countries.length}
+						</p>
+						<p>
+							<span class="font-medium">{t('categories.year_range')}:</span>
+							{metadata.years.length} ({t('words.year_range', [
+								Math.min(...metadata.years),
+								Math.max(...metadata.years)
+							])})
+						</p>
+						<p>
+							<span class="font-medium">{t('words.articles')}:</span>
+							{metadata.total_articles.toLocaleString()}
+						</p>
 					</div>
 				</div>
 			</Card>

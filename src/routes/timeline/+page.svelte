@@ -112,12 +112,7 @@
 	}
 
 	$effect(() => {
-		Promise.all([
-			loadData(),
-			loadTypeFacets(),
-			loadCountryFacets(),
-			loadMetadata()
-		]);
+		Promise.all([loadData(), loadTypeFacets(), loadCountryFacets(), loadMetadata()]);
 	});
 
 	// Get active data based on filters
@@ -184,8 +179,8 @@
 		</Card.Root>
 	{:else if error}
 		<Card.Root class="p-6">
-			<div class="text-center py-12">
-				<h3 class="text-xl font-semibold mb-2 text-destructive">{t('common.error')}</h3>
+			<div class="py-12 text-center">
+				<h3 class="mb-2 text-xl font-semibold text-destructive">{t('common.error')}</h3>
 				<p class="text-muted-foreground">{error}</p>
 			</div>
 		</Card.Root>
@@ -197,11 +192,15 @@
 				<Card.Description>{t('filters.description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<div class="flex items-center gap-4 flex-wrap">
+				<div class="flex flex-wrap items-center gap-4">
 					<!-- Type Filter -->
 					<div class="flex items-center gap-2">
 						<label for="typeSelect" class="text-sm font-medium">{t('timeline.by_type')}:</label>
-						<Select.Root type="single" value={selectedType ?? 'all-types'} onValueChange={(v) => handleTypeChange(v === 'all-types' ? undefined : v)}>
+						<Select.Root
+							type="single"
+							value={selectedType ?? 'all-types'}
+							onValueChange={(v) => handleTypeChange(v === 'all-types' ? undefined : v)}
+						>
 							<Select.Trigger class="w-[200px]" id="typeSelect">
 								{selectedTypeLabel || t('filters.all_types')}
 							</Select.Trigger>
@@ -217,7 +216,11 @@
 					<!-- Country Filter -->
 					<div class="flex items-center gap-2">
 						<label for="countrySelect" class="text-sm font-medium">{t('filters.country')}:</label>
-						<Select.Root type="single" value={selectedCountry ?? 'all-countries'} onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}>
+						<Select.Root
+							type="single"
+							value={selectedCountry ?? 'all-countries'}
+							onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}
+						>
 							<Select.Trigger class="w-[200px]" id="countrySelect">
 								{selectedCountry || t('filters.all_countries')}
 							</Select.Trigger>
@@ -231,11 +234,7 @@
 					</div>
 
 					{#if hasActiveFilters}
-						<Button 
-							variant="secondary"
-							size="sm"
-							onclick={clearFilters}
-						>
+						<Button variant="secondary" size="sm" onclick={clearFilters}>
 							{t('filters.clear')}
 						</Button>
 					{/if}
@@ -271,7 +270,9 @@
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">
-						{activeData.months.length > 0 ? Math.round(activeData.total_records / activeData.months.length).toLocaleString() : '0'}
+						{activeData.months.length > 0
+							? Math.round(activeData.total_records / activeData.months.length).toLocaleString()
+							: '0'}
 					</div>
 					<p class="text-xs text-muted-foreground">Average per month</p>
 				</Card.Content>

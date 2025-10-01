@@ -28,8 +28,8 @@
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			{#each Array(4) as _}
 				<Card class="p-6">
-					<Skeleton class="h-4 w-[100px] mb-2" />
-					<Skeleton class="h-8 w-[60px] mb-2" />
+					<Skeleton class="mb-2 h-4 w-[100px]" />
+					<Skeleton class="mb-2 h-8 w-[60px]" />
 					<Skeleton class="h-3 w-[120px]" />
 				</Card>
 			{/each}
@@ -42,11 +42,11 @@
 		<OverviewStatsGrid {summary} />
 
 		<Card class="p-6">
-			<h3 class="text-lg font-semibold mb-4">{t('overview.recent_items')}</h3>
+			<h3 class="mb-4 text-lg font-semibold">{t('overview.recent_items')}</h3>
 			{#if recentItems.length > 0}
 				<div class="space-y-2">
 					{#each recentItems as item}
-						<div class="flex items-center justify-between p-3 border rounded-lg">
+						<div class="flex items-center justify-between rounded-lg border p-3">
 							<div>
 								<h4 class="font-medium">{item.title}</h4>
 								<p class="text-sm text-muted-foreground">

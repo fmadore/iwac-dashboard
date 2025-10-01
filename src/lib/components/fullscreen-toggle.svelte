@@ -7,19 +7,15 @@
 	let isSupported = $state(false);
 
 	// Reactive translations that update when language changes
-	const enterFullscreenLabel = $derived(
-		languageStore.t('fullscreen.enter')
-	);
-	const exitFullscreenLabel = $derived(
-		languageStore.t('fullscreen.exit')
-	);
+	const enterFullscreenLabel = $derived(languageStore.t('fullscreen.enter'));
+	const exitFullscreenLabel = $derived(languageStore.t('fullscreen.exit'));
 
 	// Check if Fullscreen API is supported
 	$effect(() => {
 		isSupported = !!(
-			document.fullscreenEnabled || 
-			(document as any).webkitFullscreenEnabled || 
-			(document as any).mozFullScreenEnabled || 
+			document.fullscreenEnabled ||
+			(document as any).webkitFullscreenEnabled ||
+			(document as any).mozFullScreenEnabled ||
 			(document as any).msFullscreenEnabled
 		);
 		console.log('Fullscreen API supported:', isSupported);

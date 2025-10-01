@@ -78,12 +78,14 @@ export const translations = {
 		'timeline.total_records': 'Total Records',
 		'timeline.month_range': 'Time Period',
 		'timeline.chart_title': 'Collection Growth Over Time',
-		'timeline.chart_description': 'Monthly additions and cumulative total of documents in the collection',
+		'timeline.chart_description':
+			'Monthly additions and cumulative total of documents in the collection',
 		'timeline.additions': 'Additions',
 		'timeline.total': 'Total',
 		'timeline.by_type': 'By Document Type',
 		'timeline.by_country': 'By Country',
-		'overview.description': 'Comprehensive statistics and insights into the Islam West Africa Collection database',
+		'overview.description':
+			'Comprehensive statistics and insights into the Islam West Africa Collection database',
 		'overview.recent_items': 'Recent Items',
 		'overview.no_recent_items': 'No recent items available',
 		'overview.primary_stats': 'Primary Statistics',
@@ -103,7 +105,8 @@ export const translations = {
 		'fullscreen.enter': 'Enter fullscreen',
 		'fullscreen.exit': 'Exit fullscreen',
 		'words.title': 'Word Analysis',
-		'words.description': 'Explore word frequencies from French articles in the Islam West Africa Collection',
+		'words.description':
+			'Explore word frequencies from French articles in the Islam West Africa Collection',
 		'words.loading': 'Loading word cloud data...',
 		'words.retry': 'Retry',
 		'words.global': 'Global',
@@ -141,7 +144,8 @@ export const translations = {
 		'scary.term_variants': 'Term Variants',
 		'scary.total_occurrences': 'Total Occurrences',
 		'scary.chart_title': 'Top "Scary" Terms Over Time',
-		'scary.chart_description': 'Animated bar chart race showing evolution of "scary" term usage by year',
+		'scary.chart_description':
+			'Animated bar chart race showing evolution of "scary" term usage by year',
 		'scary.country_chart_title': '"Scary" Terms in {0}',
 		'scary.country_chart_description': 'Distribution of "scary" terms for selected country',
 		'scary.global_chart_title': 'Overall "Scary" Terms Distribution',
@@ -162,21 +166,21 @@ export const translations = {
 		'type.Livre': 'Book',
 		'type.Chapitre de livre': 'Book Chapter',
 		'type.Thèse de doctorat': 'Doctoral Thesis',
-		'type.Mémoire de maitrise': 'Master\'s Thesis',
+		'type.Mémoire de maitrise': "Master's Thesis",
 		'type.Rapport': 'Report',
 		'type.Communication scientifique': 'Conference Paper',
 		'type.Compte rendu de livre': 'Book Review',
-		'type.Article d\'encyclopédie': 'Encyclopedia Article',
+		"type.Article d'encyclopédie": 'Encyclopedia Article',
 		'type.Article de blog': 'Blog Article',
-		'type.Mémoire de licence': 'Bachelor\'s Thesis',
+		'type.Mémoire de licence': "Bachelor's Thesis",
 		'type.Working paper': 'Working Paper',
 		'overview.reference_types': 'Reference Types',
 		'overview.reference_types_desc': 'Different types of bibliographic references'
 	},
 	fr: {
 		'app.title': 'Aperçu de la base de données IWAC',
-		'app.subtitle': 'Collection Islam Afrique de l\'Ouest',
-		'nav.overview': 'Vue d\'ensemble',
+		'app.subtitle': "Collection Islam Afrique de l'Ouest",
+		'nav.overview': "Vue d'ensemble",
 		'nav.countries': 'Pays',
 		'nav.languages': 'Langues',
 		'nav.timeline': 'Chronologie',
@@ -200,7 +204,8 @@ export const translations = {
 		'chart.percentage': 'Pourcentage',
 		'chart.documents': 'Documents',
 		'chart.no_data': 'Aucune donnees disponibles',
-		'chart.documents_by_category_aria': 'Diagramme en barres montrant le nombre de documents par catégorie',
+		'chart.documents_by_category_aria':
+			'Diagramme en barres montrant le nombre de documents par catégorie',
 		'common.loading': 'Chargement...',
 		'common.error': 'Erreur lors du chargement des données',
 		'common.search': 'Rechercher...',
@@ -224,14 +229,15 @@ export const translations = {
 		'entity.organizations': 'Organisations',
 		'entity.persons': 'Personnes',
 		'entity.topics': 'Sujets',
-		'index.top_entity_types_subtitle': 'Répartition des {0} éléments de l\'index par catégorie',
+		'index.top_entity_types_subtitle': "Répartition des {0} éléments de l'index par catégorie",
 		'categories.description': 'Distribution des types de documents au fil du temps',
 		'categories.stacked_chart_title': 'Documents par type au fil des années',
 		'categories.total_records': 'Total des enregistrements',
 		'categories.year_range': 'Période',
 		'categories.document_types': 'Types de documents',
 		'categories.chart_title': 'Graphique en barres empilées par type',
-		'categories.chart_description': 'Distribution temporelle des types de documents dans la collection',
+		'categories.chart_description':
+			'Distribution temporelle des types de documents dans la collection',
 		'categories.type_distribution': 'Répartition des types',
 		'categories.by_country': 'Catégories par pays',
 		'categories.click_to_view': 'Cliquez pour voir les détails',
@@ -244,18 +250,20 @@ export const translations = {
 		'filters.clear': 'Effacer les filtres',
 		'errors.failed_to_load': 'Échec du chargement des données',
 		'timeline.title': 'Croissance de la collection',
-		'timeline.description': 'Suivez l\'évolution de la collection IWAC au fil du temps',
+		'timeline.description': "Suivez l'évolution de la collection IWAC au fil du temps",
 		'timeline.monthly_additions': 'Ajouts mensuels',
 		'timeline.cumulative_total': 'Total cumulatif',
 		'timeline.total_records': 'Total des enregistrements',
 		'timeline.month_range': 'Période temporelle',
 		'timeline.chart_title': 'Croissance de la collection au fil du temps',
-		'timeline.chart_description': 'Ajouts mensuels et total cumulatif des documents dans la collection',
+		'timeline.chart_description':
+			'Ajouts mensuels et total cumulatif des documents dans la collection',
 		'timeline.additions': 'Ajouts',
 		'timeline.total': 'Total',
 		'timeline.by_type': 'Par type de document',
 		'timeline.by_country': 'Par pays',
-		'overview.description': 'Statistiques complètes et aperçu de la base de données de la Collection Islam Afrique de l\'Ouest',
+		'overview.description':
+			"Statistiques complètes et aperçu de la base de données de la Collection Islam Afrique de l'Ouest",
 		'overview.recent_items': 'Éléments récents',
 		'overview.no_recent_items': 'Aucun élément récent disponible',
 		'overview.primary_stats': 'Statistiques rincipales',
@@ -270,12 +278,13 @@ export const translations = {
 		'overview.audiovisual_duration_desc': 'Minutes totales de contenu audiovisuel',
 		'overview.references': 'Références',
 		'overview.references_desc': 'Références bibliographiques',
-		'overview.index_entries': 'Entrées d\'index',
+		'overview.index_entries': "Entrées d'index",
 		'overview.index_entries_desc': 'Entités et sujets indexés',
 		'fullscreen.enter': 'Plein écran',
 		'fullscreen.exit': 'Quitter le plein écran',
 		'words.title': 'Analyse des mots',
-		'words.description': 'Explorez les fréquences de mots des articles en français de la Collection Islam Afrique de l\'Ouest',
+		'words.description':
+			"Explorez les fréquences de mots des articles en français de la Collection Islam Afrique de l'Ouest",
 		'words.loading': 'Chargement des données du nuage de mots...',
 		'words.retry': 'Réessayer',
 		'words.global': 'Global',
@@ -301,7 +310,8 @@ export const translations = {
 		'words.occurrences': 'occurrences',
 		'words.year_range': '{0}-{1}',
 		'scary.title': 'Analyse des mots "inquiétants"',
-		'scary.description': 'Suivre l\'utilisation des termes liés à la radicalisation dans la Collection Islam Afrique de l\'Ouest',
+		'scary.description':
+			"Suivre l'utilisation des termes liés à la radicalisation dans la Collection Islam Afrique de l'Ouest",
 		'scary.bar_race': 'Course de barres',
 		'scary.by_country': 'Par pays',
 		'scary.global': 'Global',
@@ -313,11 +323,14 @@ export const translations = {
 		'scary.term_variants': 'Variantes de termes',
 		'scary.total_occurrences': 'Occurrences totales',
 		'scary.chart_title': 'Principaux termes "inquiétants" au fil du temps',
-		'scary.chart_description': 'Course de barres animée montrant l\'évolution de l\'utilisation des termes "inquiétants" par année',
+		'scary.chart_description':
+			'Course de barres animée montrant l\'évolution de l\'utilisation des termes "inquiétants" par année',
 		'scary.country_chart_title': 'Termes "inquiétants" en {0}',
-		'scary.country_chart_description': 'Distribution des termes "inquiétants" pour le pays sélectionné',
+		'scary.country_chart_description':
+			'Distribution des termes "inquiétants" pour le pays sélectionné',
 		'scary.global_chart_title': 'Distribution globale des termes "inquiétants"',
-		'scary.global_chart_description': 'Occurrences totales des termes "inquiétants" dans tous les articles',
+		'scary.global_chart_description':
+			'Occurrences totales des termes "inquiétants" dans tous les articles',
 		'scary.term_definitions': 'Définitions des termes',
 		// PWA
 		'pwa.offline_ready': 'Application prête à fonctionner hors ligne',
@@ -338,7 +351,7 @@ export const translations = {
 		'type.Rapport': 'Rapport',
 		'type.Communication scientifique': 'Communication scientifique',
 		'type.Compte rendu de livre': 'Compte rendu de livre',
-		'type.Article d\'encyclopédie': 'Article d\'encyclopédie',
+		"type.Article d'encyclopédie": "Article d'encyclopédie",
 		'type.Article de blog': 'Article de blog',
 		'type.Mémoire de licence': 'Mémoire de licence',
 		'type.Working paper': 'Working paper',
@@ -352,7 +365,8 @@ class LanguageStore {
 
 	t(key: string, params: any[] = []) {
 		// Access current language reactively
-		const translation = translations[this.current]?.[key as keyof typeof translations[typeof this.current]] || key;
+		const translation =
+			translations[this.current]?.[key as keyof (typeof translations)[typeof this.current]] || key;
 		return params.reduce((str, param, i) => str.replace(`{${i}}`, param), translation);
 	}
 
@@ -365,6 +379,3 @@ export const languageStore = new LanguageStore();
 
 // Export the t function directly from the store instance to maintain reactivity
 export const t = (key: string, params: any[] = []) => languageStore.t(key, params);
-
-
-

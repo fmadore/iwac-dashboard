@@ -3,11 +3,11 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import StatsCard from '$lib/components/stats-card.svelte';
 	import type { OverviewSummary } from '$lib/stores/overviewStore.svelte.js';
-	
+
 	interface Props {
 		summary: OverviewSummary;
 	}
-	
+
 	let { summary }: Props = $props();
 </script>
 

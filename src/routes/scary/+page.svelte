@@ -46,7 +46,7 @@
 	let isPlaying = $state(false);
 	let currentYearIndex = $state(0);
 	let height = 600;
-	
+
 	// Non-reactive references (bind:this doesn't need $state)
 	let chartContainer = $state<HTMLDivElement | null>(null);
 	let barChartRace = $state<any>(null);
@@ -54,9 +54,22 @@
 	// Color management for consistent term colors
 	const termColorMap = new Map<string, string>();
 	const chartColors = [
-		'--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5',
-		'--chart-6', '--chart-7', '--chart-8', '--chart-9', '--chart-10',
-		'--chart-11', '--chart-12', '--chart-13', '--chart-14', '--chart-15', '--chart-16'
+		'--chart-1',
+		'--chart-2',
+		'--chart-3',
+		'--chart-4',
+		'--chart-5',
+		'--chart-6',
+		'--chart-7',
+		'--chart-8',
+		'--chart-9',
+		'--chart-10',
+		'--chart-11',
+		'--chart-12',
+		'--chart-13',
+		'--chart-14',
+		'--chart-15',
+		'--chart-16'
 	];
 
 	// Canvas for parsing CSS colors
@@ -111,7 +124,7 @@
 		const colorVar = chartColors[termColorMap.size % chartColors.length];
 		const resolvedColor = getCSSVariable(colorVar);
 		termColorMap.set(term, resolvedColor);
-		
+
 		return resolvedColor;
 	}
 
@@ -129,22 +142,23 @@
 	// Get localized country title
 	function getCountryChartTitle(country: string | undefined): string {
 		if (!country) return t('scary.country_chart_title', ['']);
-		
+
 		if (languageStore.current === 'fr') {
 			const prep = getCountryPreposition(country);
 			return `Termes "inquiétants" ${prep} ${country}`;
 		}
-		
+
 		return t('scary.country_chart_title', [country]);
 	}
 
 	// Computed values
 	const availableYears = $derived(
-		metadata?.year_range ? 
-		Array.from(
-			{ length: metadata.year_range[1] - metadata.year_range[0] + 1 }, 
-			(_, i) => (metadata?.year_range?.[0] ?? 0) + i
-		) : []
+		metadata?.year_range
+			? Array.from(
+					{ length: metadata.year_range[1] - metadata.year_range[0] + 1 },
+					(_, i) => (metadata?.year_range?.[0] ?? 0) + i
+				)
+			: []
 	);
 	const availableCountries = $derived(metadata?.countries || []);
 
@@ -154,12 +168,13 @@
 			error = null;
 
 			// Load all data files
-			const [temporalResponse, countryResponse, globalResponse, metadataResponse] = await Promise.all([
-				fetch(`${base}/data/scary-terms-temporal.json`),
-				fetch(`${base}/data/scary-terms-countries.json`),
-				fetch(`${base}/data/scary-terms-global.json`),
-				fetch(`${base}/data/scary-terms-metadata.json`)
-			]);
+			const [temporalResponse, countryResponse, globalResponse, metadataResponse] =
+				await Promise.all([
+					fetch(`${base}/data/scary-terms-temporal.json`),
+					fetch(`${base}/data/scary-terms-countries.json`),
+					fetch(`${base}/data/scary-terms-global.json`),
+					fetch(`${base}/data/scary-terms-metadata.json`)
+				]);
 
 			if (!temporalResponse.ok) throw new Error('Failed to load temporal data');
 			if (!countryResponse.ok) throw new Error('Failed to load country data');
@@ -178,7 +193,6 @@
 			if (!urlSync.hasFilter('view')) {
 				urlSync.setFilter('view', 'race');
 			}
-
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Failed to load scary terms data';
 			console.error('Error loading scary terms data:', err);
@@ -193,7 +207,7 @@
 		try {
 			// Dynamically import ECharts
 			const echarts = await import('echarts');
-			
+
 			// Dispose existing chart if any
 			if (chartInstance) {
 				chartInstance.dispose();
@@ -561,7 +575,7 @@
 		const _country = selectedCountry;
 		const _lang = languageStore.current;
 		const _data = temporalData;
-		
+
 		// Only initialize for non-race views
 		if (!loading && chartContainer && viewMode !== 'race') {
 			initializeChart();
@@ -595,22 +609,22 @@
 
 	{#if loading}
 		<Card.Root class="p-6">
-			<div class="text-center py-12">
-				<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+			<div class="py-12 text-center">
+				<div class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
 				<p class="text-muted-foreground">{t('common.loading')}</p>
 			</div>
 		</Card.Root>
 	{:else if error}
 		<Card.Root class="p-6">
-			<div class="text-center py-12">
-				<p class="text-destructive mb-4">{t('common.error')}: {error}</p>
+			<div class="py-12 text-center">
+				<p class="mb-4 text-destructive">{t('common.error')}: {error}</p>
 				<Button onclick={loadScaryTermsData}>{t('words.retry')}</Button>
 			</div>
 		</Card.Root>
 	{:else}
 		<!-- Controls -->
 		<Card.Root class="p-6">
-			<div class="flex flex-wrap gap-4 items-center">
+			<div class="flex flex-wrap items-center gap-4">
 				<div class="flex gap-2">
 					<Button
 						variant={viewMode === 'race' ? 'default' : 'outline'}
@@ -636,7 +650,11 @@
 				</div>
 
 				{#if viewMode === 'country' && availableCountries.length > 0}
-					<Select.Root type="single" value={selectedCountry ?? 'select-country'} onValueChange={handleCountryChange}>
+					<Select.Root
+						type="single"
+						value={selectedCountry ?? 'select-country'}
+						onValueChange={handleCountryChange}
+					>
 						<Select.Trigger class="w-48">
 							{selectedCountry || t('words.select_country')}
 						</Select.Trigger>
@@ -650,7 +668,7 @@
 				{/if}
 
 				{#if viewMode === 'race'}
-					<div class="flex gap-2 ml-auto">
+					<div class="ml-auto flex gap-2">
 						<Button variant="outline" size="sm" onclick={play} disabled={isPlaying}>
 							{t('scary.play')}
 						</Button>
@@ -667,7 +685,7 @@
 
 		<!-- Metrics -->
 		{#if metadata}
-			<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
 				<Card.Root class="p-4">
 					<div class="text-2xl font-bold">{metadata.total_articles.toLocaleString()}</div>
 					<p class="text-xs text-muted-foreground">{t('scary.total_articles')}</p>
@@ -681,7 +699,9 @@
 					<p class="text-xs text-muted-foreground">{t('scary.term_variants')}</p>
 				</Card.Root>
 				<Card.Root class="p-4">
-					<div class="text-2xl font-bold">{(globalData?.total_occurrences ?? 0).toLocaleString()}</div>
+					<div class="text-2xl font-bold">
+						{(globalData?.total_occurrences ?? 0).toLocaleString()}
+					</div>
 					<p class="text-xs text-muted-foreground">{t('scary.total_occurrences')}</p>
 				</Card.Root>
 			</div>
@@ -738,11 +758,11 @@
 		<!-- Term Definitions -->
 		{#if metadata}
 			<Card.Root class="p-6">
-				<h3 class="text-lg font-semibold mb-4">{t('scary.term_definitions')}</h3>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<h3 class="mb-4 text-lg font-semibold">{t('scary.term_definitions')}</h3>
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 					{#each Object.entries(metadata.term_definitions) as [family, variants]}
-						<div class="border border-border rounded-lg p-4">
-							<h4 class="font-medium mb-2">{family}</h4>
+						<div class="rounded-lg border border-border p-4">
+							<h4 class="mb-2 font-medium">{family}</h4>
 							<div class="flex flex-wrap gap-1">
 								{#each variants as variant}
 									<Badge variant="outline" class="text-xs">{variant}</Badge>

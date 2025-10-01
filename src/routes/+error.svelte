@@ -26,9 +26,7 @@
 				{page.error?.message || 'Something went wrong'}
 			</p>
 			<div class="flex justify-center">
-				<Button href="/" variant="default">
-					Go back home
-				</Button>
+				<Button href="/" variant="default">Go back home</Button>
 			</div>
 		</Card.Content>
 	</Card.Root>

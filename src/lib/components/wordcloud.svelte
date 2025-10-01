@@ -8,7 +8,16 @@
 		aspectRatio?: number; // width / height ratio (default 2:1)
 		backgroundColor?: string;
 		fontFamily?: string;
-		colorScheme?: 'category10' | 'set3' | 'dark2' | 'accent' | 'pastel1' | 'pastel2' | 'set1' | 'set2' | 'tableau10';
+		colorScheme?:
+			| 'category10'
+			| 'set3'
+			| 'dark2'
+			| 'accent'
+			| 'pastel1'
+			| 'pastel2'
+			| 'set1'
+			| 'set2'
+			| 'tableau10';
 		minRotation?: number;
 		maxRotation?: number;
 		minFontSize?: number;
@@ -113,7 +122,7 @@
 		try {
 			// Try to import d3-cloud and use it to set up the global d3.layout.cloud
 			const cloudModule = await import('d3-cloud');
-			
+
 			// Ensure global d3 object exists
 			if (typeof window !== 'undefined') {
 				(window as any).d3 = (window as any).d3 || {};
@@ -154,12 +163,12 @@
 
 	function prepareWords(): Word[] {
 		if (!data || data.length === 0) return [];
-		
+
 		// Calculate font size scale
 		const maxWeight = Math.max(...data.map(([, weight]) => weight));
 		const minWeight = Math.min(...data.map(([, weight]) => weight));
 		const weightRange = maxWeight - minWeight || 1;
-		
+
 		return data.map(([text, weight], index) => ({
 			text,
 			size: minFontSize + ((weight - minWeight) / weightRange) * (maxFontSize - minFontSize),
@@ -169,15 +178,15 @@
 
 	function renderWordCloud() {
 		if (!svgElement || !d3 || !data || data.length === 0) return;
-		
+
 		isRendering = true;
-		
+
 		// Clear previous content
 		d3.select(svgElement).selectAll('*').remove();
-		
+
 		// Prepare word data
 		const wordData = prepareWords();
-		
+
 		// Check if d3.layout.cloud is available
 		const cloudLayout = (window as any).d3?.layout?.cloud;
 		if (!cloudLayout) {
@@ -185,7 +194,7 @@
 			isRendering = false;
 			return;
 		}
-		
+
 		// Create cloud layout using the correct d3.layout.cloud API with current container size
 		const layout = cloudLayout()
 			.size([containerWidth, containerHeight])
@@ -199,20 +208,23 @@
 				drawWords(placedWords);
 				isRendering = false;
 			});
-		
+
 		layout.start();
 	}
 
 	function drawWords(placedWords: Word[]) {
-		const svg = d3.select(svgElement)
+		const svg = d3
+			.select(svgElement)
 			.attr('viewBox', `0 0 ${containerWidth} ${containerHeight}`)
 			.attr('preserveAspectRatio', 'xMidYMid meet')
 			.style('background-color', backgroundColor);
-		
-		const g = svg.append('g')
+
+		const g = svg
+			.append('g')
 			.attr('transform', `translate(${containerWidth / 2},${containerHeight / 2})`);
-		
-		const text = g.selectAll('text')
+
+		const text = g
+			.selectAll('text')
 			.data(placedWords)
 			.enter()
 			.append('text')
@@ -223,19 +235,20 @@
 			.attr('text-anchor', 'middle')
 			.attr('transform', (d: Word) => `translate(${d.x || 0},${d.y || 0})rotate(${d.rotate || 0})`)
 			.text((d: Word) => d.text)
-			.on('mouseover', function(this: SVGTextElement, event: Event, d: Word) {
+			.on('mouseover', function (this: SVGTextElement, event: Event, d: Word) {
 				d3.select(this).style('opacity', 0.7);
 				if (hover) hover(d, event);
 			})
-			.on('mouseout', function(this: SVGTextElement) {
+			.on('mouseout', function (this: SVGTextElement) {
 				d3.select(this).style('opacity', 1);
 			})
-			.on('click', function(event: Event, d: Word) {
+			.on('click', function (event: Event, d: Word) {
 				if (click) click(d, event);
 			});
-		
+
 		// Add entrance animation
-		text.style('opacity', 0)
+		text
+			.style('opacity', 0)
 			.transition()
 			.duration(600)
 			.delay((d: Word, i: number) => i * 50)
@@ -255,7 +268,7 @@
 		const currentMinRotation = minRotation;
 		const currentMaxRotation = maxRotation;
 		const currentFontFamily = fontFamily;
-		
+
 		if (svgElement && d3 && currentData && colorScale && (window as any).d3?.layout?.cloud) {
 			renderWordCloud();
 		}
@@ -268,19 +281,16 @@
 </script>
 
 <div class="wordcloud-container" bind:this={containerElement}>
-	<svg
-		bind:this={svgElement}
-		class="wordcloud-svg"
-		style="background-color: {backgroundColor};"
+	<svg bind:this={svgElement} class="wordcloud-svg" style="background-color: {backgroundColor};"
 	></svg>
-	
+
 	{#if isRendering}
 		<div class="loading-overlay">
 			<div class="loading-spinner"></div>
 			<p class="text-sm text-muted-foreground">Generating word cloud...</p>
 		</div>
 	{/if}
-	
+
 	{#if data.length === 0}
 		<div class="empty-state">
 			<p class="text-muted-foreground">No data available for word cloud</p>
@@ -330,8 +340,12 @@
 	}
 
 	@keyframes spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 
 	.empty-state {

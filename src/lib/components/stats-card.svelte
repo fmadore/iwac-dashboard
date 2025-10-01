@@ -2,7 +2,12 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 
-	let { title, value, trend = '', description = '' }: {
+	let {
+		title,
+		value,
+		trend = '',
+		description = ''
+	}: {
 		title: string;
 		value: number | string;
 		trend?: string;

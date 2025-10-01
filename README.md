@@ -1,4 +1,3 @@
-
 # IWAC Dashboard
 
 A modern, static data visualization dashboard for the **Islam West Africa Collection (IWAC)** database. Built with SvelteKit, Svelte 5, shadcn-svelte, and fully prerendered as static HTML for deployment.
@@ -72,13 +71,12 @@ npm run dev
 npm run dev -- --open
 ```
 
-
 ## Technology Stack
 
 - **Framework**: SvelteKit with **Svelte 5** (runes mode) and TypeScript
 - **UI Components**: shadcn-svelte (Card, Button, Table, Skeleton, etc.)
 - **Styling**: Tailwind CSS v4 with CSS variables theming
-- **Visualizations**: 
+- **Visualizations**:
   - ECharts (preferred for new charts)
   - D3.js (custom visualizations, treemaps, word clouds)
   - d3-cloud for word cloud layouts
@@ -200,6 +198,7 @@ npm run build
 ```
 
 The build process:
+
 1. Prerenders all pages to static HTML
 2. Copies static assets to `build/`
 3. Generates service worker for PWA
@@ -235,25 +234,26 @@ This project uses **Svelte 5 with runes mode** exclusively:
 
 ```svelte
 <script>
-  // Props
-  let { count = 0 } = $props();
-  
-  // State
-  let items = $state([]);
-  
-  // Derived values
-  const doubled = $derived(count * 2);
-  
-  // Effects
-  $effect(() => {
-    console.log('Count changed:', count);
-  });
+	// Props
+	let { count = 0 } = $props();
+
+	// State
+	let items = $state([]);
+
+	// Derived values
+	const doubled = $derived(count * 2);
+
+	// Effects
+	$effect(() => {
+		console.log('Count changed:', count);
+	});
 </script>
 ```
 
 ### Internationalization (i18n)
 
 Full bilingual support (English/French) with:
+
 - Store-based translation system (`translationStore.ts`)
 - Language toggle component in header
 - All text uses `$t('key')` for translation
@@ -261,11 +261,10 @@ Full bilingual support (English/French) with:
 
 ```svelte
 <script>
-  import { t, languageStore } from '$lib/stores/translationStore.js';
+	import { t, languageStore } from '$lib/stores/translationStore.js';
 </script>
 
-<h1>{$t('app.title')}</h1>
-<p>{$t('stats.total_items')}</p>
+<h1>{$t('app.title')}</h1><p>{$t('stats.total_items')}</p>
 ```
 
 ### Theme System
@@ -285,6 +284,7 @@ Full bilingual support (English/French) with:
 ## Deployment
 
 This is a **fully static site** that can be deployed to:
+
 - GitHub Pages
 - Netlify
 - Vercel
@@ -310,14 +310,14 @@ Always reference CSS variables from our theme:
 ```svelte
 <!-- ✅ Correct -->
 <div class="bg-background text-foreground">
-  <div class="bg-card text-card-foreground border border-border">
-    <span class="text-muted-foreground">Muted text</span>
-  </div>
+	<div class="border border-border bg-card text-card-foreground">
+		<span class="text-muted-foreground">Muted text</span>
+	</div>
 </div>
 
 <!-- ❌ Wrong -->
 <div class="bg-blue-500 text-white">
-  <span class="text-gray-500">Muted</span>
+	<span class="text-gray-500">Muted</span>
 </div>
 ```
 
@@ -325,46 +325,47 @@ Always reference CSS variables from our theme:
 
 ```svelte
 <script>
-  import { base } from '$app/paths';
-  
-  let data = $state([]);
-  let loading = $state(true);
-  let error = $state(null);
-  
-  async function loadData() {
-    try {
-      const response = await fetch(`${base}/data/filename.json`);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      data = await response.json();
-    } catch (e) {
-      error = e.message;
-    } finally {
-      loading = false;
-    }
-  }
-  
-  $effect(() => {
-    loadData();
-  });
+	import { base } from '$app/paths';
+
+	let data = $state([]);
+	let loading = $state(true);
+	let error = $state(null);
+
+	async function loadData() {
+		try {
+			const response = await fetch(`${base}/data/filename.json`);
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+			data = await response.json();
+		} catch (e) {
+			error = e.message;
+		} finally {
+			loading = false;
+		}
+	}
+
+	$effect(() => {
+		loadData();
+	});
 </script>
 ```
 
 ## Pages Overview
 
-| Route | Description |
-|-------|-------------|
-| `/` | Overview dashboard with key statistics and charts |
-| `/countries` | Interactive treemap of document distribution by country |
-| `/languages` | Language distribution with pie charts and facets |
-| `/entities` | Searchable entity index table with sorting and filtering |
-| `/timeline` | Temporal analysis with timeline charts and growth metrics |
-| `/categories` | Document categorization and distribution analysis |
-| `/words` | Word cloud visualization of frequent terms |
-| `/scary` | Analysis of concerning terminology patterns |
+| Route         | Description                                               |
+| ------------- | --------------------------------------------------------- |
+| `/`           | Overview dashboard with key statistics and charts         |
+| `/countries`  | Interactive treemap of document distribution by country   |
+| `/languages`  | Language distribution with pie charts and facets          |
+| `/entities`   | Searchable entity index table with sorting and filtering  |
+| `/timeline`   | Temporal analysis with timeline charts and growth metrics |
+| `/categories` | Document categorization and distribution analysis         |
+| `/words`      | Word cloud visualization of frequent terms                |
+| `/scary`      | Analysis of concerning terminology patterns               |
 
 ## Dataset
 
 This dashboard visualizes the **Islam West Africa Collection (IWAC)** dataset:
+
 - **Source**: Hugging Face Dataset `fmadore/islam-west-africa-collection`
 - **Content**: Islamic manuscripts, documents, and texts from West Africa
 - **Countries**: Côte d'Ivoire, Burkina Faso, Benin, Togo, Niger, Nigeria
@@ -373,6 +374,7 @@ This dashboard visualizes the **Islam West Africa Collection (IWAC)** dataset:
 ## Contributing
 
 Contributions are welcome! Please ensure:
+
 - Use Svelte 5 runes syntax
 - Follow the existing code style
 - Add translations for both EN and FR

@@ -1,6 +1,6 @@
 /**
  * Overview Statistics Store
- * 
+ *
  * Loads and manages precomputed overview statistics from the Python-generated
  * overview-stats.json file. This provides comprehensive statistics for the
  * dashboard overview page including totals, country/language/type breakdowns,
@@ -98,7 +98,7 @@ class OverviewStore {
 
 		try {
 			const response = await fetch(`${base}/data/overview-stats.json`);
-			
+
 			if (!response.ok) {
 				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 			}

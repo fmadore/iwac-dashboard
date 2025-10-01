@@ -50,7 +50,9 @@
 <Sidebar.Provider>
 	<AppSidebar />
 	<Sidebar.Inset>
-		<header class="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+		<header
+			class="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6"
+		>
 			<Sidebar.Trigger class="-ml-1" />
 			<h1 class="text-xl font-semibold">{t('app.title')}</h1>
 			<div class="ml-auto flex items-center gap-2">

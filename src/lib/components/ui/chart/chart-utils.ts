@@ -1,7 +1,7 @@
-import type { Tooltip } from "layerchart";
-import { getContext, setContext, type Component, type ComponentProps, type Snippet } from "svelte";
+import type { Tooltip } from 'layerchart';
+import { getContext, setContext, type Component, type ComponentProps, type Snippet } from 'svelte';
 
-export const THEMES = { light: "", dark: ".dark" } as const;
+export const THEMES = { light: '', dark: '.dark' } as const;
 
 export type ChartConfig = {
 	[k in string]: {
@@ -30,10 +30,10 @@ export function getPayloadConfigFromPayload(
 	payload: TooltipPayload,
 	key: string
 ) {
-	if (typeof payload !== "object" || payload === null) return undefined;
+	if (typeof payload !== 'object' || payload === null) return undefined;
 
 	const payloadPayload =
-		"payload" in payload && typeof payload.payload === "object" && payload.payload !== null
+		'payload' in payload && typeof payload.payload === 'object' && payload.payload !== null
 			? payload.payload
 			: undefined;
 
@@ -43,12 +43,12 @@ export function getPayloadConfigFromPayload(
 		configLabelKey = payload.key;
 	} else if (payload.name === key) {
 		configLabelKey = payload.name;
-	} else if (key in payload && typeof payload[key as keyof typeof payload] === "string") {
+	} else if (key in payload && typeof payload[key as keyof typeof payload] === 'string') {
 		configLabelKey = payload[key as keyof typeof payload] as string;
 	} else if (
 		payloadPayload !== undefined &&
 		key in payloadPayload &&
-		typeof payloadPayload[key as keyof typeof payloadPayload] === "string"
+		typeof payloadPayload[key as keyof typeof payloadPayload] === 'string'
 	) {
 		configLabelKey = payloadPayload[key as keyof typeof payloadPayload] as string;
 	}
@@ -60,7 +60,7 @@ type ChartContextValue = {
 	config: ChartConfig;
 };
 
-const chartContextKey = Symbol("chart-context");
+const chartContextKey = Symbol('chart-context');
 
 export function setChartContext(value: ChartContextValue) {
 	return setContext(chartContextKey, value);

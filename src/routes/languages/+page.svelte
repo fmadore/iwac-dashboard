@@ -1,18 +1,18 @@
 <script lang="ts">
 	import EChartsPieChart from '$lib/components/charts/EChartsPieChart.svelte';
-	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
-	import * as Card from "$lib/components/ui/card/index.js";
-	import * as Select from "$lib/components/ui/select/index.js";
-	import { Button } from "$lib/components/ui/button/index.js";
+	import TrendingUpIcon from '@lucide/svelte/icons/trending-up';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Select from '$lib/components/ui/select/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import FacetPie from '$lib/components/facets/FacetPie.svelte';
 	import type { PageData } from './$types.js';
-	
+
 	// Use URL sync hook
 	const urlSync = useUrlSync();
-	
+
 	let { data }: { data: PageData } = $props();
 
 	const chartData = $derived(() =>
@@ -38,15 +38,15 @@
 	// Facet selection state from URL
 	const selectedType = $derived(urlSync.filters.type);
 	const selectedCountry = $derived(urlSync.filters.country);
-	
+
 	const typeOptions = $derived(() => data.types?.types ?? []);
 	const countryOptions = $derived(() => data.countries?.countries ?? []);
-	
+
 	// Main chart data that updates based on selected facets
 	// Priority: country > type (only one can be active at a time)
 	const filteredChartData = $derived(() => {
 		let sourceData = data.global?.data || [];
-		
+
 		// Apply country filter first (higher priority)
 		if (selectedCountry && data.countries) {
 			const facet = data.countries.facets[selectedCountry];
@@ -57,15 +57,17 @@
 			const facet = data.types.facets[selectedType];
 			sourceData = facet ? facet.data : [];
 		}
-		
-		return sourceData.map((item, index) => ({
-			label: item.label,
-			value: item.value,
-			color: `var(--chart-${(index % 10) + 1})`,
-			percentage: item.percentage?.toFixed?.(1) ?? undefined
-		})).sort((a, b) => b.value - a.value);
+
+		return sourceData
+			.map((item, index) => ({
+				label: item.label,
+				value: item.value,
+				color: `var(--chart-${(index % 10) + 1})`,
+				percentage: item.percentage?.toFixed?.(1) ?? undefined
+			}))
+			.sort((a, b) => b.value - a.value);
 	});
-	
+
 	const totalDocs = $derived(() => {
 		// Priority: country > type (only one can be active at a time)
 		if (selectedCountry && data.countries) {
@@ -116,10 +118,14 @@
 			<Card.Description>Select filters to view specific language distributions</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<div class="flex gap-4 flex-wrap">
+			<div class="flex flex-wrap gap-4">
 				<div class="flex items-center gap-2">
 					<label for="typeSelect" class="text-sm font-medium">Type:</label>
-					<Select.Root type="single" value={selectedType ?? 'all-types'} onValueChange={(v) => handleTypeChange(v === 'all-types' ? undefined : v)}>
+					<Select.Root
+						type="single"
+						value={selectedType ?? 'all-types'}
+						onValueChange={(v) => handleTypeChange(v === 'all-types' ? undefined : v)}
+					>
 						<Select.Trigger class="w-[180px]" id="typeSelect">
 							{selectedType || 'All Types'}
 						</Select.Trigger>
@@ -132,29 +138,27 @@
 					</Select.Root>
 				</div>
 				{#if countryOptions().length > 0}
-				<div class="flex items-center gap-2">
-					<label for="countrySelect" class="text-sm font-medium">Country:</label>
-					<Select.Root type="single" value={selectedCountry ?? 'all-countries'} onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}>
-						<Select.Trigger class="w-[180px]" id="countrySelect">
-							{selectedCountry || 'All Countries'}
-						</Select.Trigger>
-						<Select.Content>
-							<Select.Item value="all-countries">All Countries</Select.Item>
-							{#each countryOptions() as opt}
-								<Select.Item value={opt}>{opt}</Select.Item>
-							{/each}
-						</Select.Content>
-					</Select.Root>
-				</div>
+					<div class="flex items-center gap-2">
+						<label for="countrySelect" class="text-sm font-medium">Country:</label>
+						<Select.Root
+							type="single"
+							value={selectedCountry ?? 'all-countries'}
+							onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}
+						>
+							<Select.Trigger class="w-[180px]" id="countrySelect">
+								{selectedCountry || 'All Countries'}
+							</Select.Trigger>
+							<Select.Content>
+								<Select.Item value="all-countries">All Countries</Select.Item>
+								{#each countryOptions() as opt}
+									<Select.Item value={opt}>{opt}</Select.Item>
+								{/each}
+							</Select.Content>
+						</Select.Root>
+					</div>
 				{/if}
 				{#if selectedType || selectedCountry}
-				<Button 
-					variant="secondary"
-					size="sm"
-					onclick={handleClearFilters}
-				>
-					Clear Filters
-				</Button>
+					<Button variant="secondary" size="sm" onclick={handleClearFilters}>Clear Filters</Button>
 				{/if}
 			</div>
 		</Card.Content>
@@ -165,7 +169,7 @@
 			<Card.Content class="p-6">
 				<div class="space-y-4">
 					<Skeleton class="h-6 w-[200px]" />
-					<div class="h-[400px] flex items-center justify-center">
+					<div class="flex h-[400px] items-center justify-center">
 						<Skeleton class="h-[300px] w-[300px] rounded-full" />
 					</div>
 				</div>
@@ -188,11 +192,12 @@
 						{/if}
 					</Card.Title>
 					<Card.Description>
-						{filteredChartData().length} languages • {totalDocs().toLocaleString()} {t('chart.documents').toLowerCase()}
+						{filteredChartData().length} languages • {totalDocs().toLocaleString()}
+						{t('chart.documents').toLowerCase()}
 					</Card.Description>
 				</Card.Header>
 				<Card.Content class="pt-0">
-					<div class="w-full h-[500px] flex items-center justify-center">
+					<div class="flex h-[500px] w-full items-center justify-center">
 						{#if filteredChartData().length > 0}
 							<EChartsPieChart
 								data={filteredChartData()}
@@ -204,7 +209,7 @@
 								minSlicePercent={0.5}
 							/>
 						{:else}
-							<div class="flex items-center justify-center h-[200px] text-muted-foreground">
+							<div class="flex h-[200px] items-center justify-center text-muted-foreground">
 								No data available for selected filters
 							</div>
 						{/if}
@@ -221,16 +226,16 @@
 				<Card.Content class="pt-0">
 					<div class="space-y-1">
 						{#each filteredChartData() as item, index}
-							<div class="flex items-center justify-between p-2 border rounded text-sm">
+							<div class="flex items-center justify-between rounded border p-2 text-sm">
 								<div class="flex items-center gap-2">
-									<div 
-										class="w-3 h-3 rounded-full flex-shrink-0" 
+									<div
+										class="h-3 w-3 flex-shrink-0 rounded-full"
 										style="background-color: {colorMap()[item.label]}"
 									></div>
-									<span class="font-medium truncate">{item.label}</span>
+									<span class="truncate font-medium">{item.label}</span>
 								</div>
-								<div class="text-right flex-shrink-0 ml-2">
-									<p class="font-semibold text-sm">{item.value}</p>
+								<div class="ml-2 flex-shrink-0 text-right">
+									<p class="text-sm font-semibold">{item.value}</p>
 									{#if item.percentage}
 										<p class="text-xs text-muted-foreground">{item.percentage}%</p>
 									{/if}

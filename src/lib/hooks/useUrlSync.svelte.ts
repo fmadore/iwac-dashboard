@@ -1,25 +1,25 @@
 /**
  * useUrlSync - Svelte 5 Pattern
- * 
+ *
  * Provides reactive access to URL state and functions to update it.
  * Must be called within a component context.
- * 
+ *
  * This hook does NOT use $effect internally to avoid context issues.
  * Instead, effects must be set up in the component that uses this hook.
- * 
+ *
  * Usage:
  * ```svelte
  * <script>
  *   import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
- *   
+ *
  *   const urlSync = useUrlSync();
- *   
+ *
  *   // Access reactive filter values
  *   console.log(urlSync.filters.country);
- *   
+ *
  *   // Update filters
  *   urlSync.setFilter('country', 'Nigeria');
- *   
+ *
  *   // Clear filters
  *   urlSync.clearFilter('country');
  * </script>
@@ -39,14 +39,13 @@ export interface FilterState {
 }
 
 export function useUrlSync() {
-
 	// Create a trigger to force re-evaluation when URL changes
 	let updateTrigger = $state(0);
-	
+
 	// Subscribe to URL manager changes (only in browser)
 	$effect(() => {
 		if (!browser) return;
-		
+
 		const unsubscribe = urlManager.subscribe(() => {
 			updateTrigger++;
 		});
@@ -57,13 +56,13 @@ export function useUrlSync() {
 	const filters = $derived.by<FilterState>(() => {
 		// Access the trigger to create dependency
 		const _ = updateTrigger;
-		
+
 		return {
 			country: urlManager.get('country') as string | undefined,
 			type: urlManager.get('type') as string | undefined,
 			yearMin: urlManager.get('yearMin') as number | undefined,
 			yearMax: urlManager.get('yearMax') as number | undefined,
-			search: urlManager.get('search') as string | undefined,
+			search: urlManager.get('search') as string | undefined
 		};
 	});
 
@@ -110,14 +109,14 @@ export function useUrlSync() {
 	 * Get all active filter keys
 	 */
 	function getActiveFilters(): string[] {
-		return urlManager.keys().filter(k => !['lang', 'theme'].includes(k));
+		return urlManager.keys().filter((k) => !['lang', 'theme'].includes(k));
 	}
 
 	return {
 		get filters() {
 			// Force reactivity by reading updateTrigger
 			const _ = updateTrigger;
-			
+
 			return {
 				country: urlManager.get('country') as string | undefined,
 				type: urlManager.get('type') as string | undefined,
@@ -125,7 +124,7 @@ export function useUrlSync() {
 				yearMax: urlManager.get('yearMax') as number | undefined,
 				search: urlManager.get('search') as string | undefined,
 				view: urlManager.get('view') as string | undefined,
-				year: urlManager.get('year') as string | undefined,
+				year: urlManager.get('year') as string | undefined
 			};
 		},
 		setFilter,
@@ -133,6 +132,6 @@ export function useUrlSync() {
 		clearFilter,
 		clearFilters,
 		hasFilter,
-		getActiveFilters,
+		getActiveFilters
 	};
 }

@@ -34,7 +34,9 @@
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton size="lg">
-					<div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+					<div
+						class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+					>
 						<span class="text-lg font-bold">IW</span>
 					</div>
 					<div class="grid flex-1 text-left text-sm leading-tight">
@@ -55,7 +57,7 @@
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
 									<a href={item.href} {...props}>
-										<item.icon class="w-4 h-4" />
+										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
 								{/snippet}
@@ -74,7 +76,7 @@
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
 									<a href={item.href} {...props}>
-										<item.icon class="w-4 h-4" />
+										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
 								{/snippet}
