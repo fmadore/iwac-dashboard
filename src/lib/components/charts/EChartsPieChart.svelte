@@ -114,6 +114,9 @@
     return fallbackMap[varName] || '#666666';
   }
 
+  // Keep track of grouped "Others" data for tooltip
+  let othersGroupDetails = $state<PieDataItem[]>([]);
+
   // Process data to group small slices
   const processedData = $derived(() => {
     if (!data || data.length === 0) return [];
@@ -129,6 +132,7 @@
       const smallSlices = sortedData.slice(5);
       
       if (smallSlices.length > 0) {
+        othersGroupDetails = smallSlices; // Store for tooltip
         const othersValue = smallSlices.reduce((sum, item) => sum + item.value, 0);
         return [
           ...mainSlices,
@@ -139,6 +143,7 @@
           }
         ];
       }
+      othersGroupDetails = [];
       return mainSlices;
     }
     
@@ -158,6 +163,7 @@
     });
     
     if (smallSlices.length > 2) {
+      othersGroupDetails = smallSlices; // Store for tooltip
       const othersValue = smallSlices.reduce((sum, item) => sum + item.value, 0);
       return [
         ...mainSlices,
@@ -169,6 +175,7 @@
       ];
     }
     
+    othersGroupDetails = [];
     return [...mainSlices, ...smallSlices];
   });
 
@@ -237,7 +244,28 @@
       backgroundColor: 'transparent',
       tooltip: {
         trigger: 'item',
-        formatter: '{b}: {c} ({d}%)',
+        formatter: (params: any) => {
+          const name = params.name;
+          const value = params.value;
+          const percent = params.percent;
+          
+          // Check if this is the "Others" category
+          if (name.startsWith('Others (') && othersGroupDetails.length > 0) {
+            // Build detailed breakdown for Others
+            const total = processedData().reduce((sum, item) => sum + item.value, 0);
+            const header = `<strong>${name}</strong><br/>${value} (${percent.toFixed(1)}%)<br/><br/>`;
+            const details = othersGroupDetails
+              .map(item => {
+                const itemPercent = ((item.value / total) * 100).toFixed(1);
+                return `${item.label}: ${item.value} (${itemPercent}%)`;
+              })
+              .join('<br/>');
+            return header + details;
+          }
+          
+          // Default formatter for regular items
+          return `<strong>${name}</strong><br/>${value} (${percent.toFixed(1)}%)`;
+        },
         backgroundColor: popover,
         borderColor: border,
         borderWidth: 1,
@@ -246,7 +274,7 @@
           fontSize: 12
         },
         padding: [8, 12],
-        extraCssText: 'border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);'
+        extraCssText: 'border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); max-width: 300px;'
       },
       series: [
         {
@@ -258,16 +286,19 @@
             show: showLabels,
             position: 'outside',
             color: foreground,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 500,
             formatter: '{b}',
-            minMargin: 5,
-            lineHeight: 14
+            minMargin: 8,
+            lineHeight: 16,
+            alignTo: 'none',
+            bleedMargin: 10
           },
           labelLine: {
             show: showLabels,
-            length: 20,
-            length2: 30,
+            length: 25,
+            length2: 40,
+            smooth: 0.2,
             lineStyle: {
               color: foreground,
               opacity: 0.5,

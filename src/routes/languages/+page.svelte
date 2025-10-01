@@ -175,7 +175,7 @@
 		<div class="grid gap-6 md:grid-cols-2">
 			<!-- Pie Chart -->
 			<Card.Root>
-				<Card.Header>
+				<Card.Header class="pb-3">
 					<Card.Title>
 						{#if selectedType && selectedCountry}
 							Languages in {selectedType} - {selectedCountry}
@@ -188,16 +188,16 @@
 						{/if}
 					</Card.Title>
 					<Card.Description>
-						Total: {totalDocs()} {t('chart.documents').toLowerCase()}
+						{filteredChartData().length} languages • {totalDocs().toLocaleString()} {t('chart.documents').toLowerCase()}
 					</Card.Description>
 				</Card.Header>
-				<Card.Content>
-					<div class="mx-auto aspect-square max-h-[400px] flex items-center justify-center">
+				<Card.Content class="pt-0">
+					<div class="w-full h-[500px] flex items-center justify-center">
 						{#if filteredChartData().length > 0}
 							<EChartsPieChart
 								data={filteredChartData()}
-								innerRadius="40%"
-								outerRadius="75%"
+								innerRadius="35%"
+								outerRadius="70%"
 								showLabels={true}
 								showValues={false}
 								animationDuration={1000}
@@ -210,14 +210,6 @@
 						{/if}
 					</div>
 				</Card.Content>
-				<Card.Footer class="flex-col items-start gap-2 text-sm">
-					<div class="flex gap-2 font-medium leading-none">
-						Language distribution <TrendingUpIcon class="h-4 w-4" />
-					</div>
-					<div class="leading-none text-muted-foreground">
-						Showing distribution across {filteredChartData().length} languages
-					</div>
-				</Card.Footer>
 			</Card.Root>
 
 			<!-- Language Stats Table -->
