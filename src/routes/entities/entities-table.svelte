@@ -110,11 +110,19 @@
     'Authority Files': 'entity.authority files'
   };
 
-  // Helper function to translate entity types
-  function translateType(type: string): string {
-    const key = entityTypeTranslationMap[type];
-    return key ? t(key) : type;
-  }
+  // Make available types reactive to language changes by forcing re-evaluation
+  const availableTypesTranslated = $derived.by(() => {
+    // Force re-evaluation when language changes
+    const _ = languageStore.current;
+    return availableTypes.map(type => {
+      const key = entityTypeTranslationMap[type];
+      const translated = key ? t(key) : type;
+      return {
+        original: type,
+        translated
+      };
+    });
+  });
 
   function entityUrl(r: EntityRow): string {
     const id = r['o:id'];
@@ -199,12 +207,12 @@
         <DropdownMenu.Label>{t('table.type')}</DropdownMenu.Label>
         <DropdownMenu.Separator />
         <div class="max-h-64 overflow-y-auto">
-          {#each availableTypes as type}
+          {#each availableTypesTranslated as { original, translated }}
             <DropdownMenu.CheckboxItem
-              checked={selectedTypes.has(type)}
-              onCheckedChange={() => toggleType(type)}
+              checked={selectedTypes.has(original)}
+              onCheckedChange={() => toggleType(original)}
             >
-              {translateType(type)}
+              {translated}
             </DropdownMenu.CheckboxItem>
           {/each}
         </div>
@@ -253,34 +261,39 @@
 
   <!-- Active Filter Badges -->
   {#if hasActiveFilters}
-    <div class="flex flex-wrap items-center gap-2">
-      {#each [...selectedTypes] as type}
-        <Badge variant="secondary" class="gap-1 pr-1">
-          <span class="text-xs">{t('table.type')}: {translateType(type)}</span>
-          <button
-            type="button"
-            class="ml-1 rounded-full hover:bg-muted p-0.5"
-            onclick={() => toggleType(type)}
-            aria-label="Remove filter"
-          >
-            <XIcon class="size-3" />
-          </button>
-        </Badge>
-      {/each}
-      {#each [...selectedCountries] as country}
-        <Badge variant="secondary" class="gap-1 pr-1">
-          <span class="text-xs">{t('table.countries')}: {country}</span>
-          <button
-            type="button"
-            class="ml-1 rounded-full hover:bg-muted p-0.5"
-            onclick={() => toggleCountry(country)}
-            aria-label="Remove filter"
-          >
-            <XIcon class="size-3" />
-          </button>
-        </Badge>
-      {/each}
-    </div>
+    {#key languageStore.current}
+      <div class="flex flex-wrap items-center gap-2">
+        {#each [...selectedTypes] as type}
+          <Badge variant="secondary" class="gap-1 pr-1">
+            <span class="text-xs">{t('table.type')}: {(() => {
+              const key = entityTypeTranslationMap[type];
+              return key ? t(key) : type;
+            })()}</span>
+            <button
+              type="button"
+              class="ml-1 rounded-full hover:bg-muted p-0.5"
+              onclick={() => toggleType(type)}
+              aria-label="Remove filter"
+            >
+              <XIcon class="size-3" />
+            </button>
+          </Badge>
+        {/each}
+        {#each [...selectedCountries] as country}
+          <Badge variant="secondary" class="gap-1 pr-1">
+            <span class="text-xs">{t('table.countries')}: {country}</span>
+            <button
+              type="button"
+              class="ml-1 rounded-full hover:bg-muted p-0.5"
+              onclick={() => toggleCountry(country)}
+              aria-label="Remove filter"
+            >
+              <XIcon class="size-3" />
+            </button>
+          </Badge>
+        {/each}
+      </div>
+    {/key}
   {/if}
 
   <!-- Data Table -->
@@ -313,7 +326,14 @@
         {/if}
       {:else if column.key === 'Type'}
         <span class="truncate block" title={String(value ?? '')}>
-          {value ? translateType(String(value)) : '—'}
+          {#if value}
+            {(() => {
+              const key = entityTypeTranslationMap[String(value)];
+              return key ? t(key) : String(value);
+            })()}
+          {:else}
+            —
+          {/if}
         </span>
       {:else}
         <span class="truncate block" title={String(value ?? '')}>
