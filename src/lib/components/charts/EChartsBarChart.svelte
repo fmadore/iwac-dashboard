@@ -15,13 +15,15 @@
 		height?: number;
 		animationDuration?: number;
 		useMultipleColors?: boolean;
+		orientation?: 'vertical' | 'horizontal';
 	}
 
 	let {
 		data = [],
 		height = 400,
 		animationDuration = 750,
-		useMultipleColors = false
+		useMultipleColors = false,
+		orientation = 'vertical'
 	}: Props = $props();
 
 	let chartContainer: HTMLDivElement;
@@ -241,7 +243,8 @@
 		console.log('📈 UpdateChart Called', {
 			categories,
 			values,
-			dataLength: data.length
+			dataLength: data.length,
+			orientation
 		});
 
 		// Get fresh CSS variables on each update (important for theme changes)
@@ -249,6 +252,56 @@
 		const borderColor = getCSSVariable('--border');
 		const popoverBg = getCSSVariable('--popover');
 		const popoverFg = getCSSVariable('--popover-foreground');
+
+		// Define axis configurations based on orientation
+		const categoryAxis = {
+			type: 'category' as const,
+			data: categories,
+			axisLabel: {
+				interval: 0,
+				rotate: orientation === 'vertical' ? 45 : 0,
+				color: foregroundColor,
+				fontSize: 12
+			},
+			axisLine: {
+				lineStyle: {
+					color: borderColor,
+					opacity: 1
+				}
+			},
+			axisTick: {
+				lineStyle: {
+					color: borderColor,
+					opacity: 1
+				}
+			}
+		};
+
+		const valueAxis = {
+			type: 'value' as const,
+			axisLabel: {
+				color: foregroundColor,
+				fontSize: 12
+			},
+			axisLine: {
+				lineStyle: {
+					color: borderColor,
+					opacity: 1
+				}
+			},
+			axisTick: {
+				lineStyle: {
+					color: borderColor,
+					opacity: 1
+				}
+			},
+			splitLine: {
+				lineStyle: {
+					color: borderColor,
+					opacity: 0.3
+				}
+			}
+		};
 
 		const option = {
 			grid: {
@@ -258,53 +311,9 @@
 				top: '10%',
 				containLabel: true
 			},
-			xAxis: {
-				type: 'category',
-				data: categories,
-				axisLabel: {
-					interval: 0,
-					rotate: 45,
-					color: foregroundColor,
-					fontSize: 12
-				},
-				axisLine: {
-					lineStyle: {
-						color: borderColor,
-						opacity: 1
-					}
-				},
-				axisTick: {
-					lineStyle: {
-						color: borderColor,
-						opacity: 1
-					}
-				}
-			},
-			yAxis: {
-				type: 'value',
-				axisLabel: {
-					color: foregroundColor,
-					fontSize: 12
-				},
-				axisLine: {
-					lineStyle: {
-						color: borderColor,
-						opacity: 1
-					}
-				},
-				axisTick: {
-					lineStyle: {
-						color: borderColor,
-						opacity: 1
-					}
-				},
-				splitLine: {
-					lineStyle: {
-						color: borderColor,
-						opacity: 0.3
-					}
-				}
-			},
+			// Swap axes based on orientation
+			xAxis: orientation === 'vertical' ? categoryAxis : valueAxis,
+			yAxis: orientation === 'vertical' ? valueAxis : categoryAxis,
 			tooltip: {
 				trigger: 'axis',
 				axisPointer: {
@@ -327,7 +336,8 @@
 						value: d.documents,
 						itemStyle: {
 							color: getColorForCategory(d, index),
-							borderRadius: [4, 4, 0, 0]
+							// Round top corners for vertical, right corners for horizontal
+							borderRadius: orientation === 'vertical' ? [4, 4, 0, 0] : [0, 4, 4, 0]
 						}
 					})),
 					emphasis: {
@@ -340,7 +350,8 @@
 		};
 
 		console.log('📊 Setting ECharts Option', {
-			xAxisData: option.xAxis.data,
+			xAxisType: option.xAxis.type,
+			yAxisType: option.yAxis.type,
 			seriesDataLength: option.series[0].data.length
 		});
 
