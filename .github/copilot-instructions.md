@@ -454,29 +454,31 @@ export const translations = {
 
 ```typescript
 // 1. List available sections
-list-sections()
+list - sections();
 
 // 2. Get relevant documentation (e.g., for interactive components with state)
-get-documentation({ section: ["$state", "$derived", "$effect", "event-handlers"] })
+get - documentation({ section: ['$state', '$derived', '$effect', 'event-handlers'] });
 
 // 3. Write component code
 
 // 4. Validate the component
-svelte-autofixer({ 
-  code: "...", 
-  desired_svelte_version: 5,
-  filename: "MyComponent.svelte"
-})
+svelte -
+	autofixer({
+		code: '...',
+		desired_svelte_version: 5,
+		filename: 'MyComponent.svelte'
+	});
 
 // 5. Offer playground link after final version
-playground-link({
-  name: "My Component Demo",
-  tailwind: false,
-  files: {
-    "App.svelte": "...",
-    "MyComponent.svelte": "..."
-  }
-})
+playground -
+	link({
+		name: 'My Component Demo',
+		tailwind: false,
+		files: {
+			'App.svelte': '...',
+			'MyComponent.svelte': '...'
+		}
+	});
 ```
 
 #### Critical Rules:
