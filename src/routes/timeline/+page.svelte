@@ -206,7 +206,7 @@
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Item value="all-types">{t('filters.all_types')}</Select.Item>
-								{#each typeOptions as type}
+								{#each typeOptions as type (type)}
 									<Select.Item value={type}>{type}</Select.Item>
 								{/each}
 							</Select.Content>
@@ -226,7 +226,7 @@
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Item value="all-countries">{t('filters.all_countries')}</Select.Item>
-								{#each countryOptions as country}
+								{#each countryOptions as country (country)}
 									<Select.Item value={country}>{country}</Select.Item>
 								{/each}
 							</Select.Content>

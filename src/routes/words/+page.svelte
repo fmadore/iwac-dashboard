@@ -217,7 +217,7 @@
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Item value="select-country">{t('words.select_country')}</Select.Item>
-							{#each availableCountries as country}
+							{#each availableCountries as country (country)}
 								<Select.Item value={country}>{country}</Select.Item>
 							{/each}
 						</Select.Content>
@@ -235,7 +235,7 @@
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Item value="select-year">Select year</Select.Item>
-							{#each availableYears as year}
+							{#each availableYears as year (year)}
 								<Select.Item value={String(year)}>{year}</Select.Item>
 							{/each}
 						</Select.Content>
@@ -313,7 +313,7 @@
 					<div class="mt-6">
 						<h4 class="mb-3 text-sm font-medium">{t('words.top_words')}</h4>
 						<div class="flex flex-wrap gap-2">
-							{#each currentData.slice(0, 20) as [word, frequency]}
+							{#each currentData.slice(0, 20) as [word, frequency] (`${word}-${frequency}`)}
 								<Badge variant="outline" class="text-xs">
 									{word} ({frequency})
 								</Badge>
