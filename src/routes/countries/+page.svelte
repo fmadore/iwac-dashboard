@@ -5,6 +5,7 @@
 	import CustomTreemap from '$lib/components/charts/CustomTreemap.svelte';
 	import { base } from '$app/paths';
 	import type { TreemapData, TreemapNode } from '$lib/types/index.js';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	let selectedNode = $state<TreemapNode | null>(null);
 	let treemapData = $state<TreemapData | null>(null);
@@ -52,7 +53,13 @@
 	});
 
 	function getTreemapData(items: any[]): TreemapData {
-		const countryMap = new Map();
+		interface CountryData {
+			name: string;
+			value: number;
+			children: SvelteMap<string, { name: string; value: number }>;
+		}
+
+		const countryMap = new SvelteMap<string, CountryData>();
 
 		items.forEach((item) => {
 			if (!item.country) return;
@@ -61,11 +68,11 @@
 				countryMap.set(item.country, {
 					name: item.country,
 					value: 0,
-					children: new Map()
+					children: new SvelteMap()
 				});
 			}
 
-			const country = countryMap.get(item.country);
+			const country = countryMap.get(item.country)!;
 			country.value++;
 
 			if (item.type) {
@@ -75,7 +82,7 @@
 						value: 0
 					});
 				}
-				country.children.get(item.type).value++;
+				country.children.get(item.type)!.value++;
 			}
 		});
 
@@ -212,7 +219,7 @@
 					<div class="mt-4">
 						<h5 class="mb-2 text-sm font-medium text-muted-foreground">Document Types:</h5>
 						<div class="grid grid-cols-2 gap-2 text-xs">
-							{#each selectedNode.data.children.slice(0, 6) as child}
+							{#each selectedNode.data.children.slice(0, 6) as child (child.name)}
 								<div class="flex justify-between rounded bg-background/50 px-2 py-1">
 									<span>{child.name}</span>
 									<span class="font-medium">{child.value || 0}</span>
