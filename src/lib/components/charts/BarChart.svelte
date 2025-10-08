@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { select } from 'd3-selection';
 	import { axisBottom, axisLeft } from 'd3-axis';
 	import 'd3-transition'; // This adds the transition methods to d3-selection
@@ -42,7 +41,7 @@
 	let containerHeight = $state(0);
 
 	// Reactive dimensions based on container size
-	const dimensions = $derived(() => {
+	const dimensions = $derived.by(() => {
 		const { width: responsiveWidth, height: responsiveHeight } = getResponsiveDimensions(
 			containerWidth || width,
 			height
@@ -50,22 +49,22 @@
 		return { width: responsiveWidth, height: responsiveHeight };
 	});
 
-	const innerDimensions = $derived(() =>
-		getInnerDimensions(dimensions().width, dimensions().height, margins)
+	const innerDimensions = $derived.by(() =>
+		getInnerDimensions(dimensions.width, dimensions.height, margins)
 	);
 
-	const xScale = $derived(() =>
-		data.length > 0 ? createXScale(data, innerDimensions().width) : null
+	const xScale = $derived.by(() =>
+		data.length > 0 ? createXScale(data, innerDimensions.width) : null
 	);
 
-	const yScale = $derived(() =>
-		data.length > 0 ? createYScale(data, innerDimensions().height) : null
+	const yScale = $derived.by(() =>
+		data.length > 0 ? createYScale(data, innerDimensions.height) : null
 	);
 
 	// ResizeObserver for responsive behavior
 	let resizeObserver: ResizeObserver | undefined;
 
-	onMount(() => {
+	$effect(() => {
 		if (containerElement) {
 			resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
@@ -80,27 +79,25 @@
 			const rect = containerElement.getBoundingClientRect();
 			containerWidth = rect.width;
 			containerHeight = rect.height;
-		}
 
-		return () => {
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-			}
-		};
+			return () => {
+				resizeObserver?.disconnect();
+			};
+		}
 	});
 
 	// Update chart when data or dimensions change
 	$effect(() => {
-		if (svgElement && data.length > 0 && xScale() && yScale()) {
+		if (svgElement && data.length > 0 && xScale && yScale) {
 			updateChart();
 		}
 	});
 
 	function updateChart() {
-		if (!svgElement || !xScale() || !yScale()) return;
+		if (!svgElement || !xScale || !yScale) return;
 
 		const svg = select(svgElement);
-		const { width: innerWidth, height: innerHeight } = innerDimensions();
+		const { width: innerWidth, height: innerHeight } = innerDimensions;
 
 		// Clear previous content
 		svg.selectAll('*').remove();
@@ -109,7 +106,7 @@
 		const g = svg.append('g').attr('transform', `translate(${margins.left},${margins.top})`);
 
 		// Create and append X axis
-		const xAxis = axisBottom(xScale()).tickFormat((d) => truncateText(String(d), maxLabelLength));
+		const xAxis = axisBottom(xScale).tickFormat((d) => truncateText(String(d), maxLabelLength));
 
 		g.append('g')
 			.attr('class', 'x-axis')
@@ -120,7 +117,7 @@
 			.style('fill', 'var(--foreground)');
 
 		// Create and append Y axis
-		const yAxis = axisLeft(yScale()).ticks(Math.min(10, innerHeight / 40)); // Responsive tick count
+		const yAxis = axisLeft(yScale).ticks(Math.min(10, innerHeight / 40)); // Responsive tick count
 
 		g.append('g')
 			.attr('class', 'y-axis')
@@ -141,8 +138,8 @@
 			.enter()
 			.append('rect')
 			.attr('class', 'bar')
-			.attr('x', (d) => xScale()(d.category) || 0)
-			.attr('width', xScale().bandwidth())
+			.attr('x', (d) => xScale(d.category) || 0)
+			.attr('width', xScale.bandwidth())
 			.attr('y', innerHeight) // Start from bottom for animation
 			.attr('height', 0) // Start with height 0 for animation
 			.style('fill', barColor)
@@ -154,8 +151,8 @@
 		bars
 			.transition()
 			.duration(animationDuration)
-			.attr('y', (d) => yScale()(d.documents))
-			.attr('height', (d) => innerHeight - yScale()(d.documents));
+			.attr('y', (d) => yScale(d.documents))
+			.attr('height', (d) => innerHeight - yScale(d.documents));
 
 		// Add hover effects
 		bars
@@ -168,7 +165,7 @@
 					.attr('class', 'tooltip')
 					.attr(
 						'transform',
-						`translate(${(xScale()(d.category) || 0) + xScale().bandwidth() / 2},${yScale()(d.documents) - 10})`
+						`translate(${(xScale(d.category) || 0) + xScale.bandwidth() / 2},${yScale(d.documents) - 10})`
 					);
 
 				const rect = tooltip
@@ -206,18 +203,18 @@
 >
 	<svg
 		bind:this={svgElement}
-		width={dimensions().width}
-		height={dimensions().height}
+		width={dimensions.width}
+		height={dimensions.height}
 		class="h-auto w-full"
 		style="max-width: 100%; height: auto;"
-		viewBox={`0 0 ${dimensions().width} ${dimensions().height}`}
+		viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
 		role="img"
 		aria-label="Bar chart showing document counts by category"
 	>
 		{#if data.length === 0}
 			<text
-				x={dimensions().width / 2}
-				y={dimensions().height / 2}
+				x={dimensions.width / 2}
+				y={dimensions.height / 2}
 				text-anchor="middle"
 				class="text-sm text-muted-foreground"
 				fill="var(--muted-foreground)"
