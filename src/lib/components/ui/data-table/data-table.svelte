@@ -197,7 +197,7 @@
 			<Table class="w-full">
 				<TableHeader class="sticky top-0 z-10 bg-muted/50">
 					<TableRow class="hover:bg-muted/50">
-						{#each columns as column}
+						{#each columns as column (column.key)}
 							<TableHead
 								class={`${column.width ?? ''} ${column.headerClass ?? ''} min-w-0 font-semibold text-foreground`}
 							>
@@ -243,9 +243,9 @@
 							</TableCell>
 						</TableRow>
 					{:else}
-						{#each paginatedRows as row}
+						{#each paginatedRows as row, idx (idx)}
 							<TableRow class={rowClass?.(row) ?? ''}>
-								{#each columns as column}
+								{#each columns as column (column.key)}
 									{@const value = getCellValue(row, column)}
 									<TableCell
 										class={`${column.width ?? ''} ${column.cellClass ?? ''} max-w-0 min-w-0 p-2 ${getAlignClass(column.align)}`}
@@ -279,7 +279,7 @@
 				</Button>
 
 				{#if totalPages <= 7}
-					{#each Array(totalPages).fill(0) as _, i}
+					{#each Array(totalPages).fill(0) as _, i (i)}
 						<Button
 							variant={currentPage === i + 1 ? 'default' : 'outline'}
 							size="sm"
@@ -305,7 +305,7 @@
 					{/if}
 
 					<!-- Pages around current -->
-					{#each Array(3).fill(0) as _, i}
+					{#each Array(3).fill(0) as _, i (i)}
 						{#if currentPage - 1 + i > 1 && currentPage - 1 + i < totalPages}
 							<Button
 								variant={currentPage === currentPage - 1 + i ? 'default' : 'outline'}
