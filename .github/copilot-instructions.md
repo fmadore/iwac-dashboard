@@ -429,9 +429,68 @@ export const translations = {
 {/if}
 ```
 
-## Using Context7 MCP for Documentation
+## Using MCP Servers for Documentation
 
-When you need the latest documentation for Svelte 5, shadcn-svelte, or other libraries:
+### Svelte MCP (Primary for Svelte Development)
+
+**ALWAYS use the Svelte MCP server when writing or editing Svelte code.** This is the official Svelte MCP server that provides:
+
+- Official Svelte 5 and SvelteKit documentation
+- Code validation and auto-fixing
+- Component suggestions and best practices
+- Playground link generation
+
+#### Workflow for Svelte Development:
+
+1. **Before writing Svelte code**: Use `list-sections` to find relevant documentation sections
+2. **Review use cases**: Analyze the `use_cases` field to identify all relevant sections
+3. **Fetch documentation**: Use `get-documentation` to retrieve ALL relevant sections at once
+4. **Write your code**: Implement the component following Svelte 5 runes syntax
+5. **Validate**: Use `svelte-autofixer` to check for issues and get suggestions
+6. **Fix issues**: Apply the suggestions and re-validate
+7. **Generate playground link** (optional): Offer the user a playground link to test the code
+
+#### Example Workflow:
+
+```typescript
+// 1. List available sections
+list-sections()
+
+// 2. Get relevant documentation (e.g., for interactive components with state)
+get-documentation({ section: ["$state", "$derived", "$effect", "event-handlers"] })
+
+// 3. Write component code
+
+// 4. Validate the component
+svelte-autofixer({ 
+  code: "...", 
+  desired_svelte_version: 5,
+  filename: "MyComponent.svelte"
+})
+
+// 5. Offer playground link after final version
+playground-link({
+  name: "My Component Demo",
+  tailwind: false,
+  files: {
+    "App.svelte": "...",
+    "MyComponent.svelte": "..."
+  }
+})
+```
+
+#### Critical Rules:
+
+- ✅ **ALWAYS** use `list-sections` FIRST for any Svelte query
+- ✅ **ALWAYS** analyze ALL `use_cases` to identify relevant sections
+- ✅ **ALWAYS** use `svelte-autofixer` before sending Svelte code to the user
+- ✅ **ALWAYS** fix issues identified by the autofixer
+- ✅ **NEVER** write component files without validating with `svelte-autofixer`
+- ✅ **ALWAYS** offer playground link for standalone components (not for files in the project)
+
+### Context7 MCP (For Other Libraries)
+
+Use Context7 MCP for documentation of other libraries (shadcn-svelte, ECharts, etc.):
 
 1. **Use the Context7 MCP tools** to get up-to-date documentation
 2. Don't rely on outdated training data
@@ -439,14 +498,16 @@ When you need the latest documentation for Svelte 5, shadcn-svelte, or other lib
 
 Example queries:
 
-- "Get Svelte 5 runes documentation"
 - "Get shadcn-svelte component API"
 - "Get ECharts configuration examples"
+- "Get Tailwind CSS v4 documentation"
 
 ## Validation Checklist
 
 Before completing any task, verify:
 
+- ✅ Used Svelte MCP to fetch documentation and validate code
+- ✅ Validated Svelte components with `svelte-autofixer` before delivery
 - ✅ Using Svelte 5 runes (`$state`, `$derived`, `$props`, `$effect`)
 - ✅ Using shadcn-svelte components for UI
 - ✅ Using CSS variables from our theme (no hardcoded colors)
