@@ -26,7 +26,7 @@
 
 	{#if loading}
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-			{#each Array(4) as _}
+			{#each Array(4) as _, i (i)}
 				<Card class="p-6">
 					<Skeleton class="mb-2 h-4 w-[100px]" />
 					<Skeleton class="mb-2 h-8 w-[60px]" />
@@ -45,7 +45,7 @@
 			<h3 class="mb-4 text-lg font-semibold">{t('overview.recent_items')}</h3>
 			{#if recentItems.length > 0}
 				<div class="space-y-2">
-					{#each recentItems as item}
+					{#each recentItems as item (`${item.title}-${item.country}-${item.created_date}`)}
 						<div class="flex items-center justify-between rounded-lg border p-3">
 							<div>
 								<h4 class="font-medium">{item.title}</h4>
