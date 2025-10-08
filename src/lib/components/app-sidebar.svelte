@@ -52,7 +52,7 @@
 			<Sidebar.GroupLabel>{t('nav.overview')}</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
-					{#each overviewItems as item}
+					{#each overviewItems as item (item.href)}
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
@@ -71,7 +71,7 @@
 			<Sidebar.GroupLabel>{t('nav.textual_analysis')}</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
-					{#each textualAnalysisItems as item}
+					{#each textualAnalysisItems as item (item.href)}
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}

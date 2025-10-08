@@ -2,27 +2,29 @@
 	import * as Button from '$lib/components/ui/button/index.js';
 	import { Maximize, Minimize } from '@lucide/svelte';
 	import { languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { browser } from '$app/environment';
 
 	let isFullscreen = $state(false);
-	let isSupported = $state(false);
+
+	// Derive if Fullscreen API is supported
+	const isSupported = $derived(
+		browser &&
+			!!(
+				document.fullscreenEnabled ||
+				(document as any).webkitFullscreenEnabled ||
+				(document as any).mozFullScreenEnabled ||
+				(document as any).msFullscreenEnabled
+			)
+	);
 
 	// Reactive translations that update when language changes
 	const enterFullscreenLabel = $derived(languageStore.t('fullscreen.enter'));
 	const exitFullscreenLabel = $derived(languageStore.t('fullscreen.exit'));
 
-	// Check if Fullscreen API is supported
-	$effect(() => {
-		isSupported = !!(
-			document.fullscreenEnabled ||
-			(document as any).webkitFullscreenEnabled ||
-			(document as any).mozFullScreenEnabled ||
-			(document as any).msFullscreenEnabled
-		);
-		console.log('Fullscreen API supported:', isSupported);
-	});
-
 	// Listen for fullscreen changes (including user pressing Esc)
 	$effect(() => {
+		if (!browser) return;
+
 		const handleFullscreenChange = () => {
 			isFullscreen = !!(
 				document.fullscreenElement ||
@@ -36,6 +38,9 @@
 		document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 		document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 		document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+		// Set initial state
+		handleFullscreenChange();
 
 		return () => {
 			document.removeEventListener('fullscreenchange', handleFullscreenChange);

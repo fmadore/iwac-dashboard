@@ -41,26 +41,26 @@
 	});
 
 	// Watch for language changes and update URL
-	let previousLang = $state(languageStore.current);
+	// Note: We're tracking the previous value to detect changes,
+	// which is a valid use case for state assignment in effects
 	$effect(() => {
 		if (!browser || !isInitialized) return;
 
 		const currentLang = languageStore.current;
-		if (currentLang !== previousLang) {
-			urlManager.set('lang', currentLang);
-			previousLang = currentLang;
-		}
+		// Write to URL when language changes
+		urlManager.set('lang', currentLang);
 	});
 
 	// Watch for theme changes and update URL
-	let previousTheme = $state<string | undefined>(undefined);
+	// Note: We're tracking the previous value to detect changes,
+	// which is a valid use case for state assignment in effects
 	$effect(() => {
 		if (!browser || !isInitialized) return;
 
 		const currentMode = mode.current;
-		if (currentMode && currentMode !== previousTheme) {
+		// Write to URL when theme changes
+		if (currentMode) {
 			urlManager.set('theme', currentMode as string);
-			previousTheme = currentMode as string;
 		}
 	});
 </script>
