@@ -166,14 +166,26 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
     date_col = find_column(["pub_date", "date", "Date", "published", "year", "Year"])
     type_col = find_column(["o:resource_class", "resource_class", "type", "Type"])
     title_col = find_column(["title", "Title", "o:title"])
+    id_col = find_column(["identifier", "Identifier", "id", "ID", "o:id"])
     
-    logger.info(f"Found columns: author={author_col}, country={country_col}, date={date_col}, type={type_col}")
+    logger.info(f"Found columns: author={author_col}, country={country_col}, date={date_col}, type={type_col}, id={id_col}")
     
     records = []
     skipped_no_year = 0
     skipped_no_author = 0
     
     for idx, row in df.iterrows():
+        # Get the identifier from the dataset (or fall back to index)
+        pub_id = None
+        if id_col:
+            id_val = row.get(id_col)
+            if id_val and not (isinstance(id_val, float) and pd.isna(id_val)):
+                pub_id = str(id_val).strip()
+        
+        # Fallback to row index if no identifier
+        if not pub_id:
+            pub_id = f"ref_{idx}"
+        
         # Extract year (required for temporal analysis)
         year = None
         if date_col:
@@ -207,6 +219,7 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
             for country in countries:
                 for author in (authors if authors else [None]):
                     records.append({
+                        "pub_id": pub_id,
                         "year": year,
                         "country": country,
                         "type": ref_type,
@@ -222,6 +235,7 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
                 for country in countries:
                     for author in authors:
                         records.append({
+                            "pub_id": pub_id,
                             "year": None,
                             "country": country,
                             "type": ref_type,
@@ -323,29 +337,32 @@ def generate_authors_data(records: List[Dict[str, Any]], country_filter: Optiona
             "generated_at": datetime.now().isoformat()
         }
     
-    # Aggregate by author
+    # Aggregate by author - use sets to track unique publications
     author_data = defaultdict(lambda: {
-        "publication_count": 0,
+        "pub_ids": set(),  # Track unique publication IDs
         "types": defaultdict(int),
         "years": []
     })
     
     for record in author_records:
         author = record["author"]
+        pub_id = record["pub_id"]
         ref_type = record["type"]
         year = record.get("year")
         
-        author_data[author]["publication_count"] += 1
-        author_data[author]["types"][ref_type] += 1
-        if year:
-            author_data[author]["years"].append(year)
+        # Only count each publication once per author
+        if pub_id not in author_data[author]["pub_ids"]:
+            author_data[author]["pub_ids"].add(pub_id)
+            author_data[author]["types"][ref_type] += 1
+            if year:
+                author_data[author]["years"].append(year)
     
     # Build author list
     authors = []
     for author_name, data in author_data.items():
         author_entry = {
             "author": author_name,
-            "publication_count": data["publication_count"],
+            "publication_count": len(data["pub_ids"]),  # Count unique publications
             "types": dict(data["types"])
         }
         
@@ -359,10 +376,15 @@ def generate_authors_data(records: List[Dict[str, Any]], country_filter: Optiona
     # Sort by publication count (descending)
     authors.sort(key=lambda x: x["publication_count"], reverse=True)
     
+    # Count total unique publications across all authors
+    all_pub_ids = set()
+    for data in author_data.values():
+        all_pub_ids.update(data["pub_ids"])
+    
     result = {
         "authors": authors,
         "total_authors": len(authors),
-        "total_publications": sum(a["publication_count"] for a in authors),
+        "total_publications": len(all_pub_ids),  # Count unique publications
         "country": country_filter,
         "generated_at": datetime.now().isoformat()
     }
@@ -380,6 +402,11 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     ref_types = set(r["type"] for r in records)
     authors = set(r["author"] for r in author_records)
     
+    # Count unique publications (not records)
+    unique_pub_ids = set(r["pub_id"] for r in records)
+    unique_pub_ids_with_year = set(r["pub_id"] for r in year_records)
+    unique_pub_ids_with_author = set(r["pub_id"] for r in author_records)
+    
     # Count by country
     country_counts = Counter(r["country"] for r in records)
     
@@ -390,9 +417,9 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     ])
     
     metadata = {
-        "total_records": len(records),
-        "records_with_year": len(year_records),
-        "records_with_author": len(author_records),
+        "total_records": len(unique_pub_ids),
+        "records_with_year": len(unique_pub_ids_with_year),
+        "records_with_author": len(unique_pub_ids_with_author),
         "temporal": {
             "min_year": min(years) if years else None,
             "max_year": max(years) if years else None,
@@ -410,7 +437,7 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         },
         "authors": {
             "total_unique": len(authors),
-            "total_publications": len(author_records)
+            "total_publications": len(unique_pub_ids_with_author)
         },
         "files_generated": {
             "by_year_global": "references/by-year-global.json",
