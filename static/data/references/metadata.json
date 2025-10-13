@@ -1,7 +1,7 @@
 {
-  "total_records": 1093,
-  "records_with_year": 1087,
-  "records_with_author": 1052,
+  "total_records": 864,
+  "records_with_year": 859,
+  "records_with_author": 839,
   "temporal": {
     "min_year": 1912,
     "max_year": 2025,
@@ -52,7 +52,7 @@
   },
   "authors": {
     "total_unique": 389,
-    "total_publications": 1052
+    "total_publications": 839
   },
   "files_generated": {
     "by_year_global": "references/by-year-global.json",
@@ -75,5 +75,5 @@
     ],
     "metadata": "references/metadata.json"
   },
-  "generated_at": "2025-10-13T12:29:34.299390"
+  "generated_at": "2025-10-13T12:36:55.622029"
 }

@@ -2,13 +2,13 @@
   "authors": [
     {
       "author": "Frédérick Madore",
-      "publication_count": 40,
+      "publication_count": 36,
       "types": {
-        "Article de revue": 14,
+        "Article de revue": 12,
         "Chapitre": 6,
-        "Thèse": 3,
+        "Thèse": 2,
         "Livre": 1,
-        "Rapport": 2,
+        "Rapport": 1,
         "Communication": 14
       },
       "earliest_year": 2013,
@@ -16,10 +16,10 @@
     },
     {
       "author": "Marie Miran-Guyon",
-      "publication_count": 36,
+      "publication_count": 34,
       "types": {
         "Article de revue": 17,
-        "Chapitre": 15,
+        "Chapitre": 13,
         "Thèse": 1,
         "Livre": 2,
         "Compte rendu": 1
@@ -29,24 +29,24 @@
     },
     {
       "author": "Abdoulaye Sounaye",
-      "publication_count": 34,
+      "publication_count": 33,
       "types": {
         "Article de revue": 15,
         "Chapitre": 13,
         "Thèse": 1,
         "Livre": 2,
         "Compte rendu": 1,
-        "Communication": 2
+        "Communication": 1
       },
       "earliest_year": 2005,
       "latest_year": 2021
     },
     {
       "author": "Issouf Binaté",
-      "publication_count": 33,
+      "publication_count": 31,
       "types": {
-        "Article de revue": 19,
-        "Chapitre": 10,
+        "Article de revue": 18,
+        "Chapitre": 9,
         "Thèse": 3,
         "Communication": 1
       },
@@ -55,10 +55,10 @@
     },
     {
       "author": "Marie Nathalie LeBlanc",
-      "publication_count": 29,
+      "publication_count": 25,
       "types": {
-        "Article de revue": 16,
-        "Chapitre": 12,
+        "Article de revue": 14,
+        "Chapitre": 10,
         "Thèse": 1
       },
       "earliest_year": 1996,
@@ -66,9 +66,9 @@
     },
     {
       "author": "Adeline Masquelier",
-      "publication_count": 26,
+      "publication_count": 25,
       "types": {
-        "Article de revue": 9,
+        "Article de revue": 8,
         "Chapitre": 13,
         "Thèse": 1,
         "Livre": 3
@@ -86,27 +86,6 @@
       },
       "earliest_year": 1989,
       "latest_year": 2022
-    },
-    {
-      "author": "Muriel Gomez-Perez",
-      "publication_count": 18,
-      "types": {
-        "Article de revue": 13,
-        "Chapitre": 5
-      },
-      "earliest_year": 2007,
-      "latest_year": 2018
-    },
-    {
-      "author": "Mathias Boukary Savadogo",
-      "publication_count": 16,
-      "types": {
-        "Article de revue": 7,
-        "Chapitre": 5,
-        "Thèse": 4
-      },
-      "earliest_year": 1990,
-      "latest_year": 2016
     },
     {
       "author": "Jean-Louis Triaud",
@@ -133,16 +112,14 @@
       "latest_year": 2022
     },
     {
-      "author": "Louis Audet Gosselin",
+      "author": "Muriel Gomez-Perez",
       "publication_count": 14,
       "types": {
-        "Article de revue": 5,
-        "Chapitre": 6,
-        "Thèse": 2,
-        "Livre": 1
+        "Article de revue": 10,
+        "Chapitre": 4
       },
-      "earliest_year": 2008,
-      "latest_year": 2022
+      "earliest_year": 2007,
+      "latest_year": 2018
     },
     {
       "author": "Robert Launay",
@@ -157,30 +134,39 @@
       "latest_year": 2023
     },
     {
-      "author": "Katrin Langewiesche",
+      "author": "Louis Audet Gosselin",
       "publication_count": 12,
       "types": {
+        "Article de revue": 4,
+        "Chapitre": 5,
+        "Thèse": 2,
+        "Livre": 1
+      },
+      "earliest_year": 2008,
+      "latest_year": 2022
+    },
+    {
+      "author": "Mathias Boukary Savadogo",
+      "publication_count": 11,
+      "types": {
         "Article de revue": 5,
+        "Chapitre": 4,
+        "Thèse": 2
+      },
+      "earliest_year": 1990,
+      "latest_year": 2016
+    },
+    {
+      "author": "Katrin Langewiesche",
+      "publication_count": 11,
+      "types": {
+        "Article de revue": 4,
         "Chapitre": 5,
         "Livre": 1,
         "Rapport": 1
       },
       "earliest_year": 1998,
       "latest_year": 2022
-    },
-    {
-      "author": "Abdourahmane Idrissa",
-      "publication_count": 12,
-      "types": {
-        "Article de revue": 1,
-        "Chapitre": 3,
-        "Thèse": 2,
-        "Livre": 3,
-        "Rapport": 2,
-        "Article de blog": 1
-      },
-      "earliest_year": 2003,
-      "latest_year": 2021
     },
     {
       "author": "Denise Brégand",
@@ -194,15 +180,6 @@
       "latest_year": 2014
     },
     {
-      "author": "International Crisis Group",
-      "publication_count": 11,
-      "types": {
-        "Rapport": 11
-      },
-      "earliest_year": 2016,
-      "latest_year": 2023
-    },
-    {
       "author": "Hamidou Diallo",
       "publication_count": 10,
       "types": {
@@ -211,17 +188,6 @@
         "Thèse": 1
       },
       "earliest_year": 1985,
-      "latest_year": 2019
-    },
-    {
-      "author": "Barbara M. Cooper",
-      "publication_count": 10,
-      "types": {
-        "Article de revue": 5,
-        "Chapitre": 4,
-        "Livre": 1
-      },
-      "earliest_year": 1994,
       "latest_year": 2019
     },
     {
@@ -236,26 +202,29 @@
       "latest_year": 2003
     },
     {
-      "author": "Yacouba Ouédraogo",
+      "author": "Abdourahmane Idrissa",
       "publication_count": 9,
       "types": {
+        "Article de revue": 1,
+        "Chapitre": 2,
+        "Thèse": 2,
+        "Livre": 1,
+        "Rapport": 2,
+        "Article de blog": 1
+      },
+      "earliest_year": 2003,
+      "latest_year": 2021
+    },
+    {
+      "author": "Yacouba Ouédraogo",
+      "publication_count": 8,
+      "types": {
         "Article de revue": 3,
-        "Chapitre": 5,
+        "Chapitre": 4,
         "Thèse": 1
       },
       "earliest_year": 2000,
       "latest_year": 2019
-    },
-    {
-      "author": "Alice Degorce",
-      "publication_count": 7,
-      "types": {
-        "Article de revue": 4,
-        "Chapitre": 2,
-        "Compte rendu": 1
-      },
-      "earliest_year": 2011,
-      "latest_year": 2021
     },
     {
       "author": "Bakary Traoré",
@@ -292,44 +261,26 @@
       "latest_year": 2022
     },
     {
-      "author": "Olivier Meunier",
+      "author": "Barbara M. Cooper",
       "publication_count": 7,
       "types": {
         "Article de revue": 3,
-        "Livre": 4
+        "Chapitre": 3,
+        "Livre": 1
       },
-      "earliest_year": 1995,
-      "latest_year": 2002
+      "earliest_year": 1994,
+      "latest_year": 2019
     },
     {
-      "author": "Alexander Thurston",
-      "publication_count": 7,
-      "types": {
-        "Chapitre": 1,
-        "Livre": 2,
-        "Rapport": 4
-      },
-      "earliest_year": 2020,
-      "latest_year": 2023
-    },
-    {
-      "author": "Jeannine Ella Abatan",
-      "publication_count": 7,
-      "types": {
-        "Rapport": 7
-      },
-      "earliest_year": 2019,
-      "latest_year": 2023
-    },
-    {
-      "author": "Héni Nsaibia",
+      "author": "Alice Degorce",
       "publication_count": 6,
       "types": {
-        "Article de revue": 1,
-        "Rapport": 5
+        "Article de revue": 3,
+        "Chapitre": 2,
+        "Compte rendu": 1
       },
-      "earliest_year": 2018,
-      "latest_year": 2023
+      "earliest_year": 2011,
+      "latest_year": 2021
     },
     {
       "author": "René Otayek",
@@ -364,43 +315,23 @@
       "latest_year": 2023
     },
     {
-      "author": "Emmanuel Grégoire",
+      "author": "Olivier Meunier",
       "publication_count": 6,
       "types": {
         "Article de revue": 3,
-        "Chapitre": 2,
-        "Livre": 1
+        "Livre": 3
       },
-      "earliest_year": 1986,
-      "latest_year": 1993
+      "earliest_year": 1995,
+      "latest_year": 2002
     },
     {
-      "author": "Guy Nicolas",
+      "author": "International Crisis Group",
       "publication_count": 6,
       "types": {
-        "Article de revue": 6
+        "Rapport": 6
       },
-      "earliest_year": 1968,
-      "latest_year": 1981
-    },
-    {
-      "author": "Élodie Apard",
-      "publication_count": 6,
-      "types": {
-        "Chapitre": 6
-      },
-      "earliest_year": 2021,
-      "latest_year": 2021
-    },
-    {
-      "author": "Caleb Weiss",
-      "publication_count": 5,
-      "types": {
-        "Article de revue": 1,
-        "Rapport": 4
-      },
-      "earliest_year": 2018,
-      "latest_year": 2022
+      "earliest_year": 2016,
+      "latest_year": 2023
     },
     {
       "author": "Fabienne Samson",
@@ -436,17 +367,6 @@
       "latest_year": 1986
     },
     {
-      "author": "Raymond Delval",
-      "publication_count": 5,
-      "types": {
-        "Article de revue": 1,
-        "Chapitre": 2,
-        "Livre": 2
-      },
-      "earliest_year": 1974,
-      "latest_year": 1981
-    },
-    {
       "author": "Leonardo A. Villalón",
       "publication_count": 5,
       "types": {
@@ -456,6 +376,17 @@
       },
       "earliest_year": 1996,
       "latest_year": 2015
+    },
+    {
+      "author": "Emmanuel Grégoire",
+      "publication_count": 5,
+      "types": {
+        "Article de revue": 2,
+        "Chapitre": 2,
+        "Livre": 1
+      },
+      "earliest_year": 1986,
+      "latest_year": 1993
     },
     {
       "author": "Mamadou Bamba",
@@ -468,12 +399,12 @@
       "latest_year": 2019
     },
     {
-      "author": "William Assanvo",
+      "author": "Jeannine Ella Abatan",
       "publication_count": 5,
       "types": {
         "Rapport": 5
       },
-      "earliest_year": 2015,
+      "earliest_year": 2019,
       "latest_year": 2023
     },
     {
@@ -541,16 +472,6 @@
       "latest_year": 2023
     },
     {
-      "author": "Benjamin Soares",
-      "publication_count": 4,
-      "types": {
-        "Article de revue": 1,
-        "Chapitre": 3
-      },
-      "earliest_year": 2010,
-      "latest_year": 2021
-    },
-    {
       "author": "Joseph Hellweg",
       "publication_count": 4,
       "types": {
@@ -559,16 +480,6 @@
       },
       "earliest_year": 2006,
       "latest_year": 2020
-    },
-    {
-      "author": "Aboubakar Sidiki Segda",
-      "publication_count": 4,
-      "types": {
-        "Article de revue": 3,
-        "Thèse": 1
-      },
-      "earliest_year": 2004,
-      "latest_year": 2021
     },
     {
       "author": "Liza Debevec",
@@ -591,6 +502,17 @@
       "latest_year": 1998
     },
     {
+      "author": "Raymond Delval",
+      "publication_count": 4,
+      "types": {
+        "Article de revue": 1,
+        "Chapitre": 1,
+        "Livre": 2
+      },
+      "earliest_year": 1974,
+      "latest_year": 1981
+    },
+    {
       "author": "Souley Hassane",
       "publication_count": 4,
       "types": {
@@ -611,14 +533,13 @@
       "latest_year": 2000
     },
     {
-      "author": "Pascal Labazée",
+      "author": "Guy Nicolas",
       "publication_count": 4,
       "types": {
-        "Article de revue": 2,
-        "Chapitre": 2
+        "Article de revue": 4
       },
-      "earliest_year": 1993,
-      "latest_year": 1993
+      "earliest_year": 1968,
+      "latest_year": 1981
     },
     {
       "author": "Jean-Claude Barbier",
@@ -652,15 +573,6 @@
       "latest_year": 2013
     },
     {
-      "author": "Marc-Antoine Pérouse de Montclos",
-      "publication_count": 4,
-      "types": {
-        "Chapitre": 4
-      },
-      "earliest_year": 2021,
-      "latest_year": 2021
-    },
-    {
       "author": "Emmanuel Odilon Koukoubou",
       "publication_count": 4,
       "types": {
@@ -670,75 +582,12 @@
       "latest_year": 2023
     },
     {
-      "author": "Promediation",
+      "author": "William Assanvo",
       "publication_count": 4,
       "types": {
         "Rapport": 4
       },
-      "earliest_year": 2021,
-      "latest_year": 2022
-    },
-    {
-      "author": "Olivier Walther",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2023,
-      "latest_year": 2023
-    },
-    {
-      "author": "Steven M. Radil",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2023,
-      "latest_year": 2023
-    },
-    {
-      "author": "Abdul Zanya Salifu",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2023,
-      "latest_year": 2023
-    },
-    {
-      "author": "Mathieu Pellerin",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2022,
-      "latest_year": 2022
-    },
-    {
-      "author": "Michaël Matongbada",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2019,
-      "latest_year": 2021
-    },
-    {
-      "author": "Eleanor Beevor",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2023,
-      "latest_year": 2023
-    },
-    {
-      "author": "Flore Berger",
-      "publication_count": 4,
-      "types": {
-        "Rapport": 4
-      },
-      "earliest_year": 2023,
+      "earliest_year": 2015,
       "latest_year": 2023
     },
     {
@@ -752,6 +601,36 @@
       "latest_year": 2014
     },
     {
+      "author": "Héni Nsaibia",
+      "publication_count": 3,
+      "types": {
+        "Article de revue": 1,
+        "Rapport": 2
+      },
+      "earliest_year": 2018,
+      "latest_year": 2023
+    },
+    {
+      "author": "Benjamin Soares",
+      "publication_count": 3,
+      "types": {
+        "Article de revue": 1,
+        "Chapitre": 2
+      },
+      "earliest_year": 2010,
+      "latest_year": 2021
+    },
+    {
+      "author": "Aboubakar Sidiki Segda",
+      "publication_count": 3,
+      "types": {
+        "Article de revue": 2,
+        "Thèse": 1
+      },
+      "earliest_year": 2004,
+      "latest_year": 2021
+    },
+    {
       "author": "Amadou Oumarou",
       "publication_count": 3,
       "types": {
@@ -759,15 +638,6 @@
         "Chapitre": 1
       },
       "earliest_year": 1979,
-      "latest_year": 2023
-    },
-    {
-      "author": "Maxime Ricard",
-      "publication_count": 3,
-      "types": {
-        "Article de revue": 3
-      },
-      "earliest_year": 2023,
       "latest_year": 2023
     },
     {
@@ -792,16 +662,6 @@
       "latest_year": 2023
     },
     {
-      "author": "Mauro Nobili",
-      "publication_count": 3,
-      "types": {
-        "Article de revue": 1,
-        "Communication": 2
-      },
-      "earliest_year": 2020,
-      "latest_year": 2023
-    },
-    {
       "author": "Sebastian Elischer",
       "publication_count": 3,
       "types": {
@@ -823,6 +683,17 @@
       "latest_year": 2011
     },
     {
+      "author": "Alexander Thurston",
+      "publication_count": 3,
+      "types": {
+        "Chapitre": 1,
+        "Livre": 1,
+        "Rapport": 1
+      },
+      "earliest_year": 2020,
+      "latest_year": 2023
+    },
+    {
       "author": "Robert Cornevin",
       "publication_count": 3,
       "types": {
@@ -832,17 +703,7 @@
       "latest_year": 2012
     },
     {
-      "author": "Roman Loimeier",
-      "publication_count": 3,
-      "types": {
-        "Chapitre": 1,
-        "Livre": 2
-      },
-      "earliest_year": 2016,
-      "latest_year": 2018
-    },
-    {
-      "author": "Adam Higazi",
+      "author": "Élodie Apard",
       "publication_count": 3,
       "types": {
         "Chapitre": 3
@@ -899,22 +760,13 @@
       "latest_year": 2023
     },
     {
-      "author": "Papa Sow",
-      "publication_count": 3,
-      "types": {
-        "Rapport": 3
-      },
-      "earliest_year": 2022,
-      "latest_year": 2022
-    },
-    {
-      "author": "Antonin Tisseron",
+      "author": "Michaël Matongbada",
       "publication_count": 3,
       "types": {
         "Rapport": 3
       },
       "earliest_year": 2019,
-      "latest_year": 2019
+      "latest_year": 2021
     },
     {
       "author": "Felice Dassetto",
@@ -957,22 +809,14 @@
       "latest_year": 2016
     },
     {
-      "author": "John F. McCauley",
+      "author": "Caleb Weiss",
       "publication_count": 2,
       "types": {
-        "Article de revue": 2
+        "Article de revue": 1,
+        "Rapport": 1
       },
-      "earliest_year": 2017,
-      "latest_year": 2017
-    },
-    {
-      "author": "Daniel N. Posner",
-      "publication_count": 2,
-      "types": {
-        "Article de revue": 2
-      },
-      "earliest_year": 2017,
-      "latest_year": 2017
+      "earliest_year": 2018,
+      "latest_year": 2022
     },
     {
       "author": "Adrienne Vanvyve",
@@ -1040,15 +884,6 @@
       "latest_year": 2019
     },
     {
-      "author": "Bruce M. Haight",
-      "publication_count": 2,
-      "types": {
-        "Article de revue": 2
-      },
-      "earliest_year": 1991,
-      "latest_year": 1991
-    },
-    {
       "author": "Kathryn L. Green",
       "publication_count": 2,
       "types": {
@@ -1079,15 +914,6 @@
       "latest_year": 1987
     },
     {
-      "author": "Zakaria Soré",
-      "publication_count": 2,
-      "types": {
-        "Article de revue": 2
-      },
-      "earliest_year": 2022,
-      "latest_year": 2022
-    },
-    {
       "author": "Aoudou Imorou Assan",
       "publication_count": 2,
       "types": {
@@ -1106,15 +932,6 @@
       },
       "earliest_year": 1996,
       "latest_year": 2013
-    },
-    {
-      "author": "Hacène Belmessous",
-      "publication_count": 2,
-      "types": {
-        "Article de revue": 2
-      },
-      "earliest_year": 2002,
-      "latest_year": 2002
     },
     {
       "author": "Sékou Traoré",
@@ -1156,6 +973,16 @@
       "latest_year": 2023
     },
     {
+      "author": "Pascal Labazée",
+      "publication_count": 2,
+      "types": {
+        "Article de revue": 1,
+        "Chapitre": 1
+      },
+      "earliest_year": 1993,
+      "latest_year": 1993
+    },
+    {
       "author": "Koffi Nutefé Tsigbé",
       "publication_count": 2,
       "types": {
@@ -1173,6 +1000,16 @@
       },
       "earliest_year": 2000,
       "latest_year": 2005
+    },
+    {
+      "author": "Mauro Nobili",
+      "publication_count": 2,
+      "types": {
+        "Article de revue": 1,
+        "Communication": 1
+      },
+      "earliest_year": 2020,
+      "latest_year": 2023
     },
     {
       "author": "Margaret O. Saunders",
@@ -1194,15 +1031,6 @@
       "latest_year": 2017
     },
     {
-      "author": "Matt Kirwin",
-      "publication_count": 2,
-      "types": {
-        "Article de revue": 2
-      },
-      "earliest_year": 2005,
-      "latest_year": 2005
-    },
-    {
       "author": "Robert B. Charlick",
       "publication_count": 2,
       "types": {
@@ -1211,15 +1039,6 @@
       },
       "earliest_year": 2004,
       "latest_year": 2007
-    },
-    {
-      "author": "William F.S. Miles",
-      "publication_count": 2,
-      "types": {
-        "Article de revue": 2
-      },
-      "earliest_year": 2003,
-      "latest_year": 2003
     },
     {
       "author": "Abdoulaye Niandou Souley",
@@ -1281,15 +1100,6 @@
       "latest_year": 2020
     },
     {
-      "author": "Danielle Jonckers",
-      "publication_count": 2,
-      "types": {
-        "Chapitre": 2
-      },
-      "earliest_year": 2006,
-      "latest_year": 2006
-    },
-    {
       "author": "Rudolph Ware",
       "publication_count": 2,
       "types": {
@@ -1317,13 +1127,14 @@
       "latest_year": 2014
     },
     {
-      "author": "Seyni Moumouni",
+      "author": "Roman Loimeier",
       "publication_count": 2,
       "types": {
-        "Chapitre": 2
+        "Chapitre": 1,
+        "Livre": 1
       },
-      "earliest_year": 2002,
-      "latest_year": 2002
+      "earliest_year": 2016,
+      "latest_year": 2018
     },
     {
       "author": "Roberta A. Dunbar",
@@ -1336,7 +1147,7 @@
       "latest_year": 1992
     },
     {
-      "author": "Kyari Mohammed",
+      "author": "Adam Higazi",
       "publication_count": 2,
       "types": {
         "Chapitre": 2
@@ -1345,7 +1156,7 @@
       "latest_year": 2021
     },
     {
-      "author": "Muhammadu Mustapha Gwadabe",
+      "author": "Marc-Antoine Pérouse de Montclos",
       "publication_count": 2,
       "types": {
         "Chapitre": 2
@@ -1380,15 +1191,6 @@
       },
       "earliest_year": 2010,
       "latest_year": 2011
-    },
-    {
-      "author": "Da Dakor",
-      "publication_count": 2,
-      "types": {
-        "Thèse": 2
-      },
-      "earliest_year": 1989,
-      "latest_year": 1989
     },
     {
       "author": "Mary Wren Bivins",
@@ -1474,40 +1276,13 @@
       "latest_year": 2001
     },
     {
-      "author": "Pierre-Jean-Daniel André",
+      "author": "Promediation",
       "publication_count": 2,
       "types": {
-        "Livre": 2
+        "Rapport": 2
       },
-      "earliest_year": 1924,
-      "latest_year": 1924
-    },
-    {
-      "author": "Zachée Betche",
-      "publication_count": 2,
-      "types": {
-        "Livre": 2
-      },
-      "earliest_year": 2016,
-      "latest_year": 2016
-    },
-    {
-      "author": "Léon Koungou",
-      "publication_count": 2,
-      "types": {
-        "Livre": 2
-      },
-      "earliest_year": 2016,
-      "latest_year": 2016
-    },
-    {
-      "author": "Christian Coulon",
-      "publication_count": 2,
-      "types": {
-        "Compte rendu": 2
-      },
-      "earliest_year": 1981,
-      "latest_year": 1981
+      "earliest_year": 2021,
+      "latest_year": 2022
     },
     {
       "author": "Perry Collins",
@@ -1535,6 +1310,24 @@
       },
       "earliest_year": 1956,
       "latest_year": 1956
+    },
+    {
+      "author": "John F. McCauley",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2017,
+      "latest_year": 2017
+    },
+    {
+      "author": "Daniel N. Posner",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2017,
+      "latest_year": 2017
     },
     {
       "author": "René Luc Moreau",
@@ -1636,6 +1429,15 @@
       "latest_year": 1996
     },
     {
+      "author": "Bruce M. Haight",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 1991,
+      "latest_year": 1991
+    },
+    {
       "author": "Nurudine Oyewolé",
       "publication_count": 1,
       "types": {
@@ -1697,6 +1499,15 @@
       },
       "earliest_year": 1993,
       "latest_year": 1993
+    },
+    {
+      "author": "Zakaria Soré",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2022,
+      "latest_year": 2022
     },
     {
       "author": "Abdul-Azeez Maruf Olayemi",
@@ -1763,6 +1574,15 @@
     },
     {
       "author": "Jean de La Guérivière",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2002,
+      "latest_year": 2002
+    },
+    {
+      "author": "Hacène Belmessous",
       "publication_count": 1,
       "types": {
         "Article de revue": 1
@@ -1877,6 +1697,15 @@
       },
       "earliest_year": 2022,
       "latest_year": 2022
+    },
+    {
+      "author": "Maxime Ricard",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2023,
+      "latest_year": 2023
     },
     {
       "author": "El Hadj Akan Charif Vissoh",
@@ -2059,6 +1888,24 @@
       "latest_year": 2008
     },
     {
+      "author": "Matt Kirwin",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2005,
+      "latest_year": 2005
+    },
+    {
+      "author": "William F.S. Miles",
+      "publication_count": 1,
+      "types": {
+        "Article de revue": 1
+      },
+      "earliest_year": 2003,
+      "latest_year": 2003
+    },
+    {
       "author": "Rebecca Popenoe",
       "publication_count": 1,
       "types": {
@@ -2192,6 +2039,15 @@
       },
       "earliest_year": 1979,
       "latest_year": 1979
+    },
+    {
+      "author": "Danielle Jonckers",
+      "publication_count": 1,
+      "types": {
+        "Chapitre": 1
+      },
+      "earliest_year": 2006,
+      "latest_year": 2006
     },
     {
       "author": "Saïd Bousbina",
@@ -2500,6 +2356,15 @@
       "latest_year": 2016
     },
     {
+      "author": "Seyni Moumouni",
+      "publication_count": 1,
+      "types": {
+        "Chapitre": 1
+      },
+      "earliest_year": 2002,
+      "latest_year": 2002
+    },
+    {
       "author": "Paulo de Moraes Farias",
       "publication_count": 1,
       "types": {
@@ -2534,6 +2399,24 @@
       },
       "earliest_year": 1995,
       "latest_year": 1995
+    },
+    {
+      "author": "Kyari Mohammed",
+      "publication_count": 1,
+      "types": {
+        "Chapitre": 1
+      },
+      "earliest_year": 2021,
+      "latest_year": 2021
+    },
+    {
+      "author": "Muhammadu Mustapha Gwadabe",
+      "publication_count": 1,
+      "types": {
+        "Chapitre": 1
+      },
+      "earliest_year": 2021,
+      "latest_year": 2021
     },
     {
       "author": "Stephen T. Ogundipe",
@@ -2759,6 +2642,15 @@
       },
       "earliest_year": 2021,
       "latest_year": 2021
+    },
+    {
+      "author": "Da Dakor",
+      "publication_count": 1,
+      "types": {
+        "Thèse": 1
+      },
+      "earliest_year": 1989,
+      "latest_year": 1989
     },
     {
       "author": "Souleymane Boly",
@@ -3252,6 +3144,15 @@
       "latest_year": 2023
     },
     {
+      "author": "Pierre-Jean-Daniel André",
+      "publication_count": 1,
+      "types": {
+        "Livre": 1
+      },
+      "earliest_year": 1924,
+      "latest_year": 1924
+    },
+    {
       "author": "Jean Audouin",
       "publication_count": 1,
       "types": {
@@ -3322,6 +3223,24 @@
       },
       "earliest_year": 2023,
       "latest_year": 2023
+    },
+    {
+      "author": "Zachée Betche",
+      "publication_count": 1,
+      "types": {
+        "Livre": 1
+      },
+      "earliest_year": 2016,
+      "latest_year": 2016
+    },
+    {
+      "author": "Léon Koungou",
+      "publication_count": 1,
+      "types": {
+        "Livre": 1
+      },
+      "earliest_year": 2016,
+      "latest_year": 2016
     },
     {
       "author": "Mohamed Abdoulay Diarra",
@@ -3396,6 +3315,33 @@
       "latest_year": 2014
     },
     {
+      "author": "Olivier Walther",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2023,
+      "latest_year": 2023
+    },
+    {
+      "author": "Steven M. Radil",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2023,
+      "latest_year": 2023
+    },
+    {
+      "author": "Abdul Zanya Salifu",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2023,
+      "latest_year": 2023
+    },
+    {
       "author": "Kars de Bruijne",
       "publication_count": 1,
       "types": {
@@ -3439,6 +3385,24 @@
       },
       "earliest_year": 2016,
       "latest_year": 2016
+    },
+    {
+      "author": "Mathieu Pellerin",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2022,
+      "latest_year": 2022
+    },
+    {
+      "author": "Papa Sow",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2022,
+      "latest_year": 2022
     },
     {
       "author": "Aneliese Bernard",
@@ -3522,7 +3486,34 @@
       "latest_year": 2022
     },
     {
+      "author": "Eleanor Beevor",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2023,
+      "latest_year": 2023
+    },
+    {
+      "author": "Flore Berger",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2023,
+      "latest_year": 2023
+    },
+    {
       "author": "Nicolas Hubert",
+      "publication_count": 1,
+      "types": {
+        "Rapport": 1
+      },
+      "earliest_year": 2019,
+      "latest_year": 2019
+    },
+    {
+      "author": "Antonin Tisseron",
       "publication_count": 1,
       "types": {
         "Rapport": 1
@@ -3610,6 +3601,15 @@
       "latest_year": 1954
     },
     {
+      "author": "Christian Coulon",
+      "publication_count": 1,
+      "types": {
+        "Compte rendu": 1
+      },
+      "earliest_year": 1981,
+      "latest_year": 1981
+    },
+    {
       "author": "Christine Chevalier-Caron",
       "publication_count": 1,
       "types": {
@@ -3647,7 +3647,7 @@
     }
   ],
   "total_authors": 389,
-  "total_publications": 1052,
+  "total_publications": 839,
   "country": null,
-  "generated_at": "2025-10-13T12:29:34.243797"
+  "generated_at": "2025-10-13T12:36:55.583446"
 }
