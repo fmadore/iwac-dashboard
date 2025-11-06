@@ -73,25 +73,23 @@
 	}
 
 	// Default colors for document types (CSS variable names)
+	// Use diverse colors from the palette for better contrast
 	const defaultColorVars: Record<string, string> = {
 		// Base document types
 		'Press Article': '--chart-1',
 		'Islamic Periodical': '--chart-2',
 		Document: '--chart-3',
 		Audiovisuel: '--chart-4',
-		// Reference types
-		'Article de revue': '--chart-5',
-		Livre: '--chart-6',
-		'Chapitre de livre': '--chart-7',
-		'Thèse de doctorat': '--chart-8',
-		'Mémoire de maitrise': '--chart-9',
-		Rapport: '--chart-10',
-		'Communication scientifique': '--chart-11',
-		'Compte rendu de livre': '--chart-12',
-		"Article d'encyclopédie": '--chart-13',
-		'Article de blog': '--chart-14',
-		'Mémoire de licence': '--chart-15',
-		'Working paper': '--chart-16'
+		// Reference types - spread across the color palette for maximum contrast
+		'Article de revue': '--chart-2',      // Blue
+		'Livre': '--chart-8',                 // Pink
+		'Chapitre': '--chart-3',              // Green
+		'Communication': '--chart-4',         // Purple
+		'Compte rendu': '--chart-1',          // Orange (primary)
+		'Article de blog': '--chart-12',      // Purple/violet
+		'Ouvrage collectif': '--chart-7',     // Teal
+		'Rapport': '--chart-10',              // Green (different shade)
+		'Thèse': '--chart-14'                 // Pink/magenta
 	};
 
 	const typeColors = $derived({ ...defaultColorVars, ...colors });

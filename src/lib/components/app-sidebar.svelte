@@ -9,7 +9,9 @@
 		FileType,
 		Tag,
 		BookOpen,
-		Home
+		Home,
+		BookMarked,
+		User
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -21,6 +23,11 @@
 		{ href: `${base}/timeline`, icon: Calendar, label: 'nav.timeline' },
 		{ href: `${base}/entities`, icon: FileType, label: 'nav.entities' },
 		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' }
+	];
+
+	const referencesItems = [
+		{ href: `${base}/references/by-year`, icon: BookMarked, label: 'nav.references_by_year' },
+		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' }
 	];
 
 	const textualAnalysisItems = [
@@ -53,6 +60,25 @@
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
 					{#each overviewItems as item (item.href)}
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
+								{#snippet child({ props })}
+									<a href={item.href} {...props}>
+										<item.icon class="h-4 w-4" />
+										<span>{t(item.label)}</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					{/each}
+				</Sidebar.Menu>
+			</Sidebar.GroupContent>
+		</Sidebar.Group>
+		<Sidebar.Group>
+			<Sidebar.GroupLabel>{t('nav.references')}</Sidebar.GroupLabel>
+			<Sidebar.GroupContent>
+				<Sidebar.Menu>
+					{#each referencesItems as item (item.href)}
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
