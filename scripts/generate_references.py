@@ -276,35 +276,45 @@ def generate_by_year_data(records: List[Dict[str, Any]], country_filter: Optiona
             "generated_at": datetime.now().isoformat()
         }
     
-    # Group by year and type
-    year_type_counts = defaultdict(lambda: defaultdict(int))
+    # Group by year and type, tracking unique publications
+    year_type_pub_ids = defaultdict(lambda: defaultdict(set))
     
     for record in year_records:
         year = record["year"]
         ref_type = record["type"]
-        year_type_counts[year][ref_type] += 1
+        pub_id = record["pub_id"]
+        
+        # Track unique pub_ids per year-type combination
+        year_type_pub_ids[year][ref_type].add(pub_id)
     
     # Get all years and types
-    all_years = sorted(year_type_counts.keys())
+    all_years = sorted(year_type_pub_ids.keys())
     all_types = sorted(set(
         type_name 
-        for year_data in year_type_counts.values() 
+        for year_data in year_type_pub_ids.values() 
         for type_name in year_data.keys()
     ))
     
     # Build series data for stacked bar chart
     series = []
     for type_name in all_types:
-        type_data = [year_type_counts[year].get(type_name, 0) for year in all_years]
+        # Count unique publications per year for this type
+        type_data = [len(year_type_pub_ids[year].get(type_name, set())) for year in all_years]
         series.append({
             "name": type_name,
             "data": type_data
         })
     
+    # Count total unique publications across all years
+    all_unique_pub_ids = set()
+    for year_data in year_type_pub_ids.values():
+        for pub_ids in year_data.values():
+            all_unique_pub_ids.update(pub_ids)
+    
     result = {
         "years": all_years,
         "series": series,
-        "total_records": len(year_records),
+        "total_records": len(all_unique_pub_ids),  # Count unique publications
         "year_range": {
             "min": min(all_years) if all_years else None,
             "max": max(all_years) if all_years else None
