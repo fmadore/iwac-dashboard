@@ -30,7 +30,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 from datasets import load_dataset
-from huggingface_hub import HfFolder, login
+from huggingface_hub import login
 import pandas as pd
 
 
@@ -490,15 +490,16 @@ def main():
     output_dir = Path(args.output_dir)
     
     # Authentification avec le Hub
-    token = os.getenv("HF_TOKEN") or HfFolder.get_token()
+    token = os.getenv("HF_TOKEN")
     if not token:
         logger.info("Token Hugging Face non trouvé. Tentative de connexion interactive.")
         try:
             login()
-            token = HfFolder.get_token()
+            # After login, token will be used automatically by datasets library
         except Exception as e:
             logger.error(f"Échec de la connexion au Hugging Face Hub: {e}")
-            return
+            # Continue without token - public datasets will still work
+            token = None
     
     # Calculer les statistiques
     overview_stats = calculate_overview_stats(repo_id, token)
