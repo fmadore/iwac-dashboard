@@ -48,6 +48,7 @@ jobs:
           cd ..
         env:
           PYTHONPATH: ${{ github.workspace }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
       - name: Build SvelteKit app
         env:

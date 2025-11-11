@@ -2,3 +2,4 @@ datasets
 pandas
 huggingface-hub
 pyarrow
+hf_xet

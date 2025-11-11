@@ -492,13 +492,18 @@ def main():
     # Authentification avec le Hub
     token = os.getenv("HF_TOKEN")
     if not token:
-        logger.info("Token Hugging Face non trouvé. Tentative de connexion interactive.")
+        logger.warning("Token Hugging Face non trouvé. Tentative sans authentification (datasets publics uniquement).")
+        logger.warning("Pour accéder à des datasets privés, définissez la variable d'environnement HF_TOKEN.")
+        # Continue without token - public datasets will work
+        token = None
+    else:
+        # Use token for authentication
         try:
-            login()
-            # After login, token will be used automatically by datasets library
+            login(token=token)
+            logger.info("Authentification Hugging Face réussie.")
         except Exception as e:
-            logger.error(f"Échec de la connexion au Hugging Face Hub: {e}")
-            # Continue without token - public datasets will still work
+            logger.warning(f"Échec de l'authentification Hugging Face: {e}")
+            logger.warning("Tentative de chargement sans authentification...")
             token = None
     
     # Calculer les statistiques

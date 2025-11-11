@@ -1,7 +1,7 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-09-30T15:23:06.681121",
+    "generated_at": "2025-11-11T11:47:38.861861",
     "script_version": "1.0"
   },
   "summary": {
@@ -15,7 +15,7 @@
     "newspapers": 74,
     "audiovisual_duration": 9315,
     "references_count": 864,
-    "index_entries": 4572,
+    "index_entries": 4573,
     "reference_types": 12,
     "country_list": [
       "Benin",
@@ -104,7 +104,7 @@
       "records_with_ocr": 0
     },
     "index": {
-      "total_records": 4572,
+      "total_records": 4573,
       "total_words": 0,
       "total_pages": 0,
       "records_with_word_count": 0,
@@ -174,9 +174,9 @@
       }
     },
     "Français": {
-      "total_records": 13726,
+      "total_records": 13736,
       "by_dataset": {
-        "articles": 11664,
+        "articles": 11674,
         "publications": 1499,
         "documents": 26,
         "references": 537
@@ -237,7 +237,7 @@
       "total_records": 864
     },
     "index": {
-      "total_records": 4572
+      "total_records": 4573
     }
   },
   "by_reference_type": {
