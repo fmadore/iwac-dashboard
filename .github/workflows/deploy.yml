@@ -7,6 +7,10 @@ on:
   # Allow manual trigger
   workflow_dispatch:
 
+  # Run weekly on Sundays at 2:00 AM UTC
+  schedule:
+    - cron: '0 2 * * 0'
+
 # Set GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -38,13 +42,15 @@ jobs:
         run: |
           pip install -r scripts/requirements.txt
           cd scripts
+          python generate_overview_stats.py --output-dir ../static/data
           python generate_treemap.py --output-dir ../static/data
           python generate_wordcloud.py --output-dir ../static/data
           python generate_language_facets.py --output-dir ../static/data
           python generate_index_entities.py --output-dir ../static/data
           python generate_categories.py --output-dir ../static/data
           python generate_timeline.py --output-dir ../static/data
-          python generate_overview_stats.py --output-dir ../static/data
+          python generate_references.py --output-dir ../static/data
+          python generate_scary_terms.py --output-dir ../static/data
           cd ..
         env:
           PYTHONPATH: ${{ github.workspace }}
