@@ -1,0 +1,58 @@
+name: Generate IWAC Data
+
+on:
+  # Run weekly on Sundays at 2:00 AM UTC
+  schedule:
+    - cron: '0 2 * * 0'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+# Set permissions to allow committing data files
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Generate all IWAC data files
+        run: |
+          cd scripts
+          python generate_overview_stats.py --output-dir ../static/data
+          python generate_treemap.py --output-dir ../static/data
+          python generate_wordcloud.py --output-dir ../static/data
+          python generate_language_facets.py --output-dir ../static/data
+          python generate_index_entities.py --output-dir ../static/data
+          python generate_categories.py --output-dir ../static/data
+          python generate_timeline.py --output-dir ../static/data
+          python generate_references.py --output-dir ../static/data
+          python generate_scary_terms.py --output-dir ../static/data
+          cd ..
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+      - name: Commit and push updated data files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add static/data/*.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update IWAC data (automated weekly update)"
+            git push
+          fi
