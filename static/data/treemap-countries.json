@@ -4,11 +4,11 @@
   "children": [
     {
       "name": "Côte d'Ivoire",
-      "value": 4200,
+      "value": 4538,
       "children": [
         {
           "name": "Article de presse",
-          "value": 3390,
+          "value": 3728,
           "children": [
             {
               "name": "Fraternité Matin",
@@ -16,7 +16,7 @@
             },
             {
               "name": "Le Patriote",
-              "value": 749
+              "value": 861
             },
             {
               "name": "Le Jour Plus",
@@ -24,15 +24,19 @@
             },
             {
               "name": "Notre Voie",
-              "value": 448
+              "value": 438
+            },
+            {
+              "name": "Le Jour",
+              "value": 238
             },
             {
               "name": "La Voie",
               "value": 185
             },
             {
-              "name": "Le Jour",
-              "value": 148
+              "name": "Nord-Sud",
+              "value": 90
             },
             {
               "name": "Fraternité Hebdo",
@@ -43,8 +47,16 @@
               "value": 37
             },
             {
+              "name": "Ivoire Dimanche",
+              "value": 34
+            },
+            {
               "name": "Plume Libre",
               "value": 33
+            },
+            {
+              "name": "Le Débat Ivoirien",
+              "value": 27
             },
             {
               "name": "L'Intelligent d'Abidjan",
@@ -60,10 +72,6 @@
             },
             {
               "name": "L'Inter",
-              "value": 5
-            },
-            {
-              "name": "Nord-Sud",
               "value": 5
             },
             {
@@ -221,7 +229,7 @@
     },
     {
       "name": "Benin",
-      "value": 2136,
+      "value": 2138,
       "children": [
         {
           "name": "Article de presse",
@@ -302,6 +310,11 @@
               "value": 11
             }
           ]
+        },
+        {
+          "name": "Document",
+          "value": 2,
+          "children": []
         }
       ]
     },
@@ -407,34 +420,41 @@
       ]
     },
     {
+      "name": "",
+      "value": 230,
+      "children": [
+        {
+          "name": "Article de presse",
+          "value": 229,
+          "children": [
+            {
+              "name": "APA News",
+              "value": 173
+            },
+            {
+              "name": "Le Temps",
+              "value": 46
+            },
+            {
+              "name": "L'Expression",
+              "value": 10
+            }
+          ]
+        },
+        {
+          "name": "Document",
+          "value": 1,
+          "children": []
+        }
+      ]
+    },
+    {
       "name": "Nigeria",
       "value": 45,
       "children": [
         {
           "name": "Audiovisuel",
           "value": 45,
-          "children": []
-        }
-      ]
-    },
-    {
-      "name": "Bénin",
-      "value": 2,
-      "children": [
-        {
-          "name": "Document",
-          "value": 2,
-          "children": []
-        }
-      ]
-    },
-    {
-      "name": "",
-      "value": 1,
-      "children": [
-        {
-          "name": "Document",
-          "value": 1,
           "children": []
         }
       ]

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2025-09-12T14:17:49.660388",
-  "total_records": 13255,
-  "records_with_country": 13255,
+  "generated_at": "2025-11-16T02:34:41.093311",
+  "total_records": 13822,
+  "records_with_country": 13822,
   "subsets_processed": [
     "articles",
     "documents",
@@ -12,7 +12,6 @@
     "",
     "Benin",
     "Burkina Faso",
-    "Bénin",
     "Côte d'Ivoire",
     "Niger",
     "Nigeria",

@@ -817,87 +817,87 @@
     "data": [
       [
         "musulman",
-        10130
+        10115
       ],
       [
         "ivoire",
-        5446
+        5439
       ],
       [
         "côte",
-        5369
+        5362
       ],
       [
         "président",
-        5057
+        5044
       ],
       [
         "imam",
-        4818
+        4806
       ],
       [
         "hadj",
-        3905
+        3892
       ],
       [
         "communauté",
-        3655
+        3648
       ],
       [
         "devoir",
-        3639
+        3634
       ],
       [
         "mosquée",
-        3596
+        3583
       ],
       [
         "religieux",
-        3453
+        3447
       ],
       [
         "islamique",
-        3349
+        3343
       ],
       [
         "dieu",
-        3233
+        3229
       ],
       [
         "islam",
-        2987
+        2982
       ],
       [
         "ivoirien",
-        2739
+        2729
       ],
       [
         "conseil",
-        2583
+        2580
       ],
       [
         "luire",
-        2470
+        2461
       ],
       [
         "prière",
-        2433
+        2421
       ],
       [
         "national",
-        2417
+        2410
       ],
       [
         "fidèle",
-        2406
+        2402
       ],
       [
         "homme",
-        2395
+        2389
       ],
       [
         "paix",
-        2365
+        2358
       ],
       [
         "pèlerin",
@@ -905,15 +905,15 @@
       ],
       [
         "ministre",
-        2173
+        2163
       ],
       [
         "chef",
-        2128
+        2119
       ],
       [
         "entrer",
-        2038
+        2037
       ],
       [
         "religion",
@@ -921,31 +921,31 @@
       ],
       [
         "mois",
-        1771
-      ],
-      [
-        "ramadan",
-        1676
+        1766
       ],
       [
         "pèlerinage",
-        1676
+        1675
+      ],
+      [
+        "ramadan",
+        1673
       ],
       [
         "celer",
-        1664
+        1662
       ],
       [
         "organisation",
-        1642
+        1638
       ],
       [
         "abidjan",
-        1547
+        1544
       ],
       [
         "association",
-        1480
+        1479
       ],
       [
         "fête",
@@ -957,11 +957,11 @@
       ],
       [
         "jeûne",
-        1447
+        1446
       ],
       [
         "coran",
-        1429
+        1428
       ],
       [
         "mettre",
@@ -969,63 +969,63 @@
       ],
       [
         "prophète",
-        1407
+        1406
       ],
       [
         "nuit",
-        1402
+        1396
       ],
       [
         "général",
-        1355
-      ],
-      [
-        "cni",
-        1329
+        1350
       ],
       [
         "monde",
         1329
       ],
       [
+        "cni",
+        1328
+      ],
+      [
         "heure",
-        1326
+        1324
       ],
       [
         "diaby",
-        1311
+        1306
       ],
       [
         "donner",
-        1205
+        1200
       ],
       [
         "supérieur",
-        1165
+        1162
       ],
       [
         "vie",
-        1103
+        1102
       ],
       [
         "foi",
-        1099
+        1098
       ],
       [
         "etat",
-        1086
+        1079
       ],
       [
         "demander",
-        1081
+        1079
       ],
       [
         "hier",
-        1073
+        1071
       ],
       [
         "koné",
-        1064
+        1062
       ],
       [
         "sou",
@@ -1033,35 +1033,35 @@
       ],
       [
         "gouvernement",
-        1053
+        1051
       ],
       [
         "allah",
-        1049
+        1045
       ],
       [
         "social",
-        1027
-      ],
-      [
-        "coulibaly",
-        1022
+        1026
       ],
       [
         "femme",
+        1022
+      ],
+      [
+        "coulibaly",
         1020
       ],
       [
         "occasion",
-        1018
-      ],
-      [
-        "saint",
         1017
       ],
       [
+        "saint",
+        1016
+      ],
+      [
         "fofana",
-        962
+        963
       ],
       [
         "permettre",
@@ -1069,43 +1069,43 @@
       ],
       [
         "non",
-        940
-      ],
-      [
-        "membre",
         937
       ],
       [
         "dialogue",
-        937
+        936
+      ],
+      [
+        "membre",
+        933
       ],
       [
         "prier",
-        911
+        910
       ],
       [
         "jeune",
-        903
+        898
       ],
       [
         "nom",
-        898
+        896
       ],
       [
         "trouver",
         883
       ],
       [
-        "part",
-        881
+        "autorité",
+        879
       ],
       [
-        "autorité",
+        "part",
         878
       ],
       [
         "république",
-        875
+        873
       ],
       [
         "acte",
@@ -1117,7 +1117,7 @@
       ],
       [
         "responsable",
-        835
+        833
       ],
       [
         "aucun",
@@ -1125,51 +1125,51 @@
       ],
       [
         "connaître",
-        832
-      ],
-      [
-        "organiser",
-        827
+        831
       ],
       [
         "cérémonie",
-        826
+        827
+      ],
+      [
+        "organiser",
+        823
       ],
       [
         "cosim",
-        816
-      ],
-      [
-        "ouattara",
-        804
+        813
       ],
       [
         "koudouss",
-        803
+        802
+      ],
+      [
+        "ouattara",
+        802
       ],
       [
         "spirituel",
-        796
+        794
       ],
       [
         "enfant",
-        789
+        783
       ],
       [
         "mouton",
         783
       ],
       [
-        "école",
-        777
+        "boigny",
+        773
       ],
       [
-        "boigny",
-        774
+        "école",
+        772
       ],
       [
         "passer",
-        767
+        766
       ],
       [
         "tabaski",
@@ -1181,27 +1181,23 @@
       ],
       [
         "population",
-        718
+        717
       ],
       [
         "vivre",
         710
       ],
       [
-        "vendredi",
-        706
-      ],
-      [
         "célébrer",
         706
       ],
       [
-        "prochain",
-        703
+        "vendredi",
+        705
       ],
       [
-        "samedi",
-        699
+        "prochain",
+        698
       ],
       [
         "situation",
@@ -1212,13 +1208,17 @@
         694
       ],
       [
+        "samedi",
+        694
+      ],
+      [
         "frère",
         694
       ]
     ],
-    "total_articles": 2467,
-    "total_words": 623933,
-    "unique_words": 23731
+    "total_articles": 2458,
+    "total_words": 622780,
+    "unique_words": 23733
   },
   "Niger": {
     "data": [

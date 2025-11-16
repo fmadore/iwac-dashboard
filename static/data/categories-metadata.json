@@ -1,6 +1,6 @@
 {
-  "total_records": 14175,
-  "records_with_year": 14175,
+  "total_records": 14742,
+  "records_with_year": 14742,
   "coverage_percentage": 100.0,
   "temporal": {
     "min_year": 1912,
@@ -57,7 +57,7 @@
       "references"
     ],
     "counts": {
-      "articles": 11682,
+      "articles": 12249,
       "audiovisual": 15,
       "documents": 20,
       "publications": 1501,
@@ -98,5 +98,5 @@
       "fr": "Référence"
     }
   },
-  "generated_at": "2025-09-30T14:57:32.217443"
+  "generated_at": "2025-11-16T02:35:14.760683"
 }

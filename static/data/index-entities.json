@@ -3,7 +3,7 @@
     "o:id": 269,
     "Titre": "Abidjan",
     "Type": "Lieux",
-    "frequency": 1233,
+    "frequency": 1363,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2024-07-30",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -12,7 +12,7 @@
     "o:id": 270,
     "Titre": "Abomey",
     "Type": "Lieux",
-    "frequency": 119,
+    "frequency": 120,
     "first_occurrence": "1970-01-31",
     "last_occurrence": "2023-11-03",
     "countries": "Benin"
@@ -21,7 +21,7 @@
     "o:id": 271,
     "Titre": "Abomey-Calavi",
     "Type": "Lieux",
-    "frequency": 139,
+    "frequency": 149,
     "first_occurrence": "1979-10-09",
     "last_occurrence": "2024-08-23",
     "countries": "Benin"
@@ -39,7 +39,7 @@
     "o:id": 273,
     "Titre": "Algérie",
     "Type": "Lieux",
-    "frequency": 180,
+    "frequency": 183,
     "first_occurrence": "1967-01-14",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -75,7 +75,7 @@
     "o:id": 277,
     "Titre": "Arabie saoudite",
     "Type": "Lieux",
-    "frequency": 1544,
+    "frequency": 1576,
     "first_occurrence": "1968-12-28",
     "last_occurrence": "2025-02-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -102,7 +102,7 @@
     "o:id": 280,
     "Titre": "Banikoara",
     "Type": "Lieux",
-    "frequency": 11,
+    "frequency": 13,
     "first_occurrence": "1976-04-15",
     "last_occurrence": "2023-05-19",
     "countries": "Benin"
@@ -111,7 +111,7 @@
     "o:id": 281,
     "Titre": "Bassila",
     "Type": "Lieux",
-    "frequency": 12,
+    "frequency": 14,
     "first_occurrence": "1998-06-05",
     "last_occurrence": "2023-10-22",
     "countries": "Benin | Togo"
@@ -129,7 +129,7 @@
     "o:id": 283,
     "Titre": "Bénin",
     "Type": "Lieux",
-    "frequency": 1821,
+    "frequency": 1832,
     "first_occurrence": "1970-02-06",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -156,7 +156,7 @@
     "o:id": 286,
     "Titre": "Bohicon",
     "Type": "Lieux",
-    "frequency": 101,
+    "frequency": 103,
     "first_occurrence": "1977-11-02",
     "last_occurrence": "2024-09-16",
     "countries": "Benin"
@@ -228,7 +228,7 @@
     "o:id": 298,
     "Titre": "Côte d'Ivoire",
     "Type": "Lieux",
-    "frequency": 2619,
+    "frequency": 2704,
     "first_occurrence": "1968-12-28",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -237,7 +237,7 @@
     "o:id": 299,
     "Titre": "Cotonou",
     "Type": "Lieux",
-    "frequency": 833,
+    "frequency": 840,
     "first_occurrence": "1970-01-30",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -282,7 +282,7 @@
     "o:id": 304,
     "Titre": "Djibo",
     "Type": "Lieux",
-    "frequency": 158,
+    "frequency": 160,
     "first_occurrence": "1982-04-27",
     "last_occurrence": "2024-09-24",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -291,7 +291,7 @@
     "o:id": 305,
     "Titre": "Djougou",
     "Type": "Lieux",
-    "frequency": 135,
+    "frequency": 137,
     "first_occurrence": "1975-07-11",
     "last_occurrence": "2023-11-13",
     "countries": "Benin | Togo"
@@ -318,7 +318,7 @@
     "o:id": 308,
     "Titre": "Égypte",
     "Type": "Lieux",
-    "frequency": 245,
+    "frequency": 250,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2024-08-14",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -336,7 +336,7 @@
     "o:id": 310,
     "Titre": "États-Unis",
     "Type": "Lieux",
-    "frequency": 223,
+    "frequency": 227,
     "first_occurrence": "1970-10-15",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -354,7 +354,7 @@
     "o:id": 312,
     "Titre": "France",
     "Type": "Lieux",
-    "frequency": 403,
+    "frequency": 419,
     "first_occurrence": "1961-04-16",
     "last_occurrence": "2024-11-01",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -372,7 +372,7 @@
     "o:id": 319,
     "Titre": "Ghana",
     "Type": "Lieux",
-    "frequency": 304,
+    "frequency": 311,
     "first_occurrence": "1964-04-26",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -399,7 +399,7 @@
     "o:id": 322,
     "Titre": "Grand Popo",
     "Type": "Lieux",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "1996-09-06",
     "last_occurrence": "2022-10-03",
     "countries": "Benin"
@@ -453,7 +453,7 @@
     "o:id": 328,
     "Titre": "Guinée",
     "Type": "Lieux",
-    "frequency": 199,
+    "frequency": 208,
     "first_occurrence": "1970-09-29",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -471,7 +471,7 @@
     "o:id": 330,
     "Titre": "Irak",
     "Type": "Lieux",
-    "frequency": 104,
+    "frequency": 105,
     "first_occurrence": "1978-12-09",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -480,7 +480,7 @@
     "o:id": 331,
     "Titre": "Iran",
     "Type": "Lieux",
-    "frequency": 194,
+    "frequency": 196,
     "first_occurrence": "1970-07-02",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -489,7 +489,7 @@
     "o:id": 332,
     "Titre": "Japon",
     "Type": "Lieux",
-    "frequency": 27,
+    "frequency": 28,
     "first_occurrence": "1991-08-28",
     "last_occurrence": "2024-10-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -498,7 +498,7 @@
     "o:id": 333,
     "Titre": "Kandi",
     "Type": "Lieux",
-    "frequency": 72,
+    "frequency": 74,
     "first_occurrence": "2009-07-16",
     "last_occurrence": "2023-03-29",
     "countries": "Benin"
@@ -534,7 +534,7 @@
     "o:id": 337,
     "Titre": "Kérou",
     "Type": "Lieux",
-    "frequency": 3,
+    "frequency": 4,
     "first_occurrence": "1983-11-22",
     "last_occurrence": "2023-06-07",
     "countries": "Benin"
@@ -579,7 +579,7 @@
     "o:id": 347,
     "Titre": "Kouandé",
     "Type": "Lieux",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "1976-08-11",
     "last_occurrence": "2022-11-17",
     "countries": "Benin"
@@ -615,7 +615,7 @@
     "o:id": 351,
     "Titre": "Koweït",
     "Type": "Lieux",
-    "frequency": 294,
+    "frequency": 293,
     "first_occurrence": "1973-12-04",
     "last_occurrence": "2023-07-14",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -642,7 +642,7 @@
     "o:id": 354,
     "Titre": "Libye",
     "Type": "Lieux",
-    "frequency": 399,
+    "frequency": 400,
     "first_occurrence": "1970-07-02",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -660,7 +660,7 @@
     "o:id": 356,
     "Titre": "Malanville",
     "Type": "Lieux",
-    "frequency": 55,
+    "frequency": 58,
     "first_occurrence": "1983-11-22",
     "last_occurrence": "2023-03-15",
     "countries": "Benin"
@@ -669,7 +669,7 @@
     "o:id": 357,
     "Titre": "Mali",
     "Type": "Lieux",
-    "frequency": 676,
+    "frequency": 687,
     "first_occurrence": "1964-04-26",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -678,7 +678,7 @@
     "o:id": 359,
     "Titre": "Maroc",
     "Type": "Lieux",
-    "frequency": 223,
+    "frequency": 236,
     "first_occurrence": "1973-01-23",
     "last_occurrence": "2024-09-30",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -732,7 +732,7 @@
     "o:id": 370,
     "Titre": "Natitingou",
     "Type": "Lieux",
-    "frequency": 115,
+    "frequency": 116,
     "first_occurrence": "1974-11-18",
     "last_occurrence": "2024-04-11",
     "countries": "Benin"
@@ -741,7 +741,7 @@
     "o:id": 371,
     "Titre": "N'Dali",
     "Type": "Lieux",
-    "frequency": 8,
+    "frequency": 9,
     "first_occurrence": "2000-03-09",
     "last_occurrence": "2022-05-02",
     "countries": "Benin"
@@ -750,7 +750,7 @@
     "o:id": 372,
     "Titre": "Nikki",
     "Type": "Lieux",
-    "frequency": 33,
+    "frequency": 34,
     "first_occurrence": "1983-11-22",
     "last_occurrence": "2024-04-11",
     "countries": "Benin"
@@ -768,7 +768,7 @@
     "o:id": 374,
     "Titre": "Orodara",
     "Type": "Lieux",
-    "frequency": 33,
+    "frequency": 34,
     "first_occurrence": "1966-01-16",
     "last_occurrence": "2020-08-02",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -786,7 +786,7 @@
     "o:id": 376,
     "Titre": "Ouagadougou",
     "Type": "Lieux",
-    "frequency": 2089,
+    "frequency": 2090,
     "first_occurrence": "1962-03-11",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -813,7 +813,7 @@
     "o:id": 379,
     "Titre": "Parakou",
     "Type": "Lieux",
-    "frequency": 256,
+    "frequency": 263,
     "first_occurrence": "1970-01-30",
     "last_occurrence": "2024-04-11",
     "countries": "Benin"
@@ -867,7 +867,7 @@
     "o:id": 385,
     "Titre": "Porto-Novo",
     "Type": "Lieux",
-    "frequency": 384,
+    "frequency": 389,
     "first_occurrence": "1970-02-17",
     "last_occurrence": "2025-04-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -885,7 +885,7 @@
     "o:id": 387,
     "Titre": "Ramatoulaye",
     "Type": "Lieux",
-    "frequency": 110,
+    "frequency": 111,
     "first_occurrence": "1972-05-06",
     "last_occurrence": "2021-04-11",
     "countries": "Burkina Faso"
@@ -930,7 +930,7 @@
     "o:id": 392,
     "Titre": "Savalou",
     "Type": "Lieux",
-    "frequency": 15,
+    "frequency": 17,
     "first_occurrence": "1985-03-21",
     "last_occurrence": "2022-04-08",
     "countries": "Benin"
@@ -939,7 +939,7 @@
     "o:id": 393,
     "Titre": "Savé",
     "Type": "Lieux",
-    "frequency": 22,
+    "frequency": 24,
     "first_occurrence": "1978-06-27",
     "last_occurrence": "2024-03-29",
     "countries": "Benin"
@@ -957,7 +957,7 @@
     "o:id": 395,
     "Titre": "Sénégal",
     "Type": "Lieux",
-    "frequency": 385,
+    "frequency": 395,
     "first_occurrence": "1969-11-19",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -984,7 +984,7 @@
     "o:id": 398,
     "Titre": "Tanguiéta",
     "Type": "Lieux",
-    "frequency": 23,
+    "frequency": 24,
     "first_occurrence": "1996-03-04",
     "last_occurrence": "2023-03-15",
     "countries": "Benin"
@@ -993,7 +993,7 @@
     "o:id": 399,
     "Titre": "Tchaourou",
     "Type": "Lieux",
-    "frequency": 11,
+    "frequency": 12,
     "first_occurrence": "2011-05-30",
     "last_occurrence": "2024-03-29",
     "countries": "Benin"
@@ -1020,7 +1020,7 @@
     "o:id": 403,
     "Titre": "Tripoli",
     "Type": "Lieux",
-    "frequency": 91,
+    "frequency": 94,
     "first_occurrence": "1972-02-26",
     "last_occurrence": "2024-04-04",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -1074,7 +1074,7 @@
     "o:id": 409,
     "Titre": "Somalie",
     "Type": "Lieux",
-    "frequency": 40,
+    "frequency": 41,
     "first_occurrence": "1973-01-23",
     "last_occurrence": "2023-07-26",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1083,7 +1083,7 @@
     "o:id": 410,
     "Titre": "Tchad",
     "Type": "Lieux",
-    "frequency": 206,
+    "frequency": 207,
     "first_occurrence": "1971-10-05",
     "last_occurrence": "2024-09-30",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1110,7 +1110,7 @@
     "o:id": 413,
     "Titre": "Tunisie",
     "Type": "Lieux",
-    "frequency": 86,
+    "frequency": 89,
     "first_occurrence": "1967-04-08",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1140,7 +1140,7 @@
     "frequency": 11,
     "first_occurrence": "2014-01-01",
     "last_occurrence": "2016-08-30",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 425,
@@ -1164,7 +1164,7 @@
     "o:id": 427,
     "Titre": "Royaume-Uni",
     "Type": "Lieux",
-    "frequency": 25,
+    "frequency": 26,
     "first_occurrence": "1972-03-11",
     "last_occurrence": "2023-10-18",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1182,7 +1182,7 @@
     "o:id": 429,
     "Titre": "Suisse",
     "Type": "Lieux",
-    "frequency": 34,
+    "frequency": 37,
     "first_occurrence": "1982-05-14",
     "last_occurrence": "2023-11-03",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1191,7 +1191,7 @@
     "o:id": 430,
     "Titre": "Canada",
     "Type": "Lieux",
-    "frequency": 30,
+    "frequency": 31,
     "first_occurrence": "1979-09-05",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1200,7 +1200,7 @@
     "o:id": 431,
     "Titre": "République démocratique du Congo",
     "Type": "Lieux",
-    "frequency": 32,
+    "frequency": 34,
     "first_occurrence": "1973-10-31",
     "last_occurrence": "2024-07-29",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1290,7 +1290,7 @@
     "o:id": 441,
     "Titre": "Grand-Bassam",
     "Type": "Lieux",
-    "frequency": 93,
+    "frequency": 100,
     "first_occurrence": "1975-10-02",
     "last_occurrence": "2024-04-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -1308,7 +1308,7 @@
     "o:id": 443,
     "Titre": "Médine",
     "Type": "Lieux",
-    "frequency": 558,
+    "frequency": 570,
     "first_occurrence": "1970-01-31",
     "last_occurrence": "2025-02-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1326,10 +1326,10 @@
     "o:id": 452,
     "Titre": "Université d'Abomey-Calavi",
     "Type": "Lieux",
-    "frequency": 47,
+    "frequency": 48,
     "first_occurrence": "1976-04-15",
     "last_occurrence": "2023-11-03",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 453,
@@ -1344,7 +1344,7 @@
     "o:id": 454,
     "Titre": "Jordanie",
     "Type": "Lieux",
-    "frequency": 32,
+    "frequency": 33,
     "first_occurrence": "1985-05-30",
     "last_occurrence": "2024-06-20",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -1362,7 +1362,7 @@
     "o:id": 456,
     "Titre": "Paris",
     "Type": "Lieux",
-    "frequency": 151,
+    "frequency": 160,
     "first_occurrence": "1961-04-16",
     "last_occurrence": "2024-11-01",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1632,7 +1632,7 @@
     "o:id": 489,
     "Titre": "La Mecque",
     "Type": "Lieux",
-    "frequency": 1589,
+    "frequency": 1614,
     "first_occurrence": "1970-01-26",
     "last_occurrence": "2025-02-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1641,7 +1641,7 @@
     "o:id": 490,
     "Titre": "Niamey",
     "Type": "Lieux",
-    "frequency": 598,
+    "frequency": 599,
     "first_occurrence": "1961-04-16",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -1992,7 +1992,7 @@
     "o:id": 531,
     "Titre": "Riyad",
     "Type": "Lieux",
-    "frequency": 112,
+    "frequency": 113,
     "first_occurrence": "1973-05-12",
     "last_occurrence": "2024-07-29",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2064,7 +2064,7 @@
     "o:id": 539,
     "Titre": "Mauritanie",
     "Type": "Lieux",
-    "frequency": 160,
+    "frequency": 161,
     "first_occurrence": "1969-11-19",
     "last_occurrence": "2024-09-02",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2073,7 +2073,7 @@
     "o:id": 540,
     "Titre": "Niger",
     "Type": "Lieux",
-    "frequency": 1289,
+    "frequency": 1297,
     "first_occurrence": "1968-12-28",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2082,7 +2082,7 @@
     "o:id": 541,
     "Titre": "Nigéria",
     "Type": "Lieux",
-    "frequency": 356,
+    "frequency": 359,
     "first_occurrence": "1969-11-19",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2091,7 +2091,7 @@
     "o:id": 542,
     "Titre": "Qatar",
     "Type": "Lieux",
-    "frequency": 85,
+    "frequency": 87,
     "first_occurrence": "1981-08-21",
     "last_occurrence": "2024-11-01",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2100,7 +2100,7 @@
     "o:id": 543,
     "Titre": "Syrie",
     "Type": "Lieux",
-    "frequency": 71,
+    "frequency": 72,
     "first_occurrence": "1971-12-27",
     "last_occurrence": "2024-03-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2109,7 +2109,7 @@
     "o:id": 544,
     "Titre": "Togo",
     "Type": "Lieux",
-    "frequency": 1293,
+    "frequency": 1301,
     "first_occurrence": "1963-10-07",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2127,7 +2127,7 @@
     "o:id": 546,
     "Titre": "Burkina Faso",
     "Type": "Lieux",
-    "frequency": 2186,
+    "frequency": 2191,
     "first_occurrence": "1961-04-16",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2136,7 +2136,7 @@
     "o:id": 547,
     "Titre": "Cameroun",
     "Type": "Lieux",
-    "frequency": 88,
+    "frequency": 91,
     "first_occurrence": "1973-01-23",
     "last_occurrence": "2024-09-02",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2145,7 +2145,7 @@
     "o:id": 548,
     "Titre": "Gabon",
     "Type": "Lieux",
-    "frequency": 62,
+    "frequency": 65,
     "first_occurrence": "1973-02-02",
     "last_occurrence": "2024-04-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2154,7 +2154,7 @@
     "o:id": 549,
     "Titre": "Inde",
     "Type": "Lieux",
-    "frequency": 78,
+    "frequency": 79,
     "first_occurrence": "1971-11-27",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2163,7 +2163,7 @@
     "o:id": 550,
     "Titre": "Pakistan",
     "Type": "Lieux",
-    "frequency": 102,
+    "frequency": 104,
     "first_occurrence": "1970-10-09",
     "last_occurrence": "2024-09-18",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2190,7 +2190,7 @@
     "o:id": 553,
     "Titre": "Pays-Bas",
     "Type": "Lieux",
-    "frequency": 12,
+    "frequency": 13,
     "first_occurrence": "1977-04-15",
     "last_occurrence": "2022-12-21",
     "countries": "Benin | Burkina Faso | Niger | Togo"
@@ -2199,7 +2199,7 @@
     "o:id": 554,
     "Titre": "Italie",
     "Type": "Lieux",
-    "frequency": 49,
+    "frequency": 50,
     "first_occurrence": "1971-12-27",
     "last_occurrence": "2024-10-25",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2208,7 +2208,7 @@
     "o:id": 555,
     "Titre": "Afrique du Sud",
     "Type": "Lieux",
-    "frequency": 58,
+    "frequency": 59,
     "first_occurrence": "1967-01-14",
     "last_occurrence": "2023-08-25",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2226,7 +2226,7 @@
     "o:id": 557,
     "Titre": "Suède",
     "Type": "Lieux",
-    "frequency": 13,
+    "frequency": 14,
     "first_occurrence": "1978-11-23",
     "last_occurrence": "2023-08-02",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2235,9 +2235,9 @@
     "o:id": 558,
     "Titre": "Université Félix Houphouët-Boigny",
     "Type": "Lieux",
-    "frequency": 31,
+    "frequency": 33,
     "first_occurrence": "1976-03-22",
-    "last_occurrence": "2015-01-01",
+    "last_occurrence": "2015-08-26",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -2253,9 +2253,9 @@
     "o:id": 560,
     "Titre": "Université Alassane Ouattara",
     "Type": "Lieux",
-    "frequency": 1,
+    "frequency": 2,
     "first_occurrence": "2011-08-03",
-    "last_occurrence": "2011-08-03",
+    "last_occurrence": "2019-06-10",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -2370,7 +2370,7 @@
     "o:id": 13448,
     "Titre": "Le Caire",
     "Type": "Lieux",
-    "frequency": 77,
+    "frequency": 81,
     "first_occurrence": "1970-10-09",
     "last_occurrence": "2024-07-01",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2379,7 +2379,7 @@
     "o:id": 13522,
     "Titre": "Jérusalem",
     "Type": "Lieux",
-    "frequency": 40,
+    "frequency": 42,
     "first_occurrence": "1970-02-28",
     "last_occurrence": "2024-07-30",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2451,7 +2451,7 @@
     "o:id": 13955,
     "Titre": "République centrafricaine",
     "Type": "Lieux",
-    "frequency": 33,
+    "frequency": 34,
     "first_occurrence": "1973-02-23",
     "last_occurrence": "2024-09-25",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2460,7 +2460,7 @@
     "o:id": 14216,
     "Titre": "Portugal",
     "Type": "Lieux",
-    "frequency": 6,
+    "frequency": 7,
     "first_occurrence": "1972-03-11",
     "last_occurrence": "2025-03-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -2478,7 +2478,7 @@
     "o:id": 14293,
     "Titre": "Ouémé",
     "Type": "Lieux",
-    "frequency": 93,
+    "frequency": 94,
     "first_occurrence": "1971-02-08",
     "last_occurrence": "2025-03-28",
     "countries": "Benin"
@@ -2523,7 +2523,7 @@
     "o:id": 14522,
     "Titre": "Mina",
     "Type": "Lieux",
-    "frequency": 72,
+    "frequency": 77,
     "first_occurrence": "1973-01-23",
     "last_occurrence": "2017-08-24",
     "countries": "Benin | Côte d'Ivoire"
@@ -2541,7 +2541,7 @@
     "o:id": 14637,
     "Titre": "Rwanda",
     "Type": "Lieux",
-    "frequency": 46,
+    "frequency": 47,
     "first_occurrence": "1976-04-15",
     "last_occurrence": "2024-01-18",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2550,7 +2550,7 @@
     "o:id": 14751,
     "Titre": "Akpakpa",
     "Type": "Lieux",
-    "frequency": 68,
+    "frequency": 69,
     "first_occurrence": "1974-01-07",
     "last_occurrence": "2023-04-24",
     "countries": "Benin"
@@ -2613,7 +2613,7 @@
     "o:id": 15273,
     "Titre": "Liberia",
     "Type": "Lieux",
-    "frequency": 54,
+    "frequency": 57,
     "first_occurrence": "1973-06-15",
     "last_occurrence": "2024-02-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2622,9 +2622,9 @@
     "o:id": 15378,
     "Titre": "Zimbabwe",
     "Type": "Lieux",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "1972-03-11",
-    "last_occurrence": "2005-01-18",
+    "last_occurrence": null,
     "countries": "Benin | Burkina Faso"
   },
   {
@@ -2658,16 +2658,16 @@
     "o:id": 23465,
     "Titre": "Korhogo",
     "Type": "Lieux",
-    "frequency": 118,
+    "frequency": 124,
     "first_occurrence": "1970-01-20",
     "last_occurrence": "2024-04-09",
-    "countries": "Côte d'Ivoire"
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 23506,
     "Titre": "Université Islamique Al-Fourqane",
     "Type": "Lieux",
-    "frequency": 12,
+    "frequency": 13,
     "first_occurrence": "2009-08-12",
     "last_occurrence": "2020-03-04",
     "countries": "Côte d'Ivoire"
@@ -2685,9 +2685,9 @@
     "o:id": 23532,
     "Titre": "Mosquée Salam du Plateau",
     "Type": "Lieux",
-    "frequency": 138,
+    "frequency": 141,
     "first_occurrence": "1991-11-01",
-    "last_occurrence": "2019-12-04",
+    "last_occurrence": "2020-12-23",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -2739,7 +2739,7 @@
     "o:id": 23632,
     "Titre": "Bingerville",
     "Type": "Lieux",
-    "frequency": 68,
+    "frequency": 70,
     "first_occurrence": "1977-01-22",
     "last_occurrence": "2023-11-20",
     "countries": "Côte d'Ivoire | Niger"
@@ -2757,7 +2757,7 @@
     "o:id": 23648,
     "Titre": "Mosquée de la Riviéra Golf",
     "Type": "Lieux",
-    "frequency": 366,
+    "frequency": 388,
     "first_occurrence": "1987-05-09",
     "last_occurrence": "2024-06-18",
     "countries": "Côte d'Ivoire"
@@ -2775,7 +2775,7 @@
     "o:id": 23691,
     "Titre": "Abobo",
     "Type": "Lieux",
-    "frequency": 293,
+    "frequency": 304,
     "first_occurrence": "1973-10-19",
     "last_occurrence": "2024-04-09",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -2793,7 +2793,7 @@
     "o:id": 25155,
     "Titre": "Russie",
     "Type": "Lieux",
-    "frequency": 33,
+    "frequency": 34,
     "first_occurrence": "1987-02-02",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2802,7 +2802,7 @@
     "o:id": 25602,
     "Titre": "Gambie",
     "Type": "Lieux",
-    "frequency": 64,
+    "frequency": 66,
     "first_occurrence": "1979-01-13",
     "last_occurrence": "2024-09-02",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -2829,9 +2829,9 @@
     "o:id": 27900,
     "Titre": "Angola",
     "Type": "Lieux",
-    "frequency": 19,
+    "frequency": 21,
     "first_occurrence": "1967-01-14",
-    "last_occurrence": "2017-09-20",
+    "last_occurrence": null,
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
@@ -2955,7 +2955,7 @@
     "o:id": 46170,
     "Titre": "Daloa",
     "Type": "Lieux",
-    "frequency": 114,
+    "frequency": 119,
     "first_occurrence": "1971-11-25",
     "last_occurrence": "2024-06-15",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -2964,7 +2964,7 @@
     "o:id": 46175,
     "Titre": "Attécoubé",
     "Type": "Lieux",
-    "frequency": 78,
+    "frequency": 82,
     "first_occurrence": "1982-07-19",
     "last_occurrence": "2024-03-25",
     "countries": "Côte d'Ivoire"
@@ -2973,7 +2973,7 @@
     "o:id": 46181,
     "Titre": "Duékoué",
     "Type": "Lieux",
-    "frequency": 14,
+    "frequency": 16,
     "first_occurrence": "1973-06-06",
     "last_occurrence": "2017-08-27",
     "countries": "Côte d'Ivoire"
@@ -2982,7 +2982,7 @@
     "o:id": 46196,
     "Titre": "Man",
     "Type": "Lieux",
-    "frequency": 76,
+    "frequency": 77,
     "first_occurrence": "1970-02-21",
     "last_occurrence": "2024-04-09",
     "countries": "Côte d'Ivoire | Niger"
@@ -3000,7 +3000,7 @@
     "o:id": 46216,
     "Titre": "Bondoukou",
     "Type": "Lieux",
-    "frequency": 88,
+    "frequency": 92,
     "first_occurrence": "1970-02-25",
     "last_occurrence": "2024-03-20",
     "countries": "Côte d'Ivoire"
@@ -3009,7 +3009,7 @@
     "o:id": 46218,
     "Titre": "Agboville",
     "Type": "Lieux",
-    "frequency": 52,
+    "frequency": 54,
     "first_occurrence": "1970-02-21",
     "last_occurrence": "2024-03-25",
     "countries": "Côte d'Ivoire"
@@ -3018,7 +3018,7 @@
     "o:id": 46238,
     "Titre": "Bouaké",
     "Type": "Lieux",
-    "frequency": 319,
+    "frequency": 329,
     "first_occurrence": "1970-02-16",
     "last_occurrence": "2024-04-03",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -3027,16 +3027,16 @@
     "o:id": 46245,
     "Titre": "Adzopé",
     "Type": "Lieux",
-    "frequency": 49,
+    "frequency": 51,
     "first_occurrence": "1974-04-25",
-    "last_occurrence": "2017-06-13",
+    "last_occurrence": "2019-03-30",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 46248,
     "Titre": "Yamoussoukro",
     "Type": "Lieux",
-    "frequency": 277,
+    "frequency": 283,
     "first_occurrence": "1970-12-22",
     "last_occurrence": "2023-09-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
@@ -3045,7 +3045,7 @@
     "o:id": 46256,
     "Titre": "Treichville",
     "Type": "Lieux",
-    "frequency": 423,
+    "frequency": 436,
     "first_occurrence": "1970-02-18",
     "last_occurrence": "2024-04-09",
     "countries": "Côte d'Ivoire"
@@ -3054,7 +3054,7 @@
     "o:id": 46263,
     "Titre": "Daoukro",
     "Type": "Lieux",
-    "frequency": 27,
+    "frequency": 29,
     "first_occurrence": "1981-04-11",
     "last_occurrence": "2017-10-30",
     "countries": "Côte d'Ivoire"
@@ -3063,7 +3063,7 @@
     "o:id": 46271,
     "Titre": "Gagnoa",
     "Type": "Lieux",
-    "frequency": 79,
+    "frequency": 82,
     "first_occurrence": "1973-10-15",
     "last_occurrence": "2019-06-05",
     "countries": "Côte d'Ivoire"
@@ -3072,16 +3072,16 @@
     "o:id": 46279,
     "Titre": "Bouaflé",
     "Type": "Lieux",
-    "frequency": 32,
+    "frequency": 33,
     "first_occurrence": "1972-02-05",
-    "last_occurrence": "2007-11-24",
+    "last_occurrence": "2019-02-14",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 46294,
     "Titre": "Yopougon",
     "Type": "Lieux",
-    "frequency": 333,
+    "frequency": 339,
     "first_occurrence": "1971-01-05",
     "last_occurrence": "2024-04-09",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -3090,7 +3090,7 @@
     "o:id": 46298,
     "Titre": "Béoumi",
     "Type": "Lieux",
-    "frequency": 8,
+    "frequency": 9,
     "first_occurrence": "1977-12-23",
     "last_occurrence": "2019-06-18",
     "countries": "Côte d'Ivoire"
@@ -3099,34 +3099,34 @@
     "o:id": 46311,
     "Titre": "Abengourou",
     "Type": "Lieux",
-    "frequency": 65,
+    "frequency": 66,
     "first_occurrence": "1970-02-21",
-    "last_occurrence": "2017-09-14",
+    "last_occurrence": "2019-05-05",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 46316,
     "Titre": "Adjamé",
     "Type": "Lieux",
-    "frequency": 323,
+    "frequency": 326,
     "first_occurrence": "1970-02-18",
-    "last_occurrence": "2017-10-30",
+    "last_occurrence": "2020-05-20",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 46770,
     "Titre": "Aboisso",
     "Type": "Lieux",
-    "frequency": 25,
+    "frequency": 26,
     "first_occurrence": "1976-03-17",
-    "last_occurrence": "2017-11-18",
+    "last_occurrence": "2018-06-10",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 48419,
     "Titre": "Koumassi",
     "Type": "Lieux",
-    "frequency": 132,
+    "frequency": 134,
     "first_occurrence": "1974-09-20",
     "last_occurrence": "2024-04-09",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -3135,7 +3135,7 @@
     "o:id": 48425,
     "Titre": "Divo",
     "Type": "Lieux",
-    "frequency": 35,
+    "frequency": 37,
     "first_occurrence": "1975-04-11",
     "last_occurrence": "2017-12-16",
     "countries": "Côte d'Ivoire"
@@ -3144,7 +3144,7 @@
     "o:id": 48426,
     "Titre": "Lakota",
     "Type": "Lieux",
-    "frequency": 21,
+    "frequency": 22,
     "first_occurrence": "1970-02-21",
     "last_occurrence": "2017-12-16",
     "countries": "Côte d'Ivoire"
@@ -3153,10 +3153,10 @@
     "o:id": 48427,
     "Titre": "Odienné",
     "Type": "Lieux",
-    "frequency": 103,
+    "frequency": 110,
     "first_occurrence": "1970-09-29",
     "last_occurrence": "2024-04-09",
-    "countries": "Côte d'Ivoire"
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 60088,
@@ -3198,7 +3198,7 @@
     "o:id": 60457,
     "Titre": "Afghanistan",
     "Type": "Lieux",
-    "frequency": 49,
+    "frequency": 50,
     "first_occurrence": "1981-01-17",
     "last_occurrence": "2023-07-26",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3297,7 +3297,7 @@
     "o:id": 60469,
     "Titre": "Mont Arafat",
     "Type": "Lieux",
-    "frequency": 225,
+    "frequency": 233,
     "first_occurrence": "1970-01-31",
     "last_occurrence": "2025-02-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3414,7 +3414,7 @@
     "o:id": 60482,
     "Titre": "Borgou",
     "Type": "Lieux",
-    "frequency": 71,
+    "frequency": 72,
     "first_occurrence": "1975-07-17",
     "last_occurrence": "2024-04-11",
     "countries": "Benin | Togo"
@@ -3423,7 +3423,7 @@
     "o:id": 60483,
     "Titre": "Cisjordanie",
     "Type": "Lieux",
-    "frequency": 3,
+    "frequency": 4,
     "first_occurrence": "1987-02-02",
     "last_occurrence": "2023-07-26",
     "countries": "Benin | Côte d'Ivoire | Togo"
@@ -3558,16 +3558,16 @@
     "o:id": 60498,
     "Titre": "Bande de Gaza",
     "Type": "Lieux",
-    "frequency": 8,
+    "frequency": 9,
     "first_occurrence": "2009-01-12",
     "last_occurrence": "2024-10-04",
-    "countries": "Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 60499,
     "Titre": "Guinée-Bissau",
     "Type": "Lieux",
-    "frequency": 29,
+    "frequency": 31,
     "first_occurrence": "1972-03-11",
     "last_occurrence": "2024-02-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3783,7 +3783,7 @@
     "o:id": 60523,
     "Titre": "Londres",
     "Type": "Lieux",
-    "frequency": 59,
+    "frequency": 60,
     "first_occurrence": "1980-07-19",
     "last_occurrence": "2024-10-04",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3855,7 +3855,7 @@
     "o:id": 60531,
     "Titre": "Notsé",
     "Type": "Lieux",
-    "frequency": 32,
+    "frequency": 31,
     "first_occurrence": "1986-10-24",
     "last_occurrence": "2024-01-08",
     "countries": "Togo"
@@ -3891,7 +3891,7 @@
     "o:id": 60535,
     "Titre": "Ouganda",
     "Type": "Lieux",
-    "frequency": 26,
+    "frequency": 27,
     "first_occurrence": "1969-11-19",
     "last_occurrence": "2023-02-07",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3918,7 +3918,7 @@
     "o:id": 60538,
     "Titre": "Rabat",
     "Type": "Lieux",
-    "frequency": 43,
+    "frequency": 46,
     "first_occurrence": "1972-01-22",
     "last_occurrence": "2024-05-27",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3927,7 +3927,7 @@
     "o:id": 60539,
     "Titre": "Rome",
     "Type": "Lieux",
-    "frequency": 45,
+    "frequency": 46,
     "first_occurrence": "1971-10-11",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -3963,7 +3963,7 @@
     "o:id": 60543,
     "Titre": "Sierra Leone",
     "Type": "Lieux",
-    "frequency": 58,
+    "frequency": 60,
     "first_occurrence": "1973-06-15",
     "last_occurrence": "2024-06-24",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -4089,7 +4089,7 @@
     "o:id": 60557,
     "Titre": "Kenya",
     "Type": "Lieux",
-    "frequency": 19,
+    "frequency": 20,
     "first_occurrence": "1969-11-19",
     "last_occurrence": "2024-07-29",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -4278,7 +4278,7 @@
     "o:id": 61326,
     "Titre": "San-Pédro",
     "Type": "Lieux",
-    "frequency": 42,
+    "frequency": 46,
     "first_occurrence": "1973-02-02",
     "last_occurrence": "2018-08-08",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -4305,7 +4305,7 @@
     "o:id": 62018,
     "Titre": "Alibori",
     "Type": "Lieux",
-    "frequency": 59,
+    "frequency": 62,
     "first_occurrence": "2001-09-17",
     "last_occurrence": "2023-11-03",
     "countries": "Benin"
@@ -4323,7 +4323,7 @@
     "o:id": 62020,
     "Titre": "Bamako",
     "Type": "Lieux",
-    "frequency": 70,
+    "frequency": 71,
     "first_occurrence": "1976-10-18",
     "last_occurrence": "2024-09-02",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -4431,16 +4431,16 @@
     "o:id": 62240,
     "Titre": "Palais des Sports de Treichville",
     "Type": "Lieux",
-    "frequency": 34,
+    "frequency": 39,
     "first_occurrence": "1992-03-30",
-    "last_occurrence": "2017-10-13",
+    "last_occurrence": "2021-02-21",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 63374,
     "Titre": "Benghazi",
     "Type": "Lieux",
-    "frequency": 23,
+    "frequency": 24,
     "first_occurrence": "1977-01-25",
     "last_occurrence": "2013-02-25",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -4485,7 +4485,7 @@
     "o:id": 63379,
     "Titre": "Port-Bouët",
     "Type": "Lieux",
-    "frequency": 182,
+    "frequency": 188,
     "first_occurrence": "1970-01-26",
     "last_occurrence": "2024-04-09",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -4503,25 +4503,25 @@
     "o:id": 63382,
     "Titre": "Touba",
     "Type": "Lieux",
-    "frequency": 42,
+    "frequency": 43,
     "first_occurrence": "1970-09-29",
-    "last_occurrence": "2017-06-21",
+    "last_occurrence": "2021-01-12",
     "countries": "Côte d'Ivoire | Togo"
   },
   {
     "o:id": 63383,
     "Titre": "Aghien",
     "Type": "Lieux",
-    "frequency": 71,
+    "frequency": 74,
     "first_occurrence": "1992-04-06",
-    "last_occurrence": "2017-06-27",
+    "last_occurrence": "2020-05-18",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 63384,
     "Titre": "Riviera Golf",
     "Type": "Lieux",
-    "frequency": 112,
+    "frequency": 130,
     "first_occurrence": "1982-06-23",
     "last_occurrence": "2024-06-18",
     "countries": "Côte d'Ivoire"
@@ -4539,7 +4539,7 @@
     "o:id": 63386,
     "Titre": "Abidjan-Plateau",
     "Type": "Lieux",
-    "frequency": 159,
+    "frequency": 160,
     "first_occurrence": "1971-11-22",
     "last_occurrence": "2024-04-01",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
@@ -4584,7 +4584,7 @@
     "o:id": 63391,
     "Titre": "Anyama",
     "Type": "Lieux",
-    "frequency": 51,
+    "frequency": 53,
     "first_occurrence": "1983-08-26",
     "last_occurrence": "2024-04-09",
     "countries": "Côte d'Ivoire"
@@ -4602,19 +4602,19 @@
     "o:id": 63393,
     "Titre": "Bagdad",
     "Type": "Lieux",
-    "frequency": 12,
+    "frequency": 13,
     "first_occurrence": "1979-07-27",
     "last_occurrence": "2024-07-01",
-    "countries": "Burkina Faso | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 63394,
     "Titre": "Bangladesh",
     "Type": "Lieux",
-    "frequency": 7,
+    "frequency": 8,
     "first_occurrence": "1981-10-12",
     "last_occurrence": "2020-11-27",
-    "countries": "Burkina Faso | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 63395,
@@ -4683,7 +4683,7 @@
     "o:id": 63402,
     "Titre": "Cocody",
     "Type": "Lieux",
-    "frequency": 223,
+    "frequency": 236,
     "first_occurrence": "1971-11-22",
     "last_occurrence": "2024-06-18",
     "countries": "Burkina Faso | Côte d'Ivoire | Niger"
@@ -4692,7 +4692,7 @@
     "o:id": 63403,
     "Titre": "Comoé",
     "Type": "Lieux",
-    "frequency": 23,
+    "frequency": 24,
     "first_occurrence": "1970-10-15",
     "last_occurrence": "2024-04-08",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -4755,7 +4755,7 @@
     "o:id": 63412,
     "Titre": "Kong",
     "Type": "Lieux",
-    "frequency": 33,
+    "frequency": 34,
     "first_occurrence": "1970-10-15",
     "last_occurrence": "2019-10-04",
     "countries": "Burkina Faso | Côte d'Ivoire | Niger | Togo"
@@ -4782,7 +4782,7 @@
     "o:id": 63416,
     "Titre": "Mankono",
     "Type": "Lieux",
-    "frequency": 17,
+    "frequency": 19,
     "first_occurrence": "1979-08-08",
     "last_occurrence": "2017-06-21",
     "countries": "Côte d'Ivoire"
@@ -4791,9 +4791,9 @@
     "o:id": 63417,
     "Titre": "Marcory",
     "Type": "Lieux",
-    "frequency": 79,
+    "frequency": 80,
     "first_occurrence": "1971-11-22",
-    "last_occurrence": "2017-10-13",
+    "last_occurrence": "2018-02-08",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -4872,7 +4872,7 @@
     "o:id": 63426,
     "Titre": "Samatiguila",
     "Type": "Lieux",
-    "frequency": 33,
+    "frequency": 35,
     "first_occurrence": "1979-11-07",
     "last_occurrence": "2015-01-06",
     "countries": "Côte d'Ivoire"
@@ -4926,9 +4926,9 @@
     "o:id": 63432,
     "Titre": "Séguéla",
     "Type": "Lieux",
-    "frequency": 46,
+    "frequency": 50,
     "first_occurrence": "1971-11-25",
-    "last_occurrence": "2017-06-28",
+    "last_occurrence": "2018-06-15",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5115,7 +5115,7 @@
     "o:id": 73295,
     "Titre": "Indonésie",
     "Type": "Lieux",
-    "frequency": 29,
+    "frequency": 30,
     "first_occurrence": "1982-09-11",
     "last_occurrence": "2024-06-20",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -5277,8 +5277,8 @@
     "o:id": 73458,
     "Titre": "Mosquée de Yopougon-Selmer",
     "Type": "Lieux",
-    "frequency": 1,
-    "first_occurrence": "2019-06-05",
+    "frequency": 2,
+    "first_occurrence": "2019-06-01",
     "last_occurrence": "2019-06-05",
     "countries": "Côte d'Ivoire"
   },
@@ -5385,7 +5385,7 @@
     "o:id": 76313,
     "Titre": "Kaaba",
     "Type": "Lieux",
-    "frequency": 123,
+    "frequency": 125,
     "first_occurrence": "1970-02-28",
     "last_occurrence": "2024-06-26",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -5511,7 +5511,7 @@
     "o:id": 76344,
     "Titre": "Atacora",
     "Type": "Lieux",
-    "frequency": 66,
+    "frequency": 67,
     "first_occurrence": "1975-07-17",
     "last_occurrence": "2024-04-11",
     "countries": "Benin"
@@ -5556,9 +5556,9 @@
     "o:id": 76443,
     "Titre": "Williamsville",
     "Type": "Lieux",
-    "frequency": 75,
+    "frequency": 80,
     "first_occurrence": "1977-10-14",
-    "last_occurrence": "2017-07-05",
+    "last_occurrence": "2020-11-28",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5583,7 +5583,7 @@
     "o:id": 76446,
     "Titre": "Aéroport International Félix Houphouët-Boigny",
     "Type": "Lieux",
-    "frequency": 63,
+    "frequency": 70,
     "first_occurrence": "1994-05-05",
     "last_occurrence": "2019-08-20",
     "countries": "Côte d'Ivoire"
@@ -5610,9 +5610,9 @@
     "o:id": 76449,
     "Titre": "Boundiali",
     "Type": "Lieux",
-    "frequency": 17,
+    "frequency": 19,
     "first_occurrence": "1971-01-05",
-    "last_occurrence": "2014-02-28",
+    "last_occurrence": "2016-08-17",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5666,7 +5666,7 @@
     "Type": "Lieux",
     "frequency": 16,
     "first_occurrence": "2000-10-21",
-    "last_occurrence": "2017-06-21",
+    "last_occurrence": "2017-11-30",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5709,18 +5709,18 @@
     "o:id": 76462,
     "Titre": "Maison d'Arrêt et de Correction d'Abidjan",
     "Type": "Lieux",
-    "frequency": 6,
+    "frequency": 7,
     "first_occurrence": "1995-02-28",
-    "last_occurrence": "2017-02-25",
+    "last_occurrence": "2018-07-13",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 76463,
     "Titre": "Fès",
     "Type": "Lieux",
-    "frequency": 11,
+    "frequency": 12,
     "first_occurrence": "1973-10-29",
-    "last_occurrence": "2017-12-16",
+    "last_occurrence": "2018-11-03",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5772,7 +5772,7 @@
     "o:id": 76469,
     "Titre": "Bouna",
     "Type": "Lieux",
-    "frequency": 19,
+    "frequency": 22,
     "first_occurrence": "1970-10-15",
     "last_occurrence": "2017-10-30",
     "countries": "Côte d'Ivoire"
@@ -5781,7 +5781,7 @@
     "o:id": 76470,
     "Titre": "Issia",
     "Type": "Lieux",
-    "frequency": 15,
+    "frequency": 16,
     "first_occurrence": "1979-10-04",
     "last_occurrence": "2017-05-22",
     "countries": "Côte d'Ivoire"
@@ -5799,9 +5799,9 @@
     "o:id": 76472,
     "Titre": "Katiola",
     "Type": "Lieux",
-    "frequency": 13,
+    "frequency": 16,
     "first_occurrence": "1970-10-15",
-    "last_occurrence": "2012-08-27",
+    "last_occurrence": "2019-02-14",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5817,18 +5817,18 @@
     "o:id": 76474,
     "Titre": "Kabadougou",
     "Type": "Lieux",
-    "frequency": 14,
+    "frequency": 16,
     "first_occurrence": "1983-07-15",
-    "last_occurrence": "2017-11-04",
+    "last_occurrence": "2021-01-12",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 76475,
     "Titre": "Soubré",
     "Type": "Lieux",
-    "frequency": 13,
+    "frequency": 16,
     "first_occurrence": "1981-04-11",
-    "last_occurrence": "2017-08-27",
+    "last_occurrence": "2018-06-10",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5853,9 +5853,9 @@
     "o:id": 76478,
     "Titre": "Dimbokro",
     "Type": "Lieux",
-    "frequency": 10,
+    "frequency": 11,
     "first_occurrence": "1974-03-12",
-    "last_occurrence": "2012-04-13",
+    "last_occurrence": "2018-06-10",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5889,16 +5889,16 @@
     "o:id": 76482,
     "Titre": "Tiébissou",
     "Type": "Lieux",
-    "frequency": 9,
+    "frequency": 11,
     "first_occurrence": "1981-04-11",
-    "last_occurrence": "2011-09-05",
+    "last_occurrence": "2014-04-13",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 76483,
     "Titre": "Gbêkê",
     "Type": "Lieux",
-    "frequency": 10,
+    "frequency": 12,
     "first_occurrence": "2011-02-17",
     "last_occurrence": "2017-12-08",
     "countries": "Côte d'Ivoire"
@@ -5907,9 +5907,9 @@
     "o:id": 76484,
     "Titre": "Danané",
     "Type": "Lieux",
-    "frequency": 8,
+    "frequency": 9,
     "first_occurrence": "1979-10-04",
-    "last_occurrence": "2017-03-13",
+    "last_occurrence": "2021-01-12",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -5970,9 +5970,9 @@
     "o:id": 76491,
     "Titre": "Bonon",
     "Type": "Lieux",
-    "frequency": 7,
+    "frequency": 9,
     "first_occurrence": "1993-01-01",
-    "last_occurrence": "2003-01-09",
+    "last_occurrence": "2014-12-29",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -6006,9 +6006,9 @@
     "o:id": 76495,
     "Titre": "Indénié",
     "Type": "Lieux",
-    "frequency": 6,
+    "frequency": 8,
     "first_occurrence": "1974-03-12",
-    "last_occurrence": "2015-08-30",
+    "last_occurrence": "2020-11-23",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -6024,7 +6024,7 @@
     "o:id": 76497,
     "Titre": "Vavoua",
     "Type": "Lieux",
-    "frequency": 6,
+    "frequency": 7,
     "first_occurrence": "1988-02-16",
     "last_occurrence": "2017-03-06",
     "countries": "Côte d'Ivoire"
@@ -6060,9 +6060,9 @@
     "o:id": 76501,
     "Titre": "Biankouma",
     "Type": "Lieux",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "1980-10-22",
-    "last_occurrence": "2013-01-04",
+    "last_occurrence": "2021-01-12",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -6096,9 +6096,9 @@
     "o:id": 76505,
     "Titre": "Guiglo",
     "Type": "Lieux",
-    "frequency": 5,
+    "frequency": 7,
     "first_occurrence": "1981-04-11",
-    "last_occurrence": "2017-09-05",
+    "last_occurrence": "2021-01-12",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -6138,6 +6138,15 @@
     "countries": ""
   },
   {
+    "o:id": 76548,
+    "Titre": "Mosquée du Mont Arafat de la Riviera Bonoumin",
+    "Type": "Lieux",
+    "frequency": 2,
+    "first_occurrence": "2021-04-25",
+    "last_occurrence": "2021-04-27",
+    "countries": ""
+  },
+  {
     "o:id": 855,
     "Titre": "Abdoul Salam Tiemtoré",
     "Type": "Personnes",
@@ -6171,7 +6180,7 @@
     "frequency": 43,
     "first_occurrence": "2013-01-01",
     "last_occurrence": "2025-09-11",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Nigeria | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Nigeria | Togo"
   },
   {
     "o:id": 859,
@@ -6483,7 +6492,7 @@
     "o:id": 895,
     "Titre": "Mouammar Kadhafi",
     "Type": "Personnes",
-    "frequency": 133,
+    "frequency": 134,
     "first_occurrence": "1971-10-02",
     "last_occurrence": "2022-04-29",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -6600,10 +6609,10 @@
     "o:id": 909,
     "Titre": "Tariq Ramadan",
     "Type": "Personnes",
-    "frequency": 74,
+    "frequency": 75,
     "first_occurrence": "1999-09-09",
     "last_occurrence": "2020-07-29",
-    "countries": "Burkina Faso | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 910,
@@ -6618,10 +6627,10 @@
     "o:id": 911,
     "Titre": "Thomas Sankara",
     "Type": "Personnes",
-    "frequency": 30,
+    "frequency": 31,
     "first_occurrence": "1983-08-31",
     "last_occurrence": "2023-09-07",
-    "countries": "Burkina Faso | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 912,
@@ -6699,8 +6708,8 @@
     "o:id": 922,
     "Titre": "Abdou Rasmané Sana",
     "Type": "Personnes",
-    "frequency": 72,
-    "first_occurrence": "2000-05-08",
+    "frequency": 77,
+    "first_occurrence": null,
     "last_occurrence": "2021-08-09",
     "countries": "Burkina Faso"
   },
@@ -6897,9 +6906,9 @@
     "o:id": 945,
     "Titre": "Aboubacar Fofana",
     "Type": "Personnes",
-    "frequency": 524,
+    "frequency": 546,
     "first_occurrence": "1976-04-30",
-    "last_occurrence": "2020-08-26",
+    "last_occurrence": "2021-04-27",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -7599,9 +7608,9 @@
     "o:id": 1023,
     "Titre": "Djiguiba Cissé",
     "Type": "Personnes",
-    "frequency": 220,
+    "frequency": 228,
     "first_occurrence": "1991-03-18",
-    "last_occurrence": "2020-07-22",
+    "last_occurrence": "2021-01-12",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -8391,9 +8400,9 @@
     "o:id": 1111,
     "Titre": "Mamadou Koné",
     "Type": "Personnes",
-    "frequency": 46,
+    "frequency": 50,
     "first_occurrence": "1975-10-02",
-    "last_occurrence": "2016-10-12",
+    "last_occurrence": "2017-01-03",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -9267,7 +9276,7 @@
     "frequency": 33,
     "first_occurrence": "2005-01-01",
     "last_occurrence": "2018-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 1209,
@@ -9276,7 +9285,7 @@
     "frequency": 1,
     "first_occurrence": "1924-01-01",
     "last_occurrence": "1924-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 1210,
@@ -9492,7 +9501,7 @@
     "frequency": 5,
     "first_occurrence": "1983-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1235,
@@ -9618,7 +9627,7 @@
     "frequency": 20,
     "first_occurrence": "1998-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 1249,
@@ -9717,7 +9726,7 @@
     "frequency": 3,
     "first_occurrence": "2018-01-01",
     "last_occurrence": "2023-10-18",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 1260,
@@ -9735,7 +9744,7 @@
     "frequency": 15,
     "first_occurrence": "1984-01-01",
     "last_occurrence": "2009-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 1262,
@@ -9843,7 +9852,7 @@
     "frequency": 19,
     "first_occurrence": "2006-01-01",
     "last_occurrence": "2022-03-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 1274,
@@ -9870,7 +9879,7 @@
     "frequency": 9,
     "first_occurrence": "2011-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 1277,
@@ -9924,7 +9933,7 @@
     "frequency": 6,
     "first_occurrence": "2007-01-01",
     "last_occurrence": "2021-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 1283,
@@ -9951,7 +9960,7 @@
     "frequency": 3,
     "first_occurrence": "2020-01-01",
     "last_occurrence": "2023-08-16",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 1286,
@@ -10005,7 +10014,7 @@
     "frequency": 2,
     "first_occurrence": "2018-01-01",
     "last_occurrence": "2022-04-29",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 1292,
@@ -10032,7 +10041,7 @@
     "frequency": 33,
     "first_occurrence": "1996-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1295,
@@ -10050,7 +10059,7 @@
     "frequency": 34,
     "first_occurrence": "1998-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 1297,
@@ -10104,7 +10113,7 @@
     "frequency": 20,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2018-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 1304,
@@ -10140,7 +10149,7 @@
     "frequency": 10,
     "first_occurrence": "2014-01-01",
     "last_occurrence": "2014-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1308,
@@ -10365,7 +10374,7 @@
     "frequency": 7,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1333,
@@ -10383,7 +10392,7 @@
     "frequency": 7,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1335,
@@ -10401,7 +10410,7 @@
     "frequency": 5,
     "first_occurrence": "2005-01-01",
     "last_occurrence": "2009-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 1337,
@@ -10437,7 +10446,7 @@
     "frequency": 7,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1341,
@@ -10482,7 +10491,7 @@
     "frequency": 7,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1346,
@@ -10509,7 +10518,7 @@
     "frequency": 7,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 1349,
@@ -10644,7 +10653,7 @@
     "frequency": 2,
     "first_occurrence": "2002-01-01",
     "last_occurrence": "2008-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 1364,
@@ -10680,7 +10689,7 @@
     "frequency": 1,
     "first_occurrence": "2022-02-11",
     "last_occurrence": "2022-02-11",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 1368,
@@ -10743,7 +10752,7 @@
     "frequency": 4,
     "first_occurrence": "2022-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 1375,
@@ -10839,7 +10848,7 @@
     "o:id": 1386,
     "Titre": "Aurélien Agbénonci",
     "Type": "Personnes",
-    "frequency": 46,
+    "frequency": 47,
     "first_occurrence": "2016-06-02",
     "last_occurrence": "2023-04-20",
     "countries": "Benin"
@@ -11022,7 +11031,7 @@
     "frequency": 5,
     "first_occurrence": "1973-08-14",
     "last_occurrence": "2005-01-01",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1408,
@@ -11100,7 +11109,7 @@
     "o:id": 1416,
     "Titre": "Benoît XVI",
     "Type": "Personnes",
-    "frequency": 21,
+    "frequency": 22,
     "first_occurrence": "2006-02-10",
     "last_occurrence": "2017-01-30",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -11109,7 +11118,7 @@
     "o:id": 1417,
     "Titre": "Patrice Talon",
     "Type": "Personnes",
-    "frequency": 240,
+    "frequency": 241,
     "first_occurrence": "2013-08-22",
     "last_occurrence": "2025-04-28",
     "countries": "Benin"
@@ -11211,7 +11220,7 @@
     "frequency": 36,
     "first_occurrence": "2008-10-03",
     "last_occurrence": "2023-12-20",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1432,
@@ -11271,8 +11280,8 @@
     "o:id": 1438,
     "Titre": "Maxime da Cruz",
     "Type": "Personnes",
-    "frequency": 1,
-    "first_occurrence": "2021-05-26",
+    "frequency": 2,
+    "first_occurrence": null,
     "last_occurrence": "2021-05-26",
     "countries": "Benin"
   },
@@ -11319,7 +11328,7 @@
     "frequency": 2,
     "first_occurrence": "2002-10-31",
     "last_occurrence": "2022-10-14",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 1444,
@@ -11481,7 +11490,7 @@
     "frequency": 2,
     "first_occurrence": "2021-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1464,
@@ -11490,7 +11499,7 @@
     "frequency": 9,
     "first_occurrence": "1997-01-01",
     "last_occurrence": "2023-06-07",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1465,
@@ -11499,7 +11508,7 @@
     "frequency": 11,
     "first_occurrence": "1997-01-01",
     "last_occurrence": "2014-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1466,
@@ -11514,7 +11523,7 @@
     "o:id": 1467,
     "Titre": "Houzéifa Amzat",
     "Type": "Personnes",
-    "frequency": 78,
+    "frequency": 79,
     "first_occurrence": "2011-03-30",
     "last_occurrence": "2024-04-11",
     "countries": "Benin"
@@ -12867,7 +12876,7 @@
     "frequency": 1,
     "first_occurrence": "2022-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1618,
@@ -12876,7 +12885,7 @@
     "frequency": 1,
     "first_occurrence": "2022-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1619,
@@ -12894,7 +12903,7 @@
     "frequency": 1,
     "first_occurrence": "1943-01-01",
     "last_occurrence": "1943-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1621,
@@ -13362,7 +13371,7 @@
     "frequency": 1,
     "first_occurrence": "2023-01-31",
     "last_occurrence": "2023-01-31",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1673,
@@ -13371,7 +13380,7 @@
     "frequency": 12,
     "first_occurrence": "2019-09-16",
     "last_occurrence": "2023-01-31",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1674,
@@ -13416,7 +13425,7 @@
     "frequency": 5,
     "first_occurrence": "2019-10-30",
     "last_occurrence": "2023-09-05",
-    "countries": "Bénin | Togo"
+    "countries": "Benin | Togo"
   },
   {
     "o:id": 1679,
@@ -13425,7 +13434,7 @@
     "frequency": 1,
     "first_occurrence": "2023-02-09",
     "last_occurrence": "2023-02-09",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1680,
@@ -14181,7 +14190,7 @@
     "frequency": 2,
     "first_occurrence": "1922-01-01",
     "last_occurrence": "1926-01-01",
-    "countries": "Bénin | Côte d'Ivoire"
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 1766,
@@ -14199,7 +14208,7 @@
     "frequency": 1,
     "first_occurrence": "2019-03-01",
     "last_occurrence": "2019-03-01",
-    "countries": "Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 1768,
@@ -14703,7 +14712,7 @@
     "frequency": 1,
     "first_occurrence": "2009-01-01",
     "last_occurrence": "2009-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1824,
@@ -14712,7 +14721,7 @@
     "frequency": 3,
     "first_occurrence": "2004-01-01",
     "last_occurrence": "2012-10-01",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1825,
@@ -14721,7 +14730,7 @@
     "frequency": 2,
     "first_occurrence": "2005-08-01",
     "last_occurrence": "2014-05-14",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1826,
@@ -14730,7 +14739,7 @@
     "frequency": 3,
     "first_occurrence": "2022-03-15",
     "last_occurrence": "2023-06-16",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1827,
@@ -14739,7 +14748,7 @@
     "frequency": 1,
     "first_occurrence": "2002-01-01",
     "last_occurrence": "2002-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1828,
@@ -14748,7 +14757,7 @@
     "frequency": 1,
     "first_occurrence": "2014-01-01",
     "last_occurrence": "2014-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1829,
@@ -14757,7 +14766,7 @@
     "frequency": 1,
     "first_occurrence": "2010-01-01",
     "last_occurrence": "2010-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1830,
@@ -14766,7 +14775,7 @@
     "frequency": 1,
     "first_occurrence": "1948-01-01",
     "last_occurrence": "1948-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1831,
@@ -14775,7 +14784,7 @@
     "frequency": 4,
     "first_occurrence": "1991-01-01",
     "last_occurrence": "2002-01-01",
-    "countries": "Bénin | Togo"
+    "countries": "Benin | Togo"
   },
   {
     "o:id": 1832,
@@ -14784,7 +14793,7 @@
     "frequency": 1,
     "first_occurrence": "2008-01-01",
     "last_occurrence": "2008-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1833,
@@ -14793,7 +14802,7 @@
     "frequency": 1,
     "first_occurrence": "2021-01-01",
     "last_occurrence": "2021-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1834,
@@ -14802,7 +14811,7 @@
     "frequency": 1,
     "first_occurrence": "2021-01-01",
     "last_occurrence": "2021-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1835,
@@ -14811,7 +14820,7 @@
     "frequency": 3,
     "first_occurrence": "1994-01-01",
     "last_occurrence": "2019-08-11",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1836,
@@ -14820,7 +14829,7 @@
     "frequency": 1,
     "first_occurrence": "1997-01-01",
     "last_occurrence": "1997-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1837,
@@ -14829,7 +14838,7 @@
     "frequency": 1,
     "first_occurrence": "2021-06-10",
     "last_occurrence": "2021-06-10",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1838,
@@ -14838,7 +14847,7 @@
     "frequency": 1,
     "first_occurrence": "2014-12-18",
     "last_occurrence": "2014-12-18",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1839,
@@ -14847,7 +14856,7 @@
     "frequency": 1,
     "first_occurrence": "2021-01-01",
     "last_occurrence": "2021-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1840,
@@ -14856,7 +14865,7 @@
     "frequency": 1,
     "first_occurrence": "2016-01-25",
     "last_occurrence": "2016-01-25",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1841,
@@ -14865,7 +14874,7 @@
     "frequency": 1,
     "first_occurrence": "2016-01-25",
     "last_occurrence": "2016-01-25",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1842,
@@ -14874,7 +14883,7 @@
     "frequency": 1,
     "first_occurrence": "1953-01-01",
     "last_occurrence": "1953-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1843,
@@ -14883,7 +14892,7 @@
     "frequency": 1,
     "first_occurrence": "2014-01-01",
     "last_occurrence": "2014-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1844,
@@ -14892,7 +14901,7 @@
     "frequency": 1,
     "first_occurrence": "1954-01-01",
     "last_occurrence": "1954-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1845,
@@ -14901,7 +14910,7 @@
     "frequency": 1,
     "first_occurrence": "2000-01-01",
     "last_occurrence": "2000-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1846,
@@ -14910,7 +14919,7 @@
     "frequency": 1,
     "first_occurrence": "1999-01-01",
     "last_occurrence": "1999-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1847,
@@ -14919,7 +14928,7 @@
     "frequency": 1,
     "first_occurrence": "1953-01-01",
     "last_occurrence": "1953-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1848,
@@ -14928,7 +14937,7 @@
     "frequency": 2,
     "first_occurrence": "2004-04-27",
     "last_occurrence": "2005-08-01",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1849,
@@ -14937,7 +14946,7 @@
     "frequency": 1,
     "first_occurrence": "2011-01-01",
     "last_occurrence": "2011-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1850,
@@ -14973,7 +14982,7 @@
     "frequency": 1,
     "first_occurrence": "2005-01-01",
     "last_occurrence": "2005-01-01",
-    "countries": "Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 1854,
@@ -15000,7 +15009,7 @@
     "frequency": 1,
     "first_occurrence": "2002-01-01",
     "last_occurrence": "2002-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 1857,
@@ -15369,7 +15378,7 @@
     "frequency": 3,
     "first_occurrence": "2019-03-08",
     "last_occurrence": "2021-01-28",
-    "countries": "Bénin | Togo"
+    "countries": "Benin | Togo"
   },
   {
     "o:id": 1898,
@@ -15531,7 +15540,7 @@
     "frequency": 4,
     "first_occurrence": "2015-06-22",
     "last_occurrence": "2023-09-18",
-    "countries": "Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 1916,
@@ -15861,8 +15870,8 @@
     "o:id": 1952,
     "Titre": "Djibril Boussou",
     "Type": "Personnes",
-    "frequency": 10,
-    "first_occurrence": "2011-12-01",
+    "frequency": 13,
+    "first_occurrence": "2010-09-01",
     "last_occurrence": "2023-06-07",
     "countries": "Benin"
   },
@@ -16401,7 +16410,7 @@
     "o:id": 2013,
     "Titre": "Mahomet",
     "Type": "Personnes",
-    "frequency": 1338,
+    "frequency": 1345,
     "first_occurrence": "1970-01-31",
     "last_occurrence": "2024-11-17",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -16917,7 +16926,7 @@
     "frequency": 14,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 2071,
@@ -16926,7 +16935,7 @@
     "frequency": 12,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 2072,
@@ -16935,7 +16944,7 @@
     "frequency": 1,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 2073,
@@ -16944,7 +16953,7 @@
     "frequency": 5,
     "first_occurrence": "2021-12-08",
     "last_occurrence": "2023-01-01",
-    "countries": "Benin | Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 2074,
@@ -16953,7 +16962,7 @@
     "frequency": 2,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 2075,
@@ -17052,7 +17061,7 @@
     "frequency": 1,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 2086,
@@ -17061,7 +17070,7 @@
     "frequency": 1,
     "first_occurrence": "2023-10-18",
     "last_occurrence": "2023-10-18",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 2087,
@@ -17070,7 +17079,7 @@
     "frequency": 1,
     "first_occurrence": "2023-10-18",
     "last_occurrence": "2023-10-18",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 2088,
@@ -17079,7 +17088,7 @@
     "frequency": 1,
     "first_occurrence": "2022-09-21",
     "last_occurrence": "2022-09-21",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 2090,
@@ -17097,7 +17106,7 @@
     "frequency": 1,
     "first_occurrence": "2023-08-16",
     "last_occurrence": "2023-08-16",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 2092,
@@ -17106,7 +17115,7 @@
     "frequency": 1,
     "first_occurrence": "2023-08-16",
     "last_occurrence": "2023-08-16",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 2093,
@@ -17115,7 +17124,7 @@
     "frequency": 1,
     "first_occurrence": "2023-08-16",
     "last_occurrence": "2023-08-16",
-    "countries": "Burkina Faso | Bénin | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Niger | Togo"
   },
   {
     "o:id": 2094,
@@ -17760,10 +17769,10 @@
     "o:id": 2169,
     "Titre": "Sani Karim",
     "Type": "Personnes",
-    "frequency": 30,
+    "frequency": 32,
     "first_occurrence": "1993-09-09",
     "last_occurrence": "2023-04-10",
-    "countries": "Côte d'Ivoire | Togo"
+    "countries": "Benin | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 2170,
@@ -18003,7 +18012,7 @@
     "o:id": 13271,
     "Titre": "Euloge Abd-Gafar Zohoungbogbo",
     "Type": "Personnes",
-    "frequency": 9,
+    "frequency": 14,
     "first_occurrence": "2017-06-23",
     "last_occurrence": "2022-05-16",
     "countries": "Benin"
@@ -18255,7 +18264,7 @@
     "o:id": 14146,
     "Titre": "Oswald Homeky",
     "Type": "Personnes",
-    "frequency": 2,
+    "frequency": 3,
     "first_occurrence": "2019-03-15",
     "last_occurrence": "2020-11-15",
     "countries": "Benin"
@@ -18570,7 +18579,7 @@
     "o:id": 15254,
     "Titre": "Gamal Abdel Nasser",
     "Type": "Personnes",
-    "frequency": 11,
+    "frequency": 12,
     "first_occurrence": "1970-07-02",
     "last_occurrence": "2012-10-18",
     "countries": "Benin | Burkina Faso | Togo"
@@ -18655,6 +18664,15 @@
     "first_occurrence": "1983-04-11",
     "last_occurrence": "2023-03-15",
     "countries": "Benin"
+  },
+  {
+    "o:id": 15466,
+    "Titre": "Mahmoud Ahmadinejad",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
   },
   {
     "o:id": 15467,
@@ -19578,7 +19596,7 @@
     "o:id": 23462,
     "Titre": "Harouna Koné",
     "Type": "Personnes",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "2013-08-05",
     "last_occurrence": "2020-07-22",
     "countries": "Côte d'Ivoire"
@@ -19659,7 +19677,7 @@
     "o:id": 23490,
     "Titre": "Adama Diabaté",
     "Type": "Personnes",
-    "frequency": 17,
+    "frequency": 18,
     "first_occurrence": "1983-05-13",
     "last_occurrence": "2019-06-05",
     "countries": "Côte d'Ivoire"
@@ -19686,7 +19704,7 @@
     "o:id": 23497,
     "Titre": "Moustapha Sonta",
     "Type": "Personnes",
-    "frequency": 40,
+    "frequency": 42,
     "first_occurrence": "1993-10-01",
     "last_occurrence": "2024-04-08",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -19731,7 +19749,7 @@
     "o:id": 23512,
     "Titre": "Fadiga Moussa Al Farouk",
     "Type": "Personnes",
-    "frequency": 95,
+    "frequency": 97,
     "first_occurrence": "2007-08-29",
     "last_occurrence": "2020-04-08",
     "countries": "Côte d'Ivoire"
@@ -19740,16 +19758,16 @@
     "o:id": 23513,
     "Titre": "Albert Toikeusse Mabri",
     "Type": "Personnes",
-    "frequency": 33,
+    "frequency": 34,
     "first_occurrence": "2003-12-10",
-    "last_occurrence": "2015-01-19",
+    "last_occurrence": "2019-01-02",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 23516,
     "Titre": "Sidiki Diakité",
     "Type": "Personnes",
-    "frequency": 14,
+    "frequency": 22,
     "first_occurrence": "2009-03-11",
     "last_occurrence": "2020-05-21",
     "countries": "Côte d'Ivoire"
@@ -19794,7 +19812,7 @@
     "o:id": 23523,
     "Titre": "Moustapha Sy",
     "Type": "Personnes",
-    "frequency": 27,
+    "frequency": 26,
     "first_occurrence": "1976-08-25",
     "last_occurrence": "2016-01-13",
     "countries": "Côte d'Ivoire"
@@ -19866,18 +19884,18 @@
     "o:id": 23547,
     "Titre": "Moustapha Soumahoro",
     "Type": "Personnes",
-    "frequency": 14,
+    "frequency": 15,
     "first_occurrence": "1972-04-29",
-    "last_occurrence": "2009-06-17",
+    "last_occurrence": "2020-11-01",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 23548,
     "Titre": "Hamed Bakayoko",
     "Type": "Personnes",
-    "frequency": 73,
+    "frequency": 76,
     "first_occurrence": "1992-03-31",
-    "last_occurrence": "2020-05-21",
+    "last_occurrence": "2021-02-21",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -19920,7 +19938,7 @@
     "o:id": 23561,
     "Titre": "Aminata Kane Koné",
     "Type": "Personnes",
-    "frequency": 18,
+    "frequency": 19,
     "first_occurrence": "2010-01-13",
     "last_occurrence": "2020-01-01",
     "countries": "Côte d'Ivoire"
@@ -19947,8 +19965,8 @@
     "o:id": 23567,
     "Titre": "Soungalo Coulibaly",
     "Type": "Personnes",
-    "frequency": 4,
-    "first_occurrence": "2017-06-14",
+    "frequency": 5,
+    "first_occurrence": "2017-01-03",
     "last_occurrence": "2018-05-23",
     "countries": "Côte d'Ivoire"
   },
@@ -19956,7 +19974,7 @@
     "o:id": 23571,
     "Titre": "Abdoul Kader Cissé",
     "Type": "Personnes",
-    "frequency": 9,
+    "frequency": 10,
     "first_occurrence": "2008-10-08",
     "last_occurrence": "2016-08-10",
     "countries": "Côte d'Ivoire"
@@ -19974,7 +19992,7 @@
     "o:id": 23583,
     "Titre": "Boun Ladj Camara",
     "Type": "Personnes",
-    "frequency": 13,
+    "frequency": 15,
     "first_occurrence": "1976-09-06",
     "last_occurrence": "2018-01-10",
     "countries": "Côte d'Ivoire"
@@ -20028,7 +20046,7 @@
     "o:id": 23604,
     "Titre": "Sékou Sylla",
     "Type": "Personnes",
-    "frequency": 90,
+    "frequency": 95,
     "first_occurrence": "1984-06-28",
     "last_occurrence": "2020-07-22",
     "countries": "Côte d'Ivoire"
@@ -20037,7 +20055,7 @@
     "o:id": 23606,
     "Titre": "Alassane Ouattara",
     "Type": "Personnes",
-    "frequency": 297,
+    "frequency": 309,
     "first_occurrence": "1992-04-06",
     "last_occurrence": "2024-06-18",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -20064,9 +20082,9 @@
     "o:id": 23614,
     "Titre": "Adam Fofana",
     "Type": "Personnes",
-    "frequency": 29,
+    "frequency": 30,
     "first_occurrence": "2008-09-10",
-    "last_occurrence": "2016-02-24",
+    "last_occurrence": "2019-04-22",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -20100,7 +20118,7 @@
     "o:id": 23627,
     "Titre": "Dembelé Fousseni",
     "Type": "Personnes",
-    "frequency": 20,
+    "frequency": 21,
     "first_occurrence": "1995-02-22",
     "last_occurrence": "2016-06-29",
     "countries": "Côte d'Ivoire"
@@ -20127,9 +20145,9 @@
     "o:id": 23631,
     "Titre": "Mamadou Traoré",
     "Type": "Personnes",
-    "frequency": 88,
+    "frequency": 94,
     "first_occurrence": "1974-09-20",
-    "last_occurrence": "2019-08-14",
+    "last_occurrence": "2021-06-12",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -20145,7 +20163,7 @@
     "o:id": 23635,
     "Titre": "Bachir Ouattara",
     "Type": "Personnes",
-    "frequency": 16,
+    "frequency": 19,
     "first_occurrence": "2006-06-15",
     "last_occurrence": "2020-07-15",
     "countries": "Côte d'Ivoire"
@@ -20181,9 +20199,9 @@
     "o:id": 23647,
     "Titre": "Ousmane Diakité",
     "Type": "Personnes",
-    "frequency": 46,
+    "frequency": 49,
     "first_occurrence": "1995-03-18",
-    "last_occurrence": "2020-07-22",
+    "last_occurrence": "2021-06-12",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -20199,9 +20217,9 @@
     "o:id": 23650,
     "Titre": "Cheikh Malick Soufi Konaté",
     "Type": "Personnes",
-    "frequency": 28,
+    "frequency": 30,
     "first_occurrence": "2010-10-13",
-    "last_occurrence": "2020-02-05",
+    "last_occurrence": "2021-02-21",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -20217,7 +20235,7 @@
     "o:id": 23656,
     "Titre": "Amadou Gon Coulibaly",
     "Type": "Personnes",
-    "frequency": 34,
+    "frequency": 36,
     "first_occurrence": "1974-05-07",
     "last_occurrence": "2024-03-29",
     "countries": "Côte d'Ivoire"
@@ -20262,7 +20280,7 @@
     "o:id": 23663,
     "Titre": "Bamba Messamba",
     "Type": "Personnes",
-    "frequency": 21,
+    "frequency": 24,
     "first_occurrence": "2013-03-26",
     "last_occurrence": "2020-01-29",
     "countries": "Côte d'Ivoire"
@@ -20325,9 +20343,9 @@
     "o:id": 23675,
     "Titre": "Sayndou Bakayoko",
     "Type": "Personnes",
-    "frequency": 13,
+    "frequency": 17,
     "first_occurrence": "2013-12-01",
-    "last_occurrence": "2018-04-25",
+    "last_occurrence": "2019-03-30",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -20370,8 +20388,8 @@
     "o:id": 23686,
     "Titre": "Tchonté Pitin Mireille Silué",
     "Type": "Personnes",
-    "frequency": 1,
-    "first_occurrence": "2020-03-04",
+    "frequency": 2,
+    "first_occurrence": "2017-09-17",
     "last_occurrence": "2020-03-04",
     "countries": "Côte d'Ivoire"
   },
@@ -20415,7 +20433,7 @@
     "o:id": 23698,
     "Titre": "Gnénéfoli Mamadou Ouattara",
     "Type": "Personnes",
-    "frequency": 9,
+    "frequency": 12,
     "first_occurrence": "2013-01-23",
     "last_occurrence": "2015-01-07",
     "countries": "Côte d'Ivoire"
@@ -20427,7 +20445,7 @@
     "frequency": 1,
     "first_occurrence": "2024-04-18",
     "last_occurrence": "2024-04-18",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 26322,
@@ -20775,9 +20793,9 @@
     "o:id": 43069,
     "Titre": "Félix Houphouët-Boigny",
     "Type": "Personnes",
-    "frequency": 363,
+    "frequency": 364,
     "first_occurrence": "1970-02-18",
-    "last_occurrence": "2017-09-06",
+    "last_occurrence": "2017-09-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
@@ -21018,7 +21036,7 @@
     "o:id": 46168,
     "Titre": "Noël Yao",
     "Type": "Personnes",
-    "frequency": 14,
+    "frequency": 13,
     "first_occurrence": "1989-07-13",
     "last_occurrence": "2009-12-14",
     "countries": "Côte d'Ivoire"
@@ -21036,7 +21054,7 @@
     "o:id": 46171,
     "Titre": "Charles Bédé",
     "Type": "Personnes",
-    "frequency": 22,
+    "frequency": 21,
     "first_occurrence": "1992-12-30",
     "last_occurrence": "2017-07-05",
     "countries": "Côte d'Ivoire"
@@ -21045,7 +21063,7 @@
     "o:id": 46172,
     "Titre": "Oumar Abdel Aziz",
     "Type": "Personnes",
-    "frequency": 2,
+    "frequency": 3,
     "first_occurrence": "2008-06-26",
     "last_occurrence": "2017-10-13",
     "countries": "Côte d'Ivoire"
@@ -21072,7 +21090,7 @@
     "o:id": 46176,
     "Titre": "Gervais Amany",
     "Type": "Personnes",
-    "frequency": 3,
+    "frequency": 2,
     "first_occurrence": "2009-03-02",
     "last_occurrence": "2009-08-31",
     "countries": "Côte d'Ivoire"
@@ -21162,7 +21180,7 @@
     "o:id": 46190,
     "Titre": "Anne-Marie Eba",
     "Type": "Personnes",
-    "frequency": 2,
+    "frequency": 1,
     "first_occurrence": "2009-04-16",
     "last_occurrence": "2009-04-16",
     "countries": "Côte d'Ivoire"
@@ -21180,10 +21198,10 @@
     "o:id": 46194,
     "Titre": "Laurent Gbagbo",
     "Type": "Personnes",
-    "frequency": 226,
+    "frequency": 227,
     "first_occurrence": "1992-11-09",
-    "last_occurrence": "2017-08-04",
-    "countries": "Côte d'Ivoire"
+    "last_occurrence": "2019-01-15",
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 46195,
@@ -21252,9 +21270,9 @@
     "o:id": 46206,
     "Titre": "Mariatou Koné",
     "Type": "Personnes",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "2016-12-14",
-    "last_occurrence": "2019-05-20",
+    "last_occurrence": "2021-02-21",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -21315,7 +21333,7 @@
     "o:id": 46217,
     "Titre": "Sérikpa Benson",
     "Type": "Personnes",
-    "frequency": 26,
+    "frequency": 24,
     "first_occurrence": "2001-12-13",
     "last_occurrence": "2010-08-11",
     "countries": "Côte d'Ivoire"
@@ -21432,7 +21450,7 @@
     "o:id": 46233,
     "Titre": "Edmond Gomon",
     "Type": "Personnes",
-    "frequency": 40,
+    "frequency": 39,
     "first_occurrence": "2004-11-13",
     "last_occurrence": "2017-12-04",
     "countries": "Côte d'Ivoire"
@@ -21513,7 +21531,7 @@
     "o:id": 46244,
     "Titre": "Sam K.D.",
     "Type": "Personnes",
-    "frequency": 10,
+    "frequency": 9,
     "first_occurrence": "1995-05-11",
     "last_occurrence": "2017-11-18",
     "countries": "Côte d'Ivoire"
@@ -21657,7 +21675,7 @@
     "o:id": 46268,
     "Titre": "Diaby Moustapha",
     "Type": "Personnes",
-    "frequency": 191,
+    "frequency": 190,
     "first_occurrence": "1992-02-22",
     "last_occurrence": "2017-11-06",
     "countries": "Côte d'Ivoire"
@@ -21729,7 +21747,7 @@
     "o:id": 46282,
     "Titre": "Gomon Edmond",
     "Type": "Personnes",
-    "frequency": 8,
+    "frequency": 7,
     "first_occurrence": "2002-12-03",
     "last_occurrence": "2020-05-21",
     "countries": "Côte d'Ivoire"
@@ -21774,7 +21792,7 @@
     "o:id": 46288,
     "Titre": "Namory Doumbia",
     "Type": "Personnes",
-    "frequency": 5,
+    "frequency": 4,
     "first_occurrence": "2016-07-07",
     "last_occurrence": "2017-10-09",
     "countries": "Côte d'Ivoire"
@@ -21837,9 +21855,9 @@
     "o:id": 46299,
     "Titre": "Charles Blé Goudé",
     "Type": "Personnes",
-    "frequency": 10,
+    "frequency": 11,
     "first_occurrence": "1999-06-24",
-    "last_occurrence": "2010-09-20",
+    "last_occurrence": "2019-01-15",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -21891,10 +21909,10 @@
     "o:id": 46306,
     "Titre": "Simone Gbagbo",
     "Type": "Personnes",
-    "frequency": 15,
+    "frequency": 16,
     "first_occurrence": "1994-06-15",
-    "last_occurrence": "2011-09-08",
-    "countries": "Côte d'Ivoire"
+    "last_occurrence": "2011-12-01",
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 46307,
@@ -21918,7 +21936,7 @@
     "o:id": 46312,
     "Titre": "Désiré Tagro",
     "Type": "Personnes",
-    "frequency": 38,
+    "frequency": 37,
     "first_occurrence": "2007-08-11",
     "last_occurrence": "2010-08-11",
     "countries": "Côte d'Ivoire"
@@ -22008,7 +22026,7 @@
     "o:id": 46325,
     "Titre": "Guillaume Soro",
     "Type": "Personnes",
-    "frequency": 47,
+    "frequency": 46,
     "first_occurrence": "1997-10-02",
     "last_occurrence": "2024-03-27",
     "countries": "Burkina Faso | Côte d'Ivoire | Togo"
@@ -23016,7 +23034,7 @@
     "o:id": 60966,
     "Titre": "Aurélie Adam Soulé Zoumarou",
     "Type": "Personnes",
-    "frequency": 2,
+    "frequency": 3,
     "first_occurrence": "2018-08-22",
     "last_occurrence": "2021-03-01",
     "countries": "Benin"
@@ -23412,9 +23430,9 @@
     "o:id": 61349,
     "Titre": "Abou Drahamane Sangaré",
     "Type": "Personnes",
-    "frequency": 7,
+    "frequency": 8,
     "first_occurrence": "1992-11-09",
-    "last_occurrence": "2009-04-04",
+    "last_occurrence": "2019-01-15",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -24105,7 +24123,7 @@
     "o:id": 62180,
     "Titre": "Mamadou Coulibaly",
     "Type": "Personnes",
-    "frequency": 91,
+    "frequency": 90,
     "first_occurrence": "1970-02-18",
     "last_occurrence": "2017-05-22",
     "countries": "Côte d'Ivoire"
@@ -25473,9 +25491,9 @@
     "o:id": 64662,
     "Titre": "Ibrahim Koné",
     "Type": "Personnes",
-    "frequency": 14,
+    "frequency": 16,
     "first_occurrence": "1976-12-03",
-    "last_occurrence": "2017-06-19",
+    "last_occurrence": "2020-01-10",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -29217,19 +29235,19 @@
     "o:id": 73323,
     "Titre": "Abdel Fattah Al-Sissi",
     "Type": "Personnes",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "2015-07-20",
-    "last_occurrence": "2016-07-07",
-    "countries": "Togo"
+    "last_occurrence": null,
+    "countries": "Benin | Togo"
   },
   {
     "o:id": 73324,
     "Titre": "Mahmoud Abbas",
     "Type": "Personnes",
-    "frequency": 5,
-    "first_occurrence": "2011-11-07",
+    "frequency": 6,
+    "first_occurrence": "2010-09-01",
     "last_occurrence": "2016-09-13",
-    "countries": "Togo"
+    "countries": "Benin | Togo"
   },
   {
     "o:id": 73325,
@@ -30288,7 +30306,7 @@
     "o:id": 76273,
     "Titre": "Abraham",
     "Type": "Personnes",
-    "frequency": 377,
+    "frequency": 376,
     "first_occurrence": "1970-02-16",
     "last_occurrence": "2023-06-29",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -30423,27 +30441,27 @@
     "o:id": 76359,
     "Titre": "Birahima Téné Ouattara",
     "Type": "Personnes",
-    "frequency": 0,
-    "first_occurrence": null,
-    "last_occurrence": null,
+    "frequency": 1,
+    "first_occurrence": "2021-06-12",
+    "last_occurrence": "2021-06-12",
     "countries": ""
   },
   {
     "o:id": 76360,
     "Titre": "Siandou Fofana",
     "Type": "Personnes",
-    "frequency": 0,
-    "first_occurrence": null,
-    "last_occurrence": null,
+    "frequency": 1,
+    "first_occurrence": "2019-05-11",
+    "last_occurrence": "2019-05-11",
     "countries": ""
   },
   {
     "o:id": 76363,
     "Titre": "Aguib Touré",
     "Type": "Personnes",
-    "frequency": 0,
-    "first_occurrence": null,
-    "last_occurrence": null,
+    "frequency": 2,
+    "first_occurrence": "2018-07-13",
+    "last_occurrence": "2018-07-18",
     "countries": ""
   },
   {
@@ -30567,7 +30585,7 @@
     "o:id": 76521,
     "Titre": "Seydou Sylla",
     "Type": "Personnes",
-    "frequency": 9,
+    "frequency": 8,
     "first_occurrence": "2005-10-19",
     "last_occurrence": "2017-12-09",
     "countries": "Côte d'Ivoire"
@@ -30603,19 +30621,1036 @@
     "o:id": 76529,
     "Titre": "Kandia Camara",
     "Type": "Personnes",
-    "frequency": 12,
+    "frequency": 11,
     "first_occurrence": "2011-07-25",
     "last_occurrence": "2024-03-20",
     "countries": "Côte d'Ivoire"
   },
   {
+    "o:id": 76532,
+    "Titre": "Anaïs Wion",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "2025-09-23",
+    "last_occurrence": "2025-09-23",
+    "countries": ""
+  },
+  {
+    "o:id": 76535,
+    "Titre": "Mariam Dosso",
+    "Type": "Personnes",
+    "frequency": 2,
+    "first_occurrence": "2020-01-11",
+    "last_occurrence": "2021-04-03",
+    "countries": ""
+  },
+  {
+    "o:id": 76536,
+    "Titre": "Assoa Adou",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "2019-01-15",
+    "last_occurrence": "2019-01-15",
+    "countries": ""
+  },
+  {
+    "o:id": 76537,
+    "Titre": "Sidiki Konaté",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "2020-12-23",
+    "last_occurrence": "2020-12-23",
+    "countries": ""
+  },
+  {
+    "o:id": 76538,
+    "Titre": "Issiaka Sidibé",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "2019-04-22",
+    "last_occurrence": "2019-04-22",
+    "countries": ""
+  },
+  {
+    "o:id": 76539,
+    "Titre": "Vagondo Diomandé",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "2021-06-12",
+    "last_occurrence": "2021-06-12",
+    "countries": ""
+  },
+  {
+    "o:id": 76540,
+    "Titre": "Abba Cissé",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "2020-06-15",
+    "last_occurrence": "2020-06-15",
+    "countries": ""
+  },
+  {
+    "o:id": 76723,
+    "Titre": "Maurice Kakou Guikahué",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76725,
+    "Titre": "Jean-Roche Kouamé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76726,
+    "Titre": "Sanou Amadou",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76728,
+    "Titre": "Sonia Kiprindé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76831,
+    "Titre": "Ali",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76832,
+    "Titre": "Patrick N'Gouan",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76833,
+    "Titre": "Jean Marc Kosssou",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76834,
+    "Titre": "Tché Bi Tché",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76835,
+    "Titre": "Frimo K. Djipro",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76836,
+    "Titre": "Charlemagne 1er",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76837,
+    "Titre": "Alain Kpapo",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76838,
+    "Titre": "Mafoumgbé Bamba",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76839,
+    "Titre": "Georges Bogolo Adou",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76840,
+    "Titre": "Samou Diawara",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76841,
+    "Titre": "Ousmane Diallo",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76842,
+    "Titre": "Méïté Mory",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76843,
+    "Titre": "Hortense Louba",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76844,
+    "Titre": "Ignace Bidi",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76845,
+    "Titre": "Fabrice Tété",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76846,
+    "Titre": "Grace Ozhylly",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76847,
+    "Titre": "Kader",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76848,
+    "Titre": "Raphaël Tanoh",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76849,
+    "Titre": "T. K.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76850,
+    "Titre": "D. Bailly",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76851,
+    "Titre": "Ford Raymond Guei",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76852,
+    "Titre": "Simplice Zahui",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76853,
+    "Titre": "S. L. A.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76854,
+    "Titre": "B. Ouattara",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76855,
+    "Titre": "D. Konaté",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76856,
+    "Titre": "Losséni Cissé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76857,
+    "Titre": "David Gogbé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76858,
+    "Titre": "T. Y.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76859,
+    "Titre": "O. M.",
+    "Type": "Personnes",
+    "frequency": 2,
+    "first_occurrence": "2010-04-02",
+    "last_occurrence": "2010-12-24",
+    "countries": "Burkina Faso"
+  },
+  {
+    "o:id": 76860,
+    "Titre": "Martin Bléou",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76861,
+    "Titre": "Mabokou",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76862,
+    "Titre": "Coulibaly B. Yvon",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76863,
+    "Titre": "O. D.",
+    "Type": "Personnes",
+    "frequency": 16,
+    "first_occurrence": "2006-02-10",
+    "last_occurrence": "2008-03-28",
+    "countries": "Burkina Faso"
+  },
+  {
+    "o:id": 76864,
+    "Titre": "O. O.",
+    "Type": "Personnes",
+    "frequency": 4,
+    "first_occurrence": "1985-12-10",
+    "last_occurrence": "2018-01-05",
+    "countries": "Burkina Faso"
+  },
+  {
+    "o:id": 76865,
+    "Titre": "M. G.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76866,
+    "Titre": "Gaoussou Sakanogo",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76867,
+    "Titre": "J. B. Blé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76868,
+    "Titre": "Zakaria Koné",
+    "Type": "Personnes",
+    "frequency": 1,
+    "first_occurrence": "1993-09-01",
+    "last_occurrence": "1993-09-01",
+    "countries": "Côte d'Ivoire"
+  },
+  {
+    "o:id": 76869,
+    "Titre": "Simplice Allard",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76870,
+    "Titre": "Nöel Yao",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76871,
+    "Titre": "A. Boolamou",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76872,
+    "Titre": "Traoré Yacouba Diarra",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76873,
+    "Titre": "Issiaka Camara",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76874,
+    "Titre": "F. D. B.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76875,
+    "Titre": "C. G.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76876,
+    "Titre": "Oueda",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76877,
+    "Titre": "P. K.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76878,
+    "Titre": "Pierre Legrand",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76879,
+    "Titre": "Paulin",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76880,
+    "Titre": "Oussény Kindo",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76881,
+    "Titre": "Cheikh T. Gaye",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76882,
+    "Titre": "Ousmane Ténin Bè",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76883,
+    "Titre": "Bédi Holy",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76884,
+    "Titre": "Youssouf Barro",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76885,
+    "Titre": "Allah Kouamé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76886,
+    "Titre": "Izoudine Youssef",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76887,
+    "Titre": "Isaac Pierre Bangoret",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76888,
+    "Titre": "Nomel Essis",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76889,
+    "Titre": "Constant Tobo",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76890,
+    "Titre": "Boureima",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76891,
+    "Titre": "Assa Théophile Koby",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76892,
+    "Titre": "Dan De San",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76893,
+    "Titre": "Maurice K. Kouassi",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76894,
+    "Titre": "Isidore Bi-Djah",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76895,
+    "Titre": "Urbain Amoa",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76896,
+    "Titre": "Francesca Adeva",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76897,
+    "Titre": "Bamba K. Inza",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76898,
+    "Titre": "Vicky Delore",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76899,
+    "Titre": "Denis Koné",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76900,
+    "Titre": "Cheick Ely Cissé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76901,
+    "Titre": "A. Cissé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76902,
+    "Titre": "Bourahima Binaté",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76903,
+    "Titre": "Am Atta",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76904,
+    "Titre": "A. B. Diomandé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76905,
+    "Titre": "Emmanuel Toh",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76906,
+    "Titre": "Mariam C. Diallo",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76907,
+    "Titre": "Cheick Bakayoko",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76908,
+    "Titre": "Ahua K.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76909,
+    "Titre": "Jean-Baptiste Essis",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76910,
+    "Titre": "Nouroul Yakine",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76911,
+    "Titre": "Joseph Atoumgbré",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76912,
+    "Titre": "N'Doumi M'Bra N'Goran",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76913,
+    "Titre": "Lassina Soumahoro",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76914,
+    "Titre": "Guéhi Brence",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76915,
+    "Titre": "Pascal Assibondry",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76916,
+    "Titre": "S. M. M'Baye",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76917,
+    "Titre": "Yoro Sarr",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76918,
+    "Titre": "Foussény Dembelé",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76919,
+    "Titre": "Toussaint N'Gotta",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76920,
+    "Titre": "J. A. T.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76921,
+    "Titre": "Fulbert Yao",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76922,
+    "Titre": "Dion Balla",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76923,
+    "Titre": "B. A.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76924,
+    "Titre": "Abdou Touré",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76925,
+    "Titre": "Yacouba Gbané",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76926,
+    "Titre": "Sibiri Coulibaly",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76927,
+    "Titre": "Mamadou Diakité",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76928,
+    "Titre": "Kader Sangaré",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76929,
+    "Titre": "B. I.",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76930,
+    "Titre": "Bayo Fatim",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76931,
+    "Titre": "Amadou Diaw",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76932,
+    "Titre": "Abdoulaye Sangaré",
+    "Type": "Personnes",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
     "o:id": 569,
     "Titre": "Association des Élèves et Étudiants Musulmans au Burkina",
     "Type": "Organisations",
-    "frequency": 725,
+    "frequency": 726,
     "first_occurrence": "1988-07-20",
     "last_occurrence": "2024-07-30",
-    "countries": "Burkina Faso | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 570,
@@ -30657,7 +31692,7 @@
     "o:id": 574,
     "Titre": "Agence des Musulmans d'Afrique/Direct-Aid",
     "Type": "Organisations",
-    "frequency": 119,
+    "frequency": 120,
     "first_occurrence": "1991-08-23",
     "last_occurrence": "2019-08-19",
     "countries": "Benin | Burkina Faso | Togo"
@@ -30765,7 +31800,7 @@
     "o:id": 586,
     "Titre": "Association des Élèves et Étudiants Musulmans au Togo",
     "Type": "Organisations",
-    "frequency": 62,
+    "frequency": 63,
     "first_occurrence": "1998-08-10",
     "last_occurrence": "2024-03-25",
     "countries": "Benin | Burkina Faso | Togo"
@@ -30783,16 +31818,16 @@
     "o:id": 588,
     "Titre": "Association des Élèves et Étudiants Musulmans de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 293,
+    "frequency": 311,
     "first_occurrence": "1977-10-26",
     "last_occurrence": "2020-05-17",
-    "countries": "Burkina Faso | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 600,
     "Titre": "Organisation de la Jeunesse Musulmane en Afrique de l'Ouest",
     "Type": "Organisations",
-    "frequency": 34,
+    "frequency": 38,
     "first_occurrence": "1994-03-01",
     "last_occurrence": "2021-12-27",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -30927,9 +31962,9 @@
     "o:id": 615,
     "Titre": "Association des Jeunes Musulmans de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 155,
+    "frequency": 158,
     "first_occurrence": "1992-05-01",
-    "last_occurrence": "2020-04-01",
+    "last_occurrence": "2020-04-11",
     "countries": "Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -31089,7 +32124,7 @@
     "o:id": 636,
     "Titre": "Banque Islamique de Développement",
     "Type": "Organisations",
-    "frequency": 193,
+    "frequency": 195,
     "first_occurrence": "1979-06-14",
     "last_occurrence": "2024-06-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -31206,9 +32241,9 @@
     "o:id": 653,
     "Titre": "Conseil National Islamique",
     "Type": "Organisations",
-    "frequency": 775,
+    "frequency": 776,
     "first_occurrence": "1978-12-22",
-    "last_occurrence": "2020-08-05",
+    "last_occurrence": "2021-04-25",
     "countries": "Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
@@ -31287,7 +32322,7 @@
     "o:id": 662,
     "Titre": "Conseil Supérieur des Imams, des Mosquées et des Affaires islamiques",
     "Type": "Organisations",
-    "frequency": 772,
+    "frequency": 809,
     "first_occurrence": "1989-05-06",
     "last_occurrence": "2024-06-18",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -31422,10 +32457,10 @@
     "o:id": 679,
     "Titre": "Fondation de Solidarité et d'Aide au Peuple Africain",
     "Type": "Organisations",
-    "frequency": 4,
+    "frequency": 5,
     "first_occurrence": "2009-12-03",
     "last_occurrence": "2018-08-22",
-    "countries": "Burkina Faso | Togo"
+    "countries": "Benin | Burkina Faso | Togo"
   },
   {
     "o:id": 680,
@@ -31755,7 +32790,7 @@
     "o:id": 729,
     "Titre": "UNICEF",
     "Type": "Organisations",
-    "frequency": 47,
+    "frequency": 48,
     "first_occurrence": "1979-09-05",
     "last_occurrence": "2023-05-12",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -31875,7 +32910,7 @@
     "frequency": 21,
     "first_occurrence": "2016-09-06",
     "last_occurrence": "2023-10-04",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 750,
@@ -31965,7 +33000,7 @@
     "frequency": 2,
     "first_occurrence": "2021-07-01",
     "last_occurrence": "2022-04-07",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 760,
@@ -32217,7 +33252,7 @@
     "frequency": 8,
     "first_occurrence": "1999-05-10",
     "last_occurrence": "2023-11-02",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 795,
@@ -32226,7 +33261,7 @@
     "frequency": 8,
     "first_occurrence": "2015-06-22",
     "last_occurrence": "2023-09-18",
-    "countries": "Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 796,
@@ -32235,7 +33270,7 @@
     "frequency": 2,
     "first_occurrence": "2016-01-25",
     "last_occurrence": "2021-06-10",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 797,
@@ -32244,7 +33279,7 @@
     "frequency": 2,
     "first_occurrence": "2021-12-16",
     "last_occurrence": "2022-02-11",
-    "countries": "Benin | Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 798,
@@ -32340,7 +33375,7 @@
     "o:id": 808,
     "Titre": "Union africaine",
     "Type": "Organisations",
-    "frequency": 61,
+    "frequency": 62,
     "first_occurrence": "2000-03-28",
     "last_occurrence": "2024-10-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -32367,7 +33402,7 @@
     "o:id": 811,
     "Titre": "Organisation des Nations Unies",
     "Type": "Organisations",
-    "frequency": 129,
+    "frequency": 130,
     "first_occurrence": "1967-01-14",
     "last_occurrence": "2024-02-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -32754,16 +33789,16 @@
     "o:id": 14916,
     "Titre": "Organisation de l'Unité Africaine",
     "Type": "Organisations",
-    "frequency": 65,
+    "frequency": 66,
     "first_occurrence": "1967-01-14",
-    "last_occurrence": "2001-06-26",
+    "last_occurrence": "2011-10-01",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 15033,
     "Titre": "Union européenne",
     "Type": "Organisations",
-    "frequency": 44,
+    "frequency": 46,
     "first_occurrence": "1995-03-08",
     "last_occurrence": "2022-09-12",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -32781,10 +33816,10 @@
     "o:id": 15649,
     "Titre": "Fondation Mohammed VI des Oulémas africains",
     "Type": "Organisations",
-    "frequency": 15,
+    "frequency": 17,
     "first_occurrence": "2014-03-04",
     "last_occurrence": "2024-04-08",
-    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 15846,
@@ -32889,7 +33924,7 @@
     "o:id": 23460,
     "Titre": "Convention des Femmes Musulmanes Sunnites en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 15,
+    "frequency": 16,
     "first_occurrence": "2014-05-07",
     "last_occurrence": "2018-06-05",
     "countries": "Côte d'Ivoire"
@@ -32898,9 +33933,9 @@
     "o:id": 23466,
     "Titre": "Groupe de Rélexion Islamique Spirituelle et Esotérique",
     "Type": "Organisations",
-    "frequency": 10,
+    "frequency": 12,
     "first_occurrence": "2006-04-27",
-    "last_occurrence": "2020-02-05",
+    "last_occurrence": "2021-02-21",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -32916,9 +33951,9 @@
     "o:id": 23468,
     "Titre": "TV Al Bayane",
     "Type": "Organisations",
-    "frequency": 5,
+    "frequency": 10,
     "first_occurrence": "2017-06-01",
-    "last_occurrence": "2020-05-14",
+    "last_occurrence": "2020-12-23",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -32970,9 +34005,9 @@
     "o:id": 23483,
     "Titre": "Fondation Djigui",
     "Type": "Organisations",
-    "frequency": 24,
+    "frequency": 32,
     "first_occurrence": "2005-11-19",
-    "last_occurrence": "2019-12-11",
+    "last_occurrence": "2021-01-12",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -33150,9 +34185,9 @@
     "o:id": 23543,
     "Titre": "Commission Électorale Indépendante",
     "Type": "Organisations",
-    "frequency": 31,
+    "frequency": 36,
     "first_occurrence": "2000-08-21",
-    "last_occurrence": "2016-12-12",
+    "last_occurrence": "2021-04-25",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -33177,7 +34212,7 @@
     "o:id": 23556,
     "Titre": "Conseil des Imams Sunnites",
     "Type": "Organisations",
-    "frequency": 63,
+    "frequency": 76,
     "first_occurrence": "2005-09-07",
     "last_occurrence": "2020-09-23",
     "countries": "Côte d'Ivoire"
@@ -33231,9 +34266,9 @@
     "o:id": 23574,
     "Titre": "Académie Nationale des Oulémas en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 11,
+    "frequency": 13,
     "first_occurrence": "2008-02-20",
-    "last_occurrence": "2015-09-09",
+    "last_occurrence": "2019-04-22",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -33267,7 +34302,7 @@
     "o:id": 23586,
     "Titre": "Plateforme de la Jeunesse Musulmane en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 2,
+    "frequency": 3,
     "first_occurrence": "2015-10-28",
     "last_occurrence": "2018-04-18",
     "countries": "Côte d'Ivoire"
@@ -33303,7 +34338,7 @@
     "o:id": 23601,
     "Titre": "Conseil Supérieur Islamique",
     "Type": "Organisations",
-    "frequency": 275,
+    "frequency": 274,
     "first_occurrence": "1979-08-01",
     "last_occurrence": "2020-02-12",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -33321,7 +34356,7 @@
     "o:id": 23608,
     "Titre": "Club des Hommes d'Affaires Musulmans de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 60,
+    "frequency": 59,
     "first_occurrence": "2007-06-27",
     "last_occurrence": "2020-02-12",
     "countries": "Côte d'Ivoire"
@@ -33357,17 +34392,17 @@
     "o:id": 23619,
     "Titre": "Jeunesse Musulmane en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 28,
+    "frequency": 30,
     "first_occurrence": "2008-03-25",
-    "last_occurrence": "2016-08-10",
+    "last_occurrence": "2020-04-11",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 23626,
     "Titre": "Raouda Finance",
     "Type": "Organisations",
-    "frequency": 3,
-    "first_occurrence": "2019-09-25",
+    "frequency": 5,
+    "first_occurrence": "2019-01-13",
     "last_occurrence": "2019-10-23",
     "countries": "Côte d'Ivoire"
   },
@@ -33375,16 +34410,16 @@
     "o:id": 23630,
     "Titre": "Radio Al Bayane",
     "Type": "Organisations",
-    "frequency": 120,
+    "frequency": 128,
     "first_occurrence": "1998-07-08",
-    "last_occurrence": "2020-05-17",
+    "last_occurrence": "2020-12-23",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 23634,
     "Titre": "Organisation des Établissements d'Enseignement Confessionnel Islamique en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 25,
+    "frequency": 46,
     "first_occurrence": "1997-12-19",
     "last_occurrence": "2024-03-25",
     "countries": "Côte d'Ivoire"
@@ -33393,18 +34428,18 @@
     "o:id": 23636,
     "Titre": "Amicale des Anciens de l'AEEMCI",
     "Type": "Organisations",
-    "frequency": 87,
+    "frequency": 94,
     "first_occurrence": "1991-08-28",
-    "last_occurrence": "2019-12-18",
+    "last_occurrence": "2020-04-11",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 23638,
     "Titre": "Communauté des Élèves et Étudiants Musulmans de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 53,
+    "frequency": 54,
     "first_occurrence": "2006-01-30",
-    "last_occurrence": "2019-11-27",
+    "last_occurrence": "2020-04-11",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -33501,7 +34536,7 @@
     "o:id": 23681,
     "Titre": "Association des Musulmans Sunnites de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 145,
+    "frequency": 151,
     "first_occurrence": "1997-07-30",
     "last_occurrence": "2020-05-06",
     "countries": "Côte d'Ivoire"
@@ -33519,7 +34554,7 @@
     "o:id": 23684,
     "Titre": "Ligue des Écoles Confessionnelles Islamiques de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 17,
+    "frequency": 18,
     "first_occurrence": "2012-04-19",
     "last_occurrence": "2020-01-08",
     "countries": "Côte d'Ivoire"
@@ -33537,9 +34572,9 @@
     "o:id": 23689,
     "Titre": "Ligue Islamique des Prédicateurs de Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 116,
+    "frequency": 121,
     "first_occurrence": "1991-05-18",
-    "last_occurrence": "2020-05-17",
+    "last_occurrence": "2021-04-25",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -33753,8 +34788,8 @@
     "o:id": 43053,
     "Titre": "Cercle d'études et de recherches islamiques en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 17,
-    "first_occurrence": "1992-06-12",
+    "frequency": 22,
+    "first_occurrence": "1992-06-01",
     "last_occurrence": "2004-02-09",
     "countries": "Côte d'Ivoire"
   },
@@ -33789,10 +34824,10 @@
     "o:id": 46178,
     "Titre": "Front populaire ivoirien",
     "Type": "Organisations",
-    "frequency": 138,
+    "frequency": 140,
     "first_occurrence": "1992-04-01",
-    "last_occurrence": "2017-05-24",
-    "countries": "Côte d'Ivoire"
+    "last_occurrence": "2019-01-15",
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 46185,
@@ -33870,9 +34905,9 @@
     "o:id": 46228,
     "Titre": "Rassemblement des Houphouëtistes pour la Démocratie et la Paix",
     "Type": "Organisations",
-    "frequency": 16,
+    "frequency": 18,
     "first_occurrence": "2005-10-05",
-    "last_occurrence": "2019-05-13",
+    "last_occurrence": "2021-01-15",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -34275,18 +35310,18 @@
     "o:id": 76358,
     "Titre": "Association musulmane pour le bien-être familial en Côte d'Ivoire",
     "Type": "Organisations",
-    "frequency": 0,
-    "first_occurrence": null,
-    "last_occurrence": null,
+    "frequency": 1,
+    "first_occurrence": "2020-04-11",
+    "last_occurrence": "2020-04-11",
     "countries": ""
   },
   {
     "o:id": 76361,
     "Titre": "Cour pénale internationale",
     "Type": "Organisations",
-    "frequency": 2,
+    "frequency": 3,
     "first_occurrence": "2013-10-30",
-    "last_occurrence": "2014-03-24",
+    "last_occurrence": "2019-01-15",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -34297,6 +35332,33 @@
     "first_occurrence": "2007-12-18",
     "last_occurrence": "2017-09-14",
     "countries": "Côte d'Ivoire"
+  },
+  {
+    "o:id": 76544,
+    "Titre": "Plateforme des Organisations de la Société Civile pour l'Observation des Elections en Côte d’Ivoire",
+    "Type": "Organisations",
+    "frequency": 1,
+    "first_occurrence": "2020-01-10",
+    "last_occurrence": "2020-01-10",
+    "countries": ""
+  },
+  {
+    "o:id": 76547,
+    "Titre": "Haute Autorité de la Communication Audiovisuelle",
+    "Type": "Organisations",
+    "frequency": 1,
+    "first_occurrence": "2019-05-19",
+    "last_occurrence": "2019-05-19",
+    "countries": ""
+  },
+  {
+    "o:id": 76727,
+    "Titre": "Sant'Egidio",
+    "Type": "Organisations",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
   },
   {
     "o:id": 117,
@@ -34365,7 +35427,7 @@
     "o:id": 124,
     "Titre": "Aïd el-Fitr",
     "Type": "Événements",
-    "frequency": 705,
+    "frequency": 704,
     "first_occurrence": "1962-03-11",
     "last_occurrence": "2024-04-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -34428,7 +35490,7 @@
     "o:id": 131,
     "Titre": "Attentat de Grand-Bassam de 2016",
     "Type": "Événements",
-    "frequency": 5,
+    "frequency": 6,
     "first_occurrence": "2016-01-26",
     "last_occurrence": "2017-03-14",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -34446,7 +35508,7 @@
     "o:id": 133,
     "Titre": "Attentat contre Charlie Hebdo",
     "Type": "Événements",
-    "frequency": 12,
+    "frequency": 13,
     "first_occurrence": "2012-09-19",
     "last_occurrence": "2015-02-10",
     "countries": "Burkina Faso | Côte d'Ivoire"
@@ -34527,10 +35589,10 @@
     "o:id": 142,
     "Titre": "Conseil national de la transition",
     "Type": "Événements",
-    "frequency": 24,
-    "first_occurrence": "2014-11-10",
+    "frequency": 25,
+    "first_occurrence": "2011-10-01",
     "last_occurrence": "2017-09-04",
-    "countries": "Burkina Faso"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 143,
@@ -35076,10 +36138,10 @@
     "o:id": 203,
     "Titre": "Séminaire National de Formation Islamique",
     "Type": "Événements",
-    "frequency": 3,
+    "frequency": 4,
     "first_occurrence": null,
     "last_occurrence": "2016-08-23",
-    "countries": "Burkina Faso"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 204,
@@ -35706,7 +36768,7 @@
     "o:id": 23554,
     "Titre": "Élection présidentielle ivoirienne de 2015",
     "Type": "Événements",
-    "frequency": 28,
+    "frequency": 29,
     "first_occurrence": "2011-02-16",
     "last_occurrence": "2015-12-28",
     "countries": "Côte d'Ivoire"
@@ -35715,18 +36777,18 @@
     "o:id": 23558,
     "Titre": "Festival International de la Mode Islamique",
     "Type": "Événements",
-    "frequency": 4,
+    "frequency": 5,
     "first_occurrence": "2014-07-02",
-    "last_occurrence": "2016-11-30",
+    "last_occurrence": "2017-11-11",
     "countries": "Côte d'Ivoire"
   },
   {
     "o:id": 23560,
     "Titre": "Élection présidentielle ivoirienne de 2020",
     "Type": "Événements",
-    "frequency": 19,
+    "frequency": 22,
     "first_occurrence": "2017-11-08",
-    "last_occurrence": "2020-08-26",
+    "last_occurrence": "2020-11-01",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -35751,9 +36813,9 @@
     "o:id": 23576,
     "Titre": "Congrès AEEMCI (2014)",
     "Type": "Événements",
-    "frequency": 2,
-    "first_occurrence": "2015-01-07",
-    "last_occurrence": "2015-02-11",
+    "frequency": 4,
+    "first_occurrence": "2014-12-29",
+    "last_occurrence": "2015-03-17",
     "countries": "Côte d'Ivoire"
   },
   {
@@ -35778,8 +36840,8 @@
     "o:id": 23585,
     "Titre": "40 ans AEEMCI",
     "Type": "Événements",
-    "frequency": 3,
-    "first_occurrence": "2016-01-06",
+    "frequency": 5,
+    "first_occurrence": "2015-12-28",
     "last_occurrence": "2016-02-17",
     "countries": "Côte d'Ivoire"
   },
@@ -35787,8 +36849,8 @@
     "o:id": 23593,
     "Titre": "Congrès AJMCI (2015)",
     "Type": "Événements",
-    "frequency": 1,
-    "first_occurrence": "2015-08-26",
+    "frequency": 2,
+    "first_occurrence": "2015-08-16",
     "last_occurrence": "2015-08-26",
     "countries": "Côte d'Ivoire"
   },
@@ -35805,7 +36867,7 @@
     "o:id": 23603,
     "Titre": "Mutineries de 2017 en Côte d'Ivoire",
     "Type": "Événements",
-    "frequency": 10,
+    "frequency": 11,
     "first_occurrence": "2016-12-14",
     "last_occurrence": "2017-09-06",
     "countries": "Côte d'Ivoire"
@@ -35832,7 +36894,7 @@
     "o:id": 23613,
     "Titre": "Congrès AMSCI (2014)",
     "Type": "Événements",
-    "frequency": 3,
+    "frequency": 4,
     "first_occurrence": "2014-04-09",
     "last_occurrence": "2014-05-07",
     "countries": "Côte d'Ivoire"
@@ -36399,7 +37461,7 @@
     "o:id": 73466,
     "Titre": "Élections législatives ivoiriennes de 2016",
     "Type": "Événements",
-    "frequency": 3,
+    "frequency": 4,
     "first_occurrence": "2016-09-13",
     "last_occurrence": "2016-12-14",
     "countries": "Côte d'Ivoire"
@@ -36407,6 +37469,69 @@
   {
     "o:id": 76362,
     "Titre": "Giga Maoulid",
+    "Type": "Événements",
+    "frequency": 1,
+    "first_occurrence": "2021-02-21",
+    "last_occurrence": "2021-02-21",
+    "countries": ""
+  },
+  {
+    "o:id": 76541,
+    "Titre": "Congrès AEEMCI (2018)",
+    "Type": "Événements",
+    "frequency": 1,
+    "first_occurrence": "2019-01-02",
+    "last_occurrence": "2019-01-02",
+    "countries": ""
+  },
+  {
+    "o:id": 76542,
+    "Titre": "Congrès AMSCI (2019)",
+    "Type": "Événements",
+    "frequency": 1,
+    "first_occurrence": "2019-04-22",
+    "last_occurrence": "2019-04-22",
+    "countries": ""
+  },
+  {
+    "o:id": 76543,
+    "Titre": "Congrès CODIS (2019)",
+    "Type": "Événements",
+    "frequency": 1,
+    "first_occurrence": "2019-04-22",
+    "last_occurrence": "2019-04-22",
+    "countries": ""
+  },
+  {
+    "o:id": 76545,
+    "Titre": "Congrès ANAOU (2019)",
+    "Type": "Événements",
+    "frequency": 1,
+    "first_occurrence": "2019-04-22",
+    "last_occurrence": "2019-04-22",
+    "countries": ""
+  },
+  {
+    "o:id": 76546,
+    "Titre": "Élections législatives ivoiriennes de 2021",
+    "Type": "Événements",
+    "frequency": 1,
+    "first_occurrence": "2021-02-21",
+    "last_occurrence": "2021-02-21",
+    "countries": ""
+  },
+  {
+    "o:id": 76722,
+    "Titre": "Congrès AJMCI (2002)",
+    "Type": "Événements",
+    "frequency": 0,
+    "first_occurrence": null,
+    "last_occurrence": null,
+    "countries": ""
+  },
+  {
+    "o:id": 76724,
+    "Titre": "Congrès AMSCI (2002)",
     "Type": "Événements",
     "frequency": 0,
     "first_occurrence": null,
@@ -36417,7 +37542,7 @@
     "o:id": 5,
     "Titre": "Laïcité",
     "Type": "Sujets",
-    "frequency": 498,
+    "frequency": 499,
     "first_occurrence": "1973-08-14",
     "last_occurrence": "2023-03-07",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36435,9 +37560,9 @@
     "o:id": 7,
     "Titre": "Excision",
     "Type": "Sujets",
-    "frequency": 69,
+    "frequency": 72,
     "first_occurrence": "1985-05-30",
-    "last_occurrence": "2020-10-01",
+    "last_occurrence": "2021-01-12",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
@@ -36453,7 +37578,7 @@
     "o:id": 9,
     "Titre": "Jeunesse",
     "Type": "Sujets",
-    "frequency": 574,
+    "frequency": 585,
     "first_occurrence": "1970-05-05",
     "last_occurrence": "2024-06-18",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36462,7 +37587,7 @@
     "o:id": 10,
     "Titre": "Charité",
     "Type": "Sujets",
-    "frequency": 345,
+    "frequency": 397,
     "first_occurrence": "1971-04-09",
     "last_occurrence": "2024-04-09",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36489,7 +37614,7 @@
     "o:id": 13,
     "Titre": "Citoyenneté",
     "Type": "Sujets",
-    "frequency": 58,
+    "frequency": 59,
     "first_occurrence": "1966-09-24",
     "last_occurrence": "2023-04-06",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36507,7 +37632,7 @@
     "o:id": 15,
     "Titre": "Corruption",
     "Type": "Sujets",
-    "frequency": 159,
+    "frequency": 160,
     "first_occurrence": "1973-10-01",
     "last_occurrence": "2025-05-13",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36516,7 +37641,7 @@
     "o:id": 16,
     "Titre": "Covid-19",
     "Type": "Sujets",
-    "frequency": 267,
+    "frequency": 280,
     "first_occurrence": "2013-06-19",
     "last_occurrence": "2023-07-06",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36543,7 +37668,7 @@
     "o:id": 19,
     "Titre": "Ebola",
     "Type": "Sujets",
-    "frequency": 16,
+    "frequency": 17,
     "first_occurrence": "2014-07-29",
     "last_occurrence": "2017-07-25",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -36552,7 +37677,7 @@
     "o:id": 20,
     "Titre": "Finance islamique",
     "Type": "Sujets",
-    "frequency": 55,
+    "frequency": 56,
     "first_occurrence": "1984-10-02",
     "last_occurrence": "2023-02-07",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36606,7 +37731,7 @@
     "o:id": 26,
     "Titre": "Mawlid",
     "Type": "Sujets",
-    "frequency": 263,
+    "frequency": 264,
     "first_occurrence": "1971-05-11",
     "last_occurrence": "2024-09-12",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36615,7 +37740,7 @@
     "o:id": 27,
     "Titre": "Mendicité",
     "Type": "Sujets",
-    "frequency": 99,
+    "frequency": 104,
     "first_occurrence": "1962-07-08",
     "last_occurrence": "2023-06-21",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36633,7 +37758,7 @@
     "o:id": 29,
     "Titre": "Hadj",
     "Type": "Sujets",
-    "frequency": 2079,
+    "frequency": 2094,
     "first_occurrence": "1962-04-29",
     "last_occurrence": "2025-02-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36660,7 +37785,7 @@
     "o:id": 32,
     "Titre": "Ramadan",
     "Type": "Sujets",
-    "frequency": 1322,
+    "frequency": 1321,
     "first_occurrence": "1967-01-21",
     "last_occurrence": "2025-03-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36678,7 +37803,7 @@
     "o:id": 34,
     "Titre": "VIH/Sida",
     "Type": "Sujets",
-    "frequency": 132,
+    "frequency": 136,
     "first_occurrence": "1989-04-05",
     "last_occurrence": "2022-11-04",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36687,7 +37812,7 @@
     "o:id": 35,
     "Titre": "Zakat",
     "Type": "Sujets",
-    "frequency": 299,
+    "frequency": 300,
     "first_occurrence": "1971-11-19",
     "last_occurrence": "2024-04-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36696,10 +37821,10 @@
     "o:id": 36,
     "Titre": "Femmes",
     "Type": "Sujets",
-    "frequency": 529,
+    "frequency": 624,
     "first_occurrence": "1972-01-22",
     "last_occurrence": "2024-03-29",
-    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 37,
@@ -36768,7 +37893,7 @@
     "o:id": 44,
     "Titre": "Pluralisme religieux",
     "Type": "Sujets",
-    "frequency": 1003,
+    "frequency": 1008,
     "first_occurrence": "1964-04-20",
     "last_occurrence": "2024-10-26",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36849,7 +37974,7 @@
     "o:id": 54,
     "Titre": "Construction mosquée",
     "Type": "Sujets",
-    "frequency": 369,
+    "frequency": 368,
     "first_occurrence": "1964-04-20",
     "last_occurrence": "2021-12-27",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36858,7 +37983,7 @@
     "o:id": 55,
     "Titre": "Coopération",
     "Type": "Sujets",
-    "frequency": 872,
+    "frequency": 925,
     "first_occurrence": "1961-04-16",
     "last_occurrence": "2024-06-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -36867,7 +37992,7 @@
     "o:id": 56,
     "Titre": "Enseignement confessionnel islamique",
     "Type": "Sujets",
-    "frequency": 444,
+    "frequency": 449,
     "first_occurrence": "1970-03-25",
     "last_occurrence": "2023-06-07",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -37092,7 +38217,7 @@
     "o:id": 81,
     "Titre": "Pauvreté",
     "Type": "Sujets",
-    "frequency": 456,
+    "frequency": 457,
     "first_occurrence": "1970-02-28",
     "last_occurrence": "2023-10-30",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
@@ -37128,7 +38253,7 @@
     "o:id": 85,
     "Titre": "Hadith",
     "Type": "Sujets",
-    "frequency": 339,
+    "frequency": 340,
     "first_occurrence": "1979-08-22",
     "last_occurrence": "2022-07-08",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -37137,7 +38262,7 @@
     "o:id": 86,
     "Titre": "Prière",
     "Type": "Sujets",
-    "frequency": 2161,
+    "frequency": 2158,
     "first_occurrence": "1962-03-11",
     "last_occurrence": "2024-10-14",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -37146,7 +38271,7 @@
     "o:id": 87,
     "Titre": "Sunnah",
     "Type": "Sujets",
-    "frequency": 184,
+    "frequency": 186,
     "first_occurrence": "1981-04-04",
     "last_occurrence": "2021-07-14",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -37308,7 +38433,7 @@
     "o:id": 105,
     "Titre": "Coran",
     "Type": "Sujets",
-    "frequency": 820,
+    "frequency": 819,
     "first_occurrence": "1970-02-16",
     "last_occurrence": "2024-04-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -37344,7 +38469,7 @@
     "o:id": 109,
     "Titre": "Paix",
     "Type": "Sujets",
-    "frequency": 1898,
+    "frequency": 1895,
     "first_occurrence": "1967-01-14",
     "last_occurrence": "2025-04-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -37353,9 +38478,9 @@
     "o:id": 110,
     "Titre": "Sionisme",
     "Type": "Sujets",
-    "frequency": 17,
+    "frequency": 18,
     "first_occurrence": "1975-07-17",
-    "last_occurrence": "1997-12-12",
+    "last_occurrence": "2002-02-01",
     "countries": "Benin | Burkina Faso | Togo"
   },
   {
@@ -37371,7 +38496,7 @@
     "o:id": 112,
     "Titre": "Pardon",
     "Type": "Sujets",
-    "frequency": 189,
+    "frequency": 188,
     "first_occurrence": "1974-09-18",
     "last_occurrence": "2024-11-17",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -37380,7 +38505,7 @@
     "o:id": 113,
     "Titre": "Réconciliation",
     "Type": "Sujets",
-    "frequency": 584,
+    "frequency": 586,
     "first_occurrence": "1971-05-18",
     "last_occurrence": "2025-04-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
@@ -37398,7 +38523,7 @@
     "o:id": 115,
     "Titre": "Violence",
     "Type": "Sujets",
-    "frequency": 417,
+    "frequency": 418,
     "first_occurrence": "1972-04-08",
     "last_occurrence": "2024-10-26",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -37776,7 +38901,7 @@
     "o:id": 12912,
     "Titre": "Commerce",
     "Type": "Sujets",
-    "frequency": 274,
+    "frequency": 273,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2024-06-11",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -37833,7 +38958,7 @@
     "frequency": 274,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2025-03-15",
-    "countries": "Benin | Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 13796,
@@ -37857,7 +38982,7 @@
     "o:id": 13908,
     "Titre": "Éducation",
     "Type": "Sujets",
-    "frequency": 1295,
+    "frequency": 1303,
     "first_occurrence": "1961-04-16",
     "last_occurrence": "2024-11-04",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -37911,7 +39036,7 @@
     "o:id": 14536,
     "Titre": "Justice",
     "Type": "Sujets",
-    "frequency": 306,
+    "frequency": 307,
     "first_occurrence": "1971-05-22",
     "last_occurrence": "2023-10-25",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -38019,7 +39144,7 @@
     "o:id": 15831,
     "Titre": "Mosquée",
     "Type": "Sujets",
-    "frequency": 1404,
+    "frequency": 1405,
     "first_occurrence": "1970-01-20",
     "last_occurrence": "2025-03-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -38163,7 +39288,7 @@
     "o:id": 23534,
     "Titre": "Émergence",
     "Type": "Sujets",
-    "frequency": 26,
+    "frequency": 28,
     "first_occurrence": "2012-08-11",
     "last_occurrence": "2017-06-27",
     "countries": "Côte d'Ivoire"
@@ -38172,7 +39297,7 @@
     "o:id": 23599,
     "Titre": "Affaire Tariq Ramadan",
     "Type": "Sujets",
-    "frequency": 4,
+    "frequency": 7,
     "first_occurrence": "2018-02-07",
     "last_occurrence": "2018-04-18",
     "countries": "Côte d'Ivoire"
@@ -38199,7 +39324,7 @@
     "o:id": 23701,
     "Titre": "Musique",
     "Type": "Sujets",
-    "frequency": 32,
+    "frequency": 33,
     "first_occurrence": "1970-02-25",
     "last_occurrence": "2019-08-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -38247,7 +39372,7 @@
     "frequency": 7,
     "first_occurrence": "1948-01-01",
     "last_occurrence": "2020-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 25008,
@@ -38283,7 +39408,7 @@
     "frequency": 3,
     "first_occurrence": "1954-01-01",
     "last_occurrence": "2015-01-01",
-    "countries": "Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 25012,
@@ -38436,7 +39561,7 @@
     "frequency": 6,
     "first_occurrence": "1964-01-01",
     "last_occurrence": "2008-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 25029,
@@ -38499,7 +39624,7 @@
     "frequency": 1,
     "first_occurrence": "2002-01-01",
     "last_occurrence": "2002-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25036,
@@ -38553,7 +39678,7 @@
     "frequency": 25,
     "first_occurrence": "1974-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 25042,
@@ -38715,7 +39840,7 @@
     "frequency": 274,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2025-03-15",
-    "countries": "Benin | Burkina Faso | Bénin | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
   },
   {
     "o:id": 25061,
@@ -38724,7 +39849,7 @@
     "frequency": 1,
     "first_occurrence": "2021-01-01",
     "last_occurrence": "2021-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25062,
@@ -38868,7 +39993,7 @@
     "frequency": 20,
     "first_occurrence": "1988-01-01",
     "last_occurrence": "2015-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 25078,
@@ -38877,7 +40002,7 @@
     "frequency": 8,
     "first_occurrence": "2010-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 25079,
@@ -38895,7 +40020,7 @@
     "frequency": 1,
     "first_occurrence": "2014-01-01",
     "last_occurrence": "2014-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25081,
@@ -38904,7 +40029,7 @@
     "frequency": 9,
     "first_occurrence": "1943-01-01",
     "last_occurrence": "2020-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 25082,
@@ -38949,7 +40074,7 @@
     "frequency": 1,
     "first_occurrence": "2022-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25087,
@@ -39057,7 +40182,7 @@
     "frequency": 3,
     "first_occurrence": "1999-01-01",
     "last_occurrence": "2016-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 25099,
@@ -39183,7 +40308,7 @@
     "frequency": 4,
     "first_occurrence": "1981-01-01",
     "last_occurrence": "2018-01-01",
-    "countries": "Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 25113,
@@ -39435,7 +40560,7 @@
     "frequency": 2,
     "first_occurrence": "2022-07-29",
     "last_occurrence": "2023-02-09",
-    "countries": "Bénin | Togo"
+    "countries": "Benin | Togo"
   },
   {
     "o:id": 25141,
@@ -39678,7 +40803,7 @@
     "frequency": 20,
     "first_occurrence": "2004-01-01",
     "last_occurrence": "2019-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Togo"
   },
   {
     "o:id": 25173,
@@ -39741,7 +40866,7 @@
     "frequency": 11,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25181,
@@ -39750,7 +40875,7 @@
     "frequency": 11,
     "first_occurrence": "2023-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25183,
@@ -39777,7 +40902,7 @@
     "frequency": 5,
     "first_occurrence": "2015-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin | Niger"
+    "countries": "Benin | Burkina Faso | Niger"
   },
   {
     "o:id": 25187,
@@ -39831,7 +40956,7 @@
     "frequency": 2,
     "first_occurrence": "1922-01-01",
     "last_occurrence": "1926-01-01",
-    "countries": "Bénin | Côte d'Ivoire"
+    "countries": "Benin | Côte d'Ivoire"
   },
   {
     "o:id": 25193,
@@ -39876,7 +41001,7 @@
     "frequency": 67,
     "first_occurrence": "1993-01-01",
     "last_occurrence": "2022-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Nigeria | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Nigeria | Togo"
   },
   {
     "o:id": 25199,
@@ -39894,7 +41019,7 @@
     "frequency": 10,
     "first_occurrence": "2014-01-01",
     "last_occurrence": "2014-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 25201,
@@ -40002,7 +41127,7 @@
     "frequency": 1,
     "first_occurrence": "1953-01-01",
     "last_occurrence": "1953-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25218,
@@ -40029,7 +41154,7 @@
     "frequency": 27,
     "first_occurrence": "1978-01-01",
     "last_occurrence": "2025-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Nigeria | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Nigeria | Togo"
   },
   {
     "o:id": 25224,
@@ -40083,7 +41208,7 @@
     "frequency": 1,
     "first_occurrence": "1994-01-01",
     "last_occurrence": "1994-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25230,
@@ -40128,7 +41253,7 @@
     "frequency": 10,
     "first_occurrence": "2002-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger | Nigeria | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger | Nigeria | Togo"
   },
   {
     "o:id": 25237,
@@ -40200,7 +41325,7 @@
     "frequency": 8,
     "first_occurrence": "2007-01-01",
     "last_occurrence": "2023-01-01",
-    "countries": "Burkina Faso | Bénin | Côte d'Ivoire | Niger"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Niger"
   },
   {
     "o:id": 25246,
@@ -40209,7 +41334,7 @@
     "frequency": 1,
     "first_occurrence": "1924-01-01",
     "last_occurrence": "1924-01-01",
-    "countries": "Burkina Faso | Bénin"
+    "countries": "Benin | Burkina Faso"
   },
   {
     "o:id": 25247,
@@ -40344,7 +41469,7 @@
     "frequency": 1,
     "first_occurrence": "2007-01-01",
     "last_occurrence": "2007-01-01",
-    "countries": "Bénin"
+    "countries": "Benin"
   },
   {
     "o:id": 25263,
@@ -40539,10 +41664,10 @@
     "o:id": 61328,
     "Titre": "Santé",
     "Type": "Sujets",
-    "frequency": 832,
+    "frequency": 717,
     "first_occurrence": "1970-01-30",
     "last_occurrence": "2024-05-20",
-    "countries": "Benin | Burkina Faso | Côte d'Ivoire | Togo"
+    "countries": "Benin | Burkina Faso | Côte d'Ivoire"
   },
   {
     "o:id": 63372,
@@ -40764,7 +41889,7 @@
     "o:id": 76035,
     "Titre": "Famille",
     "Type": "Sujets",
-    "frequency": 301,
+    "frequency": 300,
     "first_occurrence": "1970-07-27",
     "last_occurrence": "2025-04-28",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40773,7 +41898,7 @@
     "o:id": 76036,
     "Titre": "Racisme",
     "Type": "Sujets",
-    "frequency": 14,
+    "frequency": 15,
     "first_occurrence": "1979-09-28",
     "last_occurrence": "2019-12-26",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40800,7 +41925,7 @@
     "o:id": 76039,
     "Titre": "Solidarité",
     "Type": "Sujets",
-    "frequency": 710,
+    "frequency": 711,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2024-05-20",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40818,7 +41943,7 @@
     "o:id": 76042,
     "Titre": "Conflit",
     "Type": "Sujets",
-    "frequency": 609,
+    "frequency": 610,
     "first_occurrence": "1966-08-27",
     "last_occurrence": "2024-09-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40827,7 +41952,7 @@
     "o:id": 76268,
     "Titre": "Politique",
     "Type": "Sujets",
-    "frequency": 1141,
+    "frequency": 1139,
     "first_occurrence": "1970-02-18",
     "last_occurrence": "2024-09-16",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40836,7 +41961,7 @@
     "o:id": 76269,
     "Titre": "Élections",
     "Type": "Sujets",
-    "frequency": 505,
+    "frequency": 502,
     "first_occurrence": "1975-08-22",
     "last_occurrence": "2025-05-07",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40890,7 +42015,7 @@
     "o:id": 76280,
     "Titre": "Gouvernement",
     "Type": "Sujets",
-    "frequency": 956,
+    "frequency": 951,
     "first_occurrence": "1970-01-20",
     "last_occurrence": "2024-10-20",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40962,7 +42087,7 @@
     "o:id": 76325,
     "Titre": "Cohésion sociale",
     "Type": "Sujets",
-    "frequency": 308,
+    "frequency": 307,
     "first_occurrence": "1972-11-11",
     "last_occurrence": "2025-05-07",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -40980,7 +42105,7 @@
     "o:id": 76327,
     "Titre": "Formation",
     "Type": "Sujets",
-    "frequency": 298,
+    "frequency": 299,
     "first_occurrence": "1976-04-15",
     "last_occurrence": "2024-05-22",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -41034,7 +42159,7 @@
     "o:id": 76333,
     "Titre": "Gouvernance",
     "Type": "Sujets",
-    "frequency": 88,
+    "frequency": 87,
     "first_occurrence": "1980-09-24",
     "last_occurrence": "2023-10-27",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -41052,7 +42177,7 @@
     "o:id": 76340,
     "Titre": "Alimentation",
     "Type": "Sujets",
-    "frequency": 38,
+    "frequency": 39,
     "first_occurrence": "1981-07-07",
     "last_occurrence": "2021-04-15",
     "countries": "Benin | Burkina Faso | Côte d'Ivoire"
@@ -41079,7 +42204,7 @@
     "o:id": 76345,
     "Titre": "Orphelins",
     "Type": "Sujets",
-    "frequency": 16,
+    "frequency": 17,
     "first_occurrence": "1998-09-28",
     "last_occurrence": "2024-04-08",
     "countries": "Benin | Côte d'Ivoire"
@@ -41097,7 +42222,7 @@
     "o:id": 76510,
     "Titre": "Immigration",
     "Type": "Sujets",
-    "frequency": 16,
+    "frequency": 15,
     "first_occurrence": "1982-09-01",
     "last_occurrence": "2017-08-01",
     "countries": "Côte d'Ivoire"

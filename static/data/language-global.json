@@ -2,13 +2,13 @@
   "data": [
     {
       "label": "French",
-      "value": 13796,
-      "percentage": 96.6
+      "value": 14368,
+      "percentage": 96.8
     },
     {
       "label": "English",
       "value": 383,
-      "percentage": 2.7
+      "percentage": 2.6
     },
     {
       "label": "Haoussa",
@@ -22,7 +22,7 @@
     },
     {
       "label": "Unknown",
-      "value": 13,
+      "value": 8,
       "percentage": 0.1
     },
     {
@@ -51,7 +51,7 @@
       "percentage": 0.0
     }
   ],
-  "total": 14277,
+  "total": 14844,
   "languages": 10,
-  "generated_at": "2025-09-30T14:13:07.255992"
+  "generated_at": "2025-11-16T02:35:03.939045"
 }

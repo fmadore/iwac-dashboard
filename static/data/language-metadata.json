@@ -1,5 +1,5 @@
 {
-  "total_records": 14277,
+  "total_records": 14844,
   "languages": {
     "count": 10,
     "values": [
@@ -16,11 +16,10 @@
     ]
   },
   "countries": {
-    "count": 8,
+    "count": 7,
     "values": [
       "Benin",
       "Burkina Faso",
-      "Bénin",
       "Côte D'Ivoire",
       "Niger",
       "Nigeria",
@@ -51,5 +50,5 @@
     "publications",
     "references"
   ],
-  "generated_at": "2025-09-30T14:13:07.273569"
+  "generated_at": "2025-11-16T02:35:03.946780"
 }

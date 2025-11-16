@@ -4,13 +4,8 @@
       "data": [
         {
           "label": "French",
-          "value": 11664,
-          "percentage": 99.8
-        },
-        {
-          "label": "Unknown",
-          "value": 10,
-          "percentage": 0.1
+          "value": 12236,
+          "percentage": 99.9
         },
         {
           "label": "English",
@@ -18,12 +13,17 @@
           "percentage": 0.1
         },
         {
+          "label": "Unknown",
+          "value": 5,
+          "percentage": 0.0
+        },
+        {
           "label": "Dendi",
           "value": 2,
           "percentage": 0.0
         }
       ],
-      "total": 11683,
+      "total": 12250,
       "languages": 4
     },
     "audiovisual": {
@@ -128,5 +128,5 @@
     "publications",
     "references"
   ],
-  "generated_at": "2025-09-30T14:13:07.267780"
+  "generated_at": "2025-11-16T02:35:03.943906"
 }
