@@ -203,8 +203,39 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
+	
+	html {
+		scroll-behavior: smooth;
+	}
+
 	body {
 		@apply bg-background text-foreground;
+		font-feature-settings: "rlig" 1, "calt" 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* Custom Scrollbar - Professional & Minimalist */
+	::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply bg-muted-foreground/20 rounded-full border-2 border-background;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		@apply bg-muted-foreground/40;
+	}
+
+	/* Selection - Brand Consistent */
+	::selection {
+		@apply bg-primary/30 text-foreground;
 	}
 
 	/* Cursor styles for clickable elements */
