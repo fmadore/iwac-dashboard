@@ -132,7 +132,7 @@
 	</div>
 
 	<Card class="p-6">
-		<h3 class="mb-6 text-xl font-semibold">Country Distribution</h3>
+		<h3 class="mb-6 text-xl font-semibold text-muted-foreground">Country Distribution</h3>
 
 		{#if isLoading}
 			<div class="flex h-[600px] w-full items-center justify-center rounded-lg border bg-card">
@@ -220,7 +220,7 @@
 						<h5 class="mb-2 text-sm font-medium text-muted-foreground">Document Types:</h5>
 						<div class="grid grid-cols-2 gap-2 text-xs">
 							{#each selectedNode.data.children.slice(0, 6) as child (child.name)}
-								<div class="flex justify-between rounded bg-background/50 px-2 py-1">
+								<div class="flex justify-between rounded-md bg-background/50 px-2 py-1">
 									<span>{child.name}</span>
 									<span class="font-medium">{child.value || 0}</span>
 								</div>

@@ -275,22 +275,28 @@
 		<div class="grid gap-4 md:grid-cols-3">
 			<Card.Root>
 				<Card.Header class="pb-2">
-					<Card.Description>{t('categories.total_records')}</Card.Description>
-					<Card.Title class="text-3xl">{filteredData()!.total_records.toLocaleString()}</Card.Title>
-				</Card.Header>
-			</Card.Root>
-			<Card.Root>
-				<Card.Header class="pb-2">
-					<Card.Description>{t('categories.year_range')}</Card.Description>
-					<Card.Title class="text-3xl"
-						>{filteredData()!.year_range.min} - {filteredData()!.year_range.max}</Card.Title
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('categories.total_records')}</Card.Title
 					>
+					<div class="text-2xl font-bold">{filteredData()!.total_records.toLocaleString()}</div>
 				</Card.Header>
 			</Card.Root>
 			<Card.Root>
 				<Card.Header class="pb-2">
-					<Card.Description>{t('categories.document_types')}</Card.Description>
-					<Card.Title class="text-3xl">{filteredData()!.series.length}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('categories.year_range')}</Card.Title
+					>
+					<div class="text-2xl font-bold">
+						{filteredData()!.year_range.min} - {filteredData()!.year_range.max}
+					</div>
+				</Card.Header>
+			</Card.Root>
+			<Card.Root>
+				<Card.Header class="pb-2">
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('categories.document_types')}</Card.Title
+					>
+					<div class="text-2xl font-bold">{filteredData()!.series.length}</div>
 				</Card.Header>
 			</Card.Root>
 		</div>

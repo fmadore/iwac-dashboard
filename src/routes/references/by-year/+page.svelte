@@ -86,7 +86,7 @@
 			<div class="grid gap-4 md:grid-cols-3">
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium">Total References</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground">Total References</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">{data.total_records.toLocaleString()}</div>
@@ -95,7 +95,7 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium">Year Range</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground">Year Range</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">
@@ -106,7 +106,7 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium">Reference Types</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground">Reference Types</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">{data.series.length}</div>

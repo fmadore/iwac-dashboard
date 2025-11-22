@@ -226,7 +226,7 @@
 				<Card.Content class="pt-0">
 					<div class="space-y-1">
 						{#each filteredChartData() as item, index}
-							<div class="flex items-center justify-between rounded border p-2 text-sm">
+							<div class="flex items-center justify-between rounded-md border p-2 text-sm">
 								<div class="flex items-center gap-2">
 									<div
 										class="h-3 w-3 flex-shrink-0 rounded-full"

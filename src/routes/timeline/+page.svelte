@@ -246,7 +246,7 @@
 		<div class="grid gap-4 md:grid-cols-3">
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium">{t('timeline.total_records')}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground">{t('timeline.total_records')}</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">{activeData.total_records.toLocaleString()}</div>
@@ -255,7 +255,7 @@
 
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium">{t('timeline.month_range')}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground">{t('timeline.month_range')}</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">
@@ -266,7 +266,7 @@
 
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium">{t('timeline.monthly_additions')}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground">{t('timeline.monthly_additions')}</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">

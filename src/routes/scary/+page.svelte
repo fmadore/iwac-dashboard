@@ -686,23 +686,23 @@
 		<!-- Metrics -->
 		{#if metadata}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-				<Card.Root class="p-4">
+				<Card.Root class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.total_articles')}</h3>
 					<div class="text-2xl font-bold">{metadata.total_articles.toLocaleString()}</div>
-					<p class="text-xs text-muted-foreground">{t('scary.total_articles')}</p>
 				</Card.Root>
-				<Card.Root class="p-4">
+				<Card.Root class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.term_families')}</h3>
 					<div class="text-2xl font-bold">{metadata.term_families_count}</div>
-					<p class="text-xs text-muted-foreground">{t('scary.term_families')}</p>
 				</Card.Root>
-				<Card.Root class="p-4">
+				<Card.Root class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.term_variants')}</h3>
 					<div class="text-2xl font-bold">{metadata.total_variants}</div>
-					<p class="text-xs text-muted-foreground">{t('scary.term_variants')}</p>
 				</Card.Root>
-				<Card.Root class="p-4">
+				<Card.Root class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.total_occurrences')}</h3>
 					<div class="text-2xl font-bold">
 						{(globalData?.total_occurrences ?? 0).toLocaleString()}
 					</div>
-					<p class="text-xs text-muted-foreground">{t('scary.total_occurrences')}</p>
 				</Card.Root>
 			</div>
 		{/if}

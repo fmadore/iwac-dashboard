@@ -93,7 +93,7 @@
 			<div class="grid gap-4 md:grid-cols-3">
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium">Total Authors</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground">Total Authors</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">
@@ -104,7 +104,7 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium">Total Publications</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground">Total Publications</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">
@@ -116,7 +116,7 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium">Avg Publications per Author</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground">Avg Publications per Author</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">

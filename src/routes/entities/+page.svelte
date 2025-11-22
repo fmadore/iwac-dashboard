@@ -85,7 +85,7 @@
 		</p>
 	</div>
 
-	<Card class="p-4">
+	<Card class="p-6">
 		{#if isLoading}
 			<div class="grid h-96 place-items-center text-sm text-muted-foreground">
 				{t('common.loading')}

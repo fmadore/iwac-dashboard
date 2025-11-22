@@ -247,21 +247,21 @@
 		<!-- Metrics -->
 		{#if currentMetrics}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-				<Card class="p-4">
+				<Card class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.articles')}</h3>
 					<div class="text-2xl font-bold">{currentMetrics.total_articles.toLocaleString()}</div>
-					<p class="text-xs text-muted-foreground">{t('words.articles')}</p>
 				</Card>
-				<Card class="p-4">
+				<Card class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.total_words')}</h3>
 					<div class="text-2xl font-bold">{currentMetrics.total_words.toLocaleString()}</div>
-					<p class="text-xs text-muted-foreground">{t('words.total_words')}</p>
 				</Card>
-				<Card class="p-4">
+				<Card class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.unique_words')}</h3>
 					<div class="text-2xl font-bold">{currentMetrics.unique_words.toLocaleString()}</div>
-					<p class="text-xs text-muted-foreground">{t('words.unique_words')}</p>
 				</Card>
-				<Card class="p-4">
+				<Card class="p-6">
+					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.displayed_words')}</h3>
 					<div class="text-2xl font-bold">{currentData.length}</div>
-					<p class="text-xs text-muted-foreground">{t('words.displayed_words')}</p>
 				</Card>
 			</div>
 		{/if}
@@ -311,7 +311,7 @@
 
 				{#if currentData.length > 0}
 					<div class="mt-6">
-						<h4 class="mb-3 text-sm font-medium">{t('words.top_words')}</h4>
+						<h4 class="mb-3 text-sm font-medium text-muted-foreground">{t('words.top_words')}</h4>
 						<div class="flex flex-wrap gap-2">
 							{#each currentData.slice(0, 20) as [word, frequency] (`${word}-${frequency}`)}
 								<Badge variant="outline" class="text-xs">
