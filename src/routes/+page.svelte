@@ -42,7 +42,7 @@
 		<OverviewStatsGrid {summary} />
 
 		<Card class="p-6">
-			<h3 class="mb-4 text-lg font-semibold">{t('overview.recent_items')}</h3>
+			<h3 class="text-lg font-semibold">{t('overview.recent_items')}</h3>
 			{#if recentItems.length > 0}
 				<div class="space-y-2">
 					{#each recentItems as item (`${item.title}-${item.country}-${item.created_date}`)}

@@ -17,7 +17,7 @@
 
 <Card class="p-6">
 	<div class="flex flex-row items-center justify-between space-y-0 pb-2">
-		<h3 class="text-sm font-medium">{title}</h3>
+		<h3 class="text-sm font-medium text-muted-foreground">{title}</h3>
 		{#if trend}
 			<Badge variant="secondary" class="text-xs">
 				{trend}
