@@ -48,7 +48,7 @@
 					</div>
 					<div class="grid flex-1 text-left text-sm leading-tight">
 						<span class="truncate font-semibold">{t('app.title')}</span>
-						<span class="truncate text-xs">{t('app.subtitle')}</span>
+						<span class="truncate text-xs text-sidebar-foreground/70">{t('app.subtitle')}</span>
 					</div>
 				</Sidebar.MenuButton>
 			</Sidebar.MenuItem>

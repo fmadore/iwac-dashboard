@@ -14,7 +14,7 @@
 <div class="space-y-8">
 	<!-- Primary Statistics -->
 	<div>
-		<h2 class="mb-4 text-xl font-semibold">{t('overview.primary_stats')}</h2>
+		<h2 class="mb-4 text-xl font-semibold tracking-tight">{t('overview.primary_stats')}</h2>
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			<StatsCard
 				title={t('stats.total_items')}
@@ -41,7 +41,7 @@
 
 	<!-- Content Statistics -->
 	<div>
-		<h2 class="mb-4 text-xl font-semibold">{t('overview.content_stats')}</h2>
+		<h2 class="mb-4 text-xl font-semibold tracking-tight">{t('overview.content_stats')}</h2>
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 			<StatsCard
 				title={t('overview.total_words')}

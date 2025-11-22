@@ -43,19 +43,26 @@
 		round: true,
 		colors: {
 			scheme: [
-				// Use D3's Set2 scheme - great for distinct categories
-				...schemeSet2,
-				// Add more colors from other schemes if needed
-				...schemeTableau10.slice(0, 3),
-				// Fallback to design system colors
+				// Use theme colors first
 				'var(--chart-1)',
 				'var(--chart-2)',
 				'var(--chart-3)',
 				'var(--chart-4)',
 				'var(--chart-5)',
-				'var(--primary)',
-				'var(--secondary)',
-				'var(--accent)'
+				'var(--chart-6)',
+				'var(--chart-7)',
+				'var(--chart-8)',
+				'var(--chart-9)',
+				'var(--chart-10)',
+				'var(--chart-11)',
+				'var(--chart-12)',
+				'var(--chart-13)',
+				'var(--chart-14)',
+				'var(--chart-15)',
+				'var(--chart-16)',
+				// Fallback to D3 schemes for additional variety if needed
+				...schemeSet2,
+				...schemeTableau10
 			],
 			background: 'var(--card)',
 			border: 'var(--border)',
