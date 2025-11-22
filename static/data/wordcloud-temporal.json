@@ -15876,71 +15876,71 @@
     "data": [
       [
         "musulman",
-        614
+        604
       ],
       [
         "président",
-        278
+        271
       ],
       [
         "hadj",
-        273
+        268
       ],
       [
         "dieu",
-        214
+        211
       ],
       [
         "communauté",
-        205
-      ],
-      [
-        "imam",
-        180
+        201
       ],
       [
         "religieux",
-        178
-      ],
-      [
-        "ministre",
-        178
-      ],
-      [
-        "prière",
         176
       ],
       [
-        "paix",
+        "imam",
         175
       ],
       [
-        "devoir",
-        173
+        "prière",
+        174
       ],
       [
-        "mosquée",
+        "paix",
+        172
+      ],
+      [
+        "devoir",
+        171
+      ],
+      [
+        "ministre",
         171
       ],
       [
         "luire",
-        169
+        165
       ],
       [
-        "islamique",
-        162
+        "mosquée",
+        163
       ],
       [
         "national",
-        161
+        160
       ],
       [
         "pèlerin",
         160
       ],
       [
+        "islamique",
+        159
+      ],
+      [
         "mois",
-        158
+        157
       ],
       [
         "fidèle",
@@ -15952,7 +15952,7 @@
       ],
       [
         "chef",
-        149
+        144
       ],
       [
         "burkina",
@@ -15960,15 +15960,15 @@
       ],
       [
         "entrer",
-        134
-      ],
-      [
-        "etat",
-        129
+        133
       ],
       [
         "togo",
         127
+      ],
+      [
+        "etat",
+        124
       ],
       [
         "ramadan",
@@ -15984,15 +15984,15 @@
       ],
       [
         "gouvernement",
-        105
-      ],
-      [
-        "organisation",
-        105
+        103
       ],
       [
         "ivoire",
-        104
+        102
+      ],
+      [
+        "organisation",
+        101
       ],
       [
         "permettre",
@@ -16004,47 +16004,47 @@
       ],
       [
         "conseil",
-        95
-      ],
-      [
-        "général",
-        94
+        93
       ],
       [
         "fête",
         92
       ],
       [
-        "côte",
-        91
+        "général",
+        89
       ],
       [
-        "association",
+        "côte",
         89
       ],
       [
         "allah",
-        89
-      ],
-      [
-        "population",
         88
       ],
       [
-        "demander",
-        85
+        "association",
+        87
+      ],
+      [
+        "population",
+        87
       ],
       [
         "homme",
         84
       ],
       [
-        "enfant",
+        "vie",
         84
       ],
       [
-        "vie",
-        84
+        "demander",
+        83
+      ],
+      [
+        "enfant",
+        82
       ],
       [
         "lomé",
@@ -16060,35 +16060,35 @@
       ],
       [
         "donner",
-        80
-      ],
-      [
-        "ouagadougou",
-        77
-      ],
-      [
-        "occasion",
-        77
-      ],
-      [
-        "vendredi",
-        77
+        78
       ],
       [
         "centre",
         77
       ],
       [
+        "ouagadougou",
+        76
+      ],
+      [
+        "occasion",
+        76
+      ],
+      [
+        "vendredi",
+        76
+      ],
+      [
         "togolais",
         76
       ],
       [
-        "prier",
+        "membre",
         74
       ],
       [
-        "membre",
-        74
+        "prier",
+        73
       ],
       [
         "cheick",
@@ -16123,10 +16123,6 @@
         67
       ],
       [
-        "république",
-        67
-      ],
-      [
         "saint",
         66
       ],
@@ -16135,7 +16131,7 @@
         65
       ],
       [
-        "mettre",
+        "république",
         65
       ],
       [
@@ -16143,16 +16139,20 @@
         64
       ],
       [
-        "cérémonie",
+        "mettre",
         64
+      ],
+      [
+        "cérémonie",
+        63
       ],
       [
         "directeur",
-        64
+        63
       ],
       [
         "responsable",
-        62
+        61
       ],
       [
         "jeune",
@@ -16175,39 +16175,31 @@
         59
       ],
       [
-        "travers",
-        59
-      ],
-      [
         "sou",
         58
       ],
       [
-        "organiser",
+        "travers",
         58
-      ],
-      [
-        "famille",
-        57
-      ],
-      [
-        "novembre",
-        56
       ],
       [
         "présence",
         56
       ],
       [
+        "novembre",
+        55
+      ],
+      [
         "agir",
-        56
+        55
+      ],
+      [
+        "famille",
+        55
       ],
       [
         "pèlerinage",
-        56
-      ],
-      [
-        "don",
         55
       ],
       [
@@ -16215,7 +16207,7 @@
         55
       ],
       [
-        "père",
+        "organiser",
         54
       ],
       [
@@ -16223,8 +16215,8 @@
         54
       ],
       [
-        "région",
-        54
+        "don",
+        53
       ],
       [
         "prix",
@@ -16243,19 +16235,15 @@
         52
       ],
       [
-        "nom",
+        "région",
         52
       ],
       [
+        "père",
+        51
+      ],
+      [
         "passer",
-        51
-      ],
-      [
-        "bénédiction",
-        51
-      ],
-      [
-        "non",
         51
       ],
       [
@@ -16263,7 +16251,7 @@
         51
       ],
       [
-        "social",
+        "nom",
         51
       ],
       [
@@ -16273,25 +16261,37 @@
       [
         "sang",
         50
+      ],
+      [
+        "coranique",
+        50
+      ],
+      [
+        "ensemble",
+        50
+      ],
+      [
+        "social",
+        50
       ]
     ],
-    "total_articles": 178,
-    "total_words": 39779,
+    "total_articles": 174,
+    "total_words": 39358,
     "unique_words": 6725
   },
   "2010": {
     "data": [
       [
         "musulman",
-        624
+        622
       ],
       [
         "hadj",
-        273
+        271
       ],
       [
         "président",
-        244
+        243
       ],
       [
         "communauté",
@@ -16307,7 +16307,7 @@
       ],
       [
         "imam",
-        196
+        195
       ],
       [
         "fidèle",
@@ -16315,35 +16315,35 @@
       ],
       [
         "paix",
-        193
+        191
       ],
       [
         "prière",
-        187
+        183
       ],
       [
         "organisation",
         180
       ],
       [
-        "luire",
-        171
-      ],
-      [
         "religieux",
         170
       ],
       [
-        "islam",
+        "luire",
         170
       ],
       [
+        "islam",
+        169
+      ],
+      [
         "devoir",
-        166
+        165
       ],
       [
         "ministre",
-        164
+        163
       ],
       [
         "pèlerin",
@@ -16351,7 +16351,7 @@
       ],
       [
         "fête",
-        153
+        152
       ],
       [
         "entrer",
@@ -16359,7 +16359,7 @@
       ],
       [
         "mosquée",
-        150
+        149
       ],
       [
         "etat",
@@ -16383,11 +16383,11 @@
       ],
       [
         "jeûne",
-        124
+        123
       ],
       [
         "mois",
-        122
+        120
       ],
       [
         "religion",
@@ -16407,7 +16407,7 @@
       ],
       [
         "école",
-        104
+        103
       ],
       [
         "coran",
@@ -16418,16 +16418,16 @@
         98
       ],
       [
-        "ramadan",
-        97
-      ],
-      [
         "bénin",
         97
       ],
       [
         "cheick",
         95
+      ],
+      [
+        "ramadan",
+        94
       ],
       [
         "femme",
@@ -16526,11 +16526,11 @@
         69
       ],
       [
-        "vie",
-        69
+        "cérémonie",
+        68
       ],
       [
-        "cérémonie",
+        "vie",
         68
       ],
       [
@@ -16550,10 +16550,6 @@
         65
       ],
       [
-        "membre",
-        65
-      ],
-      [
         "conseil",
         65
       ],
@@ -16562,23 +16558,23 @@
         65
       ],
       [
-        "nom",
-        62
+        "membre",
+        64
       ],
       [
-        "soutenir",
-        61
+        "nom",
+        62
       ],
       [
         "mouton",
         60
       ],
       [
-        "organiser",
-        59
+        "soutenir",
+        60
       ],
       [
-        "part",
+        "organiser",
         59
       ],
       [
@@ -16595,6 +16591,10 @@
       ],
       [
         "présence",
+        58
+      ],
+      [
+        "part",
         58
       ],
       [
@@ -16618,16 +16618,8 @@
         57
       ],
       [
-        "formation",
-        55
-      ],
-      [
         "ville",
         55
-      ],
-      [
-        "prochain",
-        54
       ],
       [
         "arabie",
@@ -16644,10 +16636,6 @@
       [
         "aucun",
         54
-      ],
-      [
-        "allah",
-        53
       ],
       [
         "compte",
@@ -16670,7 +16658,15 @@
         53
       ],
       [
-        "passer",
+        "allah",
+        52
+      ],
+      [
+        "formation",
+        52
+      ],
+      [
+        "prochain",
         52
       ],
       [
@@ -16680,11 +16676,15 @@
       [
         "sawadogo",
         52
+      ],
+      [
+        "inviter",
+        51
       ]
     ],
-    "total_articles": 182,
-    "total_words": 41014,
-    "unique_words": 6698
+    "total_articles": 181,
+    "total_words": 40874,
+    "unique_words": 6696
   },
   "2011": {
     "data": [
@@ -17105,7 +17105,7 @@
       ],
       [
         "devoir",
-        427
+        426
       ],
       [
         "dieu",
@@ -17172,24 +17172,24 @@
         229
       ],
       [
-        "islamique",
-        223
-      ],
-      [
         "pèlerin",
         221
+      ],
+      [
+        "islamique",
+        220
       ],
       [
         "femme",
         214
       ],
       [
-        "national",
-        202
+        "président",
+        198
       ],
       [
-        "président",
-        199
+        "national",
+        197
       ],
       [
         "prophète",
@@ -17213,11 +17213,11 @@
       ],
       [
         "celer",
-        165
+        164
       ],
       [
         "etat",
-        165
+        164
       ],
       [
         "jeûne",
@@ -17245,11 +17245,11 @@
       ],
       [
         "enfant",
-        153
+        151
       ],
       [
         "ministre",
-        145
+        144
       ],
       [
         "association",
@@ -17277,7 +17277,7 @@
       ],
       [
         "donner",
-        122
+        121
       ],
       [
         "acte",
@@ -17292,16 +17292,16 @@
         119
       ],
       [
-        "chef",
-        119
-      ],
-      [
         "mettre",
         119
       ],
       [
         "famille",
         118
+      ],
+      [
+        "chef",
+        117
       ],
       [
         "mouton",
@@ -17324,10 +17324,6 @@
         104
       ],
       [
-        "école",
-        103
-      ],
-      [
         "ouédraogo",
         101
       ],
@@ -17338,6 +17334,10 @@
       [
         "pratique",
         100
+      ],
+      [
+        "école",
+        99
       ],
       [
         "foi",
@@ -17364,11 +17364,11 @@
         95
       ],
       [
-        "ivoire",
-        95
+        "vendredi",
+        94
       ],
       [
-        "vendredi",
+        "ivoire",
         94
       ],
       [
@@ -17377,7 +17377,7 @@
       ],
       [
         "côte",
-        92
+        91
       ],
       [
         "cheick",
@@ -17388,11 +17388,11 @@
         90
       ],
       [
-        "agir",
-        90
+        "loi",
+        89
       ],
       [
-        "loi",
+        "agir",
         89
       ],
       [
@@ -17409,7 +17409,7 @@
       ],
       [
         "formation",
-        86
+        85
       ],
       [
         "demander",
@@ -17456,10 +17456,6 @@
         78
       ],
       [
-        "porter",
-        78
-      ],
-      [
         "forum",
         78
       ],
@@ -17468,12 +17464,16 @@
         77
       ],
       [
+        "porter",
+        77
+      ],
+      [
         "solidarité",
         77
       ],
       [
         "responsable",
-        76
+        75
       ],
       [
         "aucun",
@@ -17496,15 +17496,15 @@
         74
       ]
     ],
-    "total_articles": 225,
-    "total_words": 58138,
+    "total_articles": 224,
+    "total_words": 57978,
     "unique_words": 7622
   },
   "2013": {
     "data": [
       [
         "musulman",
-        1366
+        1369
       ],
       [
         "burkina",
@@ -17544,23 +17544,23 @@
       ],
       [
         "paix",
-        467
+        469
       ],
       [
         "président",
-        453
+        454
       ],
       [
         "luire",
         442
       ],
       [
-        "islamique",
-        434
+        "prière",
+        435
       ],
       [
-        "prière",
-        433
+        "islamique",
+        434
       ],
       [
         "organisation",
@@ -17588,7 +17588,7 @@
       ],
       [
         "entrer",
-        367
+        368
       ],
       [
         "prophète",
@@ -17608,11 +17608,11 @@
       ],
       [
         "ministre",
-        338
+        339
       ],
       [
         "fête",
-        316
+        317
       ],
       [
         "celer",
@@ -17635,12 +17635,12 @@
         271
       ],
       [
-        "mosquée",
-        262
+        "femme",
+        266
       ],
       [
-        "femme",
-        260
+        "mosquée",
+        263
       ],
       [
         "ouagadougou",
@@ -17652,11 +17652,11 @@
       ],
       [
         "coran",
-        245
+        247
       ],
       [
         "association",
-        237
+        238
       ],
       [
         "donner",
@@ -17680,11 +17680,11 @@
       ],
       [
         "mettre",
-        222
+        223
       ],
       [
         "général",
-        219
+        220
       ],
       [
         "saint",
@@ -17708,7 +17708,7 @@
       ],
       [
         "autorité",
-        200
+        201
       ],
       [
         "passer",
@@ -17724,7 +17724,7 @@
       ],
       [
         "enfant",
-        178
+        179
       ],
       [
         "occasion",
@@ -17748,7 +17748,7 @@
       ],
       [
         "sou",
-        166
+        167
       ],
       [
         "population",
@@ -17812,7 +17812,7 @@
       ],
       [
         "prier",
-        141
+        142
       ],
       [
         "beaucoup",
@@ -17832,6 +17832,10 @@
       ],
       [
         "cfa",
+        134
+      ],
+      [
+        "cheick",
         133
       ],
       [
@@ -17841,10 +17845,6 @@
       [
         "souhaiter",
         133
-      ],
-      [
-        "cheick",
-        132
       ],
       [
         "directeur",
@@ -17887,6 +17887,10 @@
         124
       ],
       [
+        "ensemble",
+        121
+      ],
+      [
         "penser",
         121
       ],
@@ -17895,17 +17899,13 @@
         121
       ],
       [
-        "ensemble",
-        120
-      ],
-      [
         "intérêt",
         120
       ]
     ],
-    "total_articles": 344,
-    "total_words": 103239,
-    "unique_words": 9943
+    "total_articles": 345,
+    "total_words": 103367,
+    "unique_words": 9951
   },
   "2014": {
     "data": [
@@ -18318,7 +18318,7 @@
     "data": [
       [
         "musulman",
-        1378
+        1375
       ],
       [
         "burkina",
@@ -18326,15 +18326,15 @@
       ],
       [
         "devoir",
-        584
+        583
       ],
       [
         "communauté",
-        542
+        540
       ],
       [
         "président",
-        467
+        466
       ],
       [
         "hadj",
@@ -18342,15 +18342,15 @@
       ],
       [
         "prière",
-        436
+        435
       ],
       [
         "paix",
-        426
+        423
       ],
       [
         "islam",
-        425
+        422
       ],
       [
         "dieu",
@@ -18370,7 +18370,7 @@
       ],
       [
         "allah",
-        370
+        369
       ],
       [
         "faso",
@@ -18386,7 +18386,7 @@
       ],
       [
         "imam",
-        324
+        321
       ],
       [
         "religieux",
@@ -18394,7 +18394,7 @@
       ],
       [
         "mois",
-        315
+        314
       ],
       [
         "fête",
@@ -18402,11 +18402,11 @@
       ],
       [
         "luire",
-        301
+        299
       ],
       [
         "ministre",
-        292
+        291
       ],
       [
         "jeûne",
@@ -18430,7 +18430,7 @@
       ],
       [
         "mosquée",
-        248
+        247
       ],
       [
         "bénin",
@@ -18446,19 +18446,19 @@
       ],
       [
         "chef",
-        240
+        238
       ],
       [
         "homme",
-        230
+        228
       ],
       [
         "etat",
-        229
+        228
       ],
       [
         "général",
-        225
+        224
       ],
       [
         "association",
@@ -18502,7 +18502,7 @@
       ],
       [
         "coran",
-        184
+        182
       ],
       [
         "mecque",
@@ -18510,7 +18510,7 @@
       ],
       [
         "saint",
-        177
+        176
       ],
       [
         "donner",
@@ -18522,7 +18522,7 @@
       ],
       [
         "non",
-        169
+        168
       ],
       [
         "togo",
@@ -18577,10 +18577,6 @@
         149
       ],
       [
-        "élection",
-        149
-      ],
-      [
         "passer",
         146
       ],
@@ -18589,16 +18585,20 @@
         146
       ],
       [
+        "élection",
+        146
+      ],
+      [
         "centre",
         143
       ],
       [
-        "conseil",
+        "appeler",
         141
       ],
       [
-        "appeler",
-        141
+        "conseil",
+        140
       ],
       [
         "ouagadougou",
@@ -18629,32 +18629,32 @@
         132
       ],
       [
-        "nom",
-        131
-      ],
-      [
         "directeur",
         131
       ],
       [
-        "souhaiter",
+        "nom",
         130
+      ],
+      [
+        "souhaiter",
+        129
       ],
       [
         "tabaski",
         129
       ],
       [
-        "sécurité",
-        128
-      ],
-      [
         "ville",
         128
       ],
       [
-        "nuit",
+        "sécurité",
         127
+      ],
+      [
+        "nuit",
+        122
       ],
       [
         "valeur",
@@ -18677,16 +18677,16 @@
         117
       ],
       [
-        "prochain",
+        "délégation",
         116
+      ],
+      [
+        "prochain",
+        115
       ],
       [
         "part",
-        116
-      ],
-      [
-        "délégation",
-        116
+        115
       ],
       [
         "dialogue",
@@ -18705,20 +18705,20 @@
         114
       ],
       [
-        "rappeler",
-        113
-      ],
-      [
         "situation",
         112
       ],
       [
-        "octobre",
+        "rappeler",
+        112
+      ],
+      [
+        "agir",
         112
       ]
     ],
-    "total_articles": 421,
-    "total_words": 93258,
+    "total_articles": 420,
+    "total_words": 93076,
     "unique_words": 9797
   },
   "2016": {
@@ -19132,7 +19132,7 @@
     "data": [
       [
         "musulman",
-        1656
+        1653
       ],
       [
         "devoir",
@@ -19140,15 +19140,15 @@
       ],
       [
         "paix",
-        815
+        814
       ],
       [
         "communauté",
-        811
+        810
       ],
       [
         "président",
-        798
+        794
       ],
       [
         "burkina",
@@ -19156,39 +19156,39 @@
       ],
       [
         "imam",
-        672
+        669
       ],
       [
         "religieux",
-        668
+        664
       ],
       [
         "prière",
-        604
+        597
       ],
       [
         "national",
-        573
+        572
       ],
       [
         "mosquée",
-        571
+        567
       ],
       [
         "entrer",
-        558
-      ],
-      [
-        "luire",
-        556
+        557
       ],
       [
         "faso",
         555
       ],
       [
+        "luire",
+        554
+      ],
+      [
         "ministre",
-        535
+        534
       ],
       [
         "islamique",
@@ -19196,27 +19196,27 @@
       ],
       [
         "islam",
-        515
+        514
       ],
       [
         "sécurité",
         505
       ],
       [
-        "fidèle",
-        475
-      ],
-      [
         "religion",
         474
       ],
       [
+        "fidèle",
+        471
+      ],
+      [
         "hadj",
-        466
+        460
       ],
       [
         "dieu",
-        461
+        460
       ],
       [
         "population",
@@ -19228,7 +19228,7 @@
       ],
       [
         "mois",
-        426
+        425
       ],
       [
         "etat",
@@ -19252,7 +19252,7 @@
       ],
       [
         "homme",
-        379
+        375
       ],
       [
         "attaque",
@@ -19276,15 +19276,15 @@
       ],
       [
         "celer",
-        359
+        358
       ],
       [
         "côte",
-        355
+        351
       ],
       [
         "ivoire",
-        355
+        351
       ],
       [
         "permettre",
@@ -19331,20 +19331,20 @@
         290
       ],
       [
-        "allah",
-        288
-      ],
-      [
         "ensemble",
         287
       ],
       [
-        "donner",
-        281
+        "allah",
+        287
       ],
       [
         "région",
-        280
+        279
+      ],
+      [
+        "donner",
+        279
       ],
       [
         "vivre",
@@ -19352,7 +19352,7 @@
       ],
       [
         "prier",
-        267
+        266
       ],
       [
         "occasion",
@@ -19376,7 +19376,7 @@
       ],
       [
         "nuit",
-        236
+        235
       ],
       [
         "famille",
@@ -19388,10 +19388,6 @@
       ],
       [
         "membre",
-        222
-      ],
-      [
-        "jeune",
         219
       ],
       [
@@ -19411,6 +19407,10 @@
         214
       ],
       [
+        "jeune",
+        214
+      ],
+      [
         "agir",
         213
       ],
@@ -19420,7 +19420,7 @@
       ],
       [
         "sou",
-        208
+        207
       ],
       [
         "loi",
@@ -19451,19 +19451,19 @@
         195
       ],
       [
-        "femme",
-        194
-      ],
-      [
         "part",
-        193
+        192
       ],
       [
         "face",
-        193
+        192
       ],
       [
         "souhaiter",
+        190
+      ],
+      [
+        "femme",
         190
       ],
       [
@@ -19475,12 +19475,12 @@
         188
       ],
       [
-        "entendre",
+        "inviter",
         188
       ],
       [
-        "inviter",
-        188
+        "entendre",
+        187
       ],
       [
         "responsable",
@@ -19516,23 +19516,23 @@
       ],
       [
         "centre",
-        179
+        178
       ],
       [
         "organiser",
         178
       ],
       [
-        "prophète",
-        178
+        "prochain",
+        177
       ],
       [
-        "prochain",
+        "prophète",
         177
       ]
     ],
-    "total_articles": 604,
-    "total_words": 148522,
+    "total_articles": 601,
+    "total_words": 148144,
     "unique_words": 11946
   },
   "2018": {

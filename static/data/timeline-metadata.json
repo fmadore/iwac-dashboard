@@ -1,21 +1,20 @@
 {
-  "total_records": 14217,
-  "unique_months": 14,
+  "total_records": 14784,
+  "unique_months": 15,
   "month_range": {
     "min": "2024-03",
-    "max": "2025-09"
+    "max": "2025-11"
   },
   "countries": [
     "Benin",
     "Burkina Faso",
-    "Bénin",
     "Côte D'Ivoire",
     "Niger",
     "Nigeria",
     "Togo",
     "Unknown"
   ],
-  "country_count": 8,
+  "country_count": 7,
   "types": [
     "Audiovisuel",
     "Document",
@@ -25,7 +24,7 @@
   ],
   "type_count": 5,
   "subset_counts": {
-    "articles": 11683,
+    "articles": 12250,
     "audiovisual": 45,
     "documents": 26,
     "publications": 1501,
@@ -38,5 +37,5 @@
     "publications",
     "references"
   ],
-  "generated_at": "2025-09-30T14:13:58.337161"
+  "generated_at": "2025-11-16T02:35:25.043688"
 }

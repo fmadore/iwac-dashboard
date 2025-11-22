@@ -35,17 +35,27 @@
       "data": [
         {
           "label": "French",
-          "value": 2136,
-          "percentage": 99.9
+          "value": 2201,
+          "percentage": 98.5
+        },
+        {
+          "label": "English",
+          "value": 30,
+          "percentage": 1.3
         },
         {
           "label": "Dendi",
           "value": 2,
           "percentage": 0.1
+        },
+        {
+          "label": "German",
+          "value": 1,
+          "percentage": 0.0
         }
       ],
-      "total": 2138,
-      "languages": 2
+      "total": 2234,
+      "languages": 4
     },
     "Togo": {
       "data": [
@@ -77,21 +87,21 @@
       "data": [
         {
           "label": "French",
-          "value": 4361,
-          "percentage": 98.2
+          "value": 4706,
+          "percentage": 98.5
         },
         {
           "label": "English",
           "value": 69,
-          "percentage": 1.6
+          "percentage": 1.4
         },
         {
           "label": "Unknown",
-          "value": 12,
-          "percentage": 0.3
+          "value": 5,
+          "percentage": 0.1
         }
       ],
-      "total": 4442,
+      "total": 4780,
       "languages": 3
     },
     "Niger": {
@@ -119,6 +129,27 @@
       ],
       "total": 1288,
       "languages": 4
+    },
+    "Unknown": {
+      "data": [
+        {
+          "label": "French",
+          "value": 231,
+          "percentage": 95.5
+        },
+        {
+          "label": "English",
+          "value": 9,
+          "percentage": 3.7
+        },
+        {
+          "label": "Unknown",
+          "value": 2,
+          "percentage": 0.8
+        }
+      ],
+      "total": 242,
+      "languages": 3
     },
     "Nigeria": {
       "data": [
@@ -150,54 +181,16 @@
       ],
       "total": 111,
       "languages": 5
-    },
-    "Unknown": {
-      "data": [
-        {
-          "label": "English",
-          "value": 9,
-          "percentage": 69.2
-        },
-        {
-          "label": "French",
-          "value": 4,
-          "percentage": 30.8
-        }
-      ],
-      "total": 13,
-      "languages": 2
-    },
-    "Bénin": {
-      "data": [
-        {
-          "label": "French",
-          "value": 65,
-          "percentage": 67.7
-        },
-        {
-          "label": "English",
-          "value": 30,
-          "percentage": 31.2
-        },
-        {
-          "label": "German",
-          "value": 1,
-          "percentage": 1.0
-        }
-      ],
-      "total": 96,
-      "languages": 3
     }
   },
   "countries": [
     "Benin",
     "Burkina Faso",
-    "Bénin",
     "Côte D'Ivoire",
     "Niger",
     "Nigeria",
     "Togo",
     "Unknown"
   ],
-  "generated_at": "2025-09-30T14:13:07.261965"
+  "generated_at": "2025-11-16T02:35:03.941630"
 }

@@ -1,21 +1,21 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-11-11T11:47:38.861861",
+    "generated_at": "2025-11-16T02:34:21.471460",
     "script_version": "1.0"
   },
   "summary": {
-    "total_items": 14119,
-    "total_words": 26203064,
-    "total_pages": 23738,
+    "total_items": 14686,
+    "total_words": 26585628,
+    "total_pages": 24003,
     "total_duration_minutes": 9315,
     "countries": 6,
     "languages": 9,
     "types": 16,
-    "newspapers": 74,
+    "newspapers": 79,
     "audiovisual_duration": 9315,
     "references_count": 864,
-    "index_entries": 4573,
+    "index_entries": 4697,
     "reference_types": 12,
     "country_list": [
       "Benin",
@@ -61,12 +61,12 @@
   },
   "by_dataset": {
     "articles": {
-      "total_records": 11683,
-      "total_words": 7601993,
-      "total_pages": 7272,
-      "records_with_word_count": 11682,
-      "records_with_page_count": 5730,
-      "records_with_ocr": 11682
+      "total_records": 12250,
+      "total_words": 7984557,
+      "total_pages": 7537,
+      "records_with_word_count": 12249,
+      "records_with_page_count": 5880,
+      "records_with_ocr": 12249
     },
     "publications": {
       "total_records": 1501,
@@ -104,7 +104,7 @@
       "records_with_ocr": 0
     },
     "index": {
-      "total_records": 4573,
+      "total_records": 4697,
       "total_words": 0,
       "total_pages": 0,
       "records_with_word_count": 0,
@@ -130,9 +130,9 @@
       }
     },
     "Côte d'Ivoire": {
-      "total_records": 4200,
+      "total_records": 4538,
       "by_dataset": {
-        "articles": 3390,
+        "articles": 3728,
         "publications": 810
       }
     },
@@ -174,9 +174,9 @@
       }
     },
     "Français": {
-      "total_records": 13736,
+      "total_records": 14298,
       "by_dataset": {
-        "articles": 11674,
+        "articles": 12236,
         "publications": 1499,
         "documents": 26,
         "references": 537
@@ -222,7 +222,7 @@
   },
   "by_type": {
     "articles": {
-      "total_records": 11683
+      "total_records": 12250
     },
     "publications": {
       "total_records": 1501
@@ -237,7 +237,7 @@
       "total_records": 864
     },
     "index": {
-      "total_records": 4573
+      "total_records": 4697
     }
   },
   "by_reference_type": {
