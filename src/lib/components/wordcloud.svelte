@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { browser } from '$app/environment';
 	import type { Word } from '$lib/types/index.js';
 
@@ -270,7 +270,10 @@
 		const currentFontFamily = fontFamily;
 
 		if (svgElement && d3 && currentData && colorScale && (window as any).d3?.layout?.cloud) {
-			renderWordCloud();
+			// Use untrack to prevent state updates within renderWordCloud from triggering this effect again
+			untrack(() => {
+				renderWordCloud();
+			});
 		}
 	});
 

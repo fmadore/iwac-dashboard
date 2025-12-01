@@ -4,7 +4,9 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
+	import * as Table from '$lib/components/ui/table/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import WordCloud from '$lib/components/wordcloud.svelte';
@@ -45,6 +47,11 @@
 	const selectedCountry = $derived(urlSync.filters.country);
 	const selectedYear = $derived(urlSync.filters.year ? String(urlSync.filters.year) : undefined);
 
+	// Table controls
+	let searchQuery = $state('');
+	let showAllWords = $state(false);
+	const INITIAL_WORDS_COUNT = 50;
+
 	// Computed values using $derived
 	let currentData = $derived(
 		viewMode === 'country' && selectedCountry && countryData[selectedCountry]
@@ -60,6 +67,47 @@
 			: viewMode === 'temporal' && selectedYear && temporalData[selectedYear]
 				? temporalData[selectedYear]
 				: globalData
+	);
+
+	// Calculate total frequency for percentages
+	let totalFrequency = $derived(
+		currentData.reduce((sum, [, freq]) => sum + freq, 0)
+	);
+
+	// Enhanced word data with rank, percentage, and cumulative percentage
+	let enrichedWordData = $derived.by(() => {
+		let cumulative = 0;
+		return currentData.map(([word, frequency], index) => {
+			const percentage = totalFrequency > 0 ? (frequency / totalFrequency) * 100 : 0;
+			cumulative += percentage;
+			return {
+				rank: index + 1,
+				word,
+				frequency,
+				percentage,
+				cumulative
+			};
+		});
+	});
+
+	// Filtered words based on search
+	let filteredWords = $derived.by(() => {
+		const data = enrichedWordData;
+		if (!searchQuery.trim()) return data;
+		const query = searchQuery.toLowerCase().trim();
+		return data.filter((item) => item.word.toLowerCase().includes(query));
+	});
+
+	// Displayed words (limited or all)
+	let displayedWords = $derived.by(() => {
+		const filtered = filteredWords;
+		if (showAllWords || searchQuery.trim()) return filtered;
+		return filtered.slice(0, INITIAL_WORDS_COUNT);
+	});
+
+	// Max frequency for bar width calculation
+	let maxFrequency = $derived(
+		currentData.length > 0 ? currentData[0][1] : 1
 	);
 
 	let availableCountries = $derived(metadata?.countries || []);
@@ -310,15 +358,85 @@
 				</div>
 
 				{#if currentData.length > 0}
-					<div class="mt-6">
-						<h4 class="mb-3 text-sm font-medium text-muted-foreground">{t('words.top_words')}</h4>
-						<div class="flex flex-wrap gap-2">
-							{#each currentData.slice(0, 20) as [word, frequency] (`${word}-${frequency}`)}
-								<Badge variant="outline" class="text-xs">
-									{word} ({frequency})
-								</Badge>
-							{/each}
+					<div class="mt-6 space-y-4">
+						<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+							<h4 class="text-lg font-semibold">{t('words.word_frequency_table')}</h4>
+							<div class="flex items-center gap-2">
+								<Input
+									type="search"
+									placeholder={t('words.search_words')}
+									class="w-full sm:w-64"
+									bind:value={searchQuery}
+								/>
+							</div>
 						</div>
+
+						<div class="text-sm text-muted-foreground">
+							{t('words.showing', [displayedWords.length, filteredWords.length])}
+						</div>
+
+						{#if displayedWords.length > 0}
+							<div class="rounded-md border">
+								<Table.Root>
+									<Table.Header>
+										<Table.Row>
+											<Table.Head class="w-16 text-center">{t('words.rank')}</Table.Head>
+											<Table.Head>{t('words.word')}</Table.Head>
+											<Table.Head class="w-48">{t('words.frequency')}</Table.Head>
+											<Table.Head class="w-24 text-right">{t('words.percentage')}</Table.Head>
+											<Table.Head class="w-24 text-right">{t('words.cumulative')}</Table.Head>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										{#each displayedWords as item (item.word)}
+											<Table.Row>
+												<Table.Cell class="text-center font-medium text-muted-foreground">
+													{item.rank}
+												</Table.Cell>
+												<Table.Cell class="font-medium">{item.word}</Table.Cell>
+												<Table.Cell>
+													<div class="flex items-center gap-2">
+														<div class="relative h-2 w-full max-w-24 overflow-hidden rounded-full bg-muted">
+															<div
+																class="absolute left-0 top-0 h-full rounded-full bg-primary transition-all"
+																style="width: {(item.frequency / maxFrequency) * 100}%"
+															></div>
+														</div>
+														<span class="min-w-12 text-sm tabular-nums">
+															{item.frequency.toLocaleString()}
+														</span>
+													</div>
+												</Table.Cell>
+												<Table.Cell class="text-right tabular-nums">
+													{item.percentage.toFixed(2)}%
+												</Table.Cell>
+												<Table.Cell class="text-right tabular-nums">
+													{item.cumulative.toFixed(1)}%
+												</Table.Cell>
+											</Table.Row>
+										{/each}
+									</Table.Body>
+								</Table.Root>
+							</div>
+
+							{#if !searchQuery.trim() && filteredWords.length > INITIAL_WORDS_COUNT}
+								<div class="flex justify-center pt-2">
+									<Button
+										variant="outline"
+										onclick={() => (showAllWords = !showAllWords)}
+									>
+										{showAllWords ? t('words.show_less') : t('words.show_more')}
+										<span class="ml-1 text-muted-foreground">
+											({showAllWords ? INITIAL_WORDS_COUNT : filteredWords.length - INITIAL_WORDS_COUNT} {showAllWords ? t('words.displayed_words').toLowerCase() : 'more'})
+										</span>
+									</Button>
+								</div>
+							{/if}
+						{:else}
+							<div class="py-8 text-center text-muted-foreground">
+								{t('words.no_matches')}
+							</div>
+						{/if}
 					</div>
 				{/if}
 			</div>
