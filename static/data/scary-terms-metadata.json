@@ -1,6 +1,6 @@
 {
-  "generated_at": "2025-12-07T02:42:20.238867",
-  "total_articles": 10537,
+  "generated_at": "2025-12-14T02:43:57.831084",
+  "total_articles": 12172,
   "term_families": [
     "radicalisation",
     "extrémisme",
@@ -25,8 +25,8 @@
     "Togo"
   ],
   "year_range": [
-    1970,
-    2024
+    1961,
+    2025
   ],
   "data_structure": {
     "temporal": "Scary term occurrences by year for bar chart race",

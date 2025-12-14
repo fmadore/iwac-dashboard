@@ -1,4 +1,26 @@
 {
+  "1961": {
+    "year": 1961,
+    "data": [
+      [
+        "extrémisme",
+        1
+      ],
+      [
+        "fondamentalisme",
+        1
+      ]
+    ]
+  },
+  "1966": {
+    "year": 1966,
+    "data": [
+      [
+        "fondamentalisme",
+        1
+      ]
+    ]
+  },
   "1970": {
     "year": 1970,
     "data": [
@@ -34,6 +56,14 @@
       ],
       [
         "radicalisation",
+        1
+      ],
+      [
+        "fondamentalisme",
+        1
+      ],
+      [
+        "terrorisme",
         1
       ]
     ]
@@ -90,15 +120,19 @@
     "data": [
       [
         "extrémisme",
-        4
+        5
+      ],
+      [
+        "fondamentalisme",
+        5
       ],
       [
         "radicalisation",
         2
       ],
       [
-        "fondamentalisme",
-        1
+        "fanatisme",
+        2
       ]
     ]
   },
@@ -124,7 +158,7 @@
       ],
       [
         "wahhabisme",
-        1
+        3
       ],
       [
         "fanatisme",
@@ -204,11 +238,11 @@
     "data": [
       [
         "fondamentalisme",
-        8
+        9
       ],
       [
         "wahhabisme",
-        7
+        8
       ],
       [
         "extrémisme",
@@ -265,10 +299,6 @@
         2
       ],
       [
-        "wahhabisme",
-        1
-      ],
-      [
         "terrorisme",
         1
       ],
@@ -287,11 +317,11 @@
     "data": [
       [
         "fondamentalisme",
-        11
+        12
       ],
       [
         "extrémisme",
-        2
+        5
       ],
       [
         "radicalisation",
@@ -299,7 +329,11 @@
       ],
       [
         "obscurantisme",
-        1
+        2
+      ],
+      [
+        "intégrisme",
+        2
       ]
     ]
   },
@@ -352,28 +386,36 @@
     "year": 1987,
     "data": [
       [
-        "terrorisme",
-        24
+        "intégrisme",
+        26
       ],
       [
-        "fondamentalisme",
-        11
+        "terrorisme",
+        25
       ],
       [
         "djihadisme",
-        7
+        16
+      ],
+      [
+        "fondamentalisme",
+        13
       ],
       [
         "fanatisme",
-        7
-      ],
-      [
-        "intégrisme",
-        3
+        8
       ],
       [
         "extrémisme",
+        3
+      ],
+      [
+        "islamisme",
         2
+      ],
+      [
+        "radicalisation",
+        1
       ]
     ]
   },
@@ -572,7 +614,7 @@
       ],
       [
         "fondamentalisme",
-        26
+        27
       ],
       [
         "islamisme",
@@ -609,7 +651,7 @@
     "data": [
       [
         "intégrisme",
-        66
+        67
       ],
       [
         "islamisme",
@@ -621,7 +663,7 @@
       ],
       [
         "fondamentalisme",
-        25
+        26
       ],
       [
         "extrémisme",
@@ -699,7 +741,7 @@
     "data": [
       [
         "fondamentalisme",
-        17
+        18
       ],
       [
         "extrémisme",
@@ -732,7 +774,7 @@
     "data": [
       [
         "intégrisme",
-        19
+        23
       ],
       [
         "djihadisme",
@@ -752,7 +794,7 @@
       ],
       [
         "islamisme",
-        5
+        6
       ],
       [
         "radicalisation",
@@ -777,34 +819,34 @@
     "data": [
       [
         "fondamentalisme",
-        15
+        18
       ],
       [
         "terrorisme",
         10
       ],
       [
+        "intégrisme",
+        9
+      ],
+      [
+        "extrémisme",
+        8
+      ],
+      [
         "djihadisme",
         7
       ],
       [
-        "extrémisme",
-        6
-      ],
-      [
-        "intégrisme",
-        6
-      ],
-      [
         "islamisme",
+        5
+      ],
+      [
+        "fanatisme",
         3
       ],
       [
         "obscurantisme",
-        2
-      ],
-      [
-        "fanatisme",
         2
       ],
       [
@@ -818,26 +860,30 @@
     "data": [
       [
         "fondamentalisme",
-        21
+        23
       ],
       [
         "intégrisme",
         6
       ],
       [
+        "extrémisme",
+        5
+      ],
+      [
+        "islamisme",
+        4
+      ],
+      [
         "djihadisme",
         4
       ],
       [
-        "islamisme",
-        3
-      ],
-      [
-        "extrémisme",
-        3
-      ],
-      [
         "radicalisation",
+        2
+      ],
+      [
+        "wahhabisme",
         2
       ],
       [
@@ -847,6 +893,10 @@
       [
         "fanatisme",
         1
+      ],
+      [
+        "terrorisme",
+        1
       ]
     ]
   },
@@ -855,7 +905,7 @@
     "data": [
       [
         "terrorisme",
-        46
+        48
       ],
       [
         "fondamentalisme",
@@ -863,7 +913,7 @@
       ],
       [
         "extrémisme",
-        18
+        19
       ],
       [
         "intégrisme",
@@ -907,16 +957,16 @@
         16
       ],
       [
+        "fondamentalisme",
+        16
+      ],
+      [
         "islamisme",
         13
       ],
       [
         "intégrisme",
         10
-      ],
-      [
-        "fondamentalisme",
-        9
       ],
       [
         "radicalisation",
@@ -978,7 +1028,7 @@
     "data": [
       [
         "fondamentalisme",
-        8
+        12
       ],
       [
         "terrorisme",
@@ -990,7 +1040,7 @@
       ],
       [
         "extrémisme",
-        3
+        4
       ],
       [
         "fanatisme",
@@ -1023,18 +1073,22 @@
       ],
       [
         "extrémisme",
-        2
+        3
       ],
       [
         "terrorisme",
-        2
+        3
       ],
       [
         "fondamentalisme",
-        2
+        3
       ],
       [
         "obscurantisme",
+        1
+      ],
+      [
+        "djihadisme",
         1
       ]
     ]
@@ -1043,12 +1097,12 @@
     "year": 2006,
     "data": [
       [
-        "terrorisme",
+        "fondamentalisme",
         10
       ],
       [
-        "fondamentalisme",
-        7
+        "terrorisme",
+        10
       ],
       [
         "extrémisme",
@@ -1056,6 +1110,10 @@
       ],
       [
         "intégrisme",
+        4
+      ],
+      [
+        "djihadisme",
         4
       ],
       [
@@ -1073,23 +1131,23 @@
       ],
       [
         "extrémisme",
-        5
+        7
+      ],
+      [
+        "fondamentalisme",
+        6
       ],
       [
         "djihadisme",
         5
       ],
       [
-        "wahhabisme",
+        "intégrisme",
         4
       ],
       [
-        "fondamentalisme",
-        3
-      ],
-      [
-        "intégrisme",
-        2
+        "wahhabisme",
+        4
       ],
       [
         "fanatisme",
@@ -1114,7 +1172,7 @@
       ],
       [
         "fondamentalisme",
-        13
+        14
       ],
       [
         "terrorisme",
@@ -1125,12 +1183,12 @@
         2
       ],
       [
-        "fanatisme",
+        "radicalisation",
         2
       ],
       [
-        "radicalisation",
-        1
+        "fanatisme",
+        2
       ],
       [
         "intégrisme",
@@ -1146,16 +1204,28 @@
     "year": 2009,
     "data": [
       [
+        "fondamentalisme",
+        10
+      ],
+      [
+        "djihadisme",
+        9
+      ],
+      [
         "extrémisme",
-        4
+        5
       ],
       [
         "terrorisme",
+        5
+      ],
+      [
+        "wahhabisme",
         4
       ],
       [
-        "fondamentalisme",
-        3
+        "obscurantisme",
+        1
       ]
     ]
   },
@@ -1164,7 +1234,7 @@
     "data": [
       [
         "fondamentalisme",
-        14
+        16
       ],
       [
         "terrorisme",
@@ -1175,23 +1245,23 @@
         4
       ],
       [
-        "fanatisme",
-        3
+        "djihadisme",
+        4
       ],
       [
         "extrémisme",
-        2
+        4
       ],
       [
-        "salafisme",
-        1
-      ],
-      [
-        "djihadisme",
-        1
+        "fanatisme",
+        4
       ],
       [
         "intégrisme",
+        1
+      ],
+      [
+        "endoctrinement",
         1
       ]
     ]
@@ -1201,10 +1271,14 @@
     "data": [
       [
         "fondamentalisme",
-        11
+        17
       ],
       [
         "extrémisme",
+        10
+      ],
+      [
+        "djihadisme",
         10
       ],
       [
@@ -1216,12 +1290,8 @@
         7
       ],
       [
-        "djihadisme",
-        6
-      ],
-      [
         "radicalisation",
-        4
+        6
       ],
       [
         "fanatisme",
@@ -1242,23 +1312,27 @@
     "data": [
       [
         "fondamentalisme",
-        22
-      ],
-      [
-        "extrémisme",
-        13
+        24
       ],
       [
         "djihadisme",
-        13
+        19
+      ],
+      [
+        "extrémisme",
+        17
       ],
       [
         "terrorisme",
-        9
+        15
       ],
       [
         "islamisme",
-        9
+        15
+      ],
+      [
+        "radicalisation",
+        10
       ],
       [
         "intégrisme",
@@ -1269,15 +1343,15 @@
         7
       ],
       [
-        "radicalisation",
-        5
-      ],
-      [
         "obscurantisme",
         2
       ],
       [
         "endoctrinement",
+        1
+      ],
+      [
+        "salafisme",
         1
       ]
     ]
@@ -1287,35 +1361,35 @@
     "data": [
       [
         "djihadisme",
-        55
+        59
       ],
       [
         "fondamentalisme",
-        31
+        32
       ],
       [
         "terrorisme",
-        27
+        32
       ],
       [
         "extrémisme",
-        25
+        29
       ],
       [
         "islamisme",
-        21
+        22
       ],
       [
         "intégrisme",
-        16
+        13
       ],
       [
         "radicalisation",
-        14
+        11
       ],
       [
         "salafisme",
-        13
+        10
       ],
       [
         "fanatisme",
@@ -1340,14 +1414,18 @@
       ],
       [
         "extrémisme",
-        9
+        10
       ],
       [
         "terrorisme",
-        5
+        6
       ],
       [
         "radicalisation",
+        3
+      ],
+      [
+        "islamisme",
         3
       ],
       [
@@ -1357,10 +1435,6 @@
       [
         "intégrisme",
         2
-      ],
-      [
-        "islamisme",
-        1
       ]
     ]
   },
@@ -1369,19 +1443,19 @@
     "data": [
       [
         "terrorisme",
-        117
+        158
       ],
       [
         "djihadisme",
-        34
-      ],
-      [
-        "fondamentalisme",
-        19
+        43
       ],
       [
         "extrémisme",
-        17
+        25
+      ],
+      [
+        "fondamentalisme",
+        20
       ],
       [
         "islamisme",
@@ -1422,7 +1496,7 @@
     "data": [
       [
         "terrorisme",
-        351
+        360
       ],
       [
         "extrémisme",
@@ -1430,11 +1504,11 @@
       ],
       [
         "djihadisme",
-        70
+        68
       ],
       [
         "fondamentalisme",
-        30
+        32
       ],
       [
         "radicalisation",
@@ -1475,11 +1549,11 @@
     "data": [
       [
         "terrorisme",
-        674
+        681
       ],
       [
         "extrémisme",
-        100
+        103
       ],
       [
         "djihadisme",
@@ -1487,11 +1561,11 @@
       ],
       [
         "radicalisation",
-        38
+        41
       ],
       [
         "fondamentalisme",
-        32
+        33
       ],
       [
         "intégrisme",
@@ -1528,19 +1602,19 @@
     "data": [
       [
         "terrorisme",
-        422
+        428
       ],
       [
         "extrémisme",
-        78
+        84
       ],
       [
         "djihadisme",
-        73
+        77
       ],
       [
         "radicalisation",
-        42
+        44
       ],
       [
         "islamisme",
@@ -1552,10 +1626,14 @@
       ],
       [
         "intégrisme",
-        6
+        7
       ],
       [
         "endoctrinement",
+        3
+      ],
+      [
+        "salafisme",
         3
       ],
       [
@@ -1567,12 +1645,8 @@
         2
       ],
       [
-        "salafisme",
-        2
-      ],
-      [
         "wahhabisme",
-        1
+        2
       ]
     ]
   },
@@ -1585,7 +1659,7 @@
       ],
       [
         "extrémisme",
-        96
+        97
       ],
       [
         "djihadisme",
@@ -1593,11 +1667,11 @@
       ],
       [
         "radicalisation",
-        42
+        44
       ],
       [
         "fondamentalisme",
-        33
+        34
       ],
       [
         "intégrisme",
@@ -1634,7 +1708,7 @@
       ],
       [
         "extrémisme",
-        106
+        107
       ],
       [
         "radicalisation",
@@ -1642,7 +1716,7 @@
       ],
       [
         "fondamentalisme",
-        32
+        33
       ],
       [
         "djihadisme",
@@ -1666,7 +1740,7 @@
       ],
       [
         "wahhabisme",
-        2
+        3
       ],
       [
         "islamisme",
@@ -1679,15 +1753,15 @@
     "data": [
       [
         "terrorisme",
-        277
+        282
       ],
       [
         "extrémisme",
-        43
+        46
       ],
       [
         "djihadisme",
-        37
+        36
       ],
       [
         "fondamentalisme",
@@ -1699,7 +1773,7 @@
       ],
       [
         "radicalisation",
-        14
+        15
       ],
       [
         "endoctrinement",
@@ -1728,7 +1802,7 @@
       ],
       [
         "extrémisme",
-        61
+        62
       ],
       [
         "djihadisme",
@@ -1736,11 +1810,11 @@
       ],
       [
         "fondamentalisme",
-        26
+        27
       ],
       [
         "radicalisation",
-        19
+        20
       ],
       [
         "obscurantisme",
@@ -1814,15 +1888,15 @@
       ],
       [
         "extrémisme",
-        19
-      ],
-      [
-        "radicalisation",
-        4
+        24
       ],
       [
         "islamisme",
-        3
+        6
+      ],
+      [
+        "radicalisation",
+        5
       ],
       [
         "endoctrinement",
@@ -1830,6 +1904,27 @@
       ],
       [
         "djihadisme",
+        1
+      ]
+    ]
+  },
+  "2025": {
+    "year": 2025,
+    "data": [
+      [
+        "djihadisme",
+        9
+      ],
+      [
+        "terrorisme",
+        5
+      ],
+      [
+        "radicalisation",
+        3
+      ],
+      [
+        "extrémisme",
         1
       ]
     ]

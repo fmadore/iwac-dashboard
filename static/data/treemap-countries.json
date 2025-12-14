@@ -4,11 +4,11 @@
   "children": [
     {
       "name": "Côte d'Ivoire",
-      "value": 4538,
+      "value": 4767,
       "children": [
         {
           "name": "Article de presse",
-          "value": 3728,
+          "value": 3957,
           "children": [
             {
               "name": "Fraternité Matin",
@@ -35,12 +35,20 @@
               "value": 185
             },
             {
+              "name": "APA News",
+              "value": 173
+            },
+            {
               "name": "Nord-Sud",
               "value": 90
             },
             {
               "name": "Fraternité Hebdo",
               "value": 74
+            },
+            {
+              "name": "Le Temps",
+              "value": 46
             },
             {
               "name": "Alif",
@@ -64,6 +72,10 @@
             },
             {
               "name": "L'Alternative",
+              "value": 10
+            },
+            {
+              "name": "L'Expression",
               "value": 10
             },
             {
@@ -420,41 +432,23 @@
       ]
     },
     {
-      "name": "",
-      "value": 230,
-      "children": [
-        {
-          "name": "Article de presse",
-          "value": 229,
-          "children": [
-            {
-              "name": "APA News",
-              "value": 173
-            },
-            {
-              "name": "Le Temps",
-              "value": 46
-            },
-            {
-              "name": "L'Expression",
-              "value": 10
-            }
-          ]
-        },
-        {
-          "name": "Document",
-          "value": 1,
-          "children": []
-        }
-      ]
-    },
-    {
       "name": "Nigeria",
       "value": 45,
       "children": [
         {
           "name": "Audiovisuel",
           "value": 45,
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "",
+      "value": 1,
+      "children": [
+        {
+          "name": "Document",
+          "value": 1,
           "children": []
         }
       ]
