@@ -11,7 +11,8 @@
 		BookOpen,
 		Home,
 		BookMarked,
-		User
+		User,
+		BrainCircuit
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -32,7 +33,8 @@
 
 	const textualAnalysisItems = [
 		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' },
-		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' }
+		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' },
+		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' }
 	];
 </script>
 
