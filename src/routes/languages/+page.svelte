@@ -13,11 +13,15 @@
 
 	let { data }: { data: PageData } = $props();
 
-	// Color configuration for consistency
-	const colorMap = $derived(() => {
+	// Stable, global label → color mapping.
+	// This prevents filters from re-assigning colors (e.g. showing French as a different color).
+	const globalColorMap = $derived(() => {
 		const map: Record<string, string> = {};
-		filteredChartData().forEach((item, index) => {
-			map[item.label] = `var(--chart-${(index % 10) + 1})`;
+		const global = data.global?.data ?? [];
+		// Match the existing behavior on the unfiltered view: sort by value.
+		const sorted = [...global].sort((a, b) => b.value - a.value);
+		sorted.forEach((item, index) => {
+			map[item.label] = `var(--chart-${(index % 16) + 1})`;
 		});
 		return map;
 	});
@@ -49,7 +53,7 @@
 			.map((item, index) => ({
 				label: item.label,
 				value: item.value,
-				color: `var(--chart-${(index % 10) + 1})`,
+				color: globalColorMap()[item.label] ?? `var(--chart-${(index % 16) + 1})`,
 				percentage: item.percentage?.toFixed?.(1) ?? undefined
 			}))
 			.sort((a, b) => b.value - a.value);
@@ -182,44 +186,20 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="pt-0">
-				<div class="grid gap-4 lg:grid-cols-2">
-					<div class="flex min-h-[420px] w-full items-center justify-center">
-						{#if filteredChartData().length > 0}
-							<LayerChartPieChart
-								data={filteredChartData()}
-								innerRadius="35%"
-								outerRadius="70%"
-								showLabels={true}
-								showValues={false}
-								animationDuration={1000}
-								minSlicePercent={0.5}
-							/>
-						{:else}
-							<div class="flex h-[200px] items-center justify-center text-muted-foreground">
-								{t('chart.no_data_for_filters')}
-							</div>
-						{/if}
-					</div>
-
+				<div class="mx-auto w-full max-w-xl">
 					{#if filteredChartData().length > 0}
-						<div class="max-h-[420px] space-y-1 overflow-auto pr-1">
-							{#each filteredChartData() as item (item.label)}
-								<div class="flex items-center justify-between rounded-md border p-2 text-sm">
-									<div class="flex items-center gap-2 min-w-0">
-										<div
-											class="h-3 w-3 flex-shrink-0 rounded-full"
-											style="background-color: {colorMap()[item.label]}"
-										></div>
-										<span class="truncate font-medium">{item.label}</span>
-									</div>
-									<div class="ml-2 flex-shrink-0 text-right">
-										<p class="text-sm font-semibold">{item.value}</p>
-										{#if item.percentage}
-											<p class="text-xs text-muted-foreground">{item.percentage}%</p>
-										{/if}
-									</div>
-								</div>
-							{/each}
+						<LayerChartPieChart
+							data={filteredChartData()}
+							innerRadius="35%"
+							outerRadius="80%"
+							showLabels={true}
+							showValues={true}
+							animationDuration={1000}
+							minSlicePercent={0.5}
+						/>
+					{:else}
+						<div class="flex h-[200px] items-center justify-center text-muted-foreground">
+							{t('chart.no_data_for_filters')}
 						</div>
 					{/if}
 				</div>

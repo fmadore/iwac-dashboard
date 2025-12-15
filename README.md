@@ -107,7 +107,7 @@ iwac-dashboard/
 │   │   │   │   ├── BarChartRace.svelte      # Animated racing bar chart
 │   │   │   │   ├── CustomTreemap.svelte     # D3 treemap
 │   │   │   │   ├── EChartsBarChart.svelte   # ECharts bar chart
-│   │   │   │   ├── EChartsPieChart.svelte   # ECharts pie chart
+│   │   │   │   ├── LayerChartPieChart.svelte # LayerChart pie chart
 │   │   │   │   ├── StackedBarChart.svelte   # Stacked bar chart
 │   │   │   │   ├── TimelineChart.svelte     # Timeline visualization
 │   │   │   │   └── utils.ts                 # Chart utilities

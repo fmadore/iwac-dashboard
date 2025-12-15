@@ -8,7 +8,7 @@
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import LayerChartBar from '$lib/components/charts/LayerChartBar.svelte';
-	import EChartsPieChart from '$lib/components/charts/EChartsPieChart.svelte';
+	import LayerChartPieChart from '$lib/components/charts/LayerChartPieChart.svelte';
 	import {
 		ArrowLeft,
 		FileText,
@@ -202,7 +202,7 @@
 				</Card.Header>
 				<Card.Content>
 					{#if countryChartData.length > 0}
-						<EChartsPieChart data={countryChartData} showLabels={true} />
+						<LayerChartPieChart data={countryChartData} showLabels={true} />
 					{:else}
 						<p class="py-8 text-center text-muted-foreground">{t('chart.no_data')}</p>
 					{/if}
