@@ -1,54 +1,54 @@
 {
-  "total_articles": 10537,
-  "total_occurrences": 7113,
+  "total_articles": 12172,
+  "total_occurrences": 7469,
   "data": [
     [
       "terrorisme",
-      3596
+      3688
     ],
     [
       "extrémisme",
-      908
+      964
     ],
     [
       "fondamentalisme",
-      689
+      752
     ],
     [
       "djihadisme",
-      600
+      659
     ],
     [
       "radicalisation",
-      398
+      417
     ],
     [
       "intégrisme",
-      337
+      370
     ],
     [
       "islamisme",
-      266
+      284
     ],
     [
       "fanatisme",
-      122
+      127
     ],
     [
       "wahhabisme",
-      61
+      71
     ],
     [
       "obscurantisme",
-      59
+      61
     ],
     [
       "endoctrinement",
-      43
+      44
     ],
     [
       "salafisme",
-      34
+      32
     ]
   ]
 }

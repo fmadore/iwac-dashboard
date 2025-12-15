@@ -87,7 +87,7 @@
       "data": [
         {
           "label": "French",
-          "value": 4706,
+          "value": 4933,
           "percentage": 98.5
         },
         {
@@ -97,11 +97,11 @@
         },
         {
           "label": "Unknown",
-          "value": 5,
+          "value": 7,
           "percentage": 0.1
         }
       ],
-      "total": 4780,
+      "total": 5009,
       "languages": 3
     },
     "Niger": {
@@ -129,27 +129,6 @@
       ],
       "total": 1288,
       "languages": 4
-    },
-    "Unknown": {
-      "data": [
-        {
-          "label": "French",
-          "value": 231,
-          "percentage": 95.5
-        },
-        {
-          "label": "English",
-          "value": 9,
-          "percentage": 3.7
-        },
-        {
-          "label": "Unknown",
-          "value": 2,
-          "percentage": 0.8
-        }
-      ],
-      "total": 242,
-      "languages": 3
     },
     "Nigeria": {
       "data": [
@@ -181,6 +160,22 @@
       ],
       "total": 111,
       "languages": 5
+    },
+    "Unknown": {
+      "data": [
+        {
+          "label": "English",
+          "value": 9,
+          "percentage": 69.2
+        },
+        {
+          "label": "French",
+          "value": 4,
+          "percentage": 30.8
+        }
+      ],
+      "total": 13,
+      "languages": 2
     }
   },
   "countries": [
@@ -192,5 +187,5 @@
     "Togo",
     "Unknown"
   ],
-  "generated_at": "2025-12-07T02:40:15.764203"
+  "generated_at": "2025-12-14T02:41:31.998107"
 }

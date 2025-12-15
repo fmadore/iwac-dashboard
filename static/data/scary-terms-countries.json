@@ -1,27 +1,27 @@
 {
   "Benin": {
     "country": "Benin",
-    "total_articles": 1876,
+    "total_articles": 2002,
     "data": [
       [
         "terrorisme",
-        352
+        359
       ],
       [
         "extrémisme",
-        191
+        201
       ],
       [
         "fondamentalisme",
-        136
+        139
       ],
       [
         "radicalisation",
-        123
+        128
       ],
       [
         "djihadisme",
-        102
+        110
       ],
       [
         "intégrisme",
@@ -29,7 +29,7 @@
       ],
       [
         "islamisme",
-        29
+        32
       ],
       [
         "fanatisme",
@@ -55,43 +55,43 @@
   },
   "Burkina Faso": {
     "country": "Burkina Faso",
-    "total_articles": 3645,
+    "total_articles": 3656,
     "data": [
       [
         "terrorisme",
-        2046
+        2047
       ],
       [
         "extrémisme",
-        421
+        423
       ],
       [
         "djihadisme",
-        344
+        351
       ],
       [
         "fondamentalisme",
-        274
+        279
       ],
       [
         "radicalisation",
-        186
+        187
       ],
       [
         "islamisme",
-        149
+        151
       ],
       [
         "intégrisme",
-        99
+        122
       ],
       [
         "fanatisme",
-        62
+        63
       ],
       [
         "wahhabisme",
-        50
+        52
       ],
       [
         "obscurantisme",
@@ -99,7 +99,7 @@
       ],
       [
         "salafisme",
-        21
+        17
       ],
       [
         "endoctrinement",
@@ -109,55 +109,55 @@
   },
   "Côte d'Ivoire": {
     "country": "Côte d'Ivoire",
-    "total_articles": 2388,
+    "total_articles": 3886,
     "data": [
       [
         "terrorisme",
-        176
-      ],
-      [
-        "intégrisme",
-        167
+        260
       ],
       [
         "fondamentalisme",
-        133
+        188
+      ],
+      [
+        "intégrisme",
+        177
       ],
       [
         "extrémisme",
-        81
+        125
       ],
       [
         "djihadisme",
-        77
+        121
       ],
       [
         "radicalisation",
-        32
-      ],
-      [
-        "fanatisme",
-        26
+        45
       ],
       [
         "islamisme",
-        24
+        37
+      ],
+      [
+        "fanatisme",
+        30
       ],
       [
         "obscurantisme",
-        9
+        11
       ],
       [
         "endoctrinement",
-        9
+        10
       ],
       [
         "wahhabisme",
-        4
+        10
       ],
       [
         "salafisme",
-        2
+        4
       ]
     ]
   },
@@ -252,12 +252,12 @@
         13
       ],
       [
-        "obscurantisme",
-        5
+        "wahhabisme",
+        6
       ],
       [
-        "wahhabisme",
-        4
+        "obscurantisme",
+        5
       ],
       [
         "endoctrinement",
