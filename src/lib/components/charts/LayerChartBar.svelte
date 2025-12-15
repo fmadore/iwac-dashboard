@@ -86,13 +86,6 @@
 	// Build chart config dynamically for tooltip
 	const chartConfig = $derived.by(() => {
 		const config: ChartConfig = {};
-		chartData.forEach((item) => {
-			// Use category as key for tooltip lookup
-			config[item.category] = {
-				label: item.category,
-				color: item.color
-			};
-		});
 		return config;
 	});
 
