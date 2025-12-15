@@ -6,9 +6,24 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import BarChartRace from '$lib/components/charts/BarChartRace.svelte';
+	import {
+		FileText,
+		Tags,
+		Hash,
+		TrendingUp,
+		Play,
+		Pause,
+		RotateCcw,
+		SkipBack,
+		SkipForward,
+		BarChart3,
+		Globe,
+		MapPin
+	} from '@lucide/svelte';
 
 	// Use URL sync hook
 	const urlSync = useUrlSync();
@@ -597,9 +612,56 @@
 		const _ = languageStore.current; // Track language changes
 		return t('scary.chart_title') + ' - {0}';
 	});
+
+	// Get the current year being displayed
+	const currentYear = $derived(availableYears[currentYearIndex] ?? 0);
+
+	// Calculate progress percentage
+	const progressPercent = $derived(
+		availableYears.length > 1 ? (currentYearIndex / (availableYears.length - 1)) * 100 : 0
+	);
+
+	// Get top term for current view
+	const topTerm = $derived(() => {
+		if (viewMode === 'race' && temporalData[String(currentYear)]) {
+			return temporalData[String(currentYear)]?.data[0]?.[0] ?? null;
+		} else if (viewMode === 'country' && selectedCountry && countryData[selectedCountry]) {
+			return countryData[selectedCountry]?.data[0]?.[0] ?? null;
+		} else if (viewMode === 'global' && globalData) {
+			return globalData.data[0]?.[0] ?? null;
+		}
+		return null;
+	});
+
+	// Handle year slider change (single value slider returns number, not array)
+	function handleYearChange(value: number) {
+		if (availableYears.length > 0) {
+			pause();
+			const yearIndex = availableYears.indexOf(value);
+			if (yearIndex >= 0) {
+				currentYearIndex = yearIndex;
+			}
+		}
+	}
+
+	// Step navigation
+	function stepForward() {
+		if (currentYearIndex < availableYears.length - 1) {
+			pause();
+			currentYearIndex++;
+		}
+	}
+
+	function stepBackward() {
+		if (currentYearIndex > 0) {
+			pause();
+			currentYearIndex--;
+		}
+	}
 </script>
 
 <div class="space-y-6">
+	<!-- Header -->
 	<div>
 		<h2 class="text-3xl font-bold tracking-tight">{t('scary.title')}</h2>
 		<p class="text-muted-foreground">
@@ -622,115 +684,234 @@
 			</div>
 		</Card.Root>
 	{:else}
-		<!-- Controls -->
-		<Card.Root class="p-6">
-			<div class="flex flex-wrap items-center gap-4">
-				<div class="flex gap-2">
-					<Button
-						variant={viewMode === 'race' ? 'default' : 'outline'}
-						size="sm"
-						onclick={() => handleViewModeChange('race')}
-					>
-						{t('scary.bar_race')}
-					</Button>
-					<Button
-						variant={viewMode === 'country' ? 'default' : 'outline'}
-						size="sm"
-						onclick={() => handleViewModeChange('country')}
-					>
-						{t('scary.by_country')}
-					</Button>
-					<Button
-						variant={viewMode === 'global' ? 'default' : 'outline'}
-						size="sm"
-						onclick={() => handleViewModeChange('global')}
-					>
-						{t('scary.global')}
-					</Button>
-				</div>
-
-				{#if viewMode === 'country' && availableCountries.length > 0}
-					<Select.Root
-						type="single"
-						value={selectedCountry ?? 'select-country'}
-						onValueChange={handleCountryChange}
-					>
-						<Select.Trigger class="w-48">
-							{selectedCountry || t('words.select_country')}
-						</Select.Trigger>
-						<Select.Content>
-							<Select.Item value="select-country">{t('words.select_country')}</Select.Item>
-							{#each availableCountries as country}
-								<Select.Item value={country}>{country}</Select.Item>
-							{/each}
-						</Select.Content>
-					</Select.Root>
-				{/if}
-
-				{#if viewMode === 'race'}
-					<div class="ml-auto flex gap-2">
-						<Button variant="outline" size="sm" onclick={play} disabled={isPlaying}>
-							{t('scary.play')}
-						</Button>
-						<Button variant="outline" size="sm" onclick={pause} disabled={!isPlaying}>
-							{t('scary.pause')}
-						</Button>
-						<Button variant="outline" size="sm" onclick={reset}>
-							{t('scary.reset')}
-						</Button>
-					</div>
-				{/if}
-			</div>
-		</Card.Root>
-
-		<!-- Metrics -->
+		<!-- Metrics Cards -->
 		{#if metadata}
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-				<Card.Root class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.total_articles')}</h3>
-					<div class="text-2xl font-bold">{metadata.total_articles.toLocaleString()}</div>
+			<div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+				<Card.Root class="relative overflow-hidden">
+					<Card.Content class="p-6">
+						<div class="flex items-center justify-between">
+							<div>
+								<p class="text-sm font-medium text-muted-foreground">{t('scary.total_articles')}</p>
+								<p class="text-2xl font-bold">{metadata.total_articles.toLocaleString()}</p>
+							</div>
+							<div class="rounded-full bg-primary/10 p-3">
+								<FileText class="h-5 w-5 text-primary" />
+							</div>
+						</div>
+					</Card.Content>
 				</Card.Root>
-				<Card.Root class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.term_families')}</h3>
-					<div class="text-2xl font-bold">{metadata.term_families_count}</div>
+
+				<Card.Root class="relative overflow-hidden">
+					<Card.Content class="p-6">
+						<div class="flex items-center justify-between">
+							<div>
+								<p class="text-sm font-medium text-muted-foreground">{t('scary.term_families')}</p>
+								<p class="text-2xl font-bold">{metadata.term_families_count}</p>
+							</div>
+							<div class="rounded-full bg-chart-2/10 p-3">
+								<Tags class="h-5 w-5 text-chart-2" />
+							</div>
+						</div>
+					</Card.Content>
 				</Card.Root>
-				<Card.Root class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.term_variants')}</h3>
-					<div class="text-2xl font-bold">{metadata.total_variants}</div>
+
+				<Card.Root class="relative overflow-hidden">
+					<Card.Content class="p-6">
+						<div class="flex items-center justify-between">
+							<div>
+								<p class="text-sm font-medium text-muted-foreground">{t('scary.term_variants')}</p>
+								<p class="text-2xl font-bold">{metadata.total_variants}</p>
+							</div>
+							<div class="rounded-full bg-chart-3/10 p-3">
+								<Hash class="h-5 w-5 text-chart-3" />
+							</div>
+						</div>
+					</Card.Content>
 				</Card.Root>
-				<Card.Root class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('scary.total_occurrences')}</h3>
-					<div class="text-2xl font-bold">
-						{(globalData?.total_occurrences ?? 0).toLocaleString()}
-					</div>
+
+				<Card.Root class="relative overflow-hidden">
+					<Card.Content class="p-6">
+						<div class="flex items-center justify-between">
+							<div>
+								<p class="text-sm font-medium text-muted-foreground">{t('scary.total_occurrences')}</p>
+								<p class="text-2xl font-bold">{(globalData?.total_occurrences ?? 0).toLocaleString()}</p>
+							</div>
+							<div class="rounded-full bg-chart-4/10 p-3">
+								<TrendingUp class="h-5 w-5 text-chart-4" />
+							</div>
+						</div>
+					</Card.Content>
 				</Card.Root>
 			</div>
 		{/if}
 
-		<!-- Chart -->
-		<Card.Root class="p-6">
-			<div class="space-y-4">
-				<div>
-					<h3 class="text-lg font-semibold">
-						{#if viewMode === 'race'}
-							{t('scary.chart_title')}
-						{:else if viewMode === 'country'}
-							{getCountryChartTitle(selectedCountry)}
-						{:else}
-							{t('scary.global_chart_title')}
-						{/if}
-					</h3>
-					<p class="text-sm text-muted-foreground">
-						{#if viewMode === 'race'}
-							{t('scary.chart_description')}
-						{:else if viewMode === 'country'}
-							{t('scary.country_chart_description')}
-						{:else}
-							{t('scary.global_chart_description')}
-						{/if}
-					</p>
+		<!-- Controls Panel -->
+		<Card.Root>
+			<Card.Content class="p-4">
+				<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+					<!-- View Mode Toggle -->
+					<div class="flex flex-wrap items-center gap-2">
+						<span class="text-sm font-medium text-muted-foreground mr-2">{t('scary.view_mode')}:</span>
+						<div class="inline-flex rounded-lg border border-border p-1 bg-muted/30">
+							<Button
+								variant={viewMode === 'race' ? 'default' : 'ghost'}
+								size="sm"
+								class="gap-2"
+								onclick={() => handleViewModeChange('race')}
+							>
+								<BarChart3 class="h-4 w-4" />
+								<span class="hidden sm:inline">{t('scary.bar_race')}</span>
+							</Button>
+							<Button
+								variant={viewMode === 'country' ? 'default' : 'ghost'}
+								size="sm"
+								class="gap-2"
+								onclick={() => handleViewModeChange('country')}
+							>
+								<MapPin class="h-4 w-4" />
+								<span class="hidden sm:inline">{t('scary.by_country')}</span>
+							</Button>
+							<Button
+								variant={viewMode === 'global' ? 'default' : 'ghost'}
+								size="sm"
+								class="gap-2"
+								onclick={() => handleViewModeChange('global')}
+							>
+								<Globe class="h-4 w-4" />
+								<span class="hidden sm:inline">{t('scary.global')}</span>
+							</Button>
+						</div>
+					</div>
+
+					<!-- Country Selector (for country view) -->
+					{#if viewMode === 'country' && availableCountries.length > 0}
+						<div class="flex items-center gap-2">
+							<label for="country-select" class="text-sm font-medium text-muted-foreground">
+								{t('filters.country')}:
+							</label>
+							<Select.Root
+								type="single"
+								value={selectedCountry ?? 'select-country'}
+								onValueChange={handleCountryChange}
+							>
+								<Select.Trigger class="w-48" id="country-select">
+									{selectedCountry || t('words.select_country')}
+								</Select.Trigger>
+								<Select.Content>
+									{#each availableCountries as country}
+										<Select.Item value={country}>{country}</Select.Item>
+									{/each}
+								</Select.Content>
+							</Select.Root>
+						</div>
+					{/if}
+
+					<!-- Playback Controls (for race view) -->
+					{#if viewMode === 'race'}
+						<div class="flex items-center gap-2">
+							<Button
+								variant="outline"
+								size="icon"
+								onclick={stepBackward}
+								disabled={currentYearIndex === 0}
+								title={t('scary.previous')}
+							>
+								<SkipBack class="h-4 w-4" />
+							</Button>
+							{#if isPlaying}
+								<Button variant="default" size="icon" onclick={pause} title={t('scary.pause')}>
+									<Pause class="h-4 w-4" />
+								</Button>
+							{:else}
+								<Button
+									variant="default"
+									size="icon"
+									onclick={play}
+									disabled={currentYearIndex >= availableYears.length - 1}
+									title={t('scary.play')}
+								>
+									<Play class="h-4 w-4" />
+								</Button>
+							{/if}
+							<Button
+								variant="outline"
+								size="icon"
+								onclick={stepForward}
+								disabled={currentYearIndex >= availableYears.length - 1}
+								title={t('scary.next')}
+							>
+								<SkipForward class="h-4 w-4" />
+							</Button>
+							<Button variant="outline" size="icon" onclick={reset} title={t('scary.reset')}>
+								<RotateCcw class="h-4 w-4" />
+							</Button>
+							<span class="ml-2 min-w-[4rem] text-center text-lg font-bold tabular-nums text-primary">
+								{currentYear}
+							</span>
+						</div>
+					{/if}
 				</div>
 
+				<!-- Year Slider (for race view) -->
+				{#if viewMode === 'race' && metadata}
+					<div class="mt-4 space-y-2">
+						<div class="flex items-center justify-between text-xs text-muted-foreground">
+							<span>{metadata.year_range[0]}</span>
+							<span>{metadata.year_range[1]}</span>
+						</div>
+						<Slider
+							type="single"
+							value={currentYear}
+							onValueChange={handleYearChange}
+							min={metadata.year_range[0]}
+							max={metadata.year_range[1]}
+							step={1}
+							class="w-full"
+						/>
+						<!-- Progress bar -->
+						<div class="h-1 w-full overflow-hidden rounded-full bg-muted">
+							<div
+								class="h-full bg-primary transition-all duration-300"
+								style="width: {progressPercent}%"
+							></div>
+						</div>
+					</div>
+				{/if}
+			</Card.Content>
+		</Card.Root>
+
+		<!-- Chart -->
+		<Card.Root>
+			<Card.Header class="pb-2">
+				<div class="flex items-start justify-between">
+					<div>
+						<Card.Title class="text-lg">
+							{#if viewMode === 'race'}
+								{t('scary.chart_title')}
+							{:else if viewMode === 'country'}
+								{getCountryChartTitle(selectedCountry)}
+							{:else}
+								{t('scary.global_chart_title')}
+							{/if}
+						</Card.Title>
+						<Card.Description>
+							{#if viewMode === 'race'}
+								{t('scary.chart_description')}
+							{:else if viewMode === 'country'}
+								{t('scary.country_chart_description')}
+							{:else}
+								{t('scary.global_chart_description')}
+							{/if}
+						</Card.Description>
+					</div>
+					{#if topTerm()}
+						<Badge variant="secondary" class="text-sm">
+							{t('scary.top_term')}: <span class="ml-1 font-semibold">{topTerm()}</span>
+						</Badge>
+					{/if}
+				</div>
+			</Card.Header>
+			<Card.Content>
 				{#if viewMode === 'race'}
 					<BarChartRace
 						bind:this={barChartRace}
@@ -752,25 +933,33 @@
 				{:else}
 					<div bind:this={chartContainer} class="w-full" style="height: 600px;"></div>
 				{/if}
-			</div>
+			</Card.Content>
 		</Card.Root>
 
 		<!-- Term Definitions -->
 		{#if metadata}
-			<Card.Root class="p-6">
-				<h3 class="mb-4 text-lg font-semibold">{t('scary.term_definitions')}</h3>
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-					{#each Object.entries(metadata.term_definitions) as [family, variants]}
-						<div class="rounded-lg border border-border p-4">
-							<h4 class="mb-2 font-medium">{family}</h4>
-							<div class="flex flex-wrap gap-1">
-								{#each variants as variant}
-									<Badge variant="outline" class="text-xs">{variant}</Badge>
-								{/each}
+			<Card.Root>
+				<Card.Header>
+					<Card.Title class="flex items-center gap-2">
+						<Tags class="h-5 w-5" />
+						{t('scary.term_definitions')}
+					</Card.Title>
+					<Card.Description>{t('scary.term_definitions_desc')}</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						{#each Object.entries(metadata.term_definitions) as [family, variants]}
+							<div class="group rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50">
+								<h4 class="mb-2 font-semibold text-foreground capitalize">{family}</h4>
+								<div class="flex flex-wrap gap-1.5">
+									{#each variants as variant}
+										<Badge variant="outline" class="text-xs font-normal">{variant}</Badge>
+									{/each}
+								</div>
 							</div>
-						</div>
-					{/each}
-				</div>
+						{/each}
+					</div>
+				</Card.Content>
 			</Card.Root>
 		{/if}
 	{/if}

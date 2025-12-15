@@ -16,6 +16,9 @@
 		animationDuration?: number;
 		useMultipleColors?: boolean;
 		orientation?: 'vertical' | 'horizontal';
+		xAxisLabelRotate?: number;
+		yAxisLabelWidth?: number;
+		xAxisLabelInterval?: number | 'auto';
 	}
 
 	let {
@@ -23,7 +26,10 @@
 		height = 400,
 		animationDuration = 750,
 		useMultipleColors = false,
-		orientation = 'vertical'
+		orientation = 'vertical',
+		xAxisLabelRotate,
+		yAxisLabelWidth,
+		xAxisLabelInterval
 	}: Props = $props();
 
 	let chartContainer: HTMLDivElement;
@@ -253,15 +259,28 @@
 		const popoverBg = getCSSVariable('--popover');
 		const popoverFg = getCSSVariable('--popover-foreground');
 
+		// Determine rotation for category axis labels
+		const defaultRotate = orientation === 'vertical' ? 45 : 0;
+		const categoryRotate = orientation === 'vertical' && xAxisLabelRotate !== undefined 
+			? xAxisLabelRotate 
+			: defaultRotate;
+
+		// Determine label interval - auto-calculate if not specified and many labels
+		const labelInterval = xAxisLabelInterval !== undefined 
+			? xAxisLabelInterval 
+			: (orientation === 'vertical' && categories.length > 20 ? 'auto' : 0);
+
 		// Define axis configurations based on orientation
 		const categoryAxis = {
 			type: 'category' as const,
 			data: categories,
 			axisLabel: {
-				interval: 0,
-				rotate: orientation === 'vertical' ? 45 : 0,
+				interval: labelInterval,
+				rotate: categoryRotate,
 				color: foregroundColor,
-				fontSize: 12
+				fontSize: 11,
+				width: orientation === 'horizontal' && yAxisLabelWidth ? yAxisLabelWidth : undefined,
+				overflow: orientation === 'horizontal' ? 'truncate' : undefined
 			},
 			axisLine: {
 				lineStyle: {
@@ -305,9 +324,9 @@
 
 		const option = {
 			grid: {
-				left: '3%',
+				left: orientation === 'horizontal' ? '3%' : '3%',
 				right: '4%',
-				bottom: '10%',
+				bottom: orientation === 'vertical' && categoryRotate > 0 ? '15%' : '10%',
 				top: '10%',
 				containLabel: true
 			},
