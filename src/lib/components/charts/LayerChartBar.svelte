@@ -29,8 +29,25 @@
 		useMultipleColors = false,
 		orientation = 'vertical',
 		xAxisLabelRotate = 0,
-		yAxisLabelWidth = 100
+		yAxisLabelWidth = 100,
+		xAxisLabelInterval = 'auto'
 	}: Props = $props();
+
+	let containerEl = $state<HTMLElement | null>(null);
+	let containerWidth = $state(0);
+
+	$effect(() => {
+		if (!containerEl) return;
+
+		const update = () => {
+			containerWidth = containerEl?.clientWidth ?? 0;
+		};
+
+		update();
+		const ro = new ResizeObserver(update);
+		ro.observe(containerEl);
+		return () => ro.disconnect();
+	});
 
 	// Color mapping based on original English keys (language-independent)
 	const categoryColorMap: Record<string, string> = {
@@ -89,16 +106,42 @@
 		return config;
 	});
 
-	// Determine if we need to truncate labels based on data length
+	const chartWidth = $derived(containerWidth);
+	const perItemWidth = $derived.by(() => {
+		const count = Math.max(1, data.length);
+		return chartWidth > 0 ? chartWidth / count : 0;
+	});
+
+	// Auto-skip x-axis labels when there isn't enough horizontal space.
+	// For band scales, `ticks` as a number means "show every Nth label".
+	const xAxisTicks = $derived.by(() => {
+		if (orientation !== 'vertical') return undefined;
+		if (data.length <= 1) return 1;
+		if (xAxisLabelInterval !== 'auto') return Math.max(1, xAxisLabelInterval);
+
+		// Target ~80px per label before we start skipping.
+		if (!perItemWidth) return 1;
+		return Math.max(1, Math.ceil(80 / perItemWidth));
+	});
+
+	const effectiveXAxisLabelRotate = $derived.by(() => {
+		if (orientation !== 'vertical') return 0;
+		if (xAxisLabelRotate > 0) return xAxisLabelRotate;
+		// If labels are cramped, rotate by default.
+		return perItemWidth > 0 && perItemWidth < 60 ? 45 : 0;
+	});
+
+	// Determine if we need to truncate labels based on available space
 	const formatLabel = $derived.by(() => {
 		const itemCount = data.length;
 
 		if (orientation === 'horizontal' && yAxisLabelWidth) {
-			const maxChars = Math.floor(yAxisLabelWidth / 7);
+			const maxChars = Math.max(4, Math.floor(yAxisLabelWidth / 7));
 			return (d: string) => (d.length > maxChars ? d.slice(0, maxChars - 1) + '…' : d);
 		}
 		if (orientation === 'vertical') {
-			const maxChars = itemCount > 10 ? 8 : itemCount > 6 ? 12 : 20;
+			const fallbackMaxChars = itemCount > 10 ? 8 : itemCount > 6 ? 12 : 20;
+			const maxChars = perItemWidth > 0 ? Math.max(4, Math.floor(perItemWidth / 7)) : fallbackMaxChars;
 			return (d: string) => (d.length > maxChars ? d.slice(0, maxChars - 1) + '…' : d);
 		}
 		return (d: string) => d;
@@ -107,12 +150,13 @@
 	// Calculate optimal padding based on label rotation and data
 	const bottomPadding = $derived.by(() => {
 		if (orientation !== 'vertical') return 8;
-		if (xAxisLabelRotate > 0) return 80;
+		if (effectiveXAxisLabelRotate > 0) return 80;
 		return data.length > 10 ? 60 : 40;
 	});
 </script>
 
 <div
+	bind:this={containerEl}
 	class="h-full w-full"
 	style="height: {height}px;"
 	role="img"
@@ -185,13 +229,13 @@
 						},
 						highlight: { area: { fill: 'none' } },
 						xAxis: {
+							ticks: xAxisTicks,
 							format: formatLabel,
 							tickLabelProps: {
-								svgProps: {
-									transform: xAxisLabelRotate > 0 ? `rotate(${xAxisLabelRotate})` : undefined,
-									'text-anchor': xAxisLabelRotate > 0 ? 'start' : 'middle',
-									dy: xAxisLabelRotate > 0 ? '0.5em' : undefined
-								}
+								rotate: effectiveXAxisLabelRotate > 0 ? effectiveXAxisLabelRotate : undefined,
+								textAnchor: effectiveXAxisLabelRotate > 0 ? 'start' : 'middle',
+								dy: effectiveXAxisLabelRotate > 0 ? '0.5em' : undefined,
+								dx: effectiveXAxisLabelRotate > 0 ? 2 : undefined
 							}
 						}
 					}}
