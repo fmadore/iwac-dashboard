@@ -157,9 +157,14 @@
 			const fallbackColor = `var(--chart-${(index % 16) + 1})`;
 			const resolvedColor = asCssColor(item.color) ?? fallbackColor;
 
+			// Format legend label with value and percentage
+			const percent = totalValue ? ((item.value / totalValue) * 100).toFixed(1) : '0.0';
+			const legendLabel = `${item.label} (${item.value.toLocaleString()} · ${percent}%)`;
+
 			return {
 				key,
 				label: item.label,
+				legendLabel,
 				value: item.value,
 				configColor: resolvedColor,
 				cssColorVar: `var(--color-${key})`,
@@ -184,36 +189,26 @@
 	}
 </script>
 
-<div class="h-full min-h-[400px] w-full" role="img" aria-label={t('chart.pie_distribution_aria')}>
+<div class="h-full w-full" role="img" aria-label={t('chart.pie_distribution_aria')}>
 	{#if layerData.length > 0}
-		<Chart.Container
-			config={chartConfig}
-			class="h-full w-full min-w-0 justify-start aspect-square"
-		>
-			<PieChart
-				data={layerData}
-				key="key"
-				label="label"
-				value="value"
-				legend={showLabels}
-				cRange={cRange}
-				innerRadius={normalizedInnerRadius}
-				outerRadius={normalizedOuterRadius}
-				padding={28}
-				props={{
-					pie: { motion: { type: 'tween', duration: animationDuration } },
-					legend: {
-						placement: 'bottom',
-						variant: 'swatches',
-						classes: {
-							items: 'flex-wrap justify-center',
-							item: 'min-w-0 max-w-[10rem]',
-							swatch: 'shrink-0',
-							label: 'truncate'
-						}
-					}
-				}}
-			>
+		<Chart.Container config={chartConfig} class="mx-auto w-full max-w-2xl flex-col items-center justify-start aspect-auto">
+			<div class="w-full">
+				<div class="mx-auto w-full max-w-md aspect-square">
+					<PieChart
+						class="h-full w-full"
+						data={layerData}
+						key="key"
+						label="label"
+						value="value"
+						legend={false}
+						cRange={cRange}
+						innerRadius={normalizedInnerRadius}
+						outerRadius={normalizedOuterRadius}
+						padding={{ top: 8, bottom: 8, left: 8, right: 8 }}
+						props={{
+							pie: { motion: { type: 'tween', duration: animationDuration } }
+						}}
+					>
 				{#snippet tooltip({ context })}
 					<TooltipPrimitive.Root variant="none" context={context}>
 						{#snippet children({ data: hovered })}
@@ -247,7 +242,25 @@
 						{/snippet}
 					</TooltipPrimitive.Root>
 				{/snippet}
-			</PieChart>
+					</PieChart>
+				</div>
+
+				{#if showLabels}
+					<div class="mt-3 w-full px-2">
+						<div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
+							{#each layerData as item (item.key)}
+								<div class="flex items-center gap-2">
+									<span class="h-2.5 w-2.5 rounded-[2px]" style="background-color: {item.cssColorVar}" />
+									<span class="font-medium">{item.label}</span>
+									<span class="text-muted-foreground">
+										({item.value.toLocaleString()} · {formatPercent(item.value, totalValue)})
+									</span>
+								</div>
+							{/each}
+						</div>
+					</div>
+				{/if}
+			</div>
 		</Chart.Container>
 	{:else}
 		<div class="flex h-[200px] items-center justify-center text-muted-foreground">{t('chart.no_data')}</div>
