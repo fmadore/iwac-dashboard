@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import EntitiesTable from './entities-table.svelte';
-	import EChartsBarChart from '$lib/components/charts/EChartsBarChart.svelte';
+	import LayerChartBar from '$lib/components/charts/LayerChartBar.svelte';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
 	type ApiChartData = { labels?: string[]; values?: number[] };
@@ -100,7 +100,7 @@
 			</div>
 		{:else}
 			<div class="h-96 w-full">
-				<EChartsBarChart
+				<LayerChartBar
 					data={chartData}
 					height={384}
 					animationDuration={750}
