@@ -119,16 +119,21 @@
 		if (data.length <= 1) return 1;
 		if (xAxisLabelInterval !== 'auto') return Math.max(1, xAxisLabelInterval);
 
-		// Target ~80px per label before we start skipping.
+		// Sidebar + content transitions can leave charts in a mid-width state where
+		// labels overlap. Be a bit more aggressive about skipping.
 		if (!perItemWidth) return 1;
-		return Math.max(1, Math.ceil(80 / perItemWidth));
+		const minLabelSpace = effectiveXAxisLabelRotate >= 45 ? 50 : 90;
+		return Math.max(1, Math.ceil(minLabelSpace / perItemWidth));
 	});
 
 	const effectiveXAxisLabelRotate = $derived.by(() => {
 		if (orientation !== 'vertical') return 0;
 		if (xAxisLabelRotate > 0) return xAxisLabelRotate;
-		// If labels are cramped, rotate by default.
-		return perItemWidth > 0 && perItemWidth < 60 ? 45 : 0;
+		// If labels are cramped (common when the sidebar is open), rotate by default.
+		if (perItemWidth <= 0) return 0;
+		if (perItemWidth < 55) return 90;
+		if (perItemWidth < 90) return 45;
+		return 0;
 	});
 
 	// Determine if we need to truncate labels based on available space
@@ -150,6 +155,7 @@
 	// Calculate optimal padding based on label rotation and data
 	const bottomPadding = $derived.by(() => {
 		if (orientation !== 'vertical') return 8;
+		if (effectiveXAxisLabelRotate >= 90) return 110;
 		if (effectiveXAxisLabelRotate > 0) return 80;
 		return data.length > 10 ? 60 : 40;
 	});
@@ -163,7 +169,7 @@
 	aria-label={t('chart.documents_by_category_aria')}
 >
 	{#if chartData.length > 0}
-		<ChartContainer config={chartConfig} class="h-full w-full">
+		<ChartContainer config={chartConfig} class="h-full w-full min-w-0 aspect-auto justify-start">
 			{#if orientation === 'horizontal'}
 				<BarChart
 					data={chartData}
