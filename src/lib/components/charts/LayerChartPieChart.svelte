@@ -2,6 +2,7 @@
 	import * as Chart from '$lib/components/ui/chart/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { PieChart, Tooltip as TooltipPrimitive } from 'layerchart';
+	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 
 	interface PieDataItem {
 		label: string;
@@ -33,6 +34,13 @@
 		animationDuration = 1000,
 		minSlicePercent = 0.5
 	}: Props = $props();
+
+	const hiddenLabels = new SvelteSet<string>();
+
+	function toggleLabel(label: string) {
+		if (hiddenLabels.has(label)) hiddenLabels.delete(label);
+		else hiddenLabels.add(label);
+	}
 
 	function asCssColor(value: string | undefined): string | undefined {
 		if (!value) return undefined;
@@ -146,7 +154,7 @@
 
 	// Turn the incoming labels into CSS-safe keys for ChartStyle variables.
 	const layerData = $derived.by(() => {
-		const used = new Map<string, number>();
+		const used = new SvelteMap<string, number>();
 		return processedData.map((item, index) => {
 			const base = toCssKey(item.label) || 'item';
 			const seen = used.get(base) ?? 0;
@@ -181,7 +189,9 @@
 		return config;
 	});
 
-	const cRange = $derived(layerData.map((d) => d.cssColorVar));
+	const visibleLayerData = $derived(layerData.filter((item) => !hiddenLabels.has(item.label)));
+	const visibleTotalValue = $derived(visibleLayerData.reduce((sum, item) => sum + item.value, 0));
+	const cRange = $derived(visibleLayerData.map((d) => d.cssColorVar));
 
 	function formatPercent(part: number, total: number): string {
 		if (!total) return '0.0%';
@@ -195,7 +205,7 @@
 			<div class="w-full">
 				<div class="mx-auto w-full max-w-md aspect-square">
 					<PieChart
-						data={layerData}
+						data={visibleLayerData}
 						key="key"
 						label="label"
 						value="value"
@@ -223,7 +233,7 @@
 										</span>
 									</div>
 								{/if}
-								<div class="text-muted-foreground">{formatPercent(Number(hovered.value), totalValue)}</div>
+								<div class="text-muted-foreground">{formatPercent(Number(hovered.value), visibleTotalValue)}</div>
 
 								{#if othersGroupDetails.length > 0 && hovered.isOthers}
 									<div class="mt-1 grid gap-1">
@@ -248,15 +258,36 @@
 					<div class="mt-3 w-full px-2">
 						<div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
 							{#each layerData as item (item.key)}
-								<div class="flex min-w-0 items-center gap-2">
+								<button
+									type="button"
+									class="flex min-w-0 items-center gap-2 rounded-sm px-1 text-left hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+									aria-pressed={hiddenLabels.has(item.label)}
+									aria-label={
+										hiddenLabels.has(item.label)
+											? t('chart.legend_toggle_show_aria', [item.label])
+											: t('chart.legend_toggle_hide_aria', [item.label])
+									}
+									onclick={() => toggleLabel(item.label)}
+								>
 									<span
 										class="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+										class:opacity-40={hiddenLabels.has(item.label)}
 										style="background-color: {item.cssColorVar}"
 									></span>
-									<span class="max-w-[10rem] truncate font-medium">{item.label}</span>
-									<span class="font-mono text-foreground tabular-nums">{item.value.toLocaleString()}</span>
-									<span class="text-muted-foreground tabular-nums">{formatPercent(item.value, totalValue)}</span>
-								</div>
+									<span
+										class="max-w-[10rem] truncate font-medium"
+										class:line-through={hiddenLabels.has(item.label)}
+										class:opacity-60={hiddenLabels.has(item.label)}
+									>
+										{item.label}
+									</span>
+									<span class="font-mono text-foreground tabular-nums" class:opacity-60={hiddenLabels.has(item.label)}>
+										{item.value.toLocaleString()}
+									</span>
+									<span class="text-muted-foreground tabular-nums" class:opacity-60={hiddenLabels.has(item.label)}>
+										{formatPercent(item.value, hiddenLabels.has(item.label) ? totalValue : visibleTotalValue)}
+									</span>
+								</button>
 							{/each}
 						</div>
 					</div>

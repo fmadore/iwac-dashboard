@@ -6,8 +6,6 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 
-	export const prerender = true;
-
 	interface AuthorData {
 		author: string;
 		publication_count: number;

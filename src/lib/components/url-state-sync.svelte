@@ -11,6 +11,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { afterNavigate } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { urlManager } from '$lib/stores/urlManager.svelte.js';
 	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { mode, setMode } from 'mode-watcher';
@@ -19,10 +20,46 @@
 
 	let isInitialized = $state(false);
 
+	function routeKeyFromPath(pathname: string): string {
+		// Strip configured base (e.g. /iwac-dashboard) so routing works the same in dev and prod.
+		const withoutBase = base && pathname.startsWith(base) ? pathname.slice(base.length) : pathname;
+		const trimmed = withoutBase.replace(/^\/+/, '');
+		return trimmed.split('/')[0] || '';
+	}
+
+	const allowlistByRoute: Record<string, Set<string>> = {
+		'': new Set(['lang', 'theme']),
+		countries: new Set(['lang', 'theme']),
+		entities: new Set(['lang', 'theme']),
+		references: new Set(['lang', 'theme']),
+		topics: new Set(['lang', 'theme']),
+		languages: new Set(['lang', 'theme', 'country', 'type']),
+		timeline: new Set(['lang', 'theme', 'country', 'type']),
+		categories: new Set(['lang', 'theme', 'country', 'yearMin', 'yearMax']),
+		words: new Set(['lang', 'theme', 'view', 'country', 'year']),
+		scary: new Set(['lang', 'theme', 'view', 'country'])
+	};
+
+	function pruneUrlParamsForRoute(pathname: string) {
+		if (!browser || !isInitialized) return;
+
+		const routeKey = routeKeyFromPath(pathname);
+		const allowed = allowlistByRoute[routeKey] ?? allowlistByRoute[''];
+		const keys = urlManager.keys();
+		const toClear = keys.filter((k) => !allowed.has(k));
+		if (toClear.length) {
+			urlManager.clearMany(toClear as any);
+		}
+	}
+
 	// Wait for router to be initialized using afterNavigate
 	// This ensures replaceState is available before we try to sync state
-	afterNavigate(() => {
-		if (isInitialized) return;
+	afterNavigate(({ to }) => {
+		const pathname = to?.url?.pathname ?? window.location.pathname;
+		if (isInitialized) {
+			pruneUrlParamsForRoute(pathname);
+			return;
+		}
 
 		// Read initial state from URL
 		const urlLang = urlManager.get('lang') as Language | undefined;
@@ -38,6 +75,9 @@
 		// Mark as initialized and enable URL writing
 		urlManager.enableUrlWriting();
 		isInitialized = true;
+
+		// Prune any stale params on initial load.
+		pruneUrlParamsForRoute(pathname);
 	});
 
 	// Watch for language changes and update URL

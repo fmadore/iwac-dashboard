@@ -37,6 +37,8 @@ export const translations = {
 		'chart.documents': 'Documents',
 		'chart.pie_distribution_aria': 'Pie chart showing data distribution',
 		'chart.others': 'Others ({0})',
+		'chart.legend_toggle_hide_aria': 'Hide {0} slice',
+		'chart.legend_toggle_show_aria': 'Show {0} slice',
 		'chart.no_data': 'No data available',
 		'chart.no_data_for_filters': 'No data available for selected filters',
 		'chart.documents_by_category_aria': 'Bar chart showing document counts by category',
@@ -245,6 +247,8 @@ export const translations = {
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
 		'chart.others': 'Autres ({0})',
+		'chart.legend_toggle_hide_aria': 'Masquer la part {0}',
+		'chart.legend_toggle_show_aria': 'Afficher la part {0}',
 		'app.title': 'Aperçu de la base de données IWAC',
 		'app.subtitle': "Collection Islam Afrique de l'Ouest",
 		'nav.overview': "Vue d'ensemble",

@@ -61,7 +61,10 @@ export default defineConfig(({ mode }) => {
 							}
 						}
 					],
-					navigateFallback: base ? `${base}/index.html` : '/index.html',
+					// SvelteKit adapter-static prerender caches the app shell as `/` (not `/index.html`).
+					// When deployed under a subpath (e.g. GitHub Pages), the SW scope already applies the base.
+					// Using `${base}/index.html` here causes Workbox to look for a non-precached URL.
+					navigateFallback: base ? `${base}/` : '/',
 					navigateFallbackAllowlist: [/^(?!\/__)/],
 					cleanupOutdatedCaches: true
 				}

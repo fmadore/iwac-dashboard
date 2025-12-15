@@ -5,8 +5,6 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import StackedBarChart from '$lib/components/charts/StackedBarChart.svelte';
 
-	export const prerender = true;
-
 	interface SeriesData {
 		name: string;
 		data: number[];
