@@ -868,13 +868,6 @@
 							step={1}
 							class="w-full"
 						/>
-						<!-- Progress bar -->
-						<div class="h-1 w-full overflow-hidden rounded-full bg-muted">
-							<div
-								class="h-full bg-primary transition-all duration-300"
-								style="width: {progressPercent}%"
-							></div>
-						</div>
 					</div>
 				{/if}
 			</Card.Content>
