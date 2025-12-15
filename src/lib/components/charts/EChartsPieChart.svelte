@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
-	// @ts-expect-error - ECharts module resolution issue
-	import * as echarts from 'echarts';
+	import * as Chart from '$lib/components/ui/chart/index.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { PieChart, Tooltip as TooltipPrimitive } from 'layerchart';
 
 	interface PieDataItem {
 		label: string;
 		value: number;
+		/**
+		 * Color for the slice. Prefer theme variables like `var(--chart-1)`.
+		 * We also accept `--chart-1` (converted to `var(--chart-1)`).
+		 */
 		color?: string;
 		percentage?: string;
 	}
@@ -31,135 +34,93 @@
 		minSlicePercent = 0.5
 	}: Props = $props();
 
-	let chartContainer: HTMLDivElement;
-	let chartInstance: any = null;
-	let themeClass = $state('');
-	let resizeObserver: ResizeObserver | undefined;
-	let previousThemeClass: string | null = null;
-
-	const colorParsingCanvas = browser ? document.createElement('canvas') : null;
-	const colorParsingContext = colorParsingCanvas?.getContext('2d', { willReadFrequently: false });
-
-	// Get computed CSS variable value - simplified approach matching EChartsBarChart
-	function parseColor(value: string): string | null {
-		if (!colorParsingContext) return null;
-		try {
-			// Reset fillStyle to avoid retaining invalid values
-			colorParsingContext.fillStyle = '#000000';
-			colorParsingContext.fillStyle = value;
-			const result = colorParsingContext.fillStyle;
-			// Only return if it's not the reset value (meaning parsing succeeded)
-			return result !== '#000000' ? result : null;
-		} catch (error) {
-			return null;
-		}
+	function asCssColor(value: string | undefined): string | undefined {
+		if (!value) return undefined;
+		const trimmed = value.trim();
+		if (!trimmed) return undefined;
+		if (trimmed.startsWith('var(')) return trimmed;
+		if (trimmed.startsWith('--')) return `var(${trimmed})`;
+		return trimmed;
 	}
 
-	function getCSSVariable(variable: string): string {
-		if (!browser) return '#000000';
-
-		// Handle var(--variable-name) format by extracting the variable name
-		let varName = variable.trim();
-		if (varName.startsWith('var(') && varName.endsWith(')')) {
-			varName = varName.slice(4, -1).split(',')[0].trim();
-		}
-
-		const root = document.documentElement;
-		const value = getComputedStyle(root).getPropertyValue(varName).trim();
-
-		if (value) {
-			const parsed = parseColor(value);
-			if (parsed) {
-				return parsed;
-			}
-			// If parsing failed but we have a value, it might be OKLCH
-			// Try to use it directly and let the browser handle it via a temporary div
-			if (value.startsWith('oklch(') || value.startsWith('rgb(') || value.startsWith('hsl(')) {
-				const tempDiv = document.createElement('div');
-				tempDiv.style.color = value;
-				document.body.appendChild(tempDiv);
-				const computed = getComputedStyle(tempDiv).color;
-				document.body.removeChild(tempDiv);
-				if (computed && computed !== 'rgba(0, 0, 0, 0)' && computed !== 'rgb(0, 0, 0)') {
-					return computed;
-				}
-			}
-		}
-
-		const fallbackMap: Record<string, string> = {
-			'--chart-1': '#e8590c',
-			'--chart-2': '#2563eb',
-			'--chart-3': '#16a34a',
-			'--chart-4': '#f59e0b',
-			'--chart-5': '#dc2626',
-			'--chart-6': '#ec4899',
-			'--chart-7': '#06b6d4',
-			'--chart-8': '#f472b6',
-			'--chart-9': '#84cc16',
-			'--chart-10': '#10b981',
-			'--chart-11': '#6366f1',
-			'--chart-12': '#f97316',
-			'--chart-13': '#22c55e',
-			'--chart-14': '#a855f7',
-			'--chart-15': '#ef4444',
-			'--chart-16': '#0ea5e9',
-			'--foreground': '#09090b',
-			'--muted-foreground': '#71717a',
-			'--background': '#ffffff',
-			'--popover': '#ffffff',
-			'--popover-foreground': '#09090b',
-			'--border': '#e4e4e7'
-		};
-
-		return fallbackMap[varName] || '#666666';
+	function toCssKey(input: string): string {
+		return input
+			.normalize('NFKD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-+|-+$/g, '');
 	}
 
-	// Process data to group small slices and track "Others" details
-	const chartData = $derived.by(() => {
-		if (!data || data.length === 0) {
-			return { processedData: [], othersGroupDetails: [] };
+	function normalizeInnerRadius(value: number | string | undefined): number | undefined {
+		if (value === undefined || value === null) return undefined;
+		if (typeof value === 'number') return value;
+		const trimmed = value.trim();
+		if (trimmed.endsWith('%')) {
+			const p = Number.parseFloat(trimmed.slice(0, -1));
+			if (!Number.isFinite(p)) return undefined;
+			return Math.max(0, p / 100);
 		}
+		const n = Number.parseFloat(trimmed);
+		return Number.isFinite(n) ? n : undefined;
+	}
 
-		const total = data.reduce((sum, item) => sum + item.value, 0);
-		const sortedData = [...data].sort((a, b) => b.value - a.value);
+	function normalizeOuterRadius(value: number | string | undefined): number | undefined {
+		if (value === undefined || value === null) return undefined;
+		if (typeof value === 'number') return value;
+		const trimmed = value.trim();
+		// LayerChart's `outerRadius` is a pixel number; if a percentage is passed (ECharts-style),
+		// ignore it and let LayerChart compute a responsive radius.
+		if (trimmed.endsWith('%')) return undefined;
+		const n = Number.parseFloat(trimmed);
+		return Number.isFinite(n) ? n : undefined;
+	}
 
-		// For heavily skewed data (top slice >90%), show top 5 + others
-		const topSlicePercent = (sortedData[0]?.value / total) * 100;
+	const normalizedInnerRadius = $derived(normalizeInnerRadius(innerRadius));
+	const normalizedOuterRadius = $derived(normalizeOuterRadius(outerRadius));
+
+	const totalValue = $derived(data.reduce((sum, item) => sum + item.value, 0));
+
+	// Group small slices into "Others" (keeps the same behavior as the old ECharts version).
+	const grouped = $derived.by(() => {
+		if (!data.length) return { processedData: [] as PieDataItem[], othersGroupDetails: [] as PieDataItem[] };
+
+		const sorted = [...data].sort((a, b) => b.value - a.value);
+		const total = sorted.reduce((sum, item) => sum + item.value, 0);
+		if (!total) return { processedData: [] as PieDataItem[], othersGroupDetails: [] as PieDataItem[] };
+
+		const topSlicePercent = ((sorted[0]?.value ?? 0) / total) * 100;
 
 		if (topSlicePercent > 90) {
-			const mainSlices = sortedData.slice(0, 5);
-			const smallSlices = sortedData.slice(5);
+			const mainSlices = sorted.slice(0, 5);
+			const smallSlices = sorted.slice(5);
 
-			if (smallSlices.length > 0) {
+			if (smallSlices.length) {
 				const othersValue = smallSlices.reduce((sum, item) => sum + item.value, 0);
 				return {
 					processedData: [
 						...mainSlices,
 						{
-							label: `Others (${smallSlices.length} languages)`,
+							label: t('chart.others', [String(smallSlices.length)]),
 							value: othersValue,
-							color: '--muted-foreground'
+							color: 'var(--muted-foreground)'
 						}
 					],
 					othersGroupDetails: smallSlices
 				};
 			}
-			return { processedData: mainSlices, othersGroupDetails: [] };
+
+			return { processedData: mainSlices, othersGroupDetails: [] as PieDataItem[] };
 		}
 
-		// For balanced data, use percentage threshold
 		const threshold = (minSlicePercent / 100) * total;
 		const mainSlices: PieDataItem[] = [];
 		const smallSlices: PieDataItem[] = [];
 
-		sortedData.forEach((item, index) => {
-			if (index < 8 && item.value >= threshold) {
-				mainSlices.push(item);
-			} else if (item.value < threshold) {
-				smallSlices.push(item);
-			} else {
-				mainSlices.push(item);
-			}
+		sorted.forEach((item, index) => {
+			if (index < 8 && item.value >= threshold) mainSlices.push(item);
+			else if (item.value < threshold) smallSlices.push(item);
+			else mainSlices.push(item);
 		});
 
 		if (smallSlices.length > 2) {
@@ -168,228 +129,122 @@
 				processedData: [
 					...mainSlices,
 					{
-						label: `Others (${smallSlices.length} languages)`,
+						label: t('chart.others', [String(smallSlices.length)]),
 						value: othersValue,
-						color: '--muted-foreground'
+						color: 'var(--muted-foreground)'
 					}
 				],
 				othersGroupDetails: smallSlices
 			};
 		}
 
-		return {
-			processedData: [...mainSlices, ...smallSlices],
-			othersGroupDetails: []
-		};
+		return { processedData: [...mainSlices, ...smallSlices], othersGroupDetails: [] as PieDataItem[] };
 	});
 
-	// Destructure the derived values
-	const processedData = $derived(chartData.processedData);
-	const othersGroupDetails = $derived(chartData.othersGroupDetails);
+	const processedData = $derived(grouped.processedData);
+	const othersGroupDetails = $derived(grouped.othersGroupDetails);
 
-	function attachResizeObserver() {
-		if (!chartContainer || resizeObserver) return;
-		resizeObserver = new ResizeObserver(() => {
-			chartInstance?.resize();
-		});
-		resizeObserver.observe(chartContainer);
-	}
+	// Turn the incoming labels into CSS-safe keys for ChartStyle variables.
+	const layerData = $derived.by(() => {
+		const used = new Map<string, number>();
+		return processedData.map((item, index) => {
+			const base = toCssKey(item.label) || 'item';
+			const seen = used.get(base) ?? 0;
+			used.set(base, seen + 1);
+			const key = seen ? `${base}-${seen}` : base;
 
-	function detachResizeObserver() {
-		resizeObserver?.disconnect();
-		resizeObserver = undefined;
-	}
+			// Keep colors stable and theme-friendly.
+			const fallbackColor = `var(--chart-${(index % 16) + 1})`;
+			const resolvedColor = asCssColor(item.color) ?? fallbackColor;
 
-	async function initChart() {
-		if (!browser || !chartContainer) return;
-
-		if (chartInstance) {
-			chartInstance.dispose();
-		}
-
-		chartInstance = echarts.init(chartContainer);
-		attachResizeObserver();
-		updateChart();
-	}
-
-	function destroyChart() {
-		detachResizeObserver();
-		chartInstance?.dispose();
-		chartInstance = null;
-	}
-
-	async function reinitializeChart() {
-		destroyChart();
-		await initChart();
-	}
-
-	function updateChart() {
-		if (!chartInstance || processedData.length === 0) return;
-
-		// Get fresh CSS variables on each update
-		const foreground = getCSSVariable('--foreground');
-		const background = getCSSVariable('--background');
-		const popover = getCSSVariable('--popover');
-		const popoverForeground = getCSSVariable('--popover-foreground');
-		const border = getCSSVariable('--border');
-
-		// Convert data to ECharts format with resolved colors
-		const chartData = processedData.map((item, index) => {
-			const colorVar = item.color || `--chart-${(index % 16) + 1}`;
-			const resolvedColor = getCSSVariable(colorVar);
 			return {
-				name: item.label,
+				key,
+				label: item.label,
 				value: item.value,
-				itemStyle: {
-					color: resolvedColor
-				}
+				configColor: resolvedColor,
+				cssColorVar: `var(--color-${key})`,
+				isOthers: othersGroupDetails.length > 0 && item.label === processedData[processedData.length - 1]?.label
 			};
 		});
+	});
 
-		const option = {
-			backgroundColor: 'transparent',
-			tooltip: {
-				trigger: 'item',
-				formatter: (params: any) => {
-					const name = params.name;
-					const value = params.value;
-					const percent = params.percent;
+	const chartConfig = $derived.by(() => {
+		const config: Chart.ChartConfig = {};
+		for (const item of layerData) {
+			config[item.key] = { label: item.label, color: item.configColor };
+		}
+		return config;
+	});
 
-					// Check if this is the "Others" category
-					if (name.startsWith('Others (') && othersGroupDetails.length > 0) {
-						// Build detailed breakdown for Others
-						const total = processedData.reduce((sum, item) => sum + item.value, 0);
-						const header = `<strong>${name}</strong><br/>${value} (${percent.toFixed(1)}%)<br/><br/>`;
-						const details = othersGroupDetails
-							.map((item) => {
-								const itemPercent = ((item.value / total) * 100).toFixed(1);
-								return `${item.label}: ${item.value} (${itemPercent}%)`;
-							})
-							.join('<br/>');
-						return header + details;
-					}
+	const cRange = $derived(layerData.map((d) => d.cssColorVar));
 
-					// Default formatter for regular items
-					return `<strong>${name}</strong><br/>${value} (${percent.toFixed(1)}%)`;
-				},
-				backgroundColor: popover,
-				borderColor: border,
-				borderWidth: 1,
-				textStyle: {
-					color: popoverForeground,
-					fontSize: 12
-				},
-				padding: [8, 12],
-				extraCssText:
-					'border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); max-width: 300px;'
-			},
-			series: [
-				{
-					type: 'pie',
-					radius: [innerRadius, outerRadius],
-					center: ['50%', '50%'],
-					data: chartData,
-					label: {
-						show: showLabels,
-						position: 'outside',
-						color: foreground,
-						fontSize: 12,
-						fontWeight: 500,
-						formatter: '{b}',
-						minMargin: 8,
-						lineHeight: 16,
-						alignTo: 'none',
-						bleedMargin: 10
-					},
-					labelLine: {
-						show: showLabels,
-						length: 25,
-						length2: 40,
-						smooth: 0.2,
-						lineStyle: {
-							color: foreground,
-							opacity: 0.5,
-							width: 1
-						}
-					},
-					itemStyle: {
-						borderRadius: 4,
-						borderColor: background,
-						borderWidth: 2
-					},
-					emphasis: {
-						disabled: true
-					},
-					animationType: 'scale',
-					animationEasing: 'elasticOut',
-					animationDuration: animationDuration
-				}
-			]
-		};
-
-		chartInstance.setOption(option, true);
+	function formatPercent(part: number, total: number): string {
+		if (!total) return '0.0%';
+		return `${((part / total) * 100).toFixed(1)}%`;
 	}
-
-	// Initialize chart on mount
-	onMount(() => {
-		if (!browser) return;
-
-		initChart();
-
-		return () => {
-			destroyChart();
-		};
-	});
-
-	// Watch for theme changes via MutationObserver
-	onMount(() => {
-		if (browser) {
-			themeClass = document.documentElement.className;
-
-			const observer = new MutationObserver(() => {
-				themeClass = document.documentElement.className;
-			});
-
-			observer.observe(document.documentElement, {
-				attributes: true,
-				attributeFilter: ['class']
-			});
-
-			return () => observer.disconnect();
-		}
-	});
-
-	// Update chart when theme changes
-	$effect(() => {
-		if (!browser) return;
-
-		const currentTheme = themeClass;
-		if (currentTheme === previousThemeClass) return;
-
-		previousThemeClass = currentTheme;
-
-		if (!chartInstance) return;
-
-		reinitializeChart();
-	});
-
-	// Update chart when data changes
-	$effect(() => {
-		if (chartInstance && processedData.length > 0) {
-			updateChart();
-		}
-	});
 </script>
 
 <div
-	bind:this={chartContainer}
 	class="h-full min-h-[400px] w-full"
 	role="img"
-	aria-label="Pie chart showing data distribution"
-></div>
+	aria-label={t('chart.pie_distribution_aria')}
+>
+	{#if layerData.length > 0}
+		<Chart.Container config={chartConfig} class="h-full w-full min-w-0 justify-start">
+			<PieChart
+				data={layerData}
+				key="key"
+				label="label"
+				value="value"
+				legend={showLabels}
+				cRange={cRange}
+				innerRadius={normalizedInnerRadius}
+				outerRadius={normalizedOuterRadius}
+				padding={28}
+				props={{
+					pie: { motion: { type: 'tween', duration: animationDuration } },
+					legend: { placement: 'bottom', variant: 'swatches' }
+				}}
+			>
+				{#snippet tooltip({ context })}
+					<TooltipPrimitive.Root variant="none" context={context}>
+						{#snippet children({ data: hovered, payload })}
+							<div
+								class="grid min-w-[9rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl"
+							>
+								<div class="font-medium">{hovered.label}</div>
+								{#if showValues}
+									<div class="flex items-center justify-between gap-4">
+										<span class="text-muted-foreground">{t('chart.documents')}</span>
+										<span class="font-mono font-medium text-foreground tabular-nums">
+											{Number(hovered.value).toLocaleString()}
+										</span>
+									</div>
+								{/if}
+								<div class="text-muted-foreground">{formatPercent(Number(hovered.value), totalValue)}</div>
 
-<style>
-	div {
-		container-type: inline-size;
-	}
-</style>
+								{#if othersGroupDetails.length > 0 && hovered.isOthers}
+									<div class="mt-1 grid gap-1">
+										{#each othersGroupDetails as item (item.label)}
+											<div class="flex items-center justify-between gap-4">
+												<span class="text-muted-foreground">{item.label}</span>
+												<span class="font-mono text-foreground tabular-nums">
+													{item.value.toLocaleString()} ({formatPercent(item.value, totalValue)})
+												</span>
+											</div>
+										{/each}
+									</div>
+								{/if}
+							</div>
+						{/snippet}
+					</TooltipPrimitive.Root>
+				{/snippet}
+			</PieChart>
+		</Chart.Container>
+	{:else}
+		<div class="flex h-[200px] items-center justify-center text-muted-foreground">
+			{t('chart.no_data')}
+		</div>
+	{/if}
+</div>
+
