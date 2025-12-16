@@ -2,6 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import { schemeSet2, schemeTableau10 } from 'd3-scale-chromatic';
 	import { select } from 'd3-selection';
+	import 'd3-transition';
 	import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 	import type { TreemapData, TreemapNode, TreemapConfig } from '$lib/types/treemap.js';
 

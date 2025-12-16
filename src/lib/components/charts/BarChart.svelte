@@ -148,11 +148,17 @@
 			.style('ry', '4');
 
 		// Animate bars
-		bars
-			.transition()
-			.duration(animationDuration)
-			.attr('y', (d) => yScale(d.documents))
-			.attr('height', (d) => innerHeight - yScale(d.documents));
+		if (typeof (bars as any).transition === 'function') {
+			(bars as any)
+				.transition()
+				.duration(animationDuration)
+				.attr('y', (d: any) => yScale(d.documents))
+				.attr('height', (d: any) => innerHeight - yScale(d.documents));
+		} else {
+			bars
+				.attr('y', (d) => yScale(d.documents))
+				.attr('height', (d) => innerHeight - yScale(d.documents));
+		}
 
 		// Add hover effects
 		bars

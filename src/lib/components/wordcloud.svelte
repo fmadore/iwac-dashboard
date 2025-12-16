@@ -247,12 +247,16 @@
 			});
 
 		// Add entrance animation
-		text
-			.style('opacity', 0)
-			.transition()
-			.duration(600)
-			.delay((d: Word, i: number) => i * 50)
-			.style('opacity', 1);
+		const textSelection = text.style('opacity', 0);
+		if (typeof (textSelection as any).transition === 'function') {
+			(textSelection as any)
+				.transition()
+				.duration(600)
+				.delay((d: Word, i: number) => i * 50)
+				.style('opacity', 1);
+		} else {
+			textSelection.style('opacity', 1);
+		}
 	}
 
 	// Re-render when data or settings change, or container size changes
