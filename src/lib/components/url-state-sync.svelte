@@ -15,6 +15,7 @@
 	import { urlManager } from '$lib/stores/urlManager.svelte.js';
 	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { mode, setMode } from 'mode-watcher';
+	import { isStorageAvailable } from '$lib/utils/storage-check.js';
 	import type { Language } from '$lib/stores/translationStore.svelte.js';
 	import type { Theme } from '$lib/stores/urlManager.svelte.js';
 
@@ -69,7 +70,12 @@
 
 		const urlTheme = urlManager.get('theme') as Theme | undefined;
 		if (urlTheme && ['light', 'dark', 'system'].includes(urlTheme)) {
-			setMode(urlTheme as 'light' | 'dark' | 'system');
+			// Wrap in try-catch to handle storage errors in iframe contexts
+			try {
+				setMode(urlTheme as 'light' | 'dark' | 'system');
+			} catch (e) {
+				console.warn('Could not set theme mode (storage may be blocked):', e);
+			}
 		}
 
 		// Mark as initialized and enable URL writing

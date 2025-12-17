@@ -2,12 +2,22 @@
 	import * as Button from '$lib/components/ui/button/index.js';
 	import { Moon, Sun } from '@lucide/svelte';
 	import { mode, toggleMode } from 'mode-watcher';
+	import { isStorageAvailable } from '$lib/utils/storage-check.js';
+
+	function handleToggle() {
+		try {
+			toggleMode();
+		} catch (e) {
+			// Storage may be blocked in iframe contexts
+			console.warn('Could not toggle theme (storage may be blocked):', e);
+		}
+	}
 </script>
 
 <Button.Root
 	variant="ghost"
 	size="icon"
-	onclick={toggleMode}
+	onclick={handleToggle}
 	class="h-9 w-9"
 	aria-label="Toggle theme"
 >

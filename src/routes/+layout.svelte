@@ -7,7 +7,7 @@
 	import ThemeToggle from '$lib/components/theme-toggle.svelte';
 	import FullscreenToggle from '$lib/components/fullscreen-toggle.svelte';
 	import UrlStateSync from '$lib/components/url-state-sync.svelte';
-	import { ModeWatcher } from 'mode-watcher';
+	import SafeModeWatcher from '$lib/components/safe-mode-watcher.svelte';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import '../app.css';
@@ -45,7 +45,7 @@
 	// });
 </script>
 
-<ModeWatcher />
+<SafeModeWatcher />
 <UrlStateSync />
 <Sidebar.Provider>
 	<AppSidebar />
