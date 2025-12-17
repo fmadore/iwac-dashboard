@@ -911,10 +911,11 @@
 						data={temporalData}
 						periods={availableYears}
 						title={raceChartTitle()}
-						maxBars={10}
+						maxBars={12}
 						{height}
 						useMultipleColors={true}
 						cumulative={true}
+						allTerms={metadata?.term_families || []}
 						bind:currentIndex={currentYearIndex}
 						onPeriodChange={(index, period) => {
 							console.log(`Period changed to: ${period}`);

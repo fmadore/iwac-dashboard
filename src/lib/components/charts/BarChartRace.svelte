@@ -88,6 +88,11 @@
 		 * Callback when animation completes
 		 */
 		onComplete?: () => void;
+
+		/**
+		 * List of all possible terms to ensure they are included even with 0 value
+		 */
+		allTerms?: string[];
 	}
 
 	let {
@@ -105,7 +110,8 @@
 		cumulative = false,
 		currentIndex = $bindable(0),
 		onPeriodChange,
-		onComplete
+		onComplete,
+		allTerms
 	}: BarChartRaceProps = $props();
 
 	// Component state
@@ -177,6 +183,13 @@
 			{ data: [string, number][]; year?: number; [key: string]: any }
 		> = {};
 		const termTotals: Map<string, number> = new Map();
+
+		// Initialize with allTerms if provided
+		if (allTerms) {
+			for (const term of allTerms) {
+				termTotals.set(term, 0);
+			}
+		}
 
 		for (let i = 0; i <= currentIndex; i++) {
 			const period = periods[i];
@@ -402,7 +415,9 @@
 						show: showLabels,
 						position: 'right',
 						color: foregroundColor,
-						formatter: '{c}'
+						formatter: (params: any) => {
+							return params.value > 0 ? params.value : '';
+						}
 					},
 					emphasis: {
 						disabled: true
