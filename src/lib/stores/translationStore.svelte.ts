@@ -42,6 +42,8 @@ export const translations = {
 		'chart.no_data': 'No data available',
 		'chart.no_data_for_filters': 'No data available for selected filters',
 		'chart.documents_by_category_aria': 'Bar chart showing document counts by category',
+		'chart.documents_by_type_over_years_aria':
+			'Stacked bar chart showing document counts by type over years',
 		'common.loading': 'Loading...',
 		'common.error': 'Error loading data',
 		'common.search': 'Search...',
@@ -286,6 +288,8 @@ export const translations = {
 		'chart.no_data_for_filters': 'Aucune donnée disponible pour les filtres sélectionnés',
 		'chart.documents_by_category_aria':
 			'Diagramme en barres montrant le nombre de documents par catégorie',
+		'chart.documents_by_type_over_years_aria':
+			'Graphique en barres empilées montrant le nombre de documents par type au fil des années',
 		'common.loading': 'Chargement...',
 		'common.error': 'Erreur lors du chargement des données',
 		'common.search': 'Rechercher...',
