@@ -43,7 +43,7 @@ export const translations = {
 		'chart.no_data_for_filters': 'No data available for selected filters',
 		'chart.documents_by_category_aria': 'Bar chart showing document counts by category',
 		'chart.documents_by_type_over_years_aria':
-			'Stacked bar chart showing document counts by type over years',
+		'Stacked bar chart showing document counts by type over years',
 		'common.loading': 'Loading...',
 		'common.error': 'Error loading data',
 		'common.search': 'Search...',
@@ -75,6 +75,7 @@ export const translations = {
 		'categories.document_types': 'Document Types',
 		'categories.chart_title': 'Stacked Bar Chart by Type',
 		'categories.chart_description': 'Temporal distribution of document types across the collection',
+		'categories.loading_chart': 'Loading visualization...',
 		'categories.type_distribution': 'Type Distribution',
 		'categories.by_country': 'Categories by Country',
 		'categories.click_to_view': 'Click to view details',
@@ -95,13 +96,13 @@ export const translations = {
 		'timeline.month_range': 'Time Period',
 		'timeline.chart_title': 'Collection Growth Over Time',
 		'timeline.chart_description':
-			'Monthly additions and cumulative total of documents in the collection',
+		'Monthly additions and cumulative total of documents in the collection',
 		'timeline.additions': 'Additions',
 		'timeline.total': 'Total',
 		'timeline.by_type': 'By Document Type',
 		'timeline.by_country': 'By Country',
 		'overview.description':
-			'Comprehensive statistics and insights into the Islam West Africa Collection database',
+		'Comprehensive statistics and insights into the Islam West Africa Collection database',
 		'overview.recent_items': 'Recent Items',
 		'overview.no_recent_items': 'No recent items available',
 		'overview.primary_stats': 'Primary Statistics',
@@ -122,7 +123,7 @@ export const translations = {
 		'fullscreen.exit': 'Exit fullscreen',
 		'words.title': 'Word Analysis',
 		'words.description':
-			'Explore word frequencies from French articles in the Islam West Africa Collection',
+		'Explore word frequencies from French articles in the Islam West Africa Collection',
 		'words.loading': 'Loading word cloud data...',
 		'words.retry': 'Retry',
 		'words.global': 'Global',
@@ -172,7 +173,7 @@ export const translations = {
 		'scary.total_occurrences': 'Total Occurrences',
 		'scary.chart_title': 'Top "Scary" Terms Over Time',
 		'scary.chart_description':
-			'Animated bar chart race showing evolution of "scary" term usage by year',
+		'Animated bar chart race showing evolution of "scary" term usage by year',
 		'scary.country_chart_title': '"Scary" Terms in {0}',
 		'scary.country_chart_description': 'Distribution of "scary" terms for selected country',
 		'scary.global_chart_title': 'Overall "Scary" Terms Distribution',
@@ -287,9 +288,9 @@ export const translations = {
 		'chart.no_data': 'Aucune donnees disponibles',
 		'chart.no_data_for_filters': 'Aucune donnée disponible pour les filtres sélectionnés',
 		'chart.documents_by_category_aria':
-			'Diagramme en barres montrant le nombre de documents par catégorie',
+		'Diagramme en barres montrant le nombre de documents par catégorie',
 		'chart.documents_by_type_over_years_aria':
-			'Graphique en barres empilées montrant le nombre de documents par type au fil des années',
+		'Graphique en barres empilées montrant le nombre de documents par type au fil des années',
 		'common.loading': 'Chargement...',
 		'common.error': 'Erreur lors du chargement des données',
 		'common.search': 'Rechercher...',
@@ -321,7 +322,8 @@ export const translations = {
 		'categories.document_types': 'Types de documents',
 		'categories.chart_title': 'Graphique en barres empilées par type',
 		'categories.chart_description':
-			'Distribution temporelle des types de documents dans la collection',
+		'Distribution temporelle des types de documents dans la collection',
+		'categories.loading_chart': 'Chargement de la visualisation...',
 		'categories.type_distribution': 'Répartition des types',
 		'categories.by_country': 'Catégories par pays',
 		'categories.click_to_view': 'Cliquez pour voir les détails',
@@ -342,13 +344,13 @@ export const translations = {
 		'timeline.month_range': 'Période temporelle',
 		'timeline.chart_title': 'Croissance de la collection au fil du temps',
 		'timeline.chart_description':
-			'Ajouts mensuels et total cumulatif des documents dans la collection',
+		'Ajouts mensuels et total cumulatif des documents dans la collection',
 		'timeline.additions': 'Ajouts',
 		'timeline.total': 'Total',
 		'timeline.by_type': 'Par type de document',
 		'timeline.by_country': 'Par pays',
 		'overview.description':
-			"Statistiques complètes et aperçu de la base de données de la Collection Islam Afrique de l'Ouest",
+		"Statistiques complètes et aperçu de la base de données de la Collection Islam Afrique de l'Ouest",
 		'overview.recent_items': 'Éléments récents',
 		'overview.no_recent_items': 'Aucun élément récent disponible',
 		'overview.primary_stats': 'Statistiques principales',
@@ -369,7 +371,7 @@ export const translations = {
 		'fullscreen.exit': 'Quitter le plein écran',
 		'words.title': 'Analyse des mots',
 		'words.description':
-			"Explorez les fréquences de mots des articles en français de la Collection Islam Afrique de l'Ouest",
+		"Explorez les fréquences de mots des articles en français de la Collection Islam Afrique de l'Ouest",
 		'words.loading': 'Chargement des données du nuage de mots...',
 		'words.retry': 'Réessayer',
 		'words.global': 'Global',
@@ -407,7 +409,7 @@ export const translations = {
 		'words.year_range': '{0}-{1}',
 		'scary.title': 'Analyse des mots "inquiétants"',
 		'scary.description':
-			"Suivre l'utilisation des termes liés à la radicalisation dans la Collection Islam Afrique de l'Ouest",
+		"Suivre l'utilisation des termes liés à la radicalisation dans la Collection Islam Afrique de l'Ouest",
 		'scary.bar_race': 'Course de barres',
 		'scary.by_country': 'Par pays',
 		'scary.global': 'Global',
@@ -420,13 +422,13 @@ export const translations = {
 		'scary.total_occurrences': 'Occurrences totales',
 		'scary.chart_title': 'Principaux termes "inquiétants" au fil du temps',
 		'scary.chart_description':
-			'Course de barres animée montrant l\'évolution de l\'utilisation des termes "inquiétants" par année',
+		'Course de barres animée montrant l\'évolution de l\'utilisation des termes "inquiétants" par année',
 		'scary.country_chart_title': 'Termes "inquiétants" en {0}',
 		'scary.country_chart_description':
-			'Distribution des termes "inquiétants" pour le pays sélectionné',
+		'Distribution des termes "inquiétants" pour le pays sélectionné',
 		'scary.global_chart_title': 'Distribution globale des termes "inquiétants"',
 		'scary.global_chart_description':
-			'Occurrences totales des termes "inquiétants" dans tous les articles',
+		'Occurrences totales des termes "inquiétants" dans tous les articles',
 		'scary.term_definitions': 'Familles de termes et variantes',
 		'scary.term_definitions_desc': 'Chaque famille de termes inclut plusieurs variantes orthographiques et formes associées',
 		'scary.view_mode': 'Affichage',

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { onMount } from 'svelte';
+	import { Loader2 } from '@lucide/svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
@@ -59,7 +61,16 @@
 	let metadata = $state<MetadataResponse | null>(pageData.metadata);
 	let countryData = $state<CategoryData | null>(null);
 	let countryLoading = $state(false);
+	let chartReady = $state(false);
 	const error = $derived(pageData.error);
+
+	// Defer chart rendering to allow other UI to paint
+	onMount(() => {
+		const timer = setTimeout(() => {
+			chartReady = true;
+		}, 100);
+		return () => clearTimeout(timer);
+	});
 
 	// Filter states from URL
 	const selectedCountry = $derived(urlSync.filters.country);
@@ -300,11 +311,20 @@
 				<Card.Description>{t('categories.chart_description')}</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<StackedBarChart
-					years={filteredData()!.years}
-					series={filteredData()!.series}
-					height="600px"
-				/>
+				{#if chartReady && !countryLoading}
+					<StackedBarChart
+						years={filteredData()!.years}
+						series={filteredData()!.series}
+						height="600px"
+					/>
+				{:else}
+					<div class="flex h-[600px] w-full flex-col items-center justify-center gap-4">
+						<Loader2 class="h-8 w-8 animate-spin text-muted-foreground" />
+						<p class="text-sm text-muted-foreground">
+							{countryLoading ? t('common.loading') : t('categories.loading_chart')}
+						</p>
+					</div>
+				{/if}
 			</Card.Content>
 		</Card.Root>
 	{/if}
