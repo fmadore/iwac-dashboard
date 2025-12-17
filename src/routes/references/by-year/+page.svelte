@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { Loader2 } from '@lucide/svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -32,6 +34,16 @@
 	// Use preloaded data directly
 	const data = $derived(pageData.data);
 	const error = $derived(pageData.error);
+
+	let chartReady = $state(false);
+
+	// Defer chart rendering to allow other UI to paint
+	onMount(() => {
+		const timer = setTimeout(() => {
+			chartReady = true;
+		}, 100);
+		return () => clearTimeout(timer);
+	});
 </script>
 
 <svelte:head>
@@ -111,7 +123,16 @@
 					</Card.Description>
 				</Card.Header>
 				<Card.Content>
-					<StackedBarChart years={data.years} series={data.series} height="600px" />
+					{#if chartReady}
+						<StackedBarChart years={data.years} series={data.series} height="600px" />
+					{:else}
+						<div class="flex h-[600px] w-full flex-col items-center justify-center gap-4">
+							<Loader2 class="h-8 w-8 animate-spin text-muted-foreground" />
+							<p class="text-sm text-muted-foreground">
+								{t('categories.loading_chart')}
+							</p>
+						</div>
+					{/if}
 				</Card.Content>
 			</Card.Root>
 		</div>
