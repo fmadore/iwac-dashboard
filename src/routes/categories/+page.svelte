@@ -45,11 +45,21 @@
 		};
 	}
 
-	let globalData = $state<CategoryData | null>(null);
+	// Get preloaded data from +page.ts
+	let { data: pageData } = $props<{
+		data: {
+			globalData: CategoryData | null;
+			metadata: MetadataResponse | null;
+			error: string | null;
+		};
+	}>();
+
+	// Use preloaded data directly
+	let globalData = $state<CategoryData | null>(pageData.globalData);
+	let metadata = $state<MetadataResponse | null>(pageData.metadata);
 	let countryData = $state<CategoryData | null>(null);
-	let metadata = $state<MetadataResponse | null>(null);
-	let loading = $state(true);
-	let error = $state<string | null>(null);
+	let countryLoading = $state(false);
+	const error = $derived(pageData.error);
 
 	// Filter states from URL
 	const selectedCountry = $derived(urlSync.filters.country);
@@ -66,38 +76,15 @@
 		})()
 	);
 
-	async function loadData() {
-		try {
-			loading = true;
-			error = null;
-
-			// Load global data and metadata
-			const [globalResponse, metadataResponse] = await Promise.all([
-				fetch(`${base}/data/categories-global.json`),
-				fetch(`${base}/data/categories-metadata.json`)
-			]);
-
-			if (!globalResponse.ok || !metadataResponse.ok) {
-				throw new Error('Failed to load data');
-			}
-
-			globalData = await globalResponse.json();
-			metadata = await metadataResponse.json();
-
-			// Set initial year range from metadata
-			if (metadata && !urlSync.hasFilter('yearMin') && !urlSync.hasFilter('yearMax')) {
-				urlSync.setFilters({
-					yearMin: metadata.temporal.min_year,
-					yearMax: metadata.temporal.max_year
-				});
-			}
-		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to load data';
-			console.error('Error loading categories data:', e);
-		} finally {
-			loading = false;
+	// Set initial year range from metadata on mount
+	$effect(() => {
+		if (metadata && !urlSync.hasFilter('yearMin') && !urlSync.hasFilter('yearMax')) {
+			urlSync.setFilters({
+				yearMin: metadata.temporal.min_year,
+				yearMax: metadata.temporal.max_year
+			});
 		}
-	}
+	});
 
 	async function loadCountryData(country: string | undefined) {
 		if (!country) {
@@ -106,23 +93,22 @@
 		}
 
 		try {
+			countryLoading = true;
 			const filename = country.toLowerCase().replace(/\s+/g, '-');
-			const response = await fetch(`${base}/data/categories-${filename}.json`);
+			const response = await fetch(`${base}/data/categories/${filename}.json`);
 			if (!response.ok) throw new Error(`HTTP ${response.status}`);
 			countryData = await response.json();
 		} catch (e) {
 			console.error(`Error loading country data for ${country}:`, e);
 			countryData = null;
+		} finally {
+			countryLoading = false;
 		}
 	}
 
 	// Watch for country selection changes
 	$effect(() => {
 		loadCountryData(selectedCountry);
-	});
-
-	$effect(() => {
-		loadData();
 	});
 
 	// Get active data based on country selection
@@ -193,7 +179,7 @@
 		<p class="text-muted-foreground">{t('categories.description')}</p>
 	</div>
 
-	{#if loading}
+	{#if !globalData && !error}
 		<Card.Root>
 			<Card.Header>
 				<Skeleton class="h-8 w-64" />

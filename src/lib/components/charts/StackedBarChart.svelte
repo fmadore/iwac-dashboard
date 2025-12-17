@@ -18,14 +18,22 @@
 		height?: string;
 		/** Map from original series name -> CSS var ("--chart-1") or any CSS color ("var(--chart-1)") */
 		colors?: Record<string, string>;
+		/** Enable/disable animations (auto-disabled for large datasets) */
+		animate?: boolean;
 	}
 
-	let { title = '', years = [], series = [], height = '600px', colors = {} }: Props = $props();
+	let { title = '', years = [], series = [], height = '600px', colors = {}, animate = true }: Props = $props();
 	let containerWidth = $state(0);
 	let context = $state<ChartContextValue>();
 
 	// Track hidden series for legend toggling
 	const hiddenSeries = new SvelteSet<string>();
+
+	// Compute whether to animate based on data size (disable for large datasets)
+	const totalDataPoints = $derived(years.length * series.length);
+	const shouldAnimate = $derived(animate && totalDataPoints < 500);
+	// Faster animation duration (200ms instead of 500ms)
+	const animationDuration = $derived(totalDataPoints > 200 ? 150 : 200);
 
 	const defaultColorVars: Record<string, string> = {
 		// Base document types
@@ -198,12 +206,14 @@
 				props={{
 					bars: {
 						stroke: 'none',
-						initialY: context?.height,
-						initialHeight: 0,
-						motion: {
-							y: { type: 'tween', duration: 500, easing: cubicInOut },
-							height: { type: 'tween', duration: 500, easing: cubicInOut }
-						}
+						initialY: shouldAnimate ? context?.height : undefined,
+						initialHeight: shouldAnimate ? 0 : undefined,
+						motion: shouldAnimate
+							? {
+									y: { type: 'tween', duration: animationDuration, easing: cubicInOut },
+									height: { type: 'tween', duration: animationDuration, easing: cubicInOut }
+								}
+							: undefined
 					},
 					highlight: { area: false },
 					xAxis: {

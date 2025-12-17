@@ -325,10 +325,10 @@ def generate_metadata(all_records: List[Dict[str, Any]], country_data: Dict[str,
             "counts": dict(subset_counts)
         },
         "files_generated": {
-            "global": "categories-global.json",
-            "countries": [f"categories-{country.lower().replace(' ', '-')}.json" 
+            "global": "global.json",
+            "countries": [f"{country.lower().replace(' ', '-')}.json" 
                          for country in sorted(country_data.keys())],
-            "metadata": "categories-metadata.json"
+            "metadata": "metadata.json"
         },
         "type_mapping": SUBSET_TO_TYPE,
         "generated_at": datetime.now().isoformat()
@@ -337,11 +337,14 @@ def generate_metadata(all_records: List[Dict[str, Any]], country_data: Dict[str,
     return metadata
 
 
-def save_json(data: Any, path: Path) -> None:
-    """Save data as JSON file."""
+def save_json(data: Any, path: Path, minify: bool = True) -> None:
+    """Save data as JSON file. Minified by default for faster loading."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        if minify:
+            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+        else:
+            json.dump(data, f, ensure_ascii=False, indent=2)
     
     try:
         abs_path = path.resolve()
@@ -350,7 +353,28 @@ def save_json(data: Any, path: Path) -> None:
     except Exception:
         display = path
     
-    logger.info(f"Wrote {display}")
+    # Log file size for monitoring
+    size_kb = path.stat().st_size / 1024
+    logger.info(f"Wrote {display} ({size_kb:.1f} KB)")
+
+
+def copy_to_build_dir(output_dir: Path) -> None:
+    """Copy generated files to build/data/categories directory."""
+    import shutil
+    
+    build_dir = Path("build/data/categories")
+    if not build_dir.parent.exists():
+        logger.info("build/data directory does not exist, skipping copy")
+        return
+    
+    # Create build/data/categories if it doesn't exist
+    build_dir.mkdir(parents=True, exist_ok=True)
+    
+    logger.info("Copying files to build/data/categories directory...")
+    for json_file in output_dir.glob("*.json"):
+        dest = build_dir / json_file.name
+        shutil.copy2(json_file, dest)
+        logger.info(f"Copied {json_file.name} to build/data/categories/")
 
 
 def main():
@@ -359,8 +383,8 @@ def main():
     parser = argparse.ArgumentParser(description="Generate category stacked bar chart JSONs from IWAC subsets")
     parser.add_argument(
         "--output-dir",
-        default="static/data",
-        help="Directory to write JSON files (default: static/data)"
+        default="static/data/categories",
+        help="Directory to write JSON files (default: static/data/categories)"
     )
     parser.add_argument(
         "--subsets",
@@ -391,7 +415,7 @@ def main():
     
     # Generate global stacked bar chart data
     global_data = generate_global_stacked_data(all_records)
-    global_path = output_dir / "categories-global.json"
+    global_path = output_dir / "global.json"
     save_json(global_data, global_path)
     
     # Generate country-specific stacked bar chart data
@@ -399,20 +423,23 @@ def main():
     
     for country, data in country_data.items():
         # Create filename from country name
-        filename = f"categories-{country.lower().replace(' ', '-')}.json"
+        filename = f"{country.lower().replace(' ', '-')}.json"
         country_path = output_dir / filename
         save_json(data, country_path)
     
     # Generate metadata
     metadata = generate_metadata(all_records, country_data)
-    metadata_path = output_dir / "categories-metadata.json"
+    metadata_path = output_dir / "metadata.json"
     save_json(metadata, metadata_path)
     
+    # Copy to build directory
+    copy_to_build_dir(output_dir)
+    
     logger.info("✅ Category data generation completed successfully!")
-    logger.info(f"Generated files:")
-    logger.info(f"  - Global: {global_path}")
+    logger.info(f"Generated files in {output_dir}:")
+    logger.info(f"  - Global: global.json")
     logger.info(f"  - Countries: {len(country_data)} individual files")
-    logger.info(f"  - Metadata: {metadata_path}")
+    logger.info(f"  - Metadata: metadata.json")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -22,26 +21,17 @@
 		generated_at: string;
 	}
 
-	let data = $state<ByYearData | null>(null);
-	let loading = $state(true);
-	let error = $state<string | null>(null);
+	// Get preloaded data from +page.ts
+	let { data: pageData } = $props<{
+		data: {
+			data: ByYearData | null;
+			error: string | null;
+		};
+	}>();
 
-	async function loadData() {
-		try {
-			// Load global references by year data
-			const response = await fetch(`${base}/data/references/by-year-global.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			data = await response.json();
-		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to load references data';
-		} finally {
-			loading = false;
-		}
-	}
-
-	$effect(() => {
-		loadData();
-	});
+	// Use preloaded data directly
+	const data = $derived(pageData.data);
+	const error = $derived(pageData.error);
 </script>
 
 <svelte:head>
@@ -56,7 +46,7 @@
 		</p>
 	</div>
 
-	{#if loading}
+	{#if !data && !error}
 		<Card.Root>
 			<Card.Header>
 				<Skeleton class="h-8 w-64" />

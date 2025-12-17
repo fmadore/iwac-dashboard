@@ -468,11 +468,14 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     return metadata
 
 
-def save_json(data: Any, path: Path) -> None:
-    """Save data as JSON file."""
+def save_json(data: Any, path: Path, minify: bool = True) -> None:
+    """Save data as JSON file. Minified by default for faster loading."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        if minify:
+            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+        else:
+            json.dump(data, f, ensure_ascii=False, indent=2)
     
     try:
         abs_path = path.resolve()
@@ -481,7 +484,9 @@ def save_json(data: Any, path: Path) -> None:
     except Exception:
         display = path
     
-    logger.info(f"Wrote {display}")
+    # Log file size for monitoring
+    size_kb = path.stat().st_size / 1024
+    logger.info(f"Wrote {display} ({size_kb:.1f} KB)")
 
 
 def copy_to_build_dir(output_dir: Path) -> None:

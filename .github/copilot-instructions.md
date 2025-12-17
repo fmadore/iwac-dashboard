@@ -10,8 +10,8 @@ This project is an **Islam West Africa Collection (IWAC) Dashboard** - a static 
 - **SvelteKit** - Static site generation (SSR, prerendering)
 - **shadcn-svelte** - UI component library
 - **Tailwind CSS v4** - Styling with CSS variables theming
-- **D3.js** - Current visualization library
-- **ECharts** - Preferred library for future visualizations
+- **LayerChart** (preferred) - Chart library with shadcn-svelte integration
+- **D3.js** - For custom/complex visualizations (word clouds, treemaps)
 - **Python** - Data preprocessing and JSON generation
 - **TypeScript** - Type safety
 
@@ -148,6 +148,8 @@ This project is an **Islam West Africa Collection (IWAC) Dashboard** - a static 
 
 #### ✅ Loading Data Pattern:
 
+For simple pages, use client-side fetching:
+
 ```svelte
 <script>
 	import { base } from '$app/paths';
@@ -174,20 +176,91 @@ This project is an **Islam West Africa Collection (IWAC) Dashboard** - a static 
 </script>
 ```
 
+#### ✅ Optimized Loading Pattern (Preferred):
+
+For better performance, use SvelteKit load functions to preload data:
+
+**+page.ts:**
+```typescript
+import { base } from '$app/paths';
+import type { PageLoad } from './$types.js';
+
+export const prerender = true;
+
+export const load: PageLoad = async ({ fetch }) => {
+	try {
+		const response = await fetch(`${base}/data/categories/global.json`);
+		if (!response.ok) throw new Error('Failed to load data');
+		const data = await response.json();
+		return { data, error: null };
+	} catch (e) {
+		return { data: null, error: e instanceof Error ? e.message : 'Failed to load data' };
+	}
+};
+```
+
+**+page.svelte:**
+```svelte
+<script>
+	let { data: pageData } = $props();
+	const data = $derived(pageData.data);
+	const error = $derived(pageData.error);
+</script>
+
+{#if !data && !error}
+	<Skeleton class="h-96 w-full" />
+{:else if error}
+	<p class="text-destructive">{error}</p>
+{:else}
+	<!-- Render data immediately - no loading state needed -->
+{/if}
+```
+
+#### Python JSON Output Optimization:
+
+Python scripts output **minified JSON** by default for faster loading:
+
+```python
+def save_json(data: Any, path: Path, minify: bool = True) -> None:
+    """Save data as JSON file. Minified by default for faster loading."""
+    with path.open("w", encoding="utf-8") as f:
+        if minify:
+            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+        else:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+```
+
 ### 5. Visualization Library Preferences
 
-**Prefer ECharts for new visualizations**, fall back to D3.js if needed.
+**Prefer LayerChart for new visualizations**, fall back to D3.js for custom needs.
 
 #### Priority Order:
 
-1. **ECharts** (preferred) - For new charts and standard visualizations
-2. **D3.js** (current) - For custom/complex visualizations, word clouds
-3. Avoid other charting libraries unless specifically needed
+1. **LayerChart** (preferred) - For standard charts with shadcn-svelte integration
+2. **D3.js** - For custom/complex visualizations (word clouds, treemaps, force-directed graphs)
+3. Avoid ECharts and other charting libraries unless specifically needed
 
 #### When to Use Each:
 
-- **ECharts**: Bar charts, line charts, pie charts, scatter plots, standard charts
+- **LayerChart**: Bar charts, line charts, area charts, stacked charts - integrates with shadcn-svelte UI components
 - **D3.js**: Custom treemaps, word clouds, force-directed graphs, unique visualizations
+
+#### LayerChart Example:
+
+```svelte
+<script>
+	import { BarChart, Highlight } from 'layerchart';
+	import { ChartContainer, ChartTooltip } from '$lib/components/ui/chart/index.js';
+</script>
+
+<ChartContainer config={chartConfig}>
+	<BarChart data={chartData} x="category" series={seriesDefs} seriesLayout="stack" legend={false}>
+		{#snippet tooltip({ context })}
+			<ChartTooltip items={context.tooltip?.payload ?? []} />
+		{/snippet}
+	</BarChart>
+</ChartContainer>
+```
 
 ### 6. File and Folder Structure
 
@@ -222,9 +295,14 @@ scripts/
 ├── generate_index_entities.py     # Index data generation
 ├── generate_language_facets.py    # Language facets
 ├── generate_treemap.py            # Treemap data
-└── generate_wordcloud.py          # Word cloud data
+├── generate_wordcloud.py          # Word cloud data
+├── generate_categories.py         # Categories stacked charts
+├── generate_references.py         # References data
 
 static/data/                       # Static JSON files
+├── categories/                    # Category visualization data
+├── references/                    # References visualization data
+└── *.json                         # Other data files
 build/data/                        # Built JSON files (copied)
 ```
 
@@ -492,7 +570,7 @@ playground -
 
 ### Context7 MCP (For Other Libraries)
 
-Use Context7 MCP for documentation of other libraries (shadcn-svelte, ECharts, etc.):
+Use Context7 MCP for documentation of other libraries (shadcn-svelte, LayerChart, D3.js, etc.):
 
 1. **Use the Context7 MCP tools** to get up-to-date documentation
 2. Don't rely on outdated training data
@@ -501,7 +579,7 @@ Use Context7 MCP for documentation of other libraries (shadcn-svelte, ECharts, e
 Example queries:
 
 - "Get shadcn-svelte component API"
-- "Get ECharts configuration examples"
+- "Get LayerChart BarChart examples"
 - "Get Tailwind CSS v4 documentation"
 
 ## Validation Checklist
