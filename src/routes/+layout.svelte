@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { itemsStore } from '$lib/stores/itemsStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import AppSidebar from '$lib/components/app-sidebar.svelte';

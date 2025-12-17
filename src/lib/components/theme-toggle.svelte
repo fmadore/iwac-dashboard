@@ -1,8 +1,7 @@
 <script lang="ts">
 	import * as Button from '$lib/components/ui/button/index.js';
 	import { Moon, Sun } from '@lucide/svelte';
-	import { mode, toggleMode } from 'mode-watcher';
-	import { isStorageAvailable } from '$lib/utils/storage-check.js';
+	import { toggleMode } from 'mode-watcher';
 
 	function handleToggle() {
 		try {
