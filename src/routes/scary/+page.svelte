@@ -579,13 +579,34 @@
 		}
 	}
 
-	// Effects
-	$effect(() => {
-		loadScaryTermsData();
+	// Track if initial data has been loaded
+	let dataLoaded = $state(false);
+
+	// Load data on mount (not in $effect to avoid infinite loop)
+	onMount(() => {
+		loadScaryTermsData()
+			.then(() => {
+				dataLoaded = true;
+			})
+			.catch((err) => {
+				console.error('Failed to load scary terms data in onMount:', err);
+				error = err instanceof Error ? err.message : 'Failed to load data';
+				loading = false;
+			});
+
+		return () => {
+			pause();
+			if (chartInstance) {
+				chartInstance.dispose();
+			}
+		};
 	});
 
 	$effect(() => {
 		// Re-initialize chart when view mode, country, language, or data changes
+		// Only run after initial data has loaded
+		if (!dataLoaded) return;
+
 		const _ = viewMode;
 		const _country = selectedCountry;
 		const _lang = languageStore.current;
@@ -595,16 +616,6 @@
 		if (!loading && chartContainer && viewMode !== 'race') {
 			initializeChart();
 		}
-	});
-
-	// Cleanup on unmount
-	onMount(() => {
-		return () => {
-			pause();
-			if (chartInstance) {
-				chartInstance.dispose();
-			}
-		};
 	});
 
 	// Computed chart title based on language
