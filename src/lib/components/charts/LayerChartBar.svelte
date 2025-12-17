@@ -182,7 +182,7 @@
 					padding={{ left: yAxisLabelWidth + 16, right: 24, top: 8, bottom: 8 }}
 					grid={false}
 					rule={false}
-					axis="y"
+					axis
 					props={{
 						bars: {
 							stroke: 'none',
@@ -221,7 +221,7 @@
 					padding={{ left: 48, right: 16, top: 8, bottom: bottomPadding }}
 					grid={false}
 					rule={false}
-					axis="x"
+					axis
 					props={{
 						bars: {
 							stroke: 'none',
