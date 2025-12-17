@@ -42,6 +42,52 @@
 		<meta name="theme-color" content="#ffffff" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- 
+			localStorage polyfill for cross-origin iframes.
+			Must run BEFORE any Svelte code to prevent mode-watcher errors.
+			When localStorage is blocked by tracking prevention, we replace it
+			with an in-memory implementation.
+		-->
+		<script>
+			(function () {
+				try {
+					var testKey = '__storage_test__';
+					localStorage.setItem(testKey, testKey);
+					localStorage.removeItem(testKey);
+				} catch (e) {
+					console.warn('IWAC Dashboard: localStorage blocked, using in-memory storage');
+					var memoryStorage = {};
+					var noopStorage = {
+						get length() {
+							return Object.keys(memoryStorage).length;
+						},
+						clear: function () {
+							memoryStorage = {};
+						},
+						getItem: function (key) {
+							return memoryStorage[key] !== undefined ? memoryStorage[key] : null;
+						},
+						key: function (index) {
+							var keys = Object.keys(memoryStorage);
+							return keys[index] !== undefined ? keys[index] : null;
+						},
+						removeItem: function (key) {
+							delete memoryStorage[key];
+						},
+						setItem: function (key, value) {
+							memoryStorage[key] = String(value);
+						}
+					};
+					Object.defineProperty(window, 'localStorage', {
+						value: noopStorage,
+						writable: false,
+						configurable: true
+					});
+				}
+			})();
+		</script>
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
