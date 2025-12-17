@@ -8,8 +8,11 @@ const pages = [
 	'/timeline',
 	'/entities',
 	'/categories',
+	'/references/by-year',
+	'/references/authors',
 	'/words',
-	'/scary'
+	'/scary',
+	'/topics'
 ];
 
 /** @type {import('./$types.js').RequestHandler} */
