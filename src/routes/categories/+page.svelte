@@ -87,6 +87,14 @@
 		})()
 	);
 
+	// Local state for slider to avoid heavy re-renders while dragging
+	let localYearRange = $state<[number, number]>([1912, 2025]);
+
+	// Sync local state with URL state
+	$effect(() => {
+		localYearRange = yearRange;
+	});
+
 	// Set initial year range from metadata on mount
 	$effect(() => {
 		if (metadata && !urlSync.hasFilter('yearMin') && !urlSync.hasFilter('yearMax')) {
@@ -208,6 +216,36 @@
 			</Card.Content>
 		</Card.Root>
 	{:else if filteredData()}
+		<!-- Stats Cards -->
+		<div class="grid gap-4 md:grid-cols-3">
+			<Card.Root>
+				<Card.Header class="pb-2">
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('categories.total_records')}</Card.Title
+					>
+					<div class="text-2xl font-bold">{filteredData()!.total_records.toLocaleString()}</div>
+				</Card.Header>
+			</Card.Root>
+			<Card.Root>
+				<Card.Header class="pb-2">
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('categories.year_range')}</Card.Title
+					>
+					<div class="text-2xl font-bold">
+						{filteredData()!.year_range.min} - {filteredData()!.year_range.max}
+					</div>
+				</Card.Header>
+			</Card.Root>
+			<Card.Root>
+				<Card.Header class="pb-2">
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('categories.document_types')}</Card.Title
+					>
+					<div class="text-2xl font-bold">{filteredData()!.series.length}</div>
+				</Card.Header>
+			</Card.Root>
+		</div>
+
 		<!-- Filters -->
 		<Card.Root>
 			<Card.Header>
@@ -247,12 +285,12 @@
 					{#if metadata}
 						<div class="space-y-2">
 							<div class="text-sm font-medium">
-								{t('filters.year_range')}: {yearRange[0]} - {yearRange[1]}
+								{t('filters.year_range')}: {localYearRange[0]} - {localYearRange[1]}
 							</div>
 							<Slider
 								type="multiple"
-								value={yearRange}
-								onValueChange={handleYearRangeChange}
+								bind:value={localYearRange}
+								onValueCommit={handleYearRangeChange}
 								min={metadata.temporal.min_year}
 								max={metadata.temporal.max_year}
 								step={1}
@@ -267,36 +305,6 @@
 				</div>
 			</Card.Content>
 		</Card.Root>
-
-		<!-- Stats Cards -->
-		<div class="grid gap-4 md:grid-cols-3">
-			<Card.Root>
-				<Card.Header class="pb-2">
-					<Card.Title class="text-sm font-medium text-muted-foreground"
-						>{t('categories.total_records')}</Card.Title
-					>
-					<div class="text-2xl font-bold">{filteredData()!.total_records.toLocaleString()}</div>
-				</Card.Header>
-			</Card.Root>
-			<Card.Root>
-				<Card.Header class="pb-2">
-					<Card.Title class="text-sm font-medium text-muted-foreground"
-						>{t('categories.year_range')}</Card.Title
-					>
-					<div class="text-2xl font-bold">
-						{filteredData()!.year_range.min} - {filteredData()!.year_range.max}
-					</div>
-				</Card.Header>
-			</Card.Root>
-			<Card.Root>
-				<Card.Header class="pb-2">
-					<Card.Title class="text-sm font-medium text-muted-foreground"
-						>{t('categories.document_types')}</Card.Title
-					>
-					<div class="text-2xl font-bold">{filteredData()!.series.length}</div>
-				</Card.Header>
-			</Card.Root>
-		</div>
 
 		<!-- Stacked Bar Chart -->
 		<Card.Root>
