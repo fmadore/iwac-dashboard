@@ -40,6 +40,7 @@ jobs:
           python generate_timeline.py --output-dir ../static/data
           python generate_references.py --output-dir ../static/data
           python generate_scary_terms.py --output-dir ../static/data
+          python generate_topic_explorer_data.py --output-dir ../static/data/topics
           cd ..
         env:
           PYTHONPATH: ${{ github.workspace }}

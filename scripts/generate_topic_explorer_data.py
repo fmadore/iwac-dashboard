@@ -86,14 +86,14 @@ def main():
     default_out_dir = project_root / "static" / "data" / "topics"
     parser.add_argument("--repo", default="fmadore/islam-west-africa-collection")
     parser.add_argument("--config-name", choices=["articles", "publications"], default="articles")
-    parser.add_argument("--out-dir", default=str(default_out_dir), help=f"Output directory (default: {default_out_dir})")
+    parser.add_argument("--output-dir", default=str(default_out_dir), help=f"Output directory (default: {default_out_dir})")
     parser.add_argument("--max-docs", type=int, default=0, help="Limit number of docs (0 = all)")
     parser.add_argument("--per-topic-docs", type=int, default=200, help="Max docs per topic to include")
     parser.add_argument("--topic-min-count", type=int, default=5, help="Drop topics with < count")
 
     args = parser.parse_args()
 
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     topics_dir = out_dir
     # Note: out_dir is already the topics folder, so we don't need to append "topics" again
