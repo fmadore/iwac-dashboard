@@ -90,11 +90,18 @@ class UrlManager {
 	set(key: keyof UrlState, value: string | number | undefined) {
 		if (!browser) return;
 
+		// Check if value is actually changing to avoid unnecessary updates
+		const currentValue = this.state[key];
+		const newValue = value === undefined || value === null || value === '' ? undefined : value;
+
+		// Skip if no change
+		if (currentValue === newValue) return;
+
 		// Update state
-		if (value === undefined || value === null || value === '') {
+		if (newValue === undefined) {
 			delete this.state[key];
 		} else {
-			this.state[key] = value;
+			this.state[key] = newValue;
 		}
 
 		// Update URL

@@ -86,26 +86,30 @@
 		pruneUrlParamsForRoute(pathname);
 	});
 
+	// Track previous values to avoid unnecessary URL writes
+	let prevLang: Language | undefined = $state(undefined);
+	let prevTheme: string | undefined = $state(undefined);
+
 	// Watch for language changes and update URL
-	// Note: We're tracking the previous value to detect changes,
-	// which is a valid use case for state assignment in effects
 	$effect(() => {
 		if (!browser || !isInitialized) return;
 
 		const currentLang = languageStore.current;
-		// Write to URL when language changes
-		urlManager.set('lang', currentLang);
+		// Only write to URL when language actually changes
+		if (currentLang !== prevLang) {
+			prevLang = currentLang;
+			urlManager.set('lang', currentLang);
+		}
 	});
 
 	// Watch for theme changes and update URL
-	// Note: We're tracking the previous value to detect changes,
-	// which is a valid use case for state assignment in effects
 	$effect(() => {
 		if (!browser || !isInitialized) return;
 
 		const currentMode = mode.current;
-		// Write to URL when theme changes
-		if (currentMode) {
+		// Only write to URL when theme actually changes
+		if (currentMode && currentMode !== prevTheme) {
+			prevTheme = currentMode;
 			urlManager.set('theme', currentMode as string);
 		}
 	});
