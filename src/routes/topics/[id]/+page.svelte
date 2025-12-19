@@ -6,19 +6,21 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
-	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import LayerChartBar from '$lib/components/charts/LayerChartBar.svelte';
 	import LayerChartPieChart from '$lib/components/charts/LayerChartPieChart.svelte';
 	import {
 		ArrowLeft,
 		FileText,
-		ExternalLink,
 		Calendar,
 		Globe2,
 		Percent,
-		AlertCircle
+		AlertCircle,
+		ArrowUpDown,
+		ArrowUp,
+		ArrowDown
 	} from '@lucide/svelte';
-	import type { TopicDetailData } from '$lib/types/topics.js';
+	import type { TopicDetailData, TopicDocument } from '$lib/types/topics.js';
 
 	// Get topic ID from params
 	const topicId = $derived(page.params.id);
@@ -27,6 +29,10 @@
 	let topicData = $state<TopicDetailData | null>(null);
 	let loading = $state(true);
 	let error = $state<string | null>(null);
+
+	// Sorting state
+	let sortKey = $state<'title' | 'country' | 'date' | 'confidence' | 'polarity'>('confidence');
+	let sortDirection = $state<'asc' | 'desc'>('desc');
 
 	// Load topic data
 	async function loadData(id: string) {
@@ -48,6 +54,101 @@
 		if (topicId) {
 			loadData(topicId);
 		}
+	});
+
+	// Get item URL based on language
+	function getItemUrl(doc: TopicDocument): string | null {
+		// Extract item ID from URL or use o:id
+		let itemId: string | null = null;
+
+		if (doc['o:id']) {
+			itemId = String(doc['o:id']);
+		} else if (doc.url) {
+			// Extract ID from URL like https://islam.zmo.de/s/afrique_ouest/item/77142
+			const match = doc.url.match(/\/item\/(\d+)/);
+			if (match) {
+				itemId = match[1];
+			}
+		}
+
+		if (!itemId) return null;
+
+		const baseUrl = languageStore.current === 'fr'
+			? 'https://islam.zmo.de/s/afrique_ouest/item/'
+			: 'https://islam.zmo.de/s/westafrica/item/';
+
+		return baseUrl + itemId;
+	}
+
+	// Get country CSS class for badge styling
+	function getCountryClass(country: string | null): string {
+		if (!country) return '';
+		const normalized = country.toLowerCase().replace(/['\s]/g, '-').replace(/[éè]/g, 'e');
+		if (normalized.includes('cote') || normalized.includes('ivoire')) return 'country-cote-divoire';
+		if (normalized.includes('burkina')) return 'country-burkina-faso';
+		if (normalized.includes('benin') || normalized.includes('bénin')) return 'country-benin';
+		if (normalized.includes('togo')) return 'country-togo';
+		if (normalized.includes('niger') && !normalized.includes('nigeria')) return 'country-niger';
+		if (normalized.includes('nigeria')) return 'country-nigeria';
+		return 'country-default';
+	}
+
+	// Get polarity class for badge styling
+	function getPolarityClass(polarity: string | null | undefined): string {
+		if (!polarity) return '';
+		const lower = polarity.toLowerCase();
+		if (lower.includes('positif') || lower.includes('positive')) return 'polarity-positive';
+		if (lower.includes('négatif') || lower.includes('negative')) return 'polarity-negative';
+		if (lower.includes('neutre') || lower.includes('neutral')) return 'polarity-neutral';
+		return '';
+	}
+
+	// Sort function
+	function toggleSort(key: typeof sortKey) {
+		if (sortKey === key) {
+			sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+		} else {
+			sortKey = key;
+			sortDirection = key === 'confidence' ? 'desc' : 'asc';
+		}
+	}
+
+	// Sorted documents
+	const sortedDocs = $derived.by(() => {
+		if (!topicData) return [];
+		const docs = [...topicData.docs];
+
+		docs.sort((a, b) => {
+			let comparison = 0;
+
+			switch (sortKey) {
+				case 'title':
+					const titleA = (a.title || a.ocr_title || '').toLowerCase();
+					const titleB = (b.title || b.ocr_title || '').toLowerCase();
+					comparison = titleA.localeCompare(titleB);
+					break;
+				case 'country':
+					comparison = (a.country || '').localeCompare(b.country || '');
+					break;
+				case 'date':
+					const dateA = a.pub_date || a.date || '';
+					const dateB = b.pub_date || b.date || '';
+					comparison = dateA.localeCompare(dateB);
+					break;
+				case 'confidence':
+					comparison = a.topic_prob - b.topic_prob;
+					break;
+				case 'polarity':
+					const polA = a.gemini_polarite || a.chatgpt_polarite || '';
+					const polB = b.gemini_polarite || b.chatgpt_polarite || '';
+					comparison = polA.localeCompare(polB);
+					break;
+			}
+
+			return sortDirection === 'asc' ? comparison : -comparison;
+		});
+
+		return docs.slice(0, 50);
 	});
 
 	// Process country distribution for pie chart
@@ -76,15 +177,6 @@
 			}))
 			.sort((a, b) => a.category.localeCompare(b.category));
 	});
-
-	// Get polarity badge color
-	function getPolarityVariant(polarity: string | null | undefined): 'default' | 'secondary' | 'destructive' | 'outline' {
-		if (!polarity) return 'outline';
-		const lower = polarity.toLowerCase();
-		if (lower.includes('positif') || lower.includes('positive')) return 'default';
-		if (lower.includes('négatif') || lower.includes('negative')) return 'destructive';
-		return 'secondary';
-	}
 </script>
 
 <svelte:head>
@@ -229,40 +321,134 @@
 			<Card.Header>
 				<Card.Title>{t('topics.top_documents')}</Card.Title>
 				<Card.Description>
-					Showing top {Math.min(topicData.docs.length, 50)} documents by confidence score
+					{t('topics.showing_documents', [Math.min(topicData.docs.length, 50).toString()])}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<Table.Root>
 					<Table.Header>
 						<Table.Row>
-							<Table.Head class="min-w-[200px]">{t('table.title')}</Table.Head>
-							<Table.Head class="min-w-[100px]">{t('filters.country')}</Table.Head>
-							<Table.Head class="min-w-[100px]">
-								<span class="flex items-center gap-1">
-									<Calendar class="h-4 w-4" />
-									Date
-								</span>
+							<Table.Head class="min-w-[200px]">
+								<button
+									type="button"
+									class="flex items-center gap-1 hover:text-foreground"
+									onclick={() => toggleSort('title')}
+								>
+									{t('table.title')}
+									{#if sortKey === 'title'}
+										{#if sortDirection === 'asc'}
+											<ArrowUp class="h-4 w-4" />
+										{:else}
+											<ArrowDown class="h-4 w-4" />
+										{/if}
+									{:else}
+										<ArrowUpDown class="h-4 w-4" />
+									{/if}
+								</button>
 							</Table.Head>
-							<Table.Head class="min-w-[80px]">{t('topics.confidence')}</Table.Head>
+							<Table.Head class="min-w-[100px]">
+								<button
+									type="button"
+									class="flex items-center gap-1 hover:text-foreground"
+									onclick={() => toggleSort('country')}
+								>
+									{t('filters.country')}
+									{#if sortKey === 'country'}
+										{#if sortDirection === 'asc'}
+											<ArrowUp class="h-4 w-4" />
+										{:else}
+											<ArrowDown class="h-4 w-4" />
+										{/if}
+									{:else}
+										<ArrowUpDown class="h-4 w-4" />
+									{/if}
+								</button>
+							</Table.Head>
+							<Table.Head class="min-w-[100px]">
+								<button
+									type="button"
+									class="flex items-center gap-1 hover:text-foreground"
+									onclick={() => toggleSort('date')}
+								>
+									<Calendar class="h-4 w-4" />
+									{t('topics.date')}
+									{#if sortKey === 'date'}
+										{#if sortDirection === 'asc'}
+											<ArrowUp class="h-4 w-4" />
+										{:else}
+											<ArrowDown class="h-4 w-4" />
+										{/if}
+									{:else}
+										<ArrowUpDown class="h-4 w-4" />
+									{/if}
+								</button>
+							</Table.Head>
+							<Table.Head class="min-w-[80px]">
+								<button
+									type="button"
+									class="flex items-center gap-1 hover:text-foreground"
+									onclick={() => toggleSort('confidence')}
+								>
+									{t('topics.confidence')}
+									{#if sortKey === 'confidence'}
+										{#if sortDirection === 'asc'}
+											<ArrowUp class="h-4 w-4" />
+										{:else}
+											<ArrowDown class="h-4 w-4" />
+										{/if}
+									{:else}
+										<ArrowUpDown class="h-4 w-4" />
+									{/if}
+								</button>
+							</Table.Head>
 							{#if topicData.ai_fields.length > 0}
-								<Table.Head class="min-w-[80px]">{t('topics.polarity')}</Table.Head>
+								<Table.Head class="min-w-[80px]">
+									<button
+										type="button"
+										class="flex items-center gap-1 hover:text-foreground"
+										onclick={() => toggleSort('polarity')}
+									>
+										{t('topics.polarity')}
+										{#if sortKey === 'polarity'}
+											{#if sortDirection === 'asc'}
+												<ArrowUp class="h-4 w-4" />
+											{:else}
+												<ArrowDown class="h-4 w-4" />
+											{/if}
+										{:else}
+											<ArrowUpDown class="h-4 w-4" />
+										{/if}
+									</button>
+								</Table.Head>
 							{/if}
-							<Table.Head class="w-10"></Table.Head>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{#each topicData.docs.slice(0, 50) as doc (doc.url || doc.title)}
+						{#each sortedDocs as doc (doc.url || doc.title)}
+							{@const itemUrl = getItemUrl(doc)}
 							<Table.Row>
 								<Table.Cell class="font-medium">
-									<span class="line-clamp-2">{doc.title || doc.ocr_title || 'Untitled'}</span>
+									{#if itemUrl}
+										<a
+											href={itemUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="line-clamp-2 text-primary underline-offset-4 hover:underline"
+										>
+											{doc.title || doc.ocr_title || 'Untitled'}
+										</a>
+									{:else}
+										<span class="line-clamp-2">{doc.title || doc.ocr_title || 'Untitled'}</span>
+									{/if}
 									{#if doc.newspaper}
 										<span class="block text-xs text-muted-foreground">{doc.newspaper}</span>
 									{/if}
 								</Table.Cell>
 								<Table.Cell>
 									{#if doc.country}
-										<Badge variant="outline">{doc.country}</Badge>
+										<Badge variant="outline" class={getCountryClass(doc.country)}>
+											{doc.country}
+										</Badge>
 									{:else}
 										<span class="text-muted-foreground">—</span>
 									{/if}
@@ -279,25 +465,14 @@
 									<Table.Cell>
 										{@const polarity = doc.gemini_polarite || doc.chatgpt_polarite}
 										{#if polarity}
-											<Badge variant={getPolarityVariant(polarity)}>{polarity}</Badge>
+											<Badge variant="outline" class={getPolarityClass(polarity)}>
+												{polarity}
+											</Badge>
 										{:else}
 											<span class="text-muted-foreground">—</span>
 										{/if}
 									</Table.Cell>
 								{/if}
-								<Table.Cell>
-									{#if doc.url}
-										<a
-											href={doc.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="text-muted-foreground hover:text-foreground"
-											title={t('topics.view_article')}
-										>
-											<ExternalLink class="h-4 w-4" />
-										</a>
-									{/if}
-								</Table.Cell>
 							</Table.Row>
 						{/each}
 					</Table.Body>

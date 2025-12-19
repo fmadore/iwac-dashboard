@@ -67,6 +67,11 @@
 	--country-color-niger: oklch(0.82 0.1 90);
 	--country-color-nigeria: oklch(0.58 0.14 145);
 
+	/* Polarity colors */
+	--polarity-positive: oklch(0.6 0.18 145);
+	--polarity-negative: oklch(0.55 0.2 25);
+	--polarity-neutral: oklch(0.55 0.15 250);
+
 	/* Sidebar - matching footer theme from cssoverride: hsl(214, 32%, 17%) */
 	--sidebar: oklch(0.24 0.024 230);
 	--sidebar-foreground: oklch(0.96 0.008 220);
@@ -138,6 +143,11 @@
 	--country-color-togo: oklch(0.65 0.14 215);
 	--country-color-niger: oklch(0.78 0.1 90);
 	--country-color-nigeria: oklch(0.56 0.14 145);
+
+	/* Polarity colors - adjusted for dark mode */
+	--polarity-positive: oklch(0.65 0.18 145);
+	--polarity-negative: oklch(0.6 0.2 25);
+	--polarity-neutral: oklch(0.6 0.15 250);
 
 	/* Sidebar - darker in dark mode */
 	--sidebar: oklch(0.14 0.015 235);
@@ -281,6 +291,50 @@
 	select:disabled,
 	[aria-disabled='true'] {
 		cursor: not-allowed;
+	}
+
+	/* Country badge colors */
+	.country-default {
+		border-color: var(--country-color-default);
+		color: var(--country-color-default);
+	}
+	.country-cote-divoire {
+		border-color: var(--country-color-cote-divoire);
+		color: var(--country-color-cote-divoire);
+	}
+	.country-burkina-faso {
+		border-color: var(--country-color-burkina-faso);
+		color: var(--country-color-burkina-faso);
+	}
+	.country-benin {
+		border-color: var(--country-color-benin);
+		color: var(--country-color-benin);
+	}
+	.country-togo {
+		border-color: var(--country-color-togo);
+		color: var(--country-color-togo);
+	}
+	.country-niger {
+		border-color: var(--country-color-niger);
+		color: var(--country-color-niger);
+	}
+	.country-nigeria {
+		border-color: var(--country-color-nigeria);
+		color: var(--country-color-nigeria);
+	}
+
+	/* Polarity badge colors */
+	.polarity-positive {
+		border-color: var(--polarity-positive);
+		color: var(--polarity-positive);
+	}
+	.polarity-negative {
+		border-color: var(--polarity-negative);
+		color: var(--polarity-negative);
+	}
+	.polarity-neutral {
+		border-color: var(--polarity-neutral);
+		color: var(--polarity-neutral);
 	}
 }
 

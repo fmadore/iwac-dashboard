@@ -32,6 +32,7 @@ export interface TopicDocument {
 	url: string | null;
 	source_url: string | null;
 	'o:source': string | null;
+	'o:id'?: number | null;
 	sentiment_label: string | null;
 	sentiment_score: number | null;
 	// AI fields (Gemini or ChatGPT)

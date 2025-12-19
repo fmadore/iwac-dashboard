@@ -216,6 +216,8 @@ export const translations = {
 		'topics.centrality': 'Centrality to Islam',
 		'topics.subjectivity': 'Subjectivity',
 		'topics.polarity': 'Polarity',
+		'topics.date': 'Date',
+		'topics.showing_documents': 'Showing top {0} documents by confidence score',
 		// PWA
 		'pwa.offline_ready': 'App ready to work offline',
 		'pwa.update_available': 'New content available, click reload to update',
@@ -467,6 +469,8 @@ export const translations = {
 		'topics.centrality': 'Centralité à l\'islam',
 		'topics.subjectivity': 'Subjectivité',
 		'topics.polarity': 'Polarité',
+		'topics.date': 'Date',
+		'topics.showing_documents': 'Affichage des {0} meilleurs documents par score de confiance',
 		// PWA
 		'pwa.offline_ready': 'Application prête à fonctionner hors ligne',
 		'pwa.update_available': 'Nouveau contenu disponible, cliquez sur recharger pour mettre à jour',
