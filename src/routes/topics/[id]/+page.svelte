@@ -325,66 +325,67 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<Table.Root>
-					<Table.Header>
-						<Table.Row>
-							<Table.Head class="min-w-[200px]">
-								<button
-									type="button"
-									class="flex items-center gap-1 hover:text-foreground"
-									onclick={() => toggleSort('title')}
-								>
-									{t('table.title')}
-									{#if sortKey === 'title'}
-										{#if sortDirection === 'asc'}
-											<ArrowUp class="h-4 w-4" />
+				<div class="overflow-x-auto">
+					<Table.Root class="w-full table-auto">
+						<Table.Header>
+							<Table.Row>
+								<Table.Head class="min-w-[180px]">
+									<button
+										type="button"
+										class="flex items-center gap-1 hover:text-foreground"
+										onclick={() => toggleSort('title')}
+									>
+										{t('table.title')}
+										{#if sortKey === 'title'}
+											{#if sortDirection === 'asc'}
+												<ArrowUp class="h-4 w-4" />
+											{:else}
+												<ArrowDown class="h-4 w-4" />
+											{/if}
 										{:else}
-											<ArrowDown class="h-4 w-4" />
+											<ArrowUpDown class="h-4 w-4" />
 										{/if}
-									{:else}
-										<ArrowUpDown class="h-4 w-4" />
-									{/if}
-								</button>
-							</Table.Head>
-							<Table.Head class="min-w-[100px]">
-								<button
-									type="button"
-									class="flex items-center gap-1 hover:text-foreground"
-									onclick={() => toggleSort('country')}
-								>
-									{t('filters.country')}
-									{#if sortKey === 'country'}
-										{#if sortDirection === 'asc'}
-											<ArrowUp class="h-4 w-4" />
+									</button>
+								</Table.Head>
+								<Table.Head class="min-w-[120px]">
+									<button
+										type="button"
+										class="flex items-center gap-1 hover:text-foreground"
+										onclick={() => toggleSort('country')}
+									>
+										{t('filters.country')}
+										{#if sortKey === 'country'}
+											{#if sortDirection === 'asc'}
+												<ArrowUp class="h-4 w-4" />
+											{:else}
+												<ArrowDown class="h-4 w-4" />
+											{/if}
 										{:else}
-											<ArrowDown class="h-4 w-4" />
+											<ArrowUpDown class="h-4 w-4" />
 										{/if}
-									{:else}
-										<ArrowUpDown class="h-4 w-4" />
-									{/if}
-								</button>
-							</Table.Head>
-							<Table.Head class="min-w-[100px]">
-								<button
+									</button>
+								</Table.Head>
+								<Table.Head class="min-w-[110px]">
+									<button
 									type="button"
 									class="flex items-center gap-1 hover:text-foreground"
 									onclick={() => toggleSort('date')}
-								>
-									<Calendar class="h-4 w-4" />
-									{t('topics.date')}
-									{#if sortKey === 'date'}
-										{#if sortDirection === 'asc'}
-											<ArrowUp class="h-4 w-4" />
+									>
+										<Calendar class="h-4 w-4" />
+										{t('topics.date')}
+										{#if sortKey === 'date'}
+											{#if sortDirection === 'asc'}
+												<ArrowUp class="h-4 w-4" />
+											{:else}
+												<ArrowDown class="h-4 w-4" />
+											{/if}
 										{:else}
-											<ArrowDown class="h-4 w-4" />
+											<ArrowUpDown class="h-4 w-4" />
 										{/if}
-									{:else}
-										<ArrowUpDown class="h-4 w-4" />
-									{/if}
-								</button>
-							</Table.Head>
-							<Table.Head class="min-w-[80px]">
-								<button
+									</button>
+								</Table.Head>
+								<Table.Head class="min-w-[90px]">
+									<button
 									type="button"
 									class="flex items-center gap-1 hover:text-foreground"
 									onclick={() => toggleSort('confidence')}
@@ -402,7 +403,7 @@
 								</button>
 							</Table.Head>
 							{#if topicData.ai_fields.length > 0}
-								<Table.Head class="min-w-[80px]">
+								<Table.Head class="min-w-[110px]">
 									<button
 										type="button"
 										class="flex items-center gap-1 hover:text-foreground"
@@ -422,61 +423,62 @@
 								</Table.Head>
 							{/if}
 						</Table.Row>
-					</Table.Header>
-					<Table.Body>
-						{#each sortedDocs as doc (doc.url || doc.title)}
-							{@const itemUrl = getItemUrl(doc)}
-							<Table.Row>
-								<Table.Cell class="font-medium">
-									{#if itemUrl}
-										<a
-											href={itemUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="line-clamp-2 text-primary underline-offset-4 hover:underline"
-										>
-											{doc.title || doc.ocr_title || 'Untitled'}
-										</a>
-									{:else}
-										<span class="line-clamp-2">{doc.title || doc.ocr_title || 'Untitled'}</span>
-									{/if}
-									{#if doc.newspaper}
-										<span class="block text-xs text-muted-foreground">{doc.newspaper}</span>
-									{/if}
-								</Table.Cell>
-								<Table.Cell>
-									{#if doc.country}
-										<Badge variant="outline" class={getCountryClass(doc.country)}>
-											{doc.country}
-										</Badge>
-									{:else}
-										<span class="text-muted-foreground">—</span>
-									{/if}
-								</Table.Cell>
-								<Table.Cell class="text-sm">
-									{doc.pub_date || doc.date || '—'}
-								</Table.Cell>
-								<Table.Cell>
-									<Badge variant="secondary">
-										{(doc.topic_prob * 100).toFixed(0)}%
-									</Badge>
-								</Table.Cell>
-								{#if topicData.ai_fields.length > 0}
+						</Table.Header>
+						<Table.Body>
+							{#each sortedDocs as doc (doc.url || doc.title)}
+								{@const itemUrl = getItemUrl(doc)}
+								<Table.Row>
+									<Table.Cell class="font-medium whitespace-normal break-words">
+										{#if itemUrl}
+											<a
+												href={itemUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="line-clamp-2 text-primary underline-offset-4 hover:underline"
+											>
+												{doc.title || doc.ocr_title || 'Untitled'}
+											</a>
+										{:else}
+											<span class="line-clamp-2">{doc.title || doc.ocr_title || 'Untitled'}</span>
+										{/if}
+										{#if doc.newspaper}
+											<span class="block text-xs text-muted-foreground">{doc.newspaper}</span>
+										{/if}
+									</Table.Cell>
 									<Table.Cell>
-										{@const polarity = doc.gemini_polarite || doc.chatgpt_polarite}
-										{#if polarity}
-											<Badge variant="outline" class={getPolarityClass(polarity)}>
-												{polarity}
+										{#if doc.country}
+											<Badge variant="outline" class={getCountryClass(doc.country)}>
+												{doc.country}
 											</Badge>
 										{:else}
 											<span class="text-muted-foreground">—</span>
 										{/if}
 									</Table.Cell>
-								{/if}
+									<Table.Cell class="text-sm">
+										{doc.pub_date || doc.date || '—'}
+									</Table.Cell>
+									<Table.Cell>
+										<Badge variant="secondary">
+											{(doc.topic_prob * 100).toFixed(0)}%
+										</Badge>
+									</Table.Cell>
+									{#if topicData.ai_fields.length > 0}
+										<Table.Cell>
+											{@const polarity = doc.gemini_polarite || doc.chatgpt_polarite}
+											{#if polarity}
+												<Badge variant="outline" class={getPolarityClass(polarity)}>
+													{polarity}
+												</Badge>
+											{:else}
+												<span class="text-muted-foreground">—</span>
+											{/if}
+										</Table.Cell>
+									{/if}
 							</Table.Row>
-						{/each}
-					</Table.Body>
-				</Table.Root>
+							{/each}
+						</Table.Body>
+					</Table.Root>
+				</div>
 			</Card.Content>
 		</Card.Root>
 	{/if}
