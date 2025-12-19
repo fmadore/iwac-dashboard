@@ -48,7 +48,7 @@
 <UrlStateSync />
 <Sidebar.Provider>
 	<AppSidebar />
-	<Sidebar.Inset>
+	<Sidebar.Inset class="min-h-screen w-full overflow-hidden">
 		<header
 			class="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6"
 		>
@@ -60,7 +60,7 @@
 				<LanguageToggle />
 			</div>
 		</header>
-		<main class="min-w-0 flex-1 overflow-auto p-4 md:p-6">
+		<main class="min-w-0 flex-1 w-full overflow-x-hidden overflow-y-auto p-4 md:p-6">
 			{@render children?.()}
 		</main>
 	</Sidebar.Inset>
