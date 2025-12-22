@@ -124,7 +124,8 @@ export function useUrlSync() {
 				yearMax: urlManager.get('yearMax') as number | undefined,
 				search: urlManager.get('search') as string | undefined,
 				view: urlManager.get('view') as string | undefined,
-				year: urlManager.get('year') as string | undefined
+				year: urlManager.get('year') as string | undefined,
+				order: urlManager.get('order') as string | undefined
 			};
 		},
 		setFilter,
