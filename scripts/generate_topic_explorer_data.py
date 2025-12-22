@@ -20,7 +20,6 @@ from typing import Any, Dict, List
 
 import pandas as pd
 from datasets import load_dataset
-from huggingface_hub import HfFolder, login
 
 
 def month_key(date_str: str) -> str:
@@ -98,13 +97,8 @@ def main():
     topics_dir = out_dir
     # Note: out_dir is already the topics folder, so we don't need to append "topics" again
 
-    token = os.getenv("HF_TOKEN") or HfFolder.get_token()
-    if not token:
-        try:
-            login()
-            token = HfFolder.get_token()
-        except Exception:
-            pass
+    # Use HF_TOKEN environment variable directly
+    token = os.getenv("HF_TOKEN")
 
     print(f"Loading HF dataset {args.repo} · config={args.config_name}…")
     ds = load_dataset(args.repo, name=args.config_name, split="train", token=token)
