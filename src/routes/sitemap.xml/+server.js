@@ -12,6 +12,7 @@ const pages = [
 	'/references/authors',
 	'/words',
 	'/scary',
+	'/cooccurrence',
 	'/topics'
 ];
 
