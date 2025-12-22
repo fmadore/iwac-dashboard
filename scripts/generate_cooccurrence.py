@@ -3,6 +3,16 @@
 IWAC Scary Terms Co-occurrence Matrix Generator
 Script to analyze co-occurrence of scary/radical terms in the Islam West Africa Collection dataset.
 Generates data for co-occurrence matrix visualization.
+
+Uses lemma_nostop column (pre-processed with stopwords removed) from the IWAC dataset.
+
+Output structure:
+- cooccurrence/matrix-global.json: Scary terms co-occurring with each other (global)
+- cooccurrence/matrix-countries.json: Scary terms co-occurring by country
+- cooccurrence/words-global.json: Words appearing near each scary term (all terms)
+- cooccurrence/words-countries.json: Words appearing near each scary term, by country
+- cooccurrence/term-{term_name}.json: Individual term word associations
+- cooccurrence/metadata.json: Metadata about the analysis
 """
 
 import json
@@ -11,7 +21,7 @@ import re
 from pathlib import Path
 from typing import Dict, List, Any, Set, Tuple
 from datetime import datetime
-from collections import defaultdict
+from collections import defaultdict, Counter
 from itertools import combinations
 
 try:
@@ -32,9 +42,11 @@ class IWACCooccurrenceGenerator:
     """Generate co-occurrence matrix data from IWAC articles"""
     
     def __init__(self, output_dir: str = "static/data", window_size: int = 50):
-        self.output_dir = Path(output_dir)
+        # Create cooccurrence subfolder
+        self.output_dir = Path(output_dir) / 'cooccurrence'
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.window_size = window_size  # Number of words for co-occurrence window
+        self.top_words_limit = 100  # Number of top words to keep per term
         
         # Define scary term families to search for (same as generate_scary_terms.py)
         self.scary_terms = {
@@ -51,6 +63,11 @@ class IWACCooccurrenceGenerator:
             "endoctrinement": ["endoctriner", "endoctrinement", "endoctriné", "endoctrinée", "endoctrinés", "endoctrinées"],
             "wahhabisme": ["wahhabisme", "wahhabite", "wahhabites", "wahabia", "wahabite", "wahhâbisme"]
         }
+        
+        # Build a set of all scary term variants for filtering (lowercase)
+        self.all_scary_variants = set()
+        for variants in self.scary_terms.values():
+            self.all_scary_variants.update(v.lower() for v in variants)
         
         # Store dataset
         self.articles_df = None
@@ -83,11 +100,11 @@ class IWACCooccurrenceGenerator:
         """Clean and prepare the data for analysis"""
         logger.info("Cleaning and preparing data...")
         
-        # Remove rows without text data
-        if 'lemma_text' in self.articles_df.columns:
+        # Remove rows without text data (using lemma_nostop which has stopwords pre-removed)
+        if 'lemma_nostop' in self.articles_df.columns:
             initial_count = len(self.articles_df)
-            self.articles_df = self.articles_df.dropna(subset=['lemma_text'])
-            self.articles_df = self.articles_df[self.articles_df['lemma_text'].str.strip() != '']
+            self.articles_df = self.articles_df.dropna(subset=['lemma_nostop'])
+            self.articles_df = self.articles_df[self.articles_df['lemma_nostop'].str.strip() != '']
             logger.info(f"Removed {initial_count - len(self.articles_df)} articles without text data")
         
         # Clean country data
@@ -150,12 +167,59 @@ class IWACCooccurrenceGenerator:
         
         return dict(cooccurrence_counts)
     
+    def extract_word_associations(self, text: str) -> Dict[str, Counter]:
+        """Extract words that appear near each scary term in an article.
+        Uses lemma_nostop which already has stopwords removed."""
+        if not text or not isinstance(text, str):
+            return {}
+        
+        text_lower = text.lower()
+        words = text_lower.split()
+        
+        # Clean words once
+        cleaned_words = [re.sub(r'[^\w\s]', '', w) for w in words]
+        
+        # Find positions of each scary term family
+        term_positions = self.find_term_positions(text)
+        
+        if not term_positions:
+            return {}
+        
+        word_associations: Dict[str, Counter] = defaultdict(Counter)
+        
+        for term_family, positions in term_positions.items():
+            for pos in positions:
+                # Get words within window around this position
+                start = max(0, pos - self.window_size)
+                end = min(len(cleaned_words), pos + self.window_size + 1)
+                
+                for i in range(start, end):
+                    if i == pos:
+                        continue  # Skip the term itself
+                    
+                    word = cleaned_words[i]
+                    
+                    # Filter out:
+                    # - Empty strings
+                    # - Very short words (length <= 2)
+                    # - Numbers
+                    # - Other scary term variants
+                    # Note: stopwords already removed in lemma_nostop
+                    if (len(word) <= 2 or 
+                        word.isdigit() or 
+                        word in self.all_scary_variants):
+                        continue
+                    
+                    word_associations[term_family][word] += 1
+        
+        return dict(word_associations)
+    
     def generate_global_cooccurrence(self) -> Dict[str, Any]:
         """Generate global co-occurrence matrix across all articles"""
         logger.info("Generating global co-occurrence matrix...")
         
-        if 'lemma_text' not in self.articles_df.columns:
-            logger.error("Missing lemma_text column")
+        if 'lemma_nostop' not in self.articles_df.columns:
+            logger.error("Missing lemma_nostop column")
             return {}
         
         # Initialize co-occurrence matrix
@@ -169,7 +233,7 @@ class IWACCooccurrenceGenerator:
             if idx % 1000 == 0:
                 logger.info(f"Processing article {idx}/{total}...")
             
-            text = row['lemma_text']
+            text = row['lemma_nostop']
             
             # Get term positions to count individual terms
             term_positions = self.find_term_positions(text)
@@ -190,7 +254,7 @@ class IWACCooccurrenceGenerator:
         """Generate co-occurrence matrices by country"""
         logger.info("Generating country-wise co-occurrence matrices...")
         
-        if 'country' not in self.articles_df.columns or 'lemma_text' not in self.articles_df.columns:
+        if 'country' not in self.articles_df.columns or 'lemma_nostop' not in self.articles_df.columns:
             logger.error("Missing required columns")
             return {}
         
@@ -206,7 +270,7 @@ class IWACCooccurrenceGenerator:
             term_counts: Dict[str, int] = defaultdict(int)
             
             for _, row in country_df.iterrows():
-                text = row['lemma_text']
+                text = row['lemma_nostop']
                 
                 # Get term positions to count individual terms
                 term_positions = self.find_term_positions(text)
@@ -225,6 +289,111 @@ class IWACCooccurrenceGenerator:
         
         logger.info(f"Generated co-occurrence data for {len(country_data)} countries")
         return country_data
+    
+    def generate_word_associations(self) -> Dict[str, Dict[str, Any]]:
+        """Generate word associations for each scary term (global)"""
+        logger.info("Generating word associations for each scary term...")
+        
+        if 'lemma_nostop' not in self.articles_df.columns:
+            logger.error("Missing lemma_nostop column")
+            return {}
+        
+        # Aggregate word associations across all articles
+        global_associations: Dict[str, Counter] = defaultdict(Counter)
+        term_article_counts: Dict[str, int] = defaultdict(int)  # How many articles contain each term
+        
+        total = len(self.articles_df)
+        for idx, row in self.articles_df.iterrows():
+            if idx % 1000 == 0:
+                logger.info(f"Processing article {idx}/{total} for word associations...")
+            
+            text = row['lemma_nostop']
+            article_associations = self.extract_word_associations(text)
+            
+            for term_family, word_counter in article_associations.items():
+                global_associations[term_family].update(word_counter)
+                term_article_counts[term_family] += 1
+        
+        # Build per-term data files
+        term_data = {}
+        for term_family in self.scary_terms.keys():
+            word_counter = global_associations.get(term_family, Counter())
+            
+            # Get top N words
+            top_words = word_counter.most_common(self.top_words_limit)
+            
+            if not top_words:
+                continue
+            
+            max_count = top_words[0][1] if top_words else 0
+            
+            term_data[term_family] = {
+                "term": term_family,
+                "total_occurrences": sum(word_counter.values()),
+                "articles_with_term": term_article_counts.get(term_family, 0),
+                "unique_words": len(word_counter),
+                "max_word_count": max_count,
+                "words": [
+                    {"word": word, "count": count}
+                    for word, count in top_words
+                ]
+            }
+        
+        logger.info(f"Generated word associations for {len(term_data)} terms")
+        return term_data
+    
+    def generate_word_associations_by_country(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
+        """Generate word associations for each scary term, grouped by country"""
+        logger.info("Generating country-wise word associations...")
+        
+        if 'country' not in self.articles_df.columns or 'lemma_nostop' not in self.articles_df.columns:
+            logger.error("Missing required columns")
+            return {}
+        
+        country_term_data: Dict[str, Dict[str, Dict[str, Any]]] = {}
+        
+        for country, country_df in self.articles_df.groupby('country'):
+            if len(country_df) < 5:
+                continue
+            
+            country_associations: Dict[str, Counter] = defaultdict(Counter)
+            term_article_counts: Dict[str, int] = defaultdict(int)
+            
+            for _, row in country_df.iterrows():
+                text = row['lemma_nostop']
+                article_associations = self.extract_word_associations(text)
+                
+                for term_family, word_counter in article_associations.items():
+                    country_associations[term_family].update(word_counter)
+                    term_article_counts[term_family] += 1
+            
+            term_data = {}
+            for term_family in self.scary_terms.keys():
+                word_counter = country_associations.get(term_family, Counter())
+                top_words = word_counter.most_common(self.top_words_limit)
+                
+                if not top_words:
+                    continue
+                
+                max_count = top_words[0][1] if top_words else 0
+                
+                term_data[term_family] = {
+                    "term": term_family,
+                    "total_occurrences": sum(word_counter.values()),
+                    "articles_with_term": term_article_counts.get(term_family, 0),
+                    "unique_words": len(word_counter),
+                    "max_word_count": max_count,
+                    "words": [
+                        {"word": word, "count": count}
+                        for word, count in top_words
+                    ]
+                }
+            
+            if term_data:
+                country_term_data[country] = term_data
+        
+        logger.info(f"Generated country word associations for {len(country_term_data)} countries")
+        return country_term_data
     
     def _build_matrix_data(
         self, 
@@ -279,19 +448,40 @@ class IWACCooccurrenceGenerator:
         logger.info("Generating and saving co-occurrence data...")
         
         try:
-            # Generate global co-occurrence
+            # Generate global co-occurrence matrix (scary terms with each other)
             global_data = self.generate_global_cooccurrence()
-            global_path = self.output_dir / 'cooccurrence-global.json'
+            global_path = self.output_dir / 'matrix-global.json'
             with open(global_path, 'w', encoding='utf-8') as f:
                 json.dump(global_data, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Saved global co-occurrence data to {global_path}")
+            logger.info(f"Saved global matrix data to {global_path}")
             
-            # Generate country co-occurrence
+            # Generate country co-occurrence matrices
             country_data = self.generate_country_cooccurrence()
-            country_path = self.output_dir / 'cooccurrence-countries.json'
+            country_path = self.output_dir / 'matrix-countries.json'
             with open(country_path, 'w', encoding='utf-8') as f:
                 json.dump(country_data, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Saved country co-occurrence data to {country_path}")
+            logger.info(f"Saved country matrix data to {country_path}")
+            
+            # Generate word associations (global)
+            word_associations = self.generate_word_associations()
+            words_global_path = self.output_dir / 'words-global.json'
+            with open(words_global_path, 'w', encoding='utf-8') as f:
+                json.dump(word_associations, f, ensure_ascii=False, separators=(',', ':'))
+            logger.info(f"Saved global word associations to {words_global_path}")
+            
+            # Also save individual term files for easier loading
+            for term_family, term_data in word_associations.items():
+                term_path = self.output_dir / f'term-{term_family}.json'
+                with open(term_path, 'w', encoding='utf-8') as f:
+                    json.dump(term_data, f, ensure_ascii=False, separators=(',', ':'))
+            logger.info(f"Saved {len(word_associations)} individual term files")
+            
+            # Generate word associations by country
+            country_word_data = self.generate_word_associations_by_country()
+            words_countries_path = self.output_dir / 'words-countries.json'
+            with open(words_countries_path, 'w', encoding='utf-8') as f:
+                json.dump(country_word_data, f, ensure_ascii=False, separators=(',', ':'))
+            logger.info(f"Saved country word associations to {words_countries_path}")
             
             # Save metadata
             metadata = {
@@ -300,27 +490,33 @@ class IWACCooccurrenceGenerator:
                 "term_families": list(self.scary_terms.keys()),
                 "term_families_count": len(self.scary_terms),
                 "window_size": self.window_size,
+                "top_words_limit": self.top_words_limit,
                 "countries": list(country_data.keys()),
-                "data_structure": {
-                    "global": "Co-occurrence matrix for all articles",
-                    "countries": "Co-occurrence matrices grouped by country"
+                "files": {
+                    "matrix-global.json": "Co-occurrence matrix of scary terms (all articles)",
+                    "matrix-countries.json": "Co-occurrence matrices by country",
+                    "words-global.json": "Words appearing near each scary term (all articles)",
+                    "words-countries.json": "Words appearing near each scary term, by country",
+                    "term-{term}.json": "Individual term word associations"
                 },
-                "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains co-occurrence counts within window"
+                "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains co-occurrence counts within window",
+                "words_description": "Top words that appear within the window of each scary term (using lemma_nostop column with stopwords pre-removed)"
             }
             
-            metadata_path = self.output_dir / 'cooccurrence-metadata.json'
+            metadata_path = self.output_dir / 'metadata.json'
             with open(metadata_path, 'w', encoding='utf-8') as f:
                 json.dump(metadata, f, ensure_ascii=False, indent=2)
             logger.info(f"Saved metadata to {metadata_path}")
             
-            # Also copy to build/data for production
-            build_dir = self.output_dir.parent.parent / 'build' / 'data'
-            if build_dir.exists():
+            # Also copy to build/data/cooccurrence for production
+            build_dir = self.output_dir.parent.parent / 'build' / 'data' / 'cooccurrence'
+            if build_dir.parent.exists():
+                build_dir.mkdir(parents=True, exist_ok=True)
                 import shutil
-                shutil.copy(global_path, build_dir / 'cooccurrence-global.json')
-                shutil.copy(country_path, build_dir / 'cooccurrence-countries.json')
-                shutil.copy(metadata_path, build_dir / 'cooccurrence-metadata.json')
-                logger.info(f"Copied data files to {build_dir}")
+                # Copy all files in output_dir to build_dir
+                for file_path in self.output_dir.glob('*.json'):
+                    shutil.copy(file_path, build_dir / file_path.name)
+                logger.info(f"Copied all data files to {build_dir}")
             
         except Exception as e:
             logger.error(f"Error generating co-occurrence data: {e}")
