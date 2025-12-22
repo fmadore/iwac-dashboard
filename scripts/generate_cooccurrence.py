@@ -68,6 +68,38 @@ class IWACCooccurrenceGenerator:
         self.all_scary_variants = set()
         for variants in self.scary_terms.values():
             self.all_scary_variants.update(v.lower() for v in variants)
+            
+        # Additional stopwords to filter out (lemmatization artifacts, common verbs, adverbs)
+        self.custom_stopwords = {
+            # Artifacts / Pronouns / Prepositions
+            "celer", "luire", "sou", "soi", "afin", "travers", "vers", "chez", "dès", "près",
+            "lequel", "laquelle", "lesquels", "lesquelles", "dont", "où",
+            
+            # Common Verbs (often noise in topic modeling)
+            "dire", "faire", "aller", "voir", "savoir", "vouloir", "venir", "falloir", "devoir",
+            "croire", "trouver", "donner", "prendre", "parler", "passer", "demander", "sembler",
+            "laisser", "tenir", "comprendre", "connaître", "devenir", "porter", "montrer", "vivre",
+            "entrer", "agir", "mener", "appeler", "rendre", "mettre", "permettre", "assurer",
+            "compter", "considérer", "revenir", "suivre", "tenter", "accepter", "refuser",
+            "sortir", "atteindre", "attendre", "servir", "apparaître", "offrir", "recevoir",
+            "maintenir", "déclarer", "affirmer", "annoncer", "présenter", "expliquer", "exprimer",
+            "penser", "signifier", "représenter", "constituer", "lutter", "aimer", "arriver",
+            
+            # Adverbs / Connectors
+            "également", "notamment", "surtout", "ailleurs", "puis", "ensuite", "enfin", "déjà",
+            "toujours", "jamais", "souvent", "parfois", "ici", "là", "aussi", "non", "oui",
+            "ainsi", "alors", "après", "avant", "donc", "encore", "pourtant", "cependant",
+            "néanmoins", "toutefois", "car", "parce", "puisque", "lorsque", "quand", "comment",
+            "pourquoi", "tout", "tous", "toute", "toutes", "plus", "moins", "très", "bien",
+            "mal", "trop", "peu", "beaucoup", "assez", "tant", "tellement", "autre", "même",
+            
+            # Generic Nouns
+            "chose", "fois", "façon", "manière", "exemple", "cas", "partie", "côté", "terme", 
+            "mot", "sujet", "point", "question", "problème", "situation", "fait", "cause", 
+            "effet", "but", "objet", "moyen", "raison", "type", "forme", "fond", "niveau",
+            "nombre", "gens", "personne", "groupe", "lieu", "place", "an", "année", "mois",
+            "jour", "heure", "temps", "moment", "monde", "pays"
+        }
         
         # Store dataset
         self.articles_df = None
@@ -204,10 +236,12 @@ class IWACCooccurrenceGenerator:
                     # - Very short words (length <= 2)
                     # - Numbers
                     # - Other scary term variants
+                    # - Custom stopwords (artifacts, common verbs, etc.)
                     # Note: stopwords already removed in lemma_nostop
                     if (len(word) <= 2 or 
                         word.isdigit() or 
-                        word in self.all_scary_variants):
+                        word in self.all_scary_variants or
+                        word in self.custom_stopwords):
                         continue
                     
                     word_associations[term_family][word] += 1
