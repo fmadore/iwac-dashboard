@@ -19,6 +19,7 @@
 	let worldGeo: GeoJsonData | null = $state(null);
 	let markersLayer: L.LayerGroup | null = null;
 	let tileLayer: L.TileLayer | null = null;
+	let worldBounds: L.LatLngBounds | null = null;
 	let themeObserver: MutationObserver | null = null;
 	let mapLoading = $state(true);
 	let dataLoading = $state(true);
@@ -91,7 +92,9 @@
 		if (!tileLayer) {
 			tileLayer = L.tileLayer(option.url, {
 				attribution: option.attribution,
-				maxZoom: 19
+				maxZoom: 19,
+				noWrap: true,
+				bounds: worldBounds ?? undefined
 			}).addTo(map);
 			return;
 		}
@@ -123,12 +126,18 @@
 				}
 
 				// Initialize map
+				// WebMercator is only valid up to ~85 degrees latitude.
+				worldBounds = L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180));
+
 				map = L.map(mapElement, {
 					center: [8, 2], // West Africa center
 					zoom: 4,
 					minZoom: 2,
 					maxZoom: 12,
-					zoomControl: true
+					zoomControl: true,
+					maxBounds: worldBounds,
+					maxBoundsViscosity: 1.0,
+					worldCopyJump: false
 				});
 
 				// Sync theme-derived colors and base map layer
