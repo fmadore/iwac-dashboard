@@ -157,10 +157,20 @@
 	}
 
 	function getCSSVariable(variable: string): string {
-		if (!browser) return '#666666';
+		if (!browser) return '#000000';
 		const root = document.documentElement;
 		const value = getComputedStyle(root).getPropertyValue(variable).trim();
-		return value || '#666666';
+		
+		// Return the computed color value, ensuring we have a valid color
+		if (!value) return '#000000';
+		
+		// If it's already an oklch/rgb/hex color, return it
+		if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('oklch')) {
+			return value;
+		}
+		
+		// Fallback
+		return '#000000';
 	}
 
 	onMount(() => {
@@ -304,8 +314,8 @@
 			}
 		}
 
-		// Font size based on cell size
-		const fontSize = Math.max(9, Math.min(12, currentCellSize * 0.28));
+		// Font size based on cell size - increased minimum for better readability
+		const fontSize = Math.max(11, Math.min(14, currentCellSize * 0.32));
 
 		// Add row labels (left side)
 		g.selectAll('.row-label')
@@ -313,11 +323,12 @@
 			.enter()
 			.append('text')
 			.attr('class', 'row-label')
-			.attr('x', -6)
+			.attr('x', -8)
 			.attr('y', (d: string, i: number) => i * currentCellSize + currentCellSize / 2)
 			.attr('text-anchor', 'end')
 			.attr('dominant-baseline', 'middle')
 			.style('font-size', `${fontSize}px`)
+			.style('font-weight', '500')
 			.style('fill', foregroundColor)
 			.text((d: string) => d);
 
@@ -328,13 +339,14 @@
 			.append('text')
 			.attr('class', 'col-label')
 			.attr('x', (d: string, i: number) => i * currentCellSize + currentCellSize / 2)
-			.attr('y', -6)
+			.attr('y', -8)
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'middle')
 			.attr('transform', (d: string, i: number) => 
-				`rotate(-45, ${i * currentCellSize + currentCellSize / 2}, -6)`
+				`rotate(-45, ${i * currentCellSize + currentCellSize / 2}, -8)`
 			)
 			.style('font-size', `${fontSize}px`)
+			.style('font-weight', '500')
 			.style('fill', foregroundColor)
 			.text((d: string) => d);
 	}
