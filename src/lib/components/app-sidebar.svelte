@@ -13,7 +13,8 @@
 		BookMarked,
 		User,
 		BrainCircuit,
-		Grid3X3
+		Grid3X3,
+		MapPin
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -37,6 +38,10 @@
 		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' },
 		{ href: `${base}/cooccurrence`, icon: Grid3X3, label: 'nav.cooccurrence' },
 		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' }
+	];
+
+	const spatialAnalysisItems = [
+		{ href: `${base}/spatial/world-map`, icon: MapPin, label: 'nav.world_map' }
 	];
 </script>
 
@@ -102,6 +107,25 @@
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
 					{#each textualAnalysisItems as item (item.href)}
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
+								{#snippet child({ props })}
+									<a href={item.href} {...props}>
+										<item.icon class="h-4 w-4" />
+										<span>{t(item.label)}</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					{/each}
+				</Sidebar.Menu>
+			</Sidebar.GroupContent>
+		</Sidebar.Group>
+		<Sidebar.Group>
+			<Sidebar.GroupLabel>{t('nav.spatial_analysis')}</Sidebar.GroupLabel>
+			<Sidebar.GroupContent>
+				<Sidebar.Menu>
+					{#each spatialAnalysisItems as item (item.href)}
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}

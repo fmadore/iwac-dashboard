@@ -283,7 +283,25 @@ export const translations = {
 		'type.Working paper': 'Working Paper',
 		'type.Ouvrage collectif': 'Edited Volume',
 		'overview.reference_types': 'Reference Types',
-		'overview.reference_types_desc': 'Different types of bibliographic references'
+		'overview.reference_types_desc': 'Different types of bibliographic references',
+		// Spatial Analysis
+		'nav.spatial_analysis': 'Spatial Analysis',
+		'nav.world_map': 'World Map',
+		'worldmap.title': 'World Map',
+		'worldmap.description': 'Explore newspaper articles by geographic location. Switch between bubble and choropleth views.',
+		'worldmap.bubbles': 'Bubbles',
+		'worldmap.choropleth': 'Choropleth',
+		'worldmap.article_count': 'Article Count',
+		'worldmap.articles': '{0} articles',
+		'worldmap.article': '1 article',
+		'worldmap.loading': 'Loading map data...',
+		'worldmap.error': 'Failed to load map data',
+		'worldmap.no_data': 'No location data available',
+		'worldmap.legend.low': 'Low',
+		'worldmap.legend.high': 'High',
+		'worldmap.total_locations': 'Total Locations',
+		'worldmap.total_articles': 'Total Articles',
+		'worldmap.countries_covered': 'Countries Covered'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -572,7 +590,25 @@ export const translations = {
 		'type.Working paper': 'Working paper',
 		'type.Ouvrage collectif': 'Ouvrage collectif',
 		'overview.reference_types': 'Types de références',
-		'overview.reference_types_desc': 'Différents types de références bibliographiques'
+		'overview.reference_types_desc': 'Différents types de références bibliographiques',
+		// Spatial Analysis
+		'nav.spatial_analysis': 'Analyse spatiale',
+		'nav.world_map': 'Carte du monde',
+		'worldmap.title': 'Carte du monde',
+		'worldmap.description': 'Explorez les articles de journaux par localisation géographique. Basculez entre les vues bulles et choroplèthe.',
+		'worldmap.bubbles': 'Bulles',
+		'worldmap.choropleth': 'Choroplèthe',
+		'worldmap.article_count': "Nombre d'articles",
+		'worldmap.articles': '{0} articles',
+		'worldmap.article': '1 article',
+		'worldmap.loading': 'Chargement des données cartographiques...',
+		'worldmap.error': 'Échec du chargement des données cartographiques',
+		'worldmap.no_data': 'Aucune donnée de localisation disponible',
+		'worldmap.legend.low': 'Faible',
+		'worldmap.legend.high': 'Élevé',
+		'worldmap.total_locations': 'Localisations totales',
+		'worldmap.total_articles': 'Articles totaux',
+		'worldmap.countries_covered': 'Pays couverts'
 	}
 } as const;
 

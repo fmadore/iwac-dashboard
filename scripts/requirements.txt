@@ -3,3 +3,4 @@ pandas
 huggingface-hub
 pyarrow
 hf_xet
+shapely

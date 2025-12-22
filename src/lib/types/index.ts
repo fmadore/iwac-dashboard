@@ -1,6 +1,9 @@
 // Export treemap types
 export type * from './treemap.js';
 
+// Export world map types
+export type * from './worldmap.js';
+
 export interface OmekaItem {
 	id: number;
 	title: string;
