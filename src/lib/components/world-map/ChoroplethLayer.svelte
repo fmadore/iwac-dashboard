@@ -98,19 +98,20 @@
 
 	function createInfoControl() {
 		if (!L || !map) return;
+		const Leaflet = L;
 
 		const InfoControl = L.Control.extend({
 			options: { position: 'topright' },
 			onAdd: function () {
-				const div = L.DomUtil.create('div', 'choropleth-info');
+				const div = Leaflet.DomUtil.create('div', 'choropleth-info');
 				div.innerHTML = '<h4>' + t('worldmap.article_count') + '</h4><p>' + t('common.loading') + '</p>';
 				div.style.cssText = `
 					padding: 8px 12px;
-					background: var(--card, white);
+					background: var(--card);
 					border-radius: 8px;
-					box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-					border: 1px solid var(--border, #e5e7eb);
-					color: var(--foreground, #1f2937);
+					box-shadow: 0 2px 8px color-mix(in oklch, var(--foreground) 18%, transparent);
+					border: 1px solid var(--border);
+					color: var(--foreground);
 					font-size: 0.875rem;
 				`;
 				return div;
@@ -124,7 +125,7 @@
 					const articleText = value === 1 ? t('worldmap.article') : t('worldmap.articles', [value.toLocaleString()]);
 					div.innerHTML = `<h4 style="margin: 0 0 4px 0; font-weight: 600;">${props.name}</h4><p style="margin: 0;">${articleText}</p>`;
 				} else {
-					div.innerHTML = `<h4 style="margin: 0; font-weight: 500; color: var(--muted-foreground);">Hover over a country</h4>`;
+					div.innerHTML = `<h4 style="margin: 0; font-weight: 500; color: var(--muted-foreground);">${t('worldmap.hover_country')}</h4>`;
 				}
 			}
 		});
@@ -136,20 +137,21 @@
 
 	function createLegendControl() {
 		if (!L || !map) return;
+		const Leaflet = L;
 
 		const bins = computeLegendBins(data, colorRange.length, scaleMode);
 
 		const LegendControl = L.Control.extend({
 			options: { position: 'bottomright' },
 			onAdd: function () {
-				const div = L.DomUtil.create('div', 'choropleth-legend');
+				const div = Leaflet.DomUtil.create('div', 'choropleth-legend');
 				div.style.cssText = `
 					padding: 8px 12px;
-					background: var(--card, white);
+						background: var(--card);
 					border-radius: 8px;
-					box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-					border: 1px solid var(--border, #e5e7eb);
-					color: var(--foreground, #1f2937);
+						box-shadow: 0 2px 8px color-mix(in oklch, var(--foreground) 18%, transparent);
+						border: 1px solid var(--border);
+						color: var(--foreground);
 					font-size: 0.75rem;
 					line-height: 1.5;
 				`;
@@ -175,10 +177,10 @@
 	function styleFeature(feature: GeoJsonFeature | any) {
 		if (!feature.properties || !feature.properties.name) {
 			return {
-				fillColor: 'var(--muted, #f0f0f0)',
+				fillColor: 'var(--muted)',
 				weight: 1,
 				opacity: 1,
-				color: 'var(--border, #d1d5db)',
+				color: 'var(--border)',
 				fillOpacity: 0.7
 			};
 		}
@@ -198,7 +200,7 @@
 			fillColor,
 			weight: 1,
 			opacity: 1,
-			color: 'var(--border, #d1d5db)',
+			color: 'var(--border)',
 			fillOpacity: 0.7
 		};
 	}
@@ -209,7 +211,7 @@
 		const featureLayer = e.target;
 		featureLayer.setStyle({
 			weight: 2,
-			color: 'var(--primary, #e67e22)',
+			color: 'var(--primary)',
 			fillOpacity: 0.9
 		});
 
@@ -327,6 +329,25 @@
 	$effect(() => {
 		if (layer && Object.keys(data).length > 0) {
 			updateLayerStyles();
+		}
+	});
+
+	// Refresh legend when palette/mode changes (e.g. light/dark theme swap)
+	$effect(() => {
+		if (!map || !L) return;
+
+		// Track dependencies explicitly
+		const _palette = colorRange;
+		const _mode = scaleMode;
+		const _dataSize = Object.keys(data).length;
+		void _palette;
+		void _mode;
+		void _dataSize;
+
+		if (legend) {
+			map.removeControl(legend);
+			legend = null;
+			createLegendControl();
 		}
 	});
 </script>

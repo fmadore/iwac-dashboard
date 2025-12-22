@@ -18,8 +18,20 @@
 	let L: typeof import('leaflet') | null = null;
 	let worldGeo: GeoJsonData | null = $state(null);
 	let markersLayer: L.LayerGroup | null = null;
+	let tileLayer: L.TileLayer | null = null;
+	let themeObserver: MutationObserver | null = null;
 	let mapLoading = $state(true);
 	let dataLoading = $state(true);
+	let bubbleColorRange = $state<[string, string]>(['oklch(0.55 0.18 250)', 'oklch(0.6 0.18 15)']);
+	let choroplethColorRange = $state<string[]>([
+		'oklch(0.95 0.02 220)',
+		'oklch(0.85 0.06 55)',
+		'oklch(0.75 0.10 55)',
+		'oklch(0.65 0.13 55)',
+		'oklch(0.55 0.15 55)',
+		'oklch(0.50 0.16 55)',
+		'oklch(0.45 0.17 55)'
+	]);
 
 	// Legend state
 	let showLegend = $state(true);
@@ -35,8 +47,58 @@
 		light: {
 			url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+		},
+		dark: {
+			url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 		}
 	};
+
+	function getCssVar(varName: string, fallback: string): string {
+		if (!browser) return fallback;
+		const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+		return value || fallback;
+	}
+
+	function isDarkActive(): boolean {
+		if (!browser) return false;
+		return document.documentElement.classList.contains('dark');
+	}
+
+	function syncThemeDerivedValues() {
+		// Bubble colors: low -> high
+		bubbleColorRange = [
+			getCssVar('--chart-2', 'oklch(0.55 0.18 250)'),
+			getCssVar('--chart-6', 'oklch(0.6 0.18 15)')
+		];
+
+		// Choropleth palette (discrete steps), pulled from theme variables.
+		choroplethColorRange = [
+			getCssVar('--muted', 'oklch(0.92 0.01 220)'),
+			getCssVar('--chart-15', 'oklch(0.72 0.14 65)'),
+			getCssVar('--chart-5', 'oklch(0.7 0.16 80)'),
+			getCssVar('--chart-1', 'oklch(0.63 0.15 55)'),
+			getCssVar('--chart-11', 'oklch(0.68 0.16 35)'),
+			getCssVar('--chart-6', 'oklch(0.58 0.18 15)'),
+			getCssVar('--primary', 'oklch(0.63 0.15 55)')
+		];
+	}
+
+	function updateTileLayer() {
+		if (!L || !map) return;
+
+		const option = isDarkActive() ? tileLayerOptions.dark : tileLayerOptions.light;
+		if (!tileLayer) {
+			tileLayer = L.tileLayer(option.url, {
+				attribution: option.attribution,
+				maxZoom: 19
+			}).addTo(map);
+			return;
+		}
+
+		// Leaflet supports swapping URLs without re-adding the layer.
+		tileLayer.setUrl(option.url);
+	}
 
 	onMount(() => {
 		if (!browser) return;
@@ -69,11 +131,16 @@
 					zoomControl: true
 				});
 
-				// Add tile layer
-				L.tileLayer(tileLayerOptions.light.url, {
-					attribution: tileLayerOptions.light.attribution,
-					maxZoom: 19
-				}).addTo(map);
+				// Sync theme-derived colors and base map layer
+				syncThemeDerivedValues();
+				updateTileLayer();
+
+				// React to theme changes (mode-watcher toggles .dark on <html>)
+				themeObserver = new MutationObserver(() => {
+					syncThemeDerivedValues();
+					updateTileLayer();
+				});
+				themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
 				// Create markers layer group
 				markersLayer = L.layerGroup().addTo(map);
@@ -92,6 +159,10 @@
 		initMap();
 
 		return () => {
+			if (themeObserver) {
+				themeObserver.disconnect();
+				themeObserver = null;
+			}
 			if (map) {
 				map.remove();
 				map = null;
@@ -164,6 +235,11 @@
 	$effect(() => {
 		if (!map || !L || !markersLayer) return;
 
+		// Track theme-driven colors
+		const [lowColor, highColor] = bubbleColorRange;
+		void lowColor;
+		void highColor;
+
 		// Clear existing markers
 		markersLayer.clearLayers();
 
@@ -185,7 +261,9 @@
 
 		const colorScale = scaleLinear<string>()
 			.domain([minCount, maxCount])
-			.range(['#60a5fa', '#dc2626']); // Blue to red
+			.range([bubbleColorRange[0], bubbleColorRange[1]]);
+
+		const strokeColor = getCssVar('--background', '#ffffff');
 
 		// Build legend
 		const legendBreaks = [minCount, Math.round((minCount + maxCount) / 2), maxCount];
@@ -202,7 +280,7 @@
 			const marker = L.circleMarker([location.lat, location.lng], {
 				radius,
 				fillColor: color,
-				color: 'white',
+				color: strokeColor,
 				weight: 2,
 				opacity: 1,
 				fillOpacity: 0.7
@@ -314,6 +392,7 @@
 		{map}
 		geoJson={worldGeo}
 		data={countryCounts}
+		colorRange={choroplethColorRange}
 		scaleMode="log"
 	/>
 {/if}
@@ -339,7 +418,7 @@
 
 	:global(.leaflet-control-layers) {
 		border-radius: 8px !important;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+		box-shadow: 0 4px 12px color-mix(in oklch, var(--foreground) 18%, transparent) !important;
 		border: 1px solid var(--border) !important;
 	}
 
@@ -347,7 +426,7 @@
 		background: var(--card);
 		color: var(--foreground);
 		border-radius: 8px;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 4px 12px color-mix(in oklch, var(--foreground) 18%, transparent);
 	}
 
 	:global(.leaflet-popup-tip) {
@@ -368,5 +447,19 @@
 
 	:global(.leaflet-control-zoom a:hover) {
 		background: var(--accent) !important;
+	}
+
+	:global(.leaflet-tooltip) {
+		background: var(--popover) !important;
+		color: var(--popover-foreground) !important;
+		border: 1px solid var(--border) !important;
+		border-radius: 6px !important;
+		box-shadow: 0 4px 12px color-mix(in oklch, var(--foreground) 18%, transparent) !important;
+		padding: 6px 8px !important;
+	}
+
+	:global(.leaflet-tooltip::before) {
+		border-top-color: var(--popover) !important;
+		border-bottom-color: var(--popover) !important;
 	}
 </style>
