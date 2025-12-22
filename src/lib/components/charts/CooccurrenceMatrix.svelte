@@ -31,10 +31,21 @@
 	let svgElement: SVGSVGElement | null = $state(null);
 	let tooltip: HTMLDivElement | null = $state(null);
 	let d3Module: any = null;
+	let containerWidth = $state(800);
+	let resizeObserver: ResizeObserver | null = null;
+
+	// Computed cell size based on container width
+	const effectiveCellSize = $derived.by(() => {
+		if (!data || data.terms.length === 0) return cellSize;
+		const availableWidth = containerWidth - margin.left - margin.right;
+		const calculatedSize = Math.floor(availableWidth / data.terms.length);
+		// Clamp between min and max sizes
+		return Math.max(25, Math.min(cellSize, calculatedSize));
+	});
 
 	// Computed dimensions
-	const width = $derived(data ? data.terms.length * cellSize + margin.left + margin.right : 0);
-	const height = $derived(data ? data.terms.length * cellSize + margin.top + margin.bottom : 0);
+	const width = $derived(data ? data.terms.length * effectiveCellSize + margin.left + margin.right : 0);
+	const height = $derived(data ? data.terms.length * effectiveCellSize + margin.top + margin.bottom : 0);
 
 	// Order terms based on selected ordering
 	const orderedTerms = $derived.by(() => {
@@ -157,6 +168,25 @@
 
 		let active = true;
 
+		// Set up ResizeObserver
+		if (containerElement) {
+			resizeObserver = new ResizeObserver((entries) => {
+				for (const entry of entries) {
+					const { width } = entry.contentRect;
+					if (width > 0) {
+						containerWidth = width;
+					}
+				}
+			});
+			resizeObserver.observe(containerElement);
+			
+			// Get initial size
+			const rect = containerElement.getBoundingClientRect();
+			if (rect.width > 0) {
+				containerWidth = rect.width;
+			}
+		}
+
 		const initialize = async () => {
 			try {
 				// Import D3 modules
@@ -187,14 +217,19 @@
 
 		return () => {
 			active = false;
+			if (resizeObserver) {
+				resizeObserver.disconnect();
+				resizeObserver = null;
+			}
 		};
 	});
 
-	// Re-render when data or ordering changes
+	// Re-render when data, ordering, or size changes
 	$effect(() => {
 		if (d3Module && data && orderedMatrix.length > 0) {
-			// Track language changes
+			// Track language and size changes
 			const _ = languageStore.current;
+			const __ = effectiveCellSize;
 			untrack(() => renderMatrix());
 		}
 	});
@@ -224,6 +259,8 @@
 			.append('g')
 			.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+		const currentCellSize = effectiveCellSize;
+
 		// Draw cells
 		for (let i = 0; i < n; i++) {
 			for (let j = 0; j < n; j++) {
@@ -244,10 +281,10 @@
 
 				g
 					.append('rect')
-					.attr('x', j * cellSize)
-					.attr('y', i * cellSize)
-					.attr('width', cellSize - 1)
-					.attr('height', cellSize - 1)
+					.attr('x', j * currentCellSize)
+					.attr('y', i * currentCellSize)
+					.attr('width', currentCellSize - 1)
+					.attr('height', currentCellSize - 1)
 					.attr('rx', 2)
 					.style('fill', isDiagonal ? 'var(--muted)' : colorScale(value))
 					.style('stroke', borderColor)
@@ -257,12 +294,18 @@
 						showTooltip(event, orderedTerms[rowIdx], orderedTerms[colIdx], cellValue, cellIsDiagonal);
 						select(this).style('stroke-width', 2).style('stroke', 'var(--primary)');
 					})
+					.on('mousemove', function (this: SVGRectElement, event: MouseEvent) {
+						updateTooltipPosition(event);
+					})
 					.on('mouseout', function (this: SVGRectElement) {
 						hideTooltip();
 						select(this).style('stroke-width', 0.5).style('stroke', borderColor);
 					});
 			}
 		}
+
+		// Font size based on cell size
+		const fontSize = Math.max(9, Math.min(12, currentCellSize * 0.28));
 
 		// Add row labels (left side)
 		g.selectAll('.row-label')
@@ -271,10 +314,10 @@
 			.append('text')
 			.attr('class', 'row-label')
 			.attr('x', -6)
-			.attr('y', (d: string, i: number) => i * cellSize + cellSize / 2)
+			.attr('y', (d: string, i: number) => i * currentCellSize + currentCellSize / 2)
 			.attr('text-anchor', 'end')
 			.attr('dominant-baseline', 'middle')
-			.style('font-size', '11px')
+			.style('font-size', `${fontSize}px`)
 			.style('fill', foregroundColor)
 			.text((d: string) => d);
 
@@ -284,14 +327,14 @@
 			.enter()
 			.append('text')
 			.attr('class', 'col-label')
-			.attr('x', (d: string, i: number) => i * cellSize + cellSize / 2)
+			.attr('x', (d: string, i: number) => i * currentCellSize + currentCellSize / 2)
 			.attr('y', -6)
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'middle')
 			.attr('transform', (d: string, i: number) => 
-				`rotate(-45, ${i * cellSize + cellSize / 2}, -6)`
+				`rotate(-45, ${i * currentCellSize + currentCellSize / 2}, -6)`
 			)
-			.style('font-size', '11px')
+			.style('font-size', `${fontSize}px`)
 			.style('fill', foregroundColor)
 			.text((d: string) => d);
 	}
@@ -314,8 +357,31 @@
 
 		tooltip.innerHTML = content;
 		tooltip.style.display = 'block';
-		tooltip.style.left = `${event.pageX + 10}px`;
-		tooltip.style.top = `${event.pageY + 10}px`;
+		updateTooltipPosition(event);
+	}
+
+	function updateTooltipPosition(event: MouseEvent) {
+		if (!tooltip) return;
+		
+		// Position tooltip avoiding screen edges
+		const tooltipRect = tooltip.getBoundingClientRect();
+		const padding = 10;
+		
+		let left = event.clientX + padding;
+		let top = event.clientY + padding;
+		
+		// Adjust if tooltip would go off right edge
+		if (left + tooltipRect.width > window.innerWidth - padding) {
+			left = event.clientX - tooltipRect.width - padding;
+		}
+		
+		// Adjust if tooltip would go off bottom edge
+		if (top + tooltipRect.height > window.innerHeight - padding) {
+			top = event.clientY - tooltipRect.height - padding;
+		}
+		
+		tooltip.style.left = `${left}px`;
+		tooltip.style.top = `${top}px`;
 	}
 
 	function hideTooltip() {
