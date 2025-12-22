@@ -28,6 +28,8 @@ export interface UrlState {
 	search?: string;
 	view?: string;
 	year?: string;
+	order?: string;
+	term?: string;
 	// Extensible for other facets
 	[key: string]: string | number | undefined;
 }

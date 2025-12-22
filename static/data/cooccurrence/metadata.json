@@ -1,0 +1,37 @@
+{
+  "generated_at": "2025-12-22T15:38:42.773203",
+  "total_articles": 12172,
+  "term_families": [
+    "radicalisation",
+    "extrémisme",
+    "intégrisme",
+    "fondamentalisme",
+    "islamisme",
+    "obscurantisme",
+    "terrorisme",
+    "djihadisme",
+    "salafisme",
+    "fanatisme",
+    "endoctrinement",
+    "wahhabisme"
+  ],
+  "term_families_count": 12,
+  "window_size": 50,
+  "top_words_limit": 100,
+  "countries": [
+    "Benin",
+    "Burkina Faso",
+    "Côte d'Ivoire",
+    "Niger",
+    "Togo"
+  ],
+  "files": {
+    "matrix-global.json": "Co-occurrence matrix of scary terms (all articles)",
+    "matrix-countries.json": "Co-occurrence matrices by country",
+    "words-global.json": "Words appearing near each scary term (all articles)",
+    "words-countries.json": "Words appearing near each scary term, by country",
+    "term-{term}.json": "Individual term word associations"
+  },
+  "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains co-occurrence counts within window",
+  "words_description": "Top words that appear within the window of each scary term, filtered for stopwords"
+}

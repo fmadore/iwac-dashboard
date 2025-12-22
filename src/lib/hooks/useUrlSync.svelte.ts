@@ -35,6 +35,9 @@ export interface FilterState {
 	yearMin?: number;
 	yearMax?: number;
 	search?: string;
+	order?: string;
+	view?: string;
+	term?: string;
 	[key: string]: string | number | undefined;
 }
 
@@ -62,7 +65,10 @@ export function useUrlSync() {
 			type: urlManager.get('type') as string | undefined,
 			yearMin: urlManager.get('yearMin') as number | undefined,
 			yearMax: urlManager.get('yearMax') as number | undefined,
-			search: urlManager.get('search') as string | undefined
+			search: urlManager.get('search') as string | undefined,
+			order: urlManager.get('order') as string | undefined,
+			view: urlManager.get('view') as string | undefined,
+			term: urlManager.get('term') as string | undefined
 		};
 	});
 
@@ -125,7 +131,8 @@ export function useUrlSync() {
 				search: urlManager.get('search') as string | undefined,
 				view: urlManager.get('view') as string | undefined,
 				year: urlManager.get('year') as string | undefined,
-				order: urlManager.get('order') as string | undefined
+				order: urlManager.get('order') as string | undefined,
+				term: urlManager.get('term') as string | undefined
 			};
 		},
 		setFilter,
