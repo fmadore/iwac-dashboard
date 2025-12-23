@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
 				injectRegister: 'auto',
 				includeAssets: ['apple-touch-icon.png', 'Logo ZMO.png'],
 				manifest: {
-					name: 'IWAC Database Overview',
+					name: 'IWAC Dashboard',
 					short_name: 'IWAC DB',
 					description:
 						'Islam West Africa Collection - Database visualization and analytics dashboard',

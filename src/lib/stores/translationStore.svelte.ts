@@ -2,7 +2,7 @@ export type Language = 'en' | 'fr';
 
 export const translations = {
 	en: {
-		'app.title': 'IWAC Database Overview',
+		'app.title': 'IWAC Dashboard',
 		'app.subtitle': 'Islam West Africa Collection',
 		'nav.overview': 'Overview',
 		'nav.countries': 'Countries',
@@ -314,7 +314,7 @@ export const translations = {
 		'chart.others': 'Autres ({0})',
 		'chart.legend_toggle_hide_aria': 'Masquer la part {0}',
 		'chart.legend_toggle_show_aria': 'Afficher la part {0}',
-		'app.title': 'Aperçu de la base de données IWAC',
+		'app.title': 'Tableau de bord',
 		'app.subtitle': "Collection Islam Afrique de l'Ouest",
 		'nav.overview': "Vue d'ensemble",
 		'nav.countries': 'Pays',
