@@ -16,7 +16,9 @@ const config = {
 			pages: 'build',
 			assets: 'build',
 			fallback: 'index.html',
-			precompress: false,
+			// Enable Brotli (.br) and Gzip (.gz) precompression for all static assets
+			// This significantly reduces transfer sizes (typically 60-80% for JSON)
+			precompress: true,
 			strict: true
 		}),
 		paths: {
