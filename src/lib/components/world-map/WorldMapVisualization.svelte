@@ -1,12 +1,16 @@
 <script lang="ts">
 	import Map from '$lib/components/world-map/Map.svelte';
 	import ViewModeToggle from '$lib/components/world-map/ViewModeToggle.svelte';
+	import MapFilters from '$lib/components/world-map/MapFilters.svelte';
 	import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 
 	// Selected location display
 	const selectedLocation = $derived(mapDataStore.selectedLocation);
+	const hasFiltersAvailable = $derived(
+		mapDataStore.availableSourceCountries.length > 0 || mapDataStore.yearRange !== null
+	);
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
@@ -14,16 +18,23 @@
 	<div class="flex-1 relative z-0">
 		<Card.Root class="h-full border-0 rounded-none">
 			<Card.Header class="pb-2">
-				<div class="flex items-start justify-between">
-					<div class="flex-1">
-						<Card.Title>{t('worldmap.title')}</Card.Title>
-						<p class="text-sm text-muted-foreground">
-							{t('worldmap.description')}
-						</p>
+				<div class="flex flex-col gap-3">
+					<div class="flex items-start justify-between">
+						<div class="flex-1">
+							<Card.Title>{t('worldmap.title')}</Card.Title>
+							<p class="text-sm text-muted-foreground">
+								{t('worldmap.description')}
+							</p>
+						</div>
+						<div class="ml-4">
+							<ViewModeToggle />
+						</div>
 					</div>
-					<div class="ml-4">
-						<ViewModeToggle />
-					</div>
+					
+					<!-- Filters Row -->
+					{#if hasFiltersAvailable}
+						<MapFilters />
+					{/if}
 				</div>
 			</Card.Header>
 			<Card.Content class="h-full p-0">

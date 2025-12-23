@@ -14,8 +14,10 @@ Process:
 2. Load article subsets to get spatial field references
 3. Match spatial values to index locations to count articles per location
 4. Generate location data with coordinates and article counts
+5. Generate country-filtered and year-filtered data for interactive filtering
 
-Output: static/data/world-map.json
+Output: 
+- static/data/world-map.json (main data with filtering support)
 """
 
 import json
@@ -23,9 +25,10 @@ import argparse
 import logging
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 import re
+import unicodedata
 
 try:
     from datasets import load_dataset
@@ -87,9 +90,44 @@ def normalize_location_name(name: str) -> str:
     if not name:
         return ""
     # Lowercase, strip whitespace, normalize unicode
-    import unicodedata
     name = unicodedata.normalize('NFC', str(name).strip().lower())
     return name
+
+
+def parse_year_from_date(date_str: str) -> Optional[int]:
+    """
+    Parse year from a date string in YYYY-MM-DD or similar format.
+    Returns the year as integer or None if parsing fails.
+    """
+    if not date_str or pd.isna(date_str):
+        return None
+    
+    date_str = str(date_str).strip()
+    if not date_str:
+        return None
+    
+    # Try YYYY-MM-DD format
+    match = re.match(r'^(\d{4})-\d{2}-\d{2}', date_str)
+    if match:
+        try:
+            year = int(match.group(1))
+            # Sanity check: reasonable year range for news articles
+            if 1900 <= year <= 2100:
+                return year
+        except ValueError:
+            pass
+    
+    # Try just YYYY
+    match = re.match(r'^(\d{4})$', date_str)
+    if match:
+        try:
+            year = int(match.group(1))
+            if 1900 <= year <= 2100:
+                return year
+        except ValueError:
+            pass
+    
+    return None
 
 
 class IWACWorldMapGenerator:
@@ -191,7 +229,7 @@ class IWACWorldMapGenerator:
             raise
     
     def fetch_articles(self) -> None:
-        """Fetch all article subsets to get spatial references."""
+        """Fetch all article subsets to get spatial references, country, and publication date."""
         logger.info("Fetching article subsets...")
         
         for subset_name in self.article_subsets:
@@ -202,10 +240,22 @@ class IWACWorldMapGenerator:
                 
                 # Extract relevant fields
                 for _, row in df.iterrows():
+                    # Parse publication year
+                    pub_date = row.get('pub_date', '')
+                    year = parse_year_from_date(pub_date)
+                    
+                    # Get source country (from article's country field, not spatial location)
+                    source_country = row.get('country', '')
+                    if source_country and not pd.isna(source_country):
+                        source_country = str(source_country).strip()
+                    else:
+                        source_country = ''
+                    
                     article = {
                         'id': row.get('o:id', row.get('id', '')),
                         'spatial': row.get('spatial', row.get('dcterms:spatial', '')),
-                        'country': row.get('country', row.get('pays', '')),
+                        'source_country': source_country,  # Country where article was published
+                        'year': year,  # Publication year
                         'subset': subset_name
                     }
                     self.articles_data.append(article)
@@ -217,6 +267,15 @@ class IWACWorldMapGenerator:
                 continue
         
         logger.info(f"Total articles loaded: {len(self.articles_data)}")
+        
+        # Log year range
+        years = [a['year'] for a in self.articles_data if a['year']]
+        if years:
+            logger.info(f"Year range: {min(years)} - {max(years)}")
+        
+        # Log source countries
+        source_countries = set(a['source_country'] for a in self.articles_data if a['source_country'])
+        logger.info(f"Source countries: {sorted(source_countries)}")
     
     def build_location_lookup(self) -> None:
         """Build a lookup table from index entries that have coordinates."""
@@ -296,7 +355,8 @@ class IWACWorldMapGenerator:
                     'coordinates': coords,
                     'country': country if country else '',
                     'articleCount': 0,
-                    'articleIds': set()
+                    'articleIds': set(),
+                    'articleMeta': []  # Will store article metadata for filtering
                 }
             else:
                 locations_without_coords += 1
@@ -305,7 +365,10 @@ class IWACWorldMapGenerator:
         logger.info(f"Skipped {locations_without_coords} locations without coordinates")
     
     def count_articles_per_location(self) -> None:
-        """Count how many articles reference each location via spatial field."""
+        """Count how many articles reference each location via spatial field.
+        
+        Also tracks article metadata (source country, year) for filtering.
+        """
         logger.info("Counting articles per location...")
         
         matched = 0
@@ -325,6 +388,8 @@ class IWACWorldMapGenerator:
                 locations = [str(loc).strip() for loc in spatial if loc]
             
             article_id = str(article.get('id', ''))
+            source_country = article.get('source_country', '')
+            year = article.get('year')
             
             for loc_name in locations:
                 normalized = normalize_location_name(loc_name)
@@ -332,6 +397,13 @@ class IWACWorldMapGenerator:
                 if normalized in self.location_lookup:
                     self.location_lookup[normalized]['articleCount'] += 1
                     self.location_lookup[normalized]['articleIds'].add(article_id)
+                    
+                    # Track article metadata for filtering
+                    self.location_lookup[normalized]['articleMeta'].append({
+                        'id': article_id,
+                        'source_country': source_country,
+                        'year': year
+                    })
                     matched += 1
                 else:
                     unmatched += 1
@@ -344,7 +416,7 @@ class IWACWorldMapGenerator:
             logger.debug(f"Sample unmatched locations: {list(unmatched_names)[:20]}")
     
     def generate_world_map_data(self) -> Dict[str, Any]:
-        """Generate the final world map data structure."""
+        """Generate the final world map data structure with filtering support."""
         logger.info("Generating world map data...")
         
         # Build locations list
@@ -354,13 +426,28 @@ class IWACWorldMapGenerator:
         # An article mentioning multiple locations in the same country counts as 1
         country_article_ids: Dict[str, set] = defaultdict(set)
         
+        # Track all years and source countries for filtering
+        all_years: set = set()
+        all_source_countries: set = set()
+        
+        # Aggregated counts by source_country and year for filtering
+        # Structure: { source_country: { year: count } }
+        counts_by_source_country_year: Dict[str, Dict[int, int]] = defaultdict(lambda: defaultdict(int))
+        
+        # Location counts by source_country and year
+        # Structure: { location_name: { source_country: { year: count } } }
+        location_counts_by_filter: Dict[str, Dict[str, Dict[int, int]]] = defaultdict(
+            lambda: defaultdict(lambda: defaultdict(int))
+        )
+        
         for normalized, data in self.location_lookup.items():
             if data['articleCount'] > 0:  # Only include locations with articles
                 coords = data['coordinates']
                 country = data['country']
+                loc_name = data['name']
                 
                 locations_list.append({
-                    'name': data['name'],
+                    'name': loc_name,
                     'lat': coords[0],
                     'lng': coords[1],
                     'articleCount': data['articleCount'],
@@ -370,6 +457,25 @@ class IWACWorldMapGenerator:
                 # Track unique article IDs per country for choropleth
                 if country:
                     country_article_ids[country].update(data['articleIds'])
+                
+                # Process article metadata for filtering
+                for meta in data.get('articleMeta', []):
+                    source_country = meta.get('source_country', '')
+                    year = meta.get('year')
+                    
+                    if source_country:
+                        all_source_countries.add(source_country)
+                    if year:
+                        all_years.add(year)
+                    
+                    # Count by source country and year
+                    if source_country and year:
+                        counts_by_source_country_year[source_country][year] += 1
+                        location_counts_by_filter[loc_name][source_country][year] += 1
+                    elif source_country:
+                        # Article with source country but no year
+                        counts_by_source_country_year[source_country][0] += 1
+                        location_counts_by_filter[loc_name][source_country][0] += 1
         
         # Convert to counts of unique articles per country
         country_counts = {
@@ -379,6 +485,22 @@ class IWACWorldMapGenerator:
         
         # Sort by article count (descending)
         locations_list.sort(key=lambda x: x['articleCount'], reverse=True)
+        
+        # Build filter data for frontend
+        sorted_years = sorted(y for y in all_years if y)
+        sorted_source_countries = sorted(all_source_countries)
+        
+        # Convert counts_by_source_country_year to JSON-serializable format
+        filter_counts = {}
+        for src_country, year_counts in counts_by_source_country_year.items():
+            filter_counts[src_country] = {str(y): c for y, c in year_counts.items()}
+        
+        # Convert location_counts_by_filter to JSON-serializable format
+        location_filter_data = {}
+        for loc_name, country_data in location_counts_by_filter.items():
+            location_filter_data[loc_name] = {}
+            for src_country, year_counts in country_data.items():
+                location_filter_data[loc_name][src_country] = {str(y): c for y, c in year_counts.items()}
         
         # Build metadata
         total_locations = len(locations_list)
@@ -390,17 +512,34 @@ class IWACWorldMapGenerator:
         result = {
             'locations': locations_list,
             'countryCounts': country_counts,
+            'filterData': {
+                'sourceCountries': sorted_source_countries,
+                'years': sorted_years,
+                'yearRange': {
+                    'min': min(sorted_years) if sorted_years else None,
+                    'max': max(sorted_years) if sorted_years else None
+                },
+                'countsBySourceCountryYear': filter_counts,
+                'locationCountsByFilter': location_filter_data
+            },
             'metadata': {
                 'totalLocations': total_locations,
                 'totalArticles': total_unique_articles,
                 'countriesWithData': countries_with_data,
-                'generatedAt': datetime.utcnow().isoformat() + 'Z',
+                'sourceCountries': sorted_source_countries,
+                'yearRange': {
+                    'min': min(sorted_years) if sorted_years else None,
+                    'max': max(sorted_years) if sorted_years else None
+                },
+                'generatedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
                 'dataSource': DATASET_ID
             }
         }
         
         logger.info(f"Generated data for {total_locations} locations, {total_unique_articles} unique articles")
         logger.info(f"Countries with data: {len(countries_with_data)}")
+        logger.info(f"Source countries: {sorted_source_countries}")
+        logger.info(f"Year range: {min(sorted_years) if sorted_years else 'N/A'} - {max(sorted_years) if sorted_years else 'N/A'}")
         for country, count in sorted(country_counts.items(), key=lambda x: -x[1])[:10]:
             logger.info(f"  {country}: {count} articles")
         

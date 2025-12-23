@@ -302,7 +302,12 @@ export const translations = {
 		'worldmap.legend.high': 'High',
 		'worldmap.total_locations': 'Total Locations',
 		'worldmap.total_articles': 'Total Articles',
-		'worldmap.countries_covered': 'Countries Covered'
+		'worldmap.countries_covered': 'Countries Covered',
+		'worldmap.filter.all_countries': 'All Countries',
+		'worldmap.filter.source_country': 'Source Country',
+		'worldmap.filter.year_range': 'Year Range',
+		'worldmap.filter.reset': 'Reset Filters',
+		'worldmap.filter.filtered_articles': '{0} articles (filtered)'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -610,7 +615,12 @@ export const translations = {
 		'worldmap.legend.high': 'Élevé',
 		'worldmap.total_locations': 'Localisations totales',
 		'worldmap.total_articles': 'Articles totaux',
-		'worldmap.countries_covered': 'Pays couverts'
+		'worldmap.countries_covered': 'Pays couverts',
+		'worldmap.filter.all_countries': 'Tous les pays',
+		'worldmap.filter.source_country': 'Pays source',
+		'worldmap.filter.year_range': 'Plage d\'années',
+		'worldmap.filter.reset': 'Réinitialiser les filtres',
+		'worldmap.filter.filtered_articles': '{0} articles (filtrés)'
 	}
 } as const;
 

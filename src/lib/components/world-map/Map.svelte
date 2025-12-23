@@ -38,10 +38,12 @@
 	let showLegend = $state(true);
 	let legendItems = $state<{ color: string; label: string }[]>([]);
 
-	// Derived state
+	// Derived state - use filtered data when filters are active
 	const viewMode = $derived(mapDataStore.viewMode);
-	const locations = $derived(mapDataStore.locations);
-	const countryCounts = $derived(mapDataStore.countryCounts);
+	const locations = $derived(mapDataStore.filteredLocations);
+	const countryCounts = $derived(mapDataStore.filteredCountryCounts);
+	const selectedSourceCountry = $derived(mapDataStore.selectedSourceCountry);
+	const selectedYearRange = $derived(mapDataStore.selectedYearRange);
 
 	// Tile layer configuration
 	const tileLayerOptions = {
@@ -227,11 +229,21 @@
 				mapDataStore.setData({
 					locations: [],
 					countryCounts,
+					filterData: {
+						sourceCountries: [],
+						years: [],
+						yearRange: { min: null, max: null },
+						countsBySourceCountryYear: {},
+						locationCountsByFilter: {}
+					},
 					metadata: {
 						totalLocations: 0,
 						totalArticles: Object.values(countryCounts).reduce((a, b) => a + b, 0),
 						countriesWithData: Object.keys(countryCounts),
-						updatedAt: new Date().toISOString()
+						sourceCountries: [],
+						yearRange: { min: null, max: null },
+						generatedAt: new Date().toISOString(),
+						dataSource: 'fallback'
 					}
 				});
 			}
@@ -240,7 +252,7 @@
 		}
 	}
 
-	// Update bubbles when view mode or data changes
+	// Update bubbles when view mode, data, or filters change
 	$effect(() => {
 		if (!map || !L || !markersLayer) return;
 
@@ -248,6 +260,10 @@
 		const [lowColor, highColor] = bubbleColorRange;
 		void lowColor;
 		void highColor;
+		
+		// Track filter changes to trigger re-render
+		void selectedSourceCountry;
+		void selectedYearRange;
 
 		// Clear existing markers
 		markersLayer.clearLayers();

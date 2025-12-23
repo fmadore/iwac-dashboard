@@ -33,14 +33,45 @@ export interface LocationData {
 	articleCount: number;
 }
 
+/** Filter data for country and year-based filtering */
+export interface WorldMapFilterData {
+	/** Available source countries (countries where articles were published) */
+	sourceCountries: string[];
+	/** Available years in the data */
+	years: number[];
+	/** Year range for slider */
+	yearRange: {
+		min: number | null;
+		max: number | null;
+	};
+	/** 
+	 * Counts by source country and year
+	 * Structure: { sourceCountry: { year: count } }
+	 * Year "0" represents articles without a date
+	 */
+	countsBySourceCountryYear: Record<string, Record<string, number>>;
+	/**
+	 * Location counts by source country and year for filtering
+	 * Structure: { locationName: { sourceCountry: { year: count } } }
+	 */
+	locationCountsByFilter: Record<string, Record<string, Record<string, number>>>;
+}
+
 export interface WorldMapData {
 	locations: LocationData[];
 	countryCounts: Record<string, number>;
+	filterData: WorldMapFilterData;
 	metadata: {
 		totalLocations: number;
 		totalArticles: number;
 		countriesWithData: string[];
-		updatedAt: string;
+		sourceCountries: string[];
+		yearRange: {
+			min: number | null;
+			max: number | null;
+		};
+		generatedAt: string;
+		dataSource: string;
 	};
 }
 

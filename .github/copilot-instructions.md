@@ -145,6 +145,7 @@ This project is an **Islam West Africa Collection (IWAC) Dashboard** - a static 
 - `scripts/generate_language_facets.py` - Language distribution data
 - `scripts/generate_treemap.py` - Country treemap data
 - `scripts/generate_wordcloud.py` - Word frequency data
+- `scripts/generate_world_map.py` - World map data with location coordinates and filtering support
 
 #### ✅ Loading Data Pattern:
 
@@ -262,6 +263,102 @@ def save_json(data: Any, path: Path, minify: bool = True) -> None:
 </ChartContainer>
 ```
 
+### 5.1 Map/Spatial Visualization
+
+The project includes interactive map visualizations using **Leaflet** with custom Svelte components. Maps support both bubble and choropleth views with dynamic filtering.
+
+#### GeoJSON Files (static/data/maps/):
+
+```
+static/data/maps/
+├── world_countries.geojson        # World country polygons (used for choropleth)
+├── benin_prefectures.geojson      # Benin administrative divisions
+├── benin_regions.geojson
+├── burkina_faso_prefectures.geojson
+├── burkina_faso_regions.geojson
+├── cote_divoire_regions.geojson
+├── togo_prefectures.geojson
+└── togo_regions.geojson
+```
+
+#### Map Components (src/lib/components/world-map/):
+
+```
+src/lib/components/world-map/
+├── Map.svelte                     # Main Leaflet map container
+├── ChoroplethLayer.svelte         # Choropleth visualization layer
+├── ViewModeToggle.svelte          # Toggle between bubbles/choropleth
+├── MapFilters.svelte              # Country and year filter controls
+└── WorldMapVisualization.svelte   # Wrapper component with all features
+```
+
+#### Map Data Store (src/lib/stores/mapDataStore.svelte.ts):
+
+The `mapDataStore` manages:
+- View mode (bubbles/choropleth)
+- Selected location
+- Filter state (source country, year range)
+- Filtered data derivation for map display
+
+#### World Map Data Generator (scripts/generate_world_map.py):
+
+Generates `static/data/world-map.json` with:
+- **locations**: Array of locations with coordinates and article counts
+- **countryCounts**: Choropleth data (articles per country)
+- **filterData**: Data for country picker and year slider
+  - `sourceCountries`: Countries where articles were published (Benin, Burkina Faso, Côte d'Ivoire, Niger, Togo, Nigeria)
+  - `years`: Available publication years
+  - `yearRange`: Min/max years for slider
+  - `countsBySourceCountryYear`: Aggregated counts for filtering
+  - `locationCountsByFilter`: Per-location counts by source country and year
+- **metadata**: Summary statistics
+
+#### Using Map Components:
+
+```svelte
+<script>
+	import WorldMapVisualization from '$lib/components/world-map/WorldMapVisualization.svelte';
+</script>
+
+<!-- Full-featured map with filters -->
+<WorldMapVisualization />
+```
+
+#### Map Types (src/lib/types/worldmap.ts):
+
+```typescript
+interface WorldMapData {
+	locations: LocationData[];
+	countryCounts: Record<string, number>;
+	filterData: WorldMapFilterData;
+	metadata: WorldMapMetadata;
+}
+
+interface LocationData {
+	name: string;
+	country: string;
+	lat: number;
+	lng: number;
+	articleCount: number;
+}
+
+interface WorldMapFilterData {
+	sourceCountries: string[];
+	years: number[];
+	yearRange: { min: number | null; max: number | null };
+	countsBySourceCountryYear: Record<string, Record<string, number>>;
+	locationCountsByFilter: Record<string, Record<string, Record<string, number>>>;
+}
+```
+
+#### Important Notes for Maps:
+
+- Leaflet is dynamically imported (client-side only)
+- Use `browser` check from `$app/environment` before map initialization
+- Map tile layers support both light and dark themes
+- Choropleth colors are derived from CSS variables
+- Filters update the map in real-time via reactive store
+
 ### 6. File and Folder Structure
 
 ```
@@ -302,6 +399,10 @@ scripts/
 static/data/                       # Static JSON files
 ├── categories/                    # Category visualization data
 ├── references/                    # References visualization data
+├── maps/                          # GeoJSON files for map visualizations
+│   ├── world_countries.geojson   # World countries for choropleth
+│   └── *.geojson                  # Regional administrative boundaries
+├── world-map.json                 # World map data with filtering support
 └── *.json                         # Other data files
 build/data/                        # Built JSON files (copied)
 ```

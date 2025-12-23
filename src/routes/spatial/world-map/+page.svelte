@@ -3,7 +3,6 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
 	import StatsCard from '$lib/components/stats-card.svelte';
-	import { MapPin, FileText, Globe } from '@lucide/svelte';
 
 	// Reactive metadata
 	const metadata = $derived(mapDataStore.metadata);
@@ -26,17 +25,14 @@
 			<StatsCard
 				title={t('worldmap.total_locations')}
 				value={metadata.totalLocations.toLocaleString()}
-				icon={MapPin}
 			/>
 			<StatsCard
 				title={t('worldmap.total_articles')}
 				value={metadata.totalArticles.toLocaleString()}
-				icon={FileText}
 			/>
 			<StatsCard
 				title={t('worldmap.countries_covered')}
 				value={metadata.countriesWithData.length.toLocaleString()}
-				icon={Globe}
 			/>
 		</div>
 	{/if}
