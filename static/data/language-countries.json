@@ -87,7 +87,7 @@
       "data": [
         {
           "label": "French",
-          "value": 4933,
+          "value": 4970,
           "percentage": 98.5
         },
         {
@@ -101,7 +101,7 @@
           "percentage": 0.1
         }
       ],
-      "total": 5009,
+      "total": 5046,
       "languages": 3
     },
     "Niger": {
@@ -187,5 +187,5 @@
     "Togo",
     "Unknown"
   ],
-  "generated_at": "2025-12-14T02:41:31.998107"
+  "generated_at": "2025-12-28T02:46:51.174851"
 }
