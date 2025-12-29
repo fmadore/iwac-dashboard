@@ -22,6 +22,7 @@ export interface OverviewSummary {
 	references_count: number;
 	index_entries: number;
 	reference_types: number;
+	total_sources?: number;
 	country_list: string[];
 	language_list: string[];
 	type_list: string[];

@@ -449,6 +449,41 @@ def calculate_overview_stats(repo_id: str, token: Optional[str] = None) -> Dict[
     return overview_stats
 
 
+def load_sources_stats(output_dir: Path) -> Dict[str, Any]:
+    """
+    Load source statistics from sources.json file.
+    
+    Args:
+        output_dir: Directory where sources.json is located
+    
+    Returns:
+        Dictionary with source statistics or empty dict if file not found
+    """
+    logger = logging.getLogger(__name__)
+    sources_file = output_dir / "sources.json"
+    
+    if not sources_file.exists():
+        logger.warning(f"Sources file not found: {sources_file}")
+        return {}
+    
+    try:
+        with sources_file.open("r", encoding="utf-8") as f:
+            sources_data = json.load(f)
+        
+        metadata = sources_data.get("metadata", {})
+        
+        stats = {
+            "total_sources": metadata.get("totalSources", 0)
+        }
+        
+        logger.info(f"Loaded source statistics: {stats['total_sources']} total sources")
+        return stats
+        
+    except Exception as e:
+        logger.warning(f"Error loading sources file: {e}")
+        return {}
+
+
 def save_json(data: Any, path: Path) -> None:
     """Save data as JSON file."""
     logger = logging.getLogger(__name__)
@@ -508,6 +543,12 @@ def main():
     
     # Calculer les statistiques
     overview_stats = calculate_overview_stats(repo_id, token)
+    
+    # Load and merge source statistics
+    sources_stats = load_sources_stats(output_dir)
+    if sources_stats:
+        overview_stats["summary"]["total_sources"] = sources_stats.get("total_sources", 0)
+        logger.info(f"Added source statistics to overview: {sources_stats['total_sources']} sources")
     
     # Sauvegarder le fichier JSON
     save_json(overview_stats, output_dir / "overview-stats.json")

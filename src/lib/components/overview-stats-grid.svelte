@@ -59,6 +59,11 @@
 				description={t('overview.newspapers_desc')}
 			/>
 			<StatsCard
+				title={t('overview.sources')}
+				value={(summary.total_sources || 0).toLocaleString()}
+				description={t('overview.sources_desc')}
+			/>
+			<StatsCard
 				title={t('overview.audiovisual_duration')}
 				value={(summary.audiovisual_duration || 0).toLocaleString()}
 				description={t('overview.audiovisual_duration_desc')}
