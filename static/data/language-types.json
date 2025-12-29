@@ -4,7 +4,7 @@
       "data": [
         {
           "label": "French",
-          "value": 12236,
+          "value": 12273,
           "percentage": 99.9
         },
         {
@@ -23,7 +23,7 @@
           "percentage": 0.0
         }
       ],
-      "total": 12250,
+      "total": 12287,
       "languages": 4
     },
     "audiovisual": {
@@ -128,5 +128,5 @@
     "publications",
     "references"
   ],
-  "generated_at": "2025-12-14T02:41:32.000684"
+  "generated_at": "2025-12-28T02:46:51.176702"
 }

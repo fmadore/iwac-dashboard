@@ -109,7 +109,7 @@
   },
   "Côte d'Ivoire": {
     "country": "Côte d'Ivoire",
-    "total_articles": 3886,
+    "total_articles": 3885,
     "data": [
       [
         "terrorisme",
@@ -121,7 +121,7 @@
       ],
       [
         "intégrisme",
-        177
+        175
       ],
       [
         "extrémisme",

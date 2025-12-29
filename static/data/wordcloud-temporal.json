@@ -10178,11 +10178,11 @@
     "data": [
       [
         "religieux",
-        926
+        922
       ],
       [
         "musulman",
-        890
+        875
       ],
       [
         "dialogue",
@@ -10190,119 +10190,115 @@
       ],
       [
         "président",
-        499
+        479
       ],
       [
         "islamique",
-        423
+        414
       ],
       [
         "devoir",
-        419
-      ],
-      [
-        "dieu",
-        362
+        407
       ],
       [
         "islam",
         360
       ],
       [
+        "dieu",
+        360
+      ],
+      [
         "ivoire",
-        353
+        350
       ],
       [
         "côte",
-        347
+        343
       ],
       [
         "imam",
-        326
+        323
       ],
       [
         "homme",
-        317
+        313
       ],
       [
         "paix",
-        301
-      ],
-      [
-        "entrer",
         300
-      ],
-      [
-        "hadj",
-        299
       ],
       [
         "femme",
         297
       ],
       [
+        "entrer",
+        294
+      ],
+      [
+        "hadj",
+        293
+      ],
+      [
         "national",
-        292
-      ],
-      [
-        "communauté",
-        290
-      ],
-      [
-        "conseil",
         287
       ],
       [
-        "mosquée",
+        "communauté",
         282
       ],
       [
+        "conseil",
+        279
+      ],
+      [
+        "mosquée",
+        276
+      ],
+      [
         "luire",
-        264
+        259
       ],
       [
         "ivoirien",
-        248
-      ],
-      [
-        "prière",
-        226
+        243
       ],
       [
         "chef",
-        224
+        223
+      ],
+      [
+        "prière",
+        222
       ],
       [
         "religion",
-        219
-      ],
-      [
-        "celer",
-        214
+        217
       ],
       [
         "fidèle",
-        210
-      ],
-      [
-        "mois",
         209
       ],
       [
-        "ministre",
-        205
+        "mois",
+        208
+      ],
+      [
+        "celer",
+        207
       ],
       [
         "nuit",
-        203
-      ],
-      [
-        "cni",
         201
       ],
       [
+        "ministre",
+        200
+      ],
+      [
         "pèlerinage",
-        185
+        184
       ],
       [
         "coran",
@@ -10310,15 +10306,19 @@
       ],
       [
         "bédié",
-        177
-      ],
-      [
-        "mettre",
         173
       ],
       [
         "prophète",
-        171
+        169
+      ],
+      [
+        "mettre",
+        167
+      ],
+      [
+        "cni",
+        165
       ],
       [
         "jeûne",
@@ -10326,43 +10326,39 @@
       ],
       [
         "etat",
-        150
-      ],
-      [
-        "gouvernement",
-        148
-      ],
-      [
-        "droit",
-        147
+        149
       ],
       [
         "donner",
-        146
+        145
       ],
       [
         "monde",
         144
       ],
       [
-        "diaby",
+        "droit",
+        144
+      ],
+      [
+        "gouvernement",
         139
       ],
       [
-        "organisation",
-        138
-      ],
-      [
-        "général",
+        "diaby",
         137
       ],
       [
-        "supérieur",
-        136
+        "général",
+        134
       ],
       [
-        "non",
-        131
+        "organisation",
+        134
+      ],
+      [
+        "supérieur",
+        133
       ],
       [
         "pèlerin",
@@ -10373,31 +10369,31 @@
         128
       ],
       [
+        "non",
+        127
+      ],
+      [
         "allah",
-        126
+        123
       ],
       [
         "membre",
-        122
-      ],
-      [
-        "sou",
-        119
+        121
       ],
       [
         "fête",
         118
       ],
       [
-        "permettre",
-        118
-      ],
-      [
-        "saint",
+        "sou",
         117
       ],
       [
-        "heure",
+        "saint",
+        116
+      ],
+      [
+        "permettre",
         116
       ],
       [
@@ -10409,11 +10405,15 @@
         114
       ],
       [
-        "trouver",
-        113
+        "heure",
+        112
       ],
       [
         "jeune",
+        109
+      ],
+      [
+        "trouver",
         109
       ],
       [
@@ -10421,15 +10421,11 @@
         107
       ],
       [
-        "abidjan",
-        104
-      ],
-      [
-        "pdci",
-        104
-      ],
-      [
         "nom",
+        103
+      ],
+      [
+        "abidjan",
         103
       ],
       [
@@ -10437,7 +10433,7 @@
         102
       ],
       [
-        "acte",
+        "pdci",
         102
       ],
       [
@@ -10445,23 +10441,7 @@
         101
       ],
       [
-        "loi",
-        101
-      ],
-      [
-        "organiser",
-        100
-      ],
-      [
-        "aucun",
-        100
-      ],
-      [
         "coopération",
-        100
-      ],
-      [
-        "foi",
         100
       ],
       [
@@ -10469,19 +10449,35 @@
         100
       ],
       [
+        "organiser",
+        99
+      ],
+      [
         "hier",
-        99
-      ],
-      [
-        "demander",
-        99
-      ],
-      [
-        "burkina",
         98
       ],
       [
+        "demander",
+        98
+      ],
+      [
+        "acte",
+        98
+      ],
+      [
+        "foi",
+        98
+      ],
+      [
+        "aucun",
+        97
+      ],
+      [
         "responsable",
+        97
+      ],
+      [
+        "loi",
         97
       ],
       [
@@ -10489,52 +10485,40 @@
         97
       ],
       [
-        "appeler",
+        "burkina",
         96
       ],
       [
-        "enfant",
-        95
-      ],
-      [
-        "association",
-        95
-      ],
-      [
-        "occasion",
+        "appeler",
         95
       ],
       [
         "affaire",
-        95
+        94
       ],
       [
         "togo",
-        95
+        93
       ],
       [
-        "part",
-        93
+        "enfant",
+        92
+      ],
+      [
+        "occasion",
+        92
       ],
       [
         "famille",
         92
       ],
       [
-        "koudouss",
-        92
-      ],
-      [
-        "passer",
-        91
+        "association",
+        90
       ],
       [
         "compte",
-        91
-      ],
-      [
-        "électoral",
-        91
+        90
       ],
       [
         "bénin",
@@ -10545,11 +10529,11 @@
         89
       ],
       [
-        "croire",
-        88
+        "part",
+        89
       ],
       [
-        "situation",
+        "passer",
         88
       ],
       [
@@ -10557,29 +10541,45 @@
         87
       ],
       [
+        "croire",
+        86
+      ],
+      [
         "arabe",
         86
       ],
       [
-        "vue",
+        "situation",
         85
+      ],
+      [
+        "électoral",
+        85
+      ],
+      [
+        "vue",
+        83
+      ],
+      [
+        "offrir",
+        83
       ],
       [
         "parti",
-        85
+        83
       ],
       [
         "nation",
-        84
+        83
       ],
       [
-        "délégation",
+        "journaliste",
         83
       ]
     ],
-    "total_articles": 279,
-    "total_words": 74385,
-    "unique_words": 9449
+    "total_articles": 278,
+    "total_words": 73117,
+    "unique_words": 9377
   },
   "1996": {
     "data": [
