@@ -74,6 +74,12 @@
 		return baseUrl + id;
 	}
 
+	// Helper function to resolve CSS variable color values for Leaflet
+	function getCssColor(varName: string): string {
+		if (typeof document === 'undefined') return '#000';
+		return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
+	}
+
 	async function initMap() {
 		if (!mapContainer) return;
 
@@ -122,11 +128,13 @@
 				minCount === maxCount ? 1 : (source.count - minCount) / (maxCount - minCount);
 			const radius = 8 + sizeScale * 20;
 
-			// Create circle marker
+			// Create circle marker with resolved CSS colors
+			const primaryColor = getCssColor('--primary');
+			const primaryForeground = getCssColor('--primary-foreground');
 			const marker = L.circleMarker([source.lat, source.lng], {
 				radius,
-				fillColor: 'hsl(var(--primary))',
-				color: 'hsl(var(--primary-foreground))',
+				fillColor: primaryColor,
+				color: primaryForeground,
 				weight: 2,
 				opacity: 0.9,
 				fillOpacity: 0.6
@@ -139,8 +147,9 @@
 					: '';
 
 			// Create clickable link if source has an ID
+			const linkColor = getCssColor('--primary');
 			const nameHtml = source.id
-				? `<a href="${getSourceUrl(source.id)}" target="_blank" rel="noopener noreferrer" style="color: hsl(var(--primary)); text-decoration: underline;">${source.name}</a>`
+				? `<a href="${getSourceUrl(source.id)}" target="_blank" rel="noopener noreferrer" style="color: ${linkColor}; text-decoration: underline;">${source.name}</a>`
 				: `<strong>${source.name}</strong>`;
 
 			marker.bindPopup(`
@@ -239,7 +248,7 @@
 								</td>
 								<td class="p-3 text-center">
 									{#if source.lat !== undefined}
-										<span class="text-green-600">✓</span>
+										<span class="polarity-positive">✓</span>
 									{:else}
 										<span class="text-muted-foreground">—</span>
 									{/if}

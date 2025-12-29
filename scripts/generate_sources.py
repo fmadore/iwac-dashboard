@@ -57,6 +57,7 @@ CUSTOM_COORDINATES = {
     "Cercle d'Études, de Recherches et de Formation Islamiques": (12.359473717928248, -1.4978785755133803),
     "Abdoulaye Sounaye": (52.427976, 13.202396),
     "Louis Audet Gosselin": (45.503343, -73.586841),
+    "Le Pays": (12.36051671846299, -1.497256496296541),
 }
 
 
