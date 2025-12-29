@@ -24,7 +24,7 @@
 		orderBy = 'name',
 		showDiagonal = false,
 		cellSize = 40,
-		margin = { top: 120, right: 20, bottom: 20, left: 120 }
+		margin = { top: 120, right: 80, bottom: 20, left: 120 }
 	}: Props = $props();
 
 	let containerElement: HTMLDivElement | null = $state(null);
@@ -256,9 +256,13 @@
 
 		const n = orderedTerms.length;
 
-		// Color scales
+		// Color scales - use sqrt scale for better gradation on low values
 		const maxValue = data.max_cooccurrence || 1;
-		const colorScale = scaleSequential(interpolateBlues).domain([0, maxValue]);
+		// Apply sqrt transformation to make lower values more visible
+		const colorScale = (value: number) => {
+			const normalizedValue = Math.sqrt(value) / Math.sqrt(maxValue);
+			return interpolateBlues(normalizedValue);
+		};
 
 		// Get theme colors
 		const foregroundColor = getCSSVariable('--foreground');
