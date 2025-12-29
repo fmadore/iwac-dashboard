@@ -47,6 +47,18 @@ logger = logging.getLogger(__name__)
 
 DATASET_ID = "fmadore/islam-west-africa-collection"
 
+# Custom coordinate overrides for sources not in the index
+# Format: source_name -> (lat, lng)
+CUSTOM_COORDINATES = {
+    "Wayback Machine": (37.782320470033035, -122.47163767055227),
+    "Centre de Recherche et d'Action pour la Paix": (5.33977337625783, -4.000600603778056),
+    "La Nation": (6.35690531508226, 2.4017090109401797),
+    "Frédérick Madore": (52.516667, 13.383333),
+    "Cercle d'Études, de Recherches et de Formation Islamiques": (12.359473717928248, -1.4978785755133803),
+    "Abdoulaye Sounaye": (52.427976, 13.202396),
+    "Louis Audet Gosselin": (45.503343, -73.586841),
+}
+
 
 def parse_coordinates(coord_str: str) -> Optional[Tuple[float, float]]:
     """
@@ -103,7 +115,7 @@ class IWACSourcesGenerator:
             'countries': set()
         })
         
-        # Coordinate lookup: normalized_title -> {name, coordinates}
+        # Coordinate lookup: normalized_title -> {name, coordinates, id}
         self.coord_lookup: Dict[str, Dict[str, Any]] = {}
     
     def fetch_index(self) -> None:
@@ -136,7 +148,14 @@ class IWACSourcesGenerator:
                 coord_col = col
                 break
         
-        logger.info(f"Using columns - Title: {title_col}, Coordinates: {coord_col}")
+        # Find the o:id column
+        id_col = None
+        for col in ['o:id', 'o_id', 'id', 'ID']:
+            if col in self.index_df.columns:
+                id_col = col
+                break
+        
+        logger.info(f"Using columns - Title: {title_col}, Coordinates: {coord_col}, ID: {id_col}")
         
         if not title_col:
             logger.warning("Could not find title column in index")
@@ -160,9 +179,20 @@ class IWACSourcesGenerator:
                 entries_with_coords += 1
                 normalized = normalize_name(title)
                 
+                # Get the o:id if available
+                oid = None
+                if id_col:
+                    oid_val = row.get(id_col, '')
+                    if oid_val and not pd.isna(oid_val):
+                        try:
+                            oid = int(oid_val)
+                        except (ValueError, TypeError):
+                            oid = str(oid_val).strip() if oid_val else None
+                
                 self.coord_lookup[normalized] = {
                     'name': str(title).strip(),
-                    'coordinates': coords
+                    'coordinates': coords,
+                    'id': oid
                 }
         
         logger.info(f"Built lookup with {entries_with_coords} entries having coordinates")
@@ -255,6 +285,14 @@ class IWACSourcesGenerator:
             if coord_data:
                 source_entry['lat'] = coord_data['coordinates'][0]
                 source_entry['lng'] = coord_data['coordinates'][1]
+                if coord_data.get('id'):
+                    source_entry['id'] = coord_data['id']
+                sources_with_coords += 1
+            elif source_name in CUSTOM_COORDINATES:
+                # Use custom override coordinates
+                custom_coords = CUSTOM_COORDINATES[source_name]
+                source_entry['lat'] = custom_coords[0]
+                source_entry['lng'] = custom_coords[1]
                 sources_with_coords += 1
             else:
                 sources_without_coords += 1

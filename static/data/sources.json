@@ -13,7 +13,9 @@
         "Côte d'Ivoire",
         "Niger",
         "Togo"
-      ]
+      ],
+      "lat": 37.782320470033035,
+      "lng": -122.47163767055227
     },
     {
       "name": "Bibliothèque d'État de Berlin",
@@ -26,7 +28,8 @@
         "Togo"
       ],
       "lat": 52.5064,
-      "lng": 13.3703
+      "lng": 13.3703,
+      "id": 563
     },
     {
       "name": "Centre de Recherche et d'Action pour la Paix",
@@ -36,7 +39,9 @@
       },
       "countries": [
         "Côte d'Ivoire"
-      ]
+      ],
+      "lat": 5.33977337625783,
+      "lng": -4.000600603778056
     },
     {
       "name": "Institut de Recherche pour le Développement",
@@ -48,7 +53,8 @@
         "Burkina Faso"
       ],
       "lat": 12.36993,
-      "lng": -1.51299
+      "lng": -1.51299,
+      "id": 416
     },
     {
       "name": "La Nation",
@@ -58,7 +64,9 @@
       },
       "countries": [
         "Benin"
-      ]
+      ],
+      "lat": 6.35690531508226,
+      "lng": 2.4017090109401797
     },
     {
       "name": "Frédérick Madore",
@@ -71,7 +79,9 @@
         "Benin",
         "Côte d'Ivoire",
         "Togo"
-      ]
+      ],
+      "lat": 52.516667,
+      "lng": 13.383333
     },
     {
       "name": "Association des Élèves et Étudiants Musulmans au Burkina",
@@ -94,7 +104,8 @@
         "Togo"
       ],
       "lat": 6.129117,
-      "lng": 1.218427
+      "lng": 1.218427,
+      "id": 458
     },
     {
       "name": "Le Pays",
@@ -118,7 +129,8 @@
         "Togo"
       ],
       "lat": 38.88845,
-      "lng": -77.00442
+      "lng": -77.00442,
+      "id": 415
     },
     {
       "name": "Sidwaya",
@@ -150,7 +162,8 @@
         "Côte d'Ivoire"
       ],
       "lat": 5.320438,
-      "lng": -4.021261
+      "lng": -4.021261,
+      "id": 39798
     },
     {
       "name": "Cercle d'Études, de Recherches et de Formation Islamiques",
@@ -160,7 +173,9 @@
       },
       "countries": [
         "Burkina Faso"
-      ]
+      ],
+      "lat": 12.359473717928248,
+      "lng": -1.4978785755133803
     },
     {
       "name": "Abdoulaye Sounaye",
@@ -172,7 +187,9 @@
       "countries": [
         "Niger",
         "Nigeria"
-      ]
+      ],
+      "lat": 52.427976,
+      "lng": 13.202396
     },
     {
       "name": "Louis Audet Gosselin",
@@ -183,7 +200,9 @@
       },
       "countries": [
         "Burkina Faso"
-      ]
+      ],
+      "lat": 45.503343,
+      "lng": -73.586841
     },
     {
       "name": "L'Observateur Paalga",
@@ -245,7 +264,8 @@
         "Burkina Faso"
       ],
       "lat": 49.928847,
-      "lng": 11.585897
+      "lng": 11.585897,
+      "id": 73347
     },
     {
       "name": "Ali Houdou",
@@ -267,13 +287,14 @@
         "Burkina Faso"
       ],
       "lat": 12.369369,
-      "lng": -1.513517
+      "lng": -1.513517,
+      "id": 76296
     }
   ],
   "metadata": {
     "totalSources": 24,
-    "sourcesWithCoordinates": 7,
-    "sourcesWithoutCoordinates": 17,
+    "sourcesWithCoordinates": 14,
+    "sourcesWithoutCoordinates": 10,
     "totalItems": 11003,
     "byType": {
       "articles": 9525,
@@ -289,7 +310,7 @@
       "Nigeria",
       "Togo"
     ],
-    "generatedAt": "2025-12-29T14:44:18.310019Z",
+    "generatedAt": "2025-12-29T15:00:11.885754Z",
     "dataSource": "fmadore/islam-west-africa-collection"
   }
 }
