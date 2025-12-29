@@ -1,0 +1,295 @@
+{
+  "sources": [
+    {
+      "name": "Wayback Machine",
+      "count": 4059,
+      "byType": {
+        "articles": 3936,
+        "publications": 123
+      },
+      "countries": [
+        "Benin",
+        "Burkina Faso",
+        "Côte d'Ivoire",
+        "Niger",
+        "Togo"
+      ]
+    },
+    {
+      "name": "Bibliothèque d'État de Berlin",
+      "count": 1871,
+      "byType": {
+        "articles": 1871
+      },
+      "countries": [
+        "Côte d'Ivoire",
+        "Togo"
+      ],
+      "lat": 52.5064,
+      "lng": 13.3703
+    },
+    {
+      "name": "Centre de Recherche et d'Action pour la Paix",
+      "count": 1386,
+      "byType": {
+        "articles": 1386
+      },
+      "countries": [
+        "Côte d'Ivoire"
+      ]
+    },
+    {
+      "name": "Institut de Recherche pour le Développement",
+      "count": 794,
+      "byType": {
+        "articles": 794
+      },
+      "countries": [
+        "Burkina Faso"
+      ],
+      "lat": 12.36993,
+      "lng": -1.51299
+    },
+    {
+      "name": "La Nation",
+      "count": 581,
+      "byType": {
+        "articles": 581
+      },
+      "countries": [
+        "Benin"
+      ]
+    },
+    {
+      "name": "Frédérick Madore",
+      "count": 577,
+      "byType": {
+        "publications": 576,
+        "documents": 1
+      },
+      "countries": [
+        "Benin",
+        "Côte d'Ivoire",
+        "Togo"
+      ]
+    },
+    {
+      "name": "Association des Élèves et Étudiants Musulmans au Burkina",
+      "count": 334,
+      "byType": {
+        "publications": 334
+      },
+      "countries": [
+        "Burkina Faso"
+      ]
+    },
+    {
+      "name": "Bibliothèque nationale du Togo",
+      "count": 331,
+      "byType": {
+        "articles": 316,
+        "publications": 15
+      },
+      "countries": [
+        "Togo"
+      ],
+      "lat": 6.129117,
+      "lng": 1.218427
+    },
+    {
+      "name": "Le Pays",
+      "count": 255,
+      "byType": {
+        "articles": 255
+      },
+      "countries": [
+        "Burkina Faso"
+      ]
+    },
+    {
+      "name": "Bibliothèque du Congrès",
+      "count": 210,
+      "byType": {
+        "articles": 210
+      },
+      "countries": [
+        "Benin",
+        "Burkina Faso",
+        "Togo"
+      ],
+      "lat": 38.88845,
+      "lng": -77.00442
+    },
+    {
+      "name": "Sidwaya",
+      "count": 140,
+      "byType": {
+        "articles": 140
+      },
+      "countries": [
+        "Burkina Faso"
+      ]
+    },
+    {
+      "name": "Ibrahim Doumbia",
+      "count": 125,
+      "byType": {
+        "publications": 125
+      },
+      "countries": [
+        "Côte d'Ivoire"
+      ]
+    },
+    {
+      "name": "Archives nationales de Côte d'Ivoire",
+      "count": 81,
+      "byType": {
+        "publications": 81
+      },
+      "countries": [
+        "Côte d'Ivoire"
+      ],
+      "lat": 5.320438,
+      "lng": -4.021261
+    },
+    {
+      "name": "Cercle d'Études, de Recherches et de Formation Islamiques",
+      "count": 61,
+      "byType": {
+        "publications": 61
+      },
+      "countries": [
+        "Burkina Faso"
+      ]
+    },
+    {
+      "name": "Abdoulaye Sounaye",
+      "count": 59,
+      "byType": {
+        "publications": 14,
+        "audiovisual": 45
+      },
+      "countries": [
+        "Niger",
+        "Nigeria"
+      ]
+    },
+    {
+      "name": "Louis Audet Gosselin",
+      "count": 41,
+      "byType": {
+        "publications": 39,
+        "documents": 2
+      },
+      "countries": [
+        "Burkina Faso"
+      ]
+    },
+    {
+      "name": "L'Observateur Paalga",
+      "count": 36,
+      "byType": {
+        "articles": 36
+      },
+      "countries": [
+        "Burkina Faso"
+      ]
+    },
+    {
+      "name": "Issouf Binaté",
+      "count": 35,
+      "byType": {
+        "publications": 35
+      },
+      "countries": [
+        "Côte d'Ivoire"
+      ]
+    },
+    {
+      "name": "Nurudine Oyewolé",
+      "count": 13,
+      "byType": {
+        "publications": 13
+      },
+      "countries": [
+        "Côte d'Ivoire"
+      ]
+    },
+    {
+      "name": "Moitapari Kouko",
+      "count": 6,
+      "byType": {
+        "publications": 6
+      },
+      "countries": [
+        "Togo"
+      ]
+    },
+    {
+      "name": "Éfoé Dométo Mensah",
+      "count": 4,
+      "byType": {
+        "documents": 4
+      },
+      "countries": [
+        "Togo"
+      ]
+    },
+    {
+      "name": "Université de Bayreuth",
+      "count": 2,
+      "byType": {
+        "documents": 2
+      },
+      "countries": [
+        "Burkina Faso"
+      ],
+      "lat": 49.928847,
+      "lng": 11.585897
+    },
+    {
+      "name": "Ali Houdou",
+      "count": 1,
+      "byType": {
+        "documents": 1
+      },
+      "countries": [
+        "Benin"
+      ]
+    },
+    {
+      "name": "Centre national des archives du Burkina Faso",
+      "count": 1,
+      "byType": {
+        "documents": 1
+      },
+      "countries": [
+        "Burkina Faso"
+      ],
+      "lat": 12.369369,
+      "lng": -1.513517
+    }
+  ],
+  "metadata": {
+    "totalSources": 24,
+    "sourcesWithCoordinates": 7,
+    "sourcesWithoutCoordinates": 17,
+    "totalItems": 11003,
+    "byType": {
+      "articles": 9525,
+      "publications": 1422,
+      "documents": 11,
+      "audiovisual": 45
+    },
+    "countries": [
+      "Benin",
+      "Burkina Faso",
+      "Côte d'Ivoire",
+      "Niger",
+      "Nigeria",
+      "Togo"
+    ],
+    "generatedAt": "2025-12-29T14:44:18.310019Z",
+    "dataSource": "fmadore/islam-west-africa-collection"
+  }
+}
