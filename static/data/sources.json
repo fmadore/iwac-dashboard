@@ -15,7 +15,8 @@
         "Togo"
       ],
       "lat": 37.782320470033035,
-      "lng": -122.47163767055227
+      "lng": -122.47163767055227,
+      "id": 67741
     },
     {
       "name": "Bibliothèque d'État de Berlin",
@@ -41,7 +42,8 @@
         "Côte d'Ivoire"
       ],
       "lat": 5.33977337625783,
-      "lng": -4.000600603778056
+      "lng": -4.000600603778056,
+      "id": 821
     },
     {
       "name": "Institut de Recherche pour le Développement",
@@ -81,7 +83,8 @@
         "Togo"
       ],
       "lat": 52.516667,
-      "lng": 13.383333
+      "lng": 13.383333,
+      "id": 858
     },
     {
       "name": "Association des Élèves et Étudiants Musulmans au Burkina",
@@ -91,7 +94,8 @@
       },
       "countries": [
         "Burkina Faso"
-      ]
+      ],
+      "id": 569
     },
     {
       "name": "Bibliothèque nationale du Togo",
@@ -150,7 +154,8 @@
       },
       "countries": [
         "Côte d'Ivoire"
-      ]
+      ],
+      "id": 23551
     },
     {
       "name": "Archives nationales de Côte d'Ivoire",
@@ -175,7 +180,8 @@
         "Burkina Faso"
       ],
       "lat": 12.359473717928248,
-      "lng": -1.4978785755133803
+      "lng": -1.4978785755133803,
+      "id": 571
     },
     {
       "name": "Abdoulaye Sounaye",
@@ -189,7 +195,8 @@
         "Nigeria"
       ],
       "lat": 52.427976,
-      "lng": 13.202396
+      "lng": 13.202396,
+      "id": 1284
     },
     {
       "name": "Louis Audet Gosselin",
@@ -202,7 +209,8 @@
         "Burkina Faso"
       ],
       "lat": 45.503343,
-      "lng": -73.586841
+      "lng": -73.586841,
+      "id": 859
     },
     {
       "name": "L'Observateur Paalga",
@@ -222,7 +230,8 @@
       },
       "countries": [
         "Côte d'Ivoire"
-      ]
+      ],
+      "id": 1211
     },
     {
       "name": "Nurudine Oyewolé",
@@ -232,7 +241,8 @@
       },
       "countries": [
         "Côte d'Ivoire"
-      ]
+      ],
+      "id": 1789
     },
     {
       "name": "Moitapari Kouko",
@@ -242,7 +252,8 @@
       },
       "countries": [
         "Togo"
-      ]
+      ],
+      "id": 1683
     },
     {
       "name": "Éfoé Dométo Mensah",
@@ -252,7 +263,8 @@
       },
       "countries": [
         "Togo"
-      ]
+      ],
+      "id": 26329
     },
     {
       "name": "Université de Bayreuth",
@@ -275,7 +287,8 @@
       },
       "countries": [
         "Benin"
-      ]
+      ],
+      "id": 1945
     },
     {
       "name": "Centre national des archives du Burkina Faso",
@@ -310,7 +323,7 @@
       "Nigeria",
       "Togo"
     ],
-    "generatedAt": "2025-12-29T15:00:11.885754Z",
+    "generatedAt": "2025-12-29T15:03:17.184223Z",
     "dataSource": "fmadore/islam-west-africa-collection"
   }
 }

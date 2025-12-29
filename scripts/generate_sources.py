@@ -117,6 +117,9 @@ class IWACSourcesGenerator:
         
         # Coordinate lookup: normalized_title -> {name, coordinates, id}
         self.coord_lookup: Dict[str, Dict[str, Any]] = {}
+        
+        # ID lookup: normalized_title -> id (for all index entries with IDs)
+        self.id_lookup: Dict[str, Any] = {}
     
     def fetch_index(self) -> None:
         """Fetch the index subset which may contain source entities with coordinates."""
@@ -166,29 +169,36 @@ class IWACSourcesGenerator:
             return
         
         entries_with_coords = 0
+        entries_with_ids = 0
         
         for _, row in self.index_df.iterrows():
             title = row.get(title_col, '')
             if not title or pd.isna(title):
                 continue
             
+            normalized = normalize_name(title)
+            
+            # Get the o:id if available (for all entries)
+            oid = None
+            if id_col:
+                oid_val = row.get(id_col, '')
+                if oid_val and not pd.isna(oid_val):
+                    try:
+                        oid = int(oid_val)
+                    except (ValueError, TypeError):
+                        oid = str(oid_val).strip() if oid_val else None
+            
+            # Store ID in id_lookup for all entries with IDs
+            if oid is not None:
+                self.id_lookup[normalized] = oid
+                entries_with_ids += 1
+            
+            # Store coordinates only for entries with valid coords
             coord_str = row.get(coord_col, '')
             coords = parse_coordinates(coord_str)
             
             if coords:
                 entries_with_coords += 1
-                normalized = normalize_name(title)
-                
-                # Get the o:id if available
-                oid = None
-                if id_col:
-                    oid_val = row.get(id_col, '')
-                    if oid_val and not pd.isna(oid_val):
-                        try:
-                            oid = int(oid_val)
-                        except (ValueError, TypeError):
-                            oid = str(oid_val).strip() if oid_val else None
-                
                 self.coord_lookup[normalized] = {
                     'name': str(title).strip(),
                     'coordinates': coords,
@@ -196,6 +206,7 @@ class IWACSourcesGenerator:
                 }
         
         logger.info(f"Built lookup with {entries_with_coords} entries having coordinates")
+        logger.info(f"Built ID lookup with {entries_with_ids} entries having IDs")
     
     def fetch_and_process_sources(self) -> None:
         """Fetch all content subsets and extract source data."""
@@ -293,8 +304,14 @@ class IWACSourcesGenerator:
                 custom_coords = CUSTOM_COORDINATES[source_name]
                 source_entry['lat'] = custom_coords[0]
                 source_entry['lng'] = custom_coords[1]
+                # Check if we have an ID from the index for this source
+                if normalized in self.id_lookup:
+                    source_entry['id'] = self.id_lookup[normalized]
                 sources_with_coords += 1
             else:
+                # Check if we have an ID from the index even without coordinates
+                if normalized in self.id_lookup:
+                    source_entry['id'] = self.id_lookup[normalized]
                 sources_without_coords += 1
             
             sources_list.append(source_entry)
