@@ -173,7 +173,11 @@ class IWACCooccurrenceGenerator:
         return dict(term_positions)
     
     def compute_cooccurrence_in_article(self, text: str) -> Dict[Tuple[str, str], int]:
-        """Compute co-occurrences of scary terms in a single article using sliding window"""
+        """Compute co-occurrences of scary terms in a single article.
+        
+        Uses article-level co-occurrence: if two term families both appear
+        anywhere in the same article, they co-occur once for that article.
+        """
         term_positions = self.find_term_positions(text)
         
         if len(term_positions) < 2:
@@ -181,21 +185,14 @@ class IWACCooccurrenceGenerator:
         
         cooccurrence_counts: Dict[Tuple[str, str], int] = defaultdict(int)
         
-        # For each pair of different term families
+        # For each pair of different term families that appear in this article
         term_families = list(term_positions.keys())
         
         for i, term1 in enumerate(term_families):
             for term2 in term_families[i+1:]:
-                # Check if any positions are within the window
-                positions1 = term_positions[term1]
-                positions2 = term_positions[term2]
-                
-                for pos1 in positions1:
-                    for pos2 in positions2:
-                        if abs(pos1 - pos2) <= self.window_size:
-                            # Ensure consistent ordering (alphabetical)
-                            pair = tuple(sorted([term1, term2]))
-                            cooccurrence_counts[pair] += 1
+                # Both terms appear in this article, count as 1 co-occurrence
+                pair = tuple(sorted([term1, term2]))
+                cooccurrence_counts[pair] += 1
         
         return dict(cooccurrence_counts)
     
@@ -533,7 +530,7 @@ class IWACCooccurrenceGenerator:
                     "words-countries.json": "Words appearing near each scary term, by country",
                     "term-{term}.json": "Individual term word associations"
                 },
-                "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains co-occurrence counts within window",
+                "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains article-level co-occurrence counts (terms appearing in same article)",
                 "words_description": "Top words that appear within the window of each scary term (using lemma_nostop column with stopwords pre-removed)"
             }
             
