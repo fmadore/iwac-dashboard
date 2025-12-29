@@ -1,6 +1,6 @@
 {
-  "generated_at": "2025-12-22T15:38:42.773203",
-  "total_articles": 12172,
+  "generated_at": "2025-12-29T16:23:47.187281",
+  "total_articles": 12171,
   "term_families": [
     "radicalisation",
     "extrémisme",
@@ -32,6 +32,6 @@
     "words-countries.json": "Words appearing near each scary term, by country",
     "term-{term}.json": "Individual term word associations"
   },
-  "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains co-occurrence counts within window",
-  "words_description": "Top words that appear within the window of each scary term, filtered for stopwords"
+  "matrix_description": "Square matrix where diagonal contains term counts and off-diagonal contains article-level co-occurrence counts (terms appearing in same article)",
+  "words_description": "Top words that appear within the window of each scary term (using lemma_nostop column with stopwords pre-removed)"
 }
