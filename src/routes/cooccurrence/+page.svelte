@@ -85,7 +85,7 @@
 	// Get active word data for selected term
 	const activeWordData = $derived.by((): TermWordData | null => {
 		if (!selectedTerm) return null;
-		
+
 		if (selectedCountry && countryWordData[selectedCountry]) {
 			return countryWordData[selectedCountry][selectedTerm] || null;
 		}
@@ -101,13 +101,14 @@
 			loading = true;
 			error = null;
 
-			const [matrixGlobalRes, matrixCountryRes, wordsGlobalRes, wordsCountryRes, metadataRes] = await Promise.all([
-				fetch(`${base}/data/cooccurrence/matrix-global.json`),
-				fetch(`${base}/data/cooccurrence/matrix-countries.json`),
-				fetch(`${base}/data/cooccurrence/words-global.json`),
-				fetch(`${base}/data/cooccurrence/words-countries.json`),
-				fetch(`${base}/data/cooccurrence/metadata.json`)
-			]);
+			const [matrixGlobalRes, matrixCountryRes, wordsGlobalRes, wordsCountryRes, metadataRes] =
+				await Promise.all([
+					fetch(`${base}/data/cooccurrence/matrix-global.json`),
+					fetch(`${base}/data/cooccurrence/matrix-countries.json`),
+					fetch(`${base}/data/cooccurrence/words-global.json`),
+					fetch(`${base}/data/cooccurrence/words-countries.json`),
+					fetch(`${base}/data/cooccurrence/metadata.json`)
+				]);
 
 			if (!matrixGlobalRes.ok) throw new Error('Failed to load matrix data');
 			if (!metadataRes.ok) throw new Error('Failed to load metadata');
@@ -179,7 +180,9 @@
 		urlSync.clearFilters();
 	}
 
-	const hasActiveFilters = $derived(selectedCountry || orderBy !== 'name' || viewMode !== 'matrix' || selectedTerm);
+	const hasActiveFilters = $derived(
+		selectedCountry || orderBy !== 'name' || viewMode !== 'matrix' || selectedTerm
+	);
 
 	// Stats for the matrix view
 	const matrixStats = $derived.by(() => {
@@ -268,9 +271,11 @@
 			<Card.Content>
 				<p class="text-sm text-muted-foreground">
 					{#if viewMode === 'matrix'}
-						{t('cooccurrence.explanation', [metadata?.window_size?.toString() || '50'])}
+						{t('cooccurrence.explanation')}
 					{:else}
-						{t('cooccurrence.word_associations_explanation', [metadata?.window_size?.toString() || '50'])}
+						{t('cooccurrence.word_associations_explanation', [
+							metadata?.window_size?.toString() || '50'
+						])}
 					{/if}
 				</p>
 			</Card.Content>
@@ -286,12 +291,10 @@
 				<div class="flex flex-wrap items-center gap-4">
 					<!-- View Mode Toggle -->
 					<div class="flex items-center gap-2">
-						<label for="viewSelect" class="text-sm font-medium">{t('cooccurrence.view_mode')}:</label>
-						<Select.Root
-							type="single"
-							value={viewMode}
-							onValueChange={(v) => handleViewChange(v)}
+						<label for="viewSelect" class="text-sm font-medium"
+							>{t('cooccurrence.view_mode')}:</label
 						>
+						<Select.Root type="single" value={viewMode} onValueChange={(v) => handleViewChange(v)}>
 							<Select.Trigger class="w-[180px]" id="viewSelect">
 								<div class="flex items-center gap-2">
 									{#if viewMode === 'matrix'}
@@ -323,7 +326,9 @@
 					<!-- Term Selector (only for words view) -->
 					{#if viewMode === 'words'}
 						<div class="flex items-center gap-2">
-							<label for="termSelect" class="text-sm font-medium">{t('cooccurrence.select_term')}:</label>
+							<label for="termSelect" class="text-sm font-medium"
+								>{t('cooccurrence.select_term')}:</label
+							>
 							<Select.Root
 								type="single"
 								value={selectedTerm || ''}
@@ -364,7 +369,9 @@
 					<!-- Order By Filter (only for matrix view) -->
 					{#if viewMode === 'matrix'}
 						<div class="flex items-center gap-2">
-							<label for="orderSelect" class="text-sm font-medium">{t('cooccurrence.order_by')}:</label>
+							<label for="orderSelect" class="text-sm font-medium"
+								>{t('cooccurrence.order_by')}:</label
+							>
 							<Select.Root
 								type="single"
 								value={orderBy}
@@ -526,12 +533,14 @@
 					<Card.Description>{t('cooccurrence.matrix_description')}</Card.Description>
 				</Card.Header>
 				<Card.Content>
-					<CooccurrenceMatrix
-						data={activeMatrixData}
-						{orderBy}
-						showDiagonal={false}
-						cellSize={45}
-					/>
+					{#key `${selectedCountry || 'global'}-${orderBy}`}
+						<CooccurrenceMatrix
+							data={activeMatrixData}
+							{orderBy}
+							showDiagonal={false}
+							cellSize={45}
+						/>
+					{/key}
 				</Card.Content>
 			</Card.Root>
 		{/if}

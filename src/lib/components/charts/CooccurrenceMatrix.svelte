@@ -44,8 +44,12 @@
 	});
 
 	// Computed dimensions
-	const width = $derived(data ? data.terms.length * effectiveCellSize + margin.left + margin.right : 0);
-	const height = $derived(data ? data.terms.length * effectiveCellSize + margin.top + margin.bottom : 0);
+	const width = $derived(
+		data ? data.terms.length * effectiveCellSize + margin.left + margin.right : 0
+	);
+	const height = $derived(
+		data ? data.terms.length * effectiveCellSize + margin.top + margin.bottom : 0
+	);
 
 	// Order terms based on selected ordering
 	const orderedTerms = $derived.by(() => {
@@ -56,9 +60,7 @@
 		switch (orderBy) {
 			case 'count':
 				// Order by total term count (descending)
-				return terms.sort(
-					(a, b) => (data.term_counts[b] || 0) - (data.term_counts[a] || 0)
-				);
+				return terms.sort((a, b) => (data.term_counts[b] || 0) - (data.term_counts[a] || 0));
 			case 'cluster':
 				// Simple clustering by co-occurrence similarity
 				return clusterTerms(terms, data.matrix, data.terms);
@@ -92,11 +94,7 @@
 		return newMatrix;
 	});
 
-	function clusterTerms(
-		terms: string[],
-		matrix: number[][],
-		originalTerms: string[]
-	): string[] {
+	function clusterTerms(terms: string[], matrix: number[][], originalTerms: string[]): string[] {
 		// Simple hierarchical clustering based on co-occurrence similarity
 		if (terms.length <= 2) return terms;
 
@@ -160,15 +158,15 @@
 		if (!browser) return '#000000';
 		const root = document.documentElement;
 		const value = getComputedStyle(root).getPropertyValue(variable).trim();
-		
+
 		// Return the computed color value, ensuring we have a valid color
 		if (!value) return '#000000';
-		
+
 		// If it's already an oklch/rgb/hex color, return it
 		if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('oklch')) {
 			return value;
 		}
-		
+
 		// Fallback
 		return '#000000';
 	}
@@ -189,7 +187,7 @@
 				}
 			});
 			resizeObserver.observe(containerElement);
-			
+
 			// Get initial size
 			const rect = containerElement.getBoundingClientRect();
 			if (rect.width > 0) {
@@ -240,6 +238,9 @@
 			// Track language and size changes
 			const _ = languageStore.current;
 			const __ = effectiveCellSize;
+			// Explicitly track data changes to ensure re-render on country change
+			const ___ = data.terms;
+			const ____ = data.max_cooccurrence;
 			untrack(() => renderMatrix());
 		}
 	});
@@ -265,9 +266,7 @@
 		const mutedColor = getCSSVariable('--muted-foreground');
 
 		// Create main group
-		const g = svg
-			.append('g')
-			.attr('transform', `translate(${margin.left}, ${margin.top})`);
+		const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 		const currentCellSize = effectiveCellSize;
 
@@ -289,8 +288,7 @@
 				const cellValue = value;
 				const cellIsDiagonal = isDiagonal;
 
-				g
-					.append('rect')
+				g.append('rect')
 					.attr('x', j * currentCellSize)
 					.attr('y', i * currentCellSize)
 					.attr('width', currentCellSize - 1)
@@ -301,7 +299,13 @@
 					.style('stroke-width', 0.5)
 					.style('cursor', 'pointer')
 					.on('mouseover', function (this: SVGRectElement, event: MouseEvent) {
-						showTooltip(event, orderedTerms[rowIdx], orderedTerms[colIdx], cellValue, cellIsDiagonal);
+						showTooltip(
+							event,
+							orderedTerms[rowIdx],
+							orderedTerms[colIdx],
+							cellValue,
+							cellIsDiagonal
+						);
 						select(this).style('stroke-width', 2).style('stroke', 'var(--primary)');
 					})
 					.on('mousemove', function (this: SVGRectElement, event: MouseEvent) {
@@ -342,8 +346,9 @@
 			.attr('y', -8)
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'middle')
-			.attr('transform', (d: string, i: number) => 
-				`rotate(-45, ${i * currentCellSize + currentCellSize / 2}, -8)`
+			.attr(
+				'transform',
+				(d: string, i: number) => `rotate(-45, ${i * currentCellSize + currentCellSize / 2}, -8)`
 			)
 			.style('font-size', `${fontSize}px`)
 			.style('font-weight', '500')
@@ -374,24 +379,24 @@
 
 	function updateTooltipPosition(event: MouseEvent) {
 		if (!tooltip) return;
-		
+
 		// Position tooltip avoiding screen edges
 		const tooltipRect = tooltip.getBoundingClientRect();
 		const padding = 10;
-		
+
 		let left = event.clientX + padding;
 		let top = event.clientY + padding;
-		
+
 		// Adjust if tooltip would go off right edge
 		if (left + tooltipRect.width > window.innerWidth - padding) {
 			left = event.clientX - tooltipRect.width - padding;
 		}
-		
+
 		// Adjust if tooltip would go off bottom edge
 		if (top + tooltipRect.height > window.innerHeight - padding) {
 			top = event.clientY - tooltipRect.height - padding;
 		}
-		
+
 		tooltip.style.left = `${left}px`;
 		tooltip.style.top = `${top}px`;
 	}
@@ -409,12 +414,7 @@
 		</div>
 	{:else}
 		<div class="overflow-auto">
-			<svg
-				bind:this={svgElement}
-				{width}
-				{height}
-				class="cooccurrence-matrix"
-			></svg>
+			<svg bind:this={svgElement} {width} {height} class="cooccurrence-matrix"></svg>
 		</div>
 
 		<!-- Legend -->
@@ -427,10 +427,7 @@
 				<span>{t('cooccurrence.low')}</span>
 			</div>
 			<div class="flex items-center gap-2">
-				<div
-					class="h-4 w-4 rounded"
-					style="background: var(--chart-2);"
-				></div>
+				<div class="h-4 w-4 rounded" style="background: var(--chart-2);"></div>
 				<span>{t('cooccurrence.high')}</span>
 			</div>
 		</div>

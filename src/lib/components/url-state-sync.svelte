@@ -38,7 +38,8 @@
 		timeline: new Set(['lang', 'theme', 'country', 'type']),
 		categories: new Set(['lang', 'theme', 'country', 'yearMin', 'yearMax']),
 		words: new Set(['lang', 'theme', 'view', 'country', 'year']),
-		scary: new Set(['lang', 'theme', 'view', 'country'])
+		scary: new Set(['lang', 'theme', 'view', 'country']),
+		cooccurrence: new Set(['lang', 'theme', 'view', 'country', 'order', 'term'])
 	};
 
 	function pruneUrlParamsForRoute(pathname: string) {
