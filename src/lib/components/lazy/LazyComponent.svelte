@@ -63,7 +63,15 @@
 	let loadedComponent = $state<Component<T> | null>(null);
 	let isLoading = $state(false);
 	let error = $state<Error | null>(null);
-	let shouldLoad = $state(!lazyOnViewport);
+	// Initialize based on lazyOnViewport prop - if false, should load immediately
+	let shouldLoad = $state(false);
+
+	// Set initial shouldLoad based on lazyOnViewport prop
+	$effect(() => {
+		if (!lazyOnViewport) {
+			shouldLoad = true;
+		}
+	});
 
 	async function loadComponent() {
 		if (loadedComponent || isLoading) return;
@@ -116,7 +124,11 @@
 	});
 </script>
 
-<div bind:this={containerRef} class={className} style:min-height={loadedComponent ? 'auto' : minHeight}>
+<div
+	bind:this={containerRef}
+	class={className}
+	style:min-height={loadedComponent ? 'auto' : minHeight}
+>
 	{#if loadedComponent}
 		{@const LoadedComp = loadedComponent}
 		<LoadedComp {...componentProps} />

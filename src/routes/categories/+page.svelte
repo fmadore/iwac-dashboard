@@ -56,9 +56,9 @@
 		};
 	}>();
 
-	// Use preloaded data directly
-	let globalData = $state<CategoryData | null>(pageData.globalData);
-	let metadata = $state<MetadataResponse | null>(pageData.metadata);
+	// Use preloaded data directly - derive from props to stay reactive
+	const globalData = $derived(pageData.globalData);
+	const metadata = $derived(pageData.metadata);
 	let countryData = $state<CategoryData | null>(null);
 	let countryLoading = $state(false);
 	let chartReady = $state(false);

@@ -146,8 +146,11 @@
 	let currentRoot = $state<TreemapNode | null>(null);
 	let breadcrumbs = $state<TreemapNode[]>([]);
 	let zoomBehavior: any = null;
-	let containerWidth = $state<number>(width);
-	let containerHeight = $state<number>(height);
+	// Use state for responsive mode tracking, derive from props otherwise
+	let responsiveWidth = $state<number | null>(null);
+	let responsiveHeight = $state<number | null>(null);
+	let containerWidth = $derived(responsiveWidth ?? width);
+	let containerHeight = $derived(responsiveHeight ?? height);
 
 	// Reactive dimensions - use container size if responsive, otherwise use props
 	let actualWidth = $derived(responsive ? containerWidth : width);
@@ -627,9 +630,9 @@
 			for (const entry of entries) {
 				const { width: newWidth, height: newHeight } = entry.contentRect;
 				// Only update if dimensions actually changed to avoid unnecessary re-renders
-				if (newWidth !== containerWidth || newHeight !== containerHeight) {
-					containerWidth = newWidth;
-					containerHeight = newHeight;
+				if (newWidth !== responsiveWidth || newHeight !== responsiveHeight) {
+					responsiveWidth = newWidth;
+					responsiveHeight = newHeight;
 				}
 			}
 		});

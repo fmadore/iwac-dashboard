@@ -58,9 +58,22 @@
 
 	// Table state
 	let search = $state('');
-	let sortKey = $state(defaultSortKey);
-	let sortDir = $state<'asc' | 'desc'>(defaultSortDir);
+	let sortKey = $state('');
+	let sortDir = $state<'asc' | 'desc'>('asc');
 	let currentPage = $state(1);
+
+	// Initialize sort state from props
+	$effect(() => {
+		if (!sortKey) {
+			sortKey = defaultSortKey;
+		}
+	});
+
+	$effect(() => {
+		if (sortDir === 'asc' && defaultSortDir === 'desc') {
+			sortDir = defaultSortDir;
+		}
+	});
 
 	// Comparison function for sorting
 	function cmp(a: unknown, b: unknown): number {
