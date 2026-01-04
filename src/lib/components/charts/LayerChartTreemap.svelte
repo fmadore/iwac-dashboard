@@ -11,9 +11,9 @@
 		RectClipPath,
 		Svg,
 		Text,
-		Tooltip,
-		Treemap
+		Tooltip
 	} from 'layerchart';
+	import { Treemap } from 'layerchart';
 	import type { TreemapData, TreemapNode, TreemapConfig } from '$lib/types/treemap.js';
 
 	// Props - compatible interface with CustomTreemap
@@ -93,12 +93,12 @@
 	});
 
 	// Currently selected/zoomed node for drill-down
-	let selectedZoomable = $state<TreemapNode | null>(null);
+	let selectedNested = $state<TreemapNode | null>(null);
 
-	// Initialize selectedZoomable when hierarchy is ready
+	// Initialize selectedNested when hierarchy is ready
 	$effect(() => {
-		if (complexDataHierarchy && !selectedZoomable) {
-			selectedZoomable = complexDataHierarchy as TreemapNode;
+		if (complexDataHierarchy && !selectedNested) {
+			selectedNested = complexDataHierarchy as TreemapNode;
 		}
 	});
 
@@ -108,21 +108,6 @@
 		const countryName = data.__countryName ?? data.name ?? '';
 		const cssVar = getCountryCssVar(countryName);
 		return cssVar;
-	}
-
-	// Check if a node is visible at current zoom level
-	function isNodeVisible(node: any, currentZoom: any): boolean {
-		if (!currentZoom) return true;
-
-		// Node is visible if it's a descendant of current zoom or the zoom itself
-		let current = node;
-		while (current) {
-			if (current.data.name === currentZoom.data.name && current.depth === currentZoom.depth) {
-				return true;
-			}
-			current = current.parent;
-		}
-		return false;
 	}
 
 	// Format number for display
@@ -148,93 +133,98 @@
 	class:h-full={responsive}
 	class:w-full={responsive}
 >
-	{#if complexDataHierarchy && selectedZoomable}
+	{#if complexDataHierarchy && selectedNested}
 		<!-- Breadcrumb Navigation -->
 		<div
-			class="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-md border border-border/50 bg-card/90 px-2 py-1 text-sm backdrop-blur-sm"
+			class="flex items-center gap-1 rounded-md border-b border-border bg-card/90 px-3 py-2 text-sm"
 		>
-			{#each selectedZoomable.ancestors().reverse() as item, index (index)}
+			{#each selectedNested.ancestors().reverse() as item, index (index)}
 				{#if index > 0}
 					<span class="text-muted-foreground">/</span>
 				{/if}
 				<button
-					class="font-medium text-primary hover:text-primary/80 {item === selectedZoomable
-						? 'cursor-default text-foreground'
-						: 'cursor-pointer'}"
-					class:pointer-events-none={item === selectedZoomable}
-					onclick={() => (selectedZoomable = item as TreemapNode)}
+					class="rounded-sm px-2 py-1 font-medium transition-colors {item === selectedNested
+						? 'cursor-default bg-muted text-foreground'
+						: 'cursor-pointer text-primary hover:bg-muted/50 hover:text-primary/80'}"
+					class:pointer-events-none={item === selectedNested}
+					onclick={() => (selectedNested = item as TreemapNode)}
 				>
-					{index === 0 ? 'Islam West Africa Collection' : item.data.name}
+					<div class="text-left">
+						<div class="text-sm">
+							{index === 0 ? 'Islam West Africa Collection' : item.data.name}
+						</div>
+						<div class="text-xs text-muted-foreground">
+							{formatValue(item.value ?? 0)}
+						</div>
+					</div>
 				</button>
 			{/each}
 		</div>
 
 		<!-- Treemap Chart -->
-		<div class="h-150 p-4">
-			<Chart tooltip={{ mode: 'manual' }}>
+		<div class="h-[600px] p-4">
+			<Chart>
 				{#snippet children({ context })}
 					<Svg>
 						<Bounds
-							domain={selectedZoomable}
+							domain={selectedNested}
 							motion={{ type: 'tween', duration: animationDuration, easing: cubicOut }}
 						>
 							{#snippet children({ xScale, yScale })}
 								<ChartClipPath>
-									<Treemap hierarchy={complexDataHierarchy} tile="binary">
+									<Treemap hierarchy={complexDataHierarchy} tile="squarify">
 										{#snippet children({ nodes })}
 											{#each nodes as node (getNodeKey(node))}
 												<Group
 													x={xScale(node.x0)}
 													y={yScale(node.y0)}
 													onclick={() => {
-														if (!node.children) return;
-														onNodeClick?.(node as TreemapNode);
-														selectedZoomable = node as TreemapNode;
-													}}
-													onpointerenter={(e) => {
-														onNodeHover?.(node as TreemapNode);
-														context.tooltip.show(e, node);
+														if (node.children) {
+															onNodeClick?.(node as TreemapNode);
+															selectedNested = node as TreemapNode;
+														}
 													}}
 													onpointermove={(e) => context.tooltip.show(e, node)}
-													onpointerleave={() => {
-														onNodeHover?.(null);
-														context.tooltip.hide();
-													}}
+													onpointerleave={context.tooltip.hide}
 												>
 													{@const nodeWidth = xScale(node.x1) - xScale(node.x0)}
 													{@const nodeHeight = yScale(node.y1) - yScale(node.y0)}
-													<RectClipPath width={nodeWidth} height={nodeHeight}>
-														{@const nodeColor = getNodeColor(node)}
-														{#if isNodeVisible( node, nodes.find((n) => n.data.name === selectedZoomable?.data.name && n.depth === selectedZoomable?.depth) )}
-															<g transition:fade={{ duration: 600 }}>
-																<Rect
-																	width={nodeWidth}
-																	height={nodeHeight}
-																	stroke="var(--border)"
-																	stroke-width={1}
-																	fill={nodeColor}
-																	rx={5}
-																	class="treemap-node cursor-pointer transition-all duration-300 hover:brightness-110 hover:saturate-125"
-																/>
-																{#if nodeWidth > 60 && nodeHeight > 30}
-																	<Text
-																		value={node.data.name}
-																		class="pointer-events-none fill-current text-[10px] font-medium"
-																		verticalAnchor="start"
-																		x={4}
-																		y={4}
-																	/>
-																	<Text
-																		value={formatValue(node.value ?? 0)}
-																		class="pointer-events-none fill-current text-[8px] font-normal opacity-70"
-																		verticalAnchor="start"
-																		x={4}
-																		y={18}
-																	/>
+													{@const nodeColor = getNodeColor(node)}
+													<g transition:fade={{ duration: 600 }}>
+														<Rect
+															width={nodeWidth}
+															height={nodeHeight}
+															stroke="var(--border)"
+															stroke-width={1}
+															fill={nodeColor}
+															fillOpacity={node.children ? 0.5 : 1}
+															rx={5}
+															class="treemap-node cursor-pointer"
+														/>
+														<RectClipPath width={nodeWidth} height={nodeHeight}>
+															<text
+																x={4}
+																y={16 * 0.6 + 4}
+																class="pointer-events-none fill-white text-[10px] font-medium drop-shadow-sm"
+															>
+																<tspan>{node.data.name}</tspan>
+																{#if node.children}
+																	<tspan class="text-[8px] font-light opacity-80">
+																		{' '}{formatValue(node.value ?? 0)}
+																	</tspan>
 																{/if}
-															</g>
-														{/if}
-													</RectClipPath>
+															</text>
+															{#if !node.children}
+																<Text
+																	value={formatValue(node.value ?? 0)}
+																	class="pointer-events-none fill-white/80 text-[8px] font-normal drop-shadow-sm"
+																	verticalAnchor="start"
+																	x={4}
+																	y={16}
+																/>
+															{/if}
+														</RectClipPath>
+													</g>
 												</Group>
 											{/each}
 										{/snippet}
@@ -267,7 +257,7 @@
 			</Chart>
 		</div>
 	{:else}
-		<div class="flex h-150 w-full items-center justify-center">
+		<div class="flex h-[600px] w-full items-center justify-center">
 			<div
 				class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"
 			></div>
