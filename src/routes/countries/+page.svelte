@@ -2,7 +2,7 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { itemsStore } from '$lib/stores/itemsStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import CustomTreemap from '$lib/components/charts/CustomTreemap.svelte';
+	import LayerChartTreemap from '$lib/components/charts/LayerChartTreemap.svelte';
 	import { base } from '$app/paths';
 	import type { TreemapData, TreemapNode } from '$lib/types/index.js';
 	import { SvelteMap } from 'svelte/reactivity';
@@ -153,24 +153,16 @@
 			</div>
 		{:else if treemapData}
 			<div class="h-[600px] w-full">
-				<CustomTreemap
+				<LayerChartTreemap
 					data={treemapData}
 					responsive={true}
 					bind:selectedNode
 					onNodeClick={handleNodeClick}
 					onNodeHover={handleNodeHover}
 					config={{
-						padding: {
-							inner: 3,
-							outer: 6,
-							top: 25,
-							right: 3,
-							bottom: 3,
-							left: 3
-						},
 						animation: {
-							duration: 400,
-							ease: 'ease-in-out'
+							duration: 800,
+							ease: 'ease-out'
 						}
 					}}
 				/>
