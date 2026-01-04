@@ -32,7 +32,7 @@ Static SvelteKit dashboard for the Islam West Africa Collection (IWAC), fully pr
   - **Fetching:** Use `fetchData` / `prefetchData` from `$lib/utils/dataFetcher.ts`.
 
 ### 4. Visualizations
-- **Priority:** LayerChart > D3.js > ECharts.
+- **Charts:** Use LayerChart (preferred) or D3.js. Avoid ECharts for new components.
 - **Maps:** Leaflet via `src/lib/components/world-map`. Use `mapDataStore`.
 
 ### 5. Internationalization (i18n)
@@ -51,7 +51,7 @@ src/
 ├── lib/
 │   ├── components/
 │   │   ├── ui/                    # shadcn-svelte components
-│   │   ├── charts/                # Chart components (D3/ECharts)
+│   │   ├── charts/                # Chart components (LayerChart/D3)
 │   │   ├── facets/                # Faceted visualization components
 │   │   ├── lazy/                  # Lazy loading components
 │   │   ├── app-sidebar.svelte     # Main navigation sidebar
