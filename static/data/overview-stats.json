@@ -1,7 +1,7 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2025-12-29T16:11:36.923873",
+    "generated_at": "2026-01-04T02:47:49.535078",
     "script_version": "1.0"
   },
   "summary": {
@@ -58,9 +58,7 @@
       "Thèse de doctorat",
       "Working paper"
     ],
-    "total_sources": 24,
-    "sources_with_coordinates": 15,
-    "sources_without_coordinates": 9
+    "total_sources": 24
   },
   "by_dataset": {
     "articles": {
