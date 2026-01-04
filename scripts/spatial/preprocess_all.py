@@ -110,8 +110,9 @@ DATASET_ID_DEFAULT = "fmadore/islam-west-africa-collection"
 
 
 def default_paths(script_path: Path) -> Dict[str, Path]:
-    root = script_path.parent.parent.resolve()
-    data_dir = root / "omeka-map-explorer" / "static" / "data"
+    # scripts/spatial/preprocess_all.py -> parents[2] is project root
+    root = script_path.resolve().parents[2]
+    data_dir = root / "static" / "data"
     maps_dir = data_dir / "maps"
     entities_dir = data_dir / "entities"
     return {

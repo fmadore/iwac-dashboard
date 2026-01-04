@@ -31,8 +31,8 @@ from collections import defaultdict
 from datetime import datetime
 import unicodedata
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = ROOT / 'omeka-map-explorer' / 'static' / 'data'
+ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = ROOT / 'static' / 'data'
 OUT_DIR = DATA_DIR / 'country_focus'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

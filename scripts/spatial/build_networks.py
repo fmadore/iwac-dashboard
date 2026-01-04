@@ -49,8 +49,8 @@ DEFAULT_WEIGHT_MIN = 2  # prune weak edges (configurable)
 DEFAULT_TOP_LABELS = 60
 
 # ------------------ Paths ------------------
-ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = ROOT / 'omeka-map-explorer' / 'static' / 'data'
+ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = ROOT / 'static' / 'data'
 ENT_DIR = DATA_DIR / 'entities'
 OUT_DIR = DATA_DIR / 'networks'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
