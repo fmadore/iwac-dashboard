@@ -175,11 +175,11 @@
 	</div>
 
 	{#if loading}
-		<div class="flex min-h-[400px] items-center justify-center">
+		<div class="flex min-h-100 items-center justify-center">
 			<p class="text-muted-foreground">{t('common.loading')}</p>
 		</div>
 	{:else if error}
-		<div class="flex min-h-[400px] items-center justify-center">
+		<div class="flex min-h-100 items-center justify-center">
 			<p class="text-destructive">{error}</p>
 		</div>
 	{:else if metadata}
@@ -206,7 +206,7 @@
 				<h2 class="text-lg font-semibold">{t('sources.map_title')}</h2>
 				<p class="text-sm text-muted-foreground">{t('sources.map_description')}</p>
 			</div>
-			<div bind:this={mapContainer} class="h-[500px] w-full" style="z-index: 0;"></div>
+			<div bind:this={mapContainer} class="h-125 w-full" style="z-index: 0;"></div>
 		</div>
 
 		<!-- Sources Table -->

@@ -38,7 +38,7 @@
 	{/if}
 
 	<!-- Map Visualization -->
-	<div class="min-h-[600px]">
+	<div class="min-h-150">
 		<WorldMapVisualization />
 	</div>
 </div>
