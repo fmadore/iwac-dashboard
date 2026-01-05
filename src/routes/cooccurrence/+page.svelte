@@ -246,7 +246,7 @@
 		<Card.Root class="p-6">
 			<div class="space-y-4">
 				<Skeleton class="h-8 w-64" />
-				<Skeleton class="h-[500px] w-full" />
+				<Skeleton class="h-125 w-full" />
 			</div>
 		</Card.Root>
 	{:else if error}
@@ -295,7 +295,7 @@
 							>{t('cooccurrence.view_mode')}:</label
 						>
 						<Select.Root type="single" value={viewMode} onValueChange={(v) => handleViewChange(v)}>
-							<Select.Trigger class="w-[180px]" id="viewSelect">
+							<Select.Trigger class="w-45" id="viewSelect">
 								<div class="flex items-center gap-2">
 									{#if viewMode === 'matrix'}
 										<Grid3X3 class="h-4 w-4" />
@@ -334,7 +334,7 @@
 								value={selectedTerm || ''}
 								onValueChange={(v) => handleTermChange(v)}
 							>
-								<Select.Trigger class="w-[180px]" id="termSelect">
+								<Select.Trigger class="w-45" id="termSelect">
 									{selectedTerm || t('cooccurrence.select_term')}
 								</Select.Trigger>
 								<Select.Content>
@@ -354,7 +354,7 @@
 							value={selectedCountry ?? 'global'}
 							onValueChange={(v) => handleCountryChange(v === 'global' ? undefined : v)}
 						>
-							<Select.Trigger class="w-[200px]" id="countrySelect">
+							<Select.Trigger class="w-50" id="countrySelect">
 								{selectedCountry || t('cooccurrence.global')}
 							</Select.Trigger>
 							<Select.Content>
@@ -377,7 +377,7 @@
 								value={orderBy}
 								onValueChange={(v) => handleOrderChange(v)}
 							>
-								<Select.Trigger class="w-[150px]" id="orderSelect">
+								<Select.Trigger class="w-37.5" id="orderSelect">
 									{t(`cooccurrence.order_${orderBy}`)}
 								</Select.Trigger>
 								<Select.Content>

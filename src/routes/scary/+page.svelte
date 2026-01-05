@@ -856,7 +856,7 @@
 							<Button variant="outline" size="icon" onclick={reset} title={t('scary.reset')}>
 								<RotateCcw class="h-4 w-4" />
 							</Button>
-							<span class="ml-2 min-w-[4rem] text-center text-lg font-bold tabular-nums text-primary">
+							<span class="ml-2 min-w-16 text-center text-lg font-bold tabular-nums text-primary">
 								{currentYear}
 							</span>
 						</div>
