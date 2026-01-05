@@ -81,7 +81,7 @@
 			value={selectedSourceCountry ?? 'all'}
 			onValueChange={handleCountryChange}
 		>
-			<Select.Trigger class="w-[180px]">
+			<Select.Trigger class="w-45">
 				{selectedSourceCountry ?? t('worldmap.filter.all_countries')}
 			</Select.Trigger>
 			<Select.Content>
@@ -107,9 +107,9 @@
 						min={yearRange.min}
 						max={yearRange.max}
 						step={1}
-						class="w-[200px]"
+						class="w-50"
 					/>
-					<span class="text-sm text-muted-foreground whitespace-nowrap min-w-[90px]">
+					<span class="text-sm text-muted-foreground whitespace-nowrap min-w-22.5">
 						{yearRangeDisplay()}
 					</span>
 				</div>
