@@ -78,13 +78,15 @@
 		return sizes;
 	});
 
-	// Create a stable key for the current node set (use length + hash for perf)
-	const nodesKey = $derived(() => {
+	// Create a stable key for the current node set (use Set for O(1) lookups)
+	const nodesKey = $derived.by(() => {
 		if (nodes.length === 0) return '';
-		// Create a lighter-weight key using length and a sample of IDs
-		const ids = nodes.map((n) => n.id);
-		const sample = [ids[0], ids[Math.floor(ids.length / 2)], ids[ids.length - 1]].join('|');
-		return `${nodes.length}:${sample}`;
+		// Use a simple hash: length + sum of first chars of IDs
+		let hash = nodes.length;
+		for (let i = 0; i < Math.min(nodes.length, 20); i++) {
+			hash = (hash * 31 + nodes[i].id.charCodeAt(0)) | 0;
+		}
+		return `${nodes.length}:${hash}`;
 	});
 
 	async function initGraph() {
@@ -92,7 +94,7 @@
 		if (nodes.length === 0) return;
 
 		// If same nodes, just update attributes instead of rebuilding
-		if (isInitialized && sigmaInstance && graphInstance && currentNodesKey === nodesKey()) {
+		if (isInitialized && sigmaInstance && graphInstance && currentNodesKey === nodesKey) {
 			updateGraphAttributes();
 			return;
 		}
@@ -138,7 +140,13 @@
 			for (const node of nodes) {
 				if (positionCache.has(node.id)) cachedCount++;
 			}
+			// Skip layout entirely if we have most positions cached
+			const skipLayout = cachedCount > nodes.length * 0.8;
 			const hasMostlyCachedPositions = cachedCount > nodes.length * 0.5;
+
+			// Get theme colors BEFORE adding nodes/edges
+			const isDark = document.documentElement.classList.contains('dark');
+			const edgeColor = isDark ? 'rgba(200, 200, 200, 0.35)' : 'rgba(80, 80, 80, 0.4)';
 
 			// Add nodes - use cached positions when available
 			for (const node of nodes) {
@@ -155,14 +163,14 @@
 				});
 			}
 
-			// Add edges
+			// Add edges with theme-aware colors
 			for (const edge of edges) {
 				if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
 					try {
 						graph.addEdge(edge.source, edge.target, {
 							weight: edge.weight,
-							size: 0.5 + edge.weightNorm * 2,
-							color: '#a3a3a380',
+							size: 0.8 + edge.weightNorm * 3,
+							color: edgeColor,
 							edgeData: edge
 						});
 					} catch {
@@ -171,51 +179,52 @@
 				}
 			}
 
-			// Run layout - use fewer iterations if we have cached positions
+			// Run layout - skip entirely if we have cached positions for most nodes
 			const nodeCount = nodes.length;
-			const baseIterations = Math.min(100, Math.max(50, 150 - nodeCount));
-			const iterations = hasMostlyCachedPositions ? Math.min(20, baseIterations) : baseIterations;
 			
 			layoutProgress = 10;
-			await tick();
 
-			(forceAtlas2 as any).assign(graph, {
-				iterations,
-				settings: {
-					gravity: 0.3,
-					scalingRatio: nodeCount > 100 ? 80 : 40,
-					strongGravityMode: false,
-					slowDown: hasMostlyCachedPositions ? 10 : 3, // Slow down more if using cached positions
-					barnesHutOptimize: nodeCount > 30,
-					barnesHutTheta: 0.6,
-					edgeWeightInfluence: 0.5,
-					linLogMode: true,
-					outboundAttractionDistribution: true
-				}
-			});
+			if (!skipLayout) {
+				const baseIterations = Math.min(80, Math.max(30, 120 - nodeCount));
+				const iterations = hasMostlyCachedPositions ? Math.min(10, baseIterations) : baseIterations;
 
-			// Cache the computed positions
-			graph.forEachNode((nodeId: string, attrs: { x: number; y: number }) => {
-				positionCache.set(nodeId, { x: attrs.x, y: attrs.y });
-			});
+				(forceAtlas2 as any).assign(graph, {
+					iterations,
+					settings: {
+						gravity: 0.3,
+						scalingRatio: nodeCount > 100 ? 80 : 40,
+						strongGravityMode: false,
+						slowDown: hasMostlyCachedPositions ? 15 : 3,
+						barnesHutOptimize: nodeCount > 30,
+						barnesHutTheta: 0.6,
+						edgeWeightInfluence: 0.5,
+						linLogMode: true,
+						outboundAttractionDistribution: true
+					}
+				});
+
+				// Cache the computed positions
+				graph.forEachNode((nodeId: string, attrs: { x: number; y: number }) => {
+					positionCache.set(nodeId, { x: attrs.x, y: attrs.y });
+				});
+			}
 
 			layoutProgress = 80;
 			await tick();
 
-			// Get theme-aware colors
-			const isDark = document.documentElement.classList.contains('dark');
-			const foregroundColor = isDark ? '#fafafa' : '#171717';
-			const mutedColor = isDark ? '#a3a3a3' : '#737373';
+			// Theme-aware label and edge colors
+			const foregroundColor = isDark ? '#fafafa' : '#0a0a0a';
+			const defaultEdgeColor = isDark ? 'rgba(180, 180, 180, 0.3)' : 'rgba(60, 60, 60, 0.35)';
 
 			sigmaInstance = new Sigma(graph, container, {
 				renderEdgeLabels: false,
 				allowInvalidContainer: true,
-				defaultEdgeColor: mutedColor + '60',
+				defaultEdgeColor: defaultEdgeColor,
 				labelColor: { color: foregroundColor },
 				labelFont: 'system-ui, sans-serif',
-				labelSize: 11,
-				labelWeight: '500',
-				labelRenderedSizeThreshold: 6,
+				labelSize: 12,
+				labelWeight: '600',
+				labelRenderedSizeThreshold: 5,
 				zIndex: true,
 				nodeReducer: (node, data) => {
 					const isSelected = node === selectedNodeId;
@@ -236,9 +245,11 @@
 					if (selectedNodeId) {
 						const [source, target] = graph.extremities(edge);
 						if (source === selectedNodeId || target === selectedNodeId) {
-							return { ...data, color: '#f9731690', size: data.size * 2 };
+							const highlightColor = isDark ? 'rgba(249, 115, 22, 0.7)' : 'rgba(234, 88, 12, 0.8)';
+							return { ...data, color: highlightColor, size: data.size * 2.5 };
 						} else {
-							return { ...data, color: '#a3a3a320', size: data.size * 0.5 };
+							const dimColor = isDark ? 'rgba(100, 100, 100, 0.15)' : 'rgba(100, 100, 100, 0.12)';
+							return { ...data, color: dimColor, size: data.size * 0.5 };
 						}
 					}
 					return data;
@@ -266,7 +277,7 @@
 				container.style.cursor = 'default';
 			});
 
-			currentNodesKey = nodesKey();
+			currentNodesKey = nodesKey;
 			isInitialized = true;
 			layoutProgress = 100;
 		} catch (error) {
@@ -301,7 +312,7 @@
 	$effect(() => {
 		if (browser && containerElement && nodes.length > 0) {
 			// Access nodesKey to track it
-			const currentKey = nodesKey();
+			const currentKey = nodesKey;
 			// Debounce rebuilds - longer delay to batch rapid filter changes
 			const timeout = setTimeout(() => {
 				if (currentKey !== currentNodesKey) {
@@ -309,7 +320,7 @@
 				} else {
 					updateGraphAttributes();
 				}
-			}, 300);
+			}, 400);
 			return () => clearTimeout(timeout);
 		}
 	});
