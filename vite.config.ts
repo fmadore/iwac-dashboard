@@ -70,6 +70,10 @@ export default defineConfig(({ mode }) => {
 				}
 			})
 		],
+		// Pre-bundle dynamically imported dependencies to avoid "Outdated Optimize Dep" errors
+		optimizeDeps: {
+			include: ['graphology', 'sigma', 'graphology-layout-forceatlas2']
+		},
 		test: {
 			projects: [
 				{

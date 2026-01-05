@@ -39,7 +39,10 @@
 		categories: new Set(['lang', 'theme', 'country', 'yearMin', 'yearMax']),
 		words: new Set(['lang', 'theme', 'view', 'country', 'year']),
 		scary: new Set(['lang', 'theme', 'view', 'country']),
-		cooccurrence: new Set(['lang', 'theme', 'view', 'country', 'order', 'term'])
+		cooccurrence: new Set(['lang', 'theme', 'view', 'country', 'order', 'term']),
+		spatial: new Set(['lang', 'theme', 'view']),
+		network: new Set(['lang', 'theme']),
+		'network-map': new Set(['lang', 'theme'])
 	};
 
 	function pruneUrlParamsForRoute(pathname: string) {

@@ -15,7 +15,10 @@
 		BrainCircuit,
 		Grid3X3,
 		MapPin,
-		Newspaper
+		Newspaper,
+		Network,
+		Share2,
+		CalendarRange
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -24,6 +27,7 @@
 		{ href: `${base}/`, icon: Home, label: 'nav.overview' },
 		{ href: `${base}/countries`, icon: Globe2, label: 'nav.countries' },
 		{ href: `${base}/languages`, icon: Languages, label: 'nav.languages' },
+		{ href: `${base}/newspaper-coverage`, icon: CalendarRange, label: 'nav.newspaper_coverage' },
 		{ href: `${base}/timeline`, icon: Calendar, label: 'nav.timeline' },
 		{ href: `${base}/entities`, icon: FileType, label: 'nav.entities' },
 		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' }
@@ -44,6 +48,11 @@
 	const spatialAnalysisItems = [
 		{ href: `${base}/spatial/world-map`, icon: MapPin, label: 'nav.world_map' },
 		{ href: `${base}/spatial/sources`, icon: Newspaper, label: 'nav.sources' }
+	];
+
+	const networkAnalysisItems = [
+		{ href: `${base}/network`, icon: Share2, label: 'nav.network' },
+		{ href: `${base}/network-map`, icon: Network, label: 'nav.network_map' }
 	];
 </script>
 
@@ -128,6 +137,25 @@
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
 					{#each spatialAnalysisItems as item (item.href)}
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
+								{#snippet child({ props })}
+									<a href={item.href} {...props}>
+										<item.icon class="h-4 w-4" />
+										<span>{t(item.label)}</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					{/each}
+				</Sidebar.Menu>
+			</Sidebar.GroupContent>
+		</Sidebar.Group>
+		<Sidebar.Group>
+			<Sidebar.GroupLabel>{t('nav.network_analysis')}</Sidebar.GroupLabel>
+			<Sidebar.GroupContent>
+				<Sidebar.Menu>
+					{#each networkAnalysisItems as item (item.href)}
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
