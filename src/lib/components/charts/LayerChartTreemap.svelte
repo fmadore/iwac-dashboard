@@ -247,6 +247,7 @@
 
 					<Tooltip.Root
 						{context}
+						variant="none"
 						classes={{
 							content: 'border-0 bg-transparent p-0 shadow-none'
 						}}
