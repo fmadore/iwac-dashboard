@@ -248,7 +248,7 @@
 					<Tooltip.Root
 						{context}
 						classes={{
-							content: 'rounded-md border border-border bg-popover px-3 py-2 text-sm shadow-lg'
+							content: 'border-0 bg-transparent p-0 shadow-none'
 						}}
 					>
 						{#snippet children({ data })}

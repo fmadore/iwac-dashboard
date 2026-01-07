@@ -88,8 +88,15 @@
 								})}
 							></div>
 						{/if}
-						<div class="flex flex-1 shrink-0 items-center justify-between leading-none">
-							<span class="text-muted-foreground">{item.name}</span>
+						<div
+							class={cn(
+								'flex flex-1 shrink-0 items-center leading-none',
+								item.name ? 'justify-between' : 'justify-end'
+							)}
+						>
+							{#if item.name}
+								<span class="text-muted-foreground">{item.name}</span>
+							{/if}
 							<span class="font-mono font-medium text-foreground tabular-nums">
 								{formatValue(item.value)}
 							</span>
