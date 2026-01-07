@@ -7,8 +7,8 @@
 	export interface TooltipItem {
 		/** Display name for this item */
 		name: string;
-		/** Numeric value to display */
-		value: number;
+		/** Value to display */
+		value: number | string;
 		/** Color indicator (CSS color or variable like 'var(--chart-1)') */
 		color?: string;
 		/** Optional key for unique identification */
@@ -50,8 +50,9 @@
 	}: LayerChartTooltipProps = $props();
 
 	// Helper to format numbers with locale
-	function formatValue(value: number): string {
-		return value.toLocaleString();
+	function formatValue(value: number | string): string {
+		if (typeof value === 'number') return value.toLocaleString();
+		return String(value);
 	}
 </script>
 

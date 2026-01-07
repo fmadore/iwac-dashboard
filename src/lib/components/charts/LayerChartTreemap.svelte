@@ -15,6 +15,7 @@
 	} from 'layerchart';
 	import { Treemap } from 'layerchart';
 	import type { TreemapData, TreemapNode, TreemapConfig } from '$lib/types/treemap.js';
+	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
 
 	// Props - compatible interface with CustomTreemap
 	interface Props {
@@ -115,6 +116,16 @@
 		if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
 		if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
 		return value.toLocaleString();
+	}
+
+	function treemapTooltipItems(node: any): TooltipItem[] {
+		if (!node) return [];
+		const items: TooltipItem[] = [];
+		items.push({ name: '', value: `${formatValue(node.value ?? 0)} items` });
+		if (node.children && node.children.length > 0) {
+			items.push({ name: '', value: `${node.children.length} subcategories · Click to drill down` });
+		}
+		return items;
 	}
 
 	// Generate a unique key for a node based on its full ancestry path
@@ -243,13 +254,12 @@
 						{#snippet children({ data })}
 							{#if data}
 								{@const node = data as any}
-								<div class="font-medium text-popover-foreground">{node.data?.name}</div>
-								<div class="text-muted-foreground">{formatValue(node.value ?? 0)} items</div>
-								{#if node.children && node.children.length > 0}
-									<div class="mt-1 text-xs text-muted-foreground">
-										{node.children.length} subcategories · Click to drill down
-									</div>
-								{/if}
+								<LayerChartTooltip
+									label={node.data?.name}
+									items={treemapTooltipItems(node)}
+									indicator="dot"
+									hideIndicator
+								/>
 							{/if}
 						{/snippet}
 					</Tooltip.Root>

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { scaleBand } from 'd3-scale';
-	import { BarChart, Highlight, type ChartContextValue } from 'layerchart';
+	import { BarChart, Highlight, Tooltip as TooltipPrimitive, type ChartContextValue } from 'layerchart';
 	import { cubicInOut } from 'svelte/easing';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { ChartContainer, ChartTooltip, type ChartConfig } from '$lib/components/ui/chart/index.js';
+	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
+	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
 	import { languageStore, t } from '$lib/stores/translationStore.svelte.js';
 
 	interface SeriesData {
@@ -158,6 +159,24 @@
 		});
 	}
 
+	function tooltipLabelFromPayload(payload: any[]): string {
+		const first = payload?.[0];
+		return first?.payload?.year ?? first?.label ?? first?.name ?? '';
+	}
+
+	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
+		return tooltipItemsWithValues(payload).map((item: any) => {
+			const key = item?.key ?? item?.name;
+			const config = key ? chartConfig[key] : undefined;
+			return {
+				key,
+				name: config?.label ?? item?.name ?? String(key ?? ''),
+				value: item?.value,
+				color: item?.color ?? config?.color
+			} satisfies TooltipItem;
+		});
+	}
+
 	// Filter series based on hidden state
 	const visibleSeriesDefs = $derived.by(() => {
 		return seriesDefs.filter((def) => !hiddenSeries.has(def.key));
@@ -238,7 +257,14 @@
 				{/snippet}
 
 				{#snippet tooltip({ context })}
-					<ChartTooltip items={tooltipItemsWithValues(context.tooltip?.payload ?? [])} />
+					<TooltipPrimitive.Root context={context} variant="none">
+						{#snippet children()}
+							<LayerChartTooltip
+								label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
+								items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+							/>
+						{/snippet}
+					</TooltipPrimitive.Root>
 				{/snippet}
 			</BarChart>
 			</ChartContainer>

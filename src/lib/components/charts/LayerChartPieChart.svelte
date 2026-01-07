@@ -3,6 +3,7 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { PieChart, Tooltip as TooltipPrimitive } from 'layerchart';
 	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
+	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
 
 	interface PieDataItem {
 		label: string;
@@ -197,6 +198,36 @@
 		if (!total) return '0.0%';
 		return `${((part / total) * 100).toFixed(1)}%`;
 	}
+
+	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
+		const first = payload?.[0];
+		const hovered = first?.payload ?? first;
+		const rawValue = hovered?.value ?? first?.value;
+		const value = typeof rawValue === 'number' ? rawValue : Number(rawValue);
+		if (!Number.isFinite(value)) return [];
+
+		const percent = formatPercent(value, visibleTotalValue);
+		const base: TooltipItem[] = showValues
+			? [
+					{
+						name: t('chart.documents'),
+						value: `${value.toLocaleString()} (${percent})`,
+						color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color
+					}
+				]
+			: [{ name: '', value: percent, color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color }];
+
+		if (othersGroupDetails.length > 0 && hovered?.isOthers) {
+			for (const item of othersGroupDetails) {
+				base.push({
+					name: item.label,
+					value: `${item.value.toLocaleString()} (${formatPercent(item.value, totalValue)})`
+				});
+			}
+		}
+
+		return base;
+	}
 </script>
 
 <div class="h-full w-full" role="img" aria-label={t('chart.pie_distribution_aria')}>
@@ -218,39 +249,23 @@
 							pie: { motion: { type: 'tween', duration: animationDuration } }
 						}}
 					>
-				{#snippet tooltip({ context })}
-					<TooltipPrimitive.Root variant="none" context={context}>
-						{#snippet children({ data: hovered })}
-							<div
-								class="grid min-w-[9rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl"
-							>
-								<div class="font-medium">{hovered.label}</div>
-								{#if showValues}
-									<div class="flex items-center justify-between gap-4">
-										<span class="text-muted-foreground">{t('chart.documents')}</span>
-										<span class="font-mono font-medium text-foreground tabular-nums">
-											{Number(hovered.value).toLocaleString()}
-										</span>
-									</div>
-								{/if}
-								<div class="text-muted-foreground">{formatPercent(Number(hovered.value), visibleTotalValue)}</div>
-
-								{#if othersGroupDetails.length > 0 && hovered.isOthers}
-									<div class="mt-1 grid gap-1">
-										{#each othersGroupDetails as item (item.label)}
-											<div class="flex items-center justify-between gap-4">
-												<span class="text-muted-foreground">{item.label}</span>
-												<span class="font-mono text-foreground tabular-nums">
-													{item.value.toLocaleString()} ({formatPercent(item.value, totalValue)})
-												</span>
-											</div>
-										{/each}
-									</div>
-								{/if}
-							</div>
+						{#snippet tooltip({ context })}
+							<TooltipPrimitive.Root context={context} variant="none">
+								{#snippet children()}
+									<LayerChartTooltip
+										label={
+											context.tooltip?.payload?.[0]?.payload?.label ??
+											context.tooltip?.payload?.[0]?.label ??
+											context.tooltip?.payload?.[0]?.payload?.name ??
+											context.tooltip?.payload?.[0]?.name ??
+											''
+										}
+										items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+										indicator="dot"
+									/>
+								{/snippet}
+							</TooltipPrimitive.Root>
 						{/snippet}
-					</TooltipPrimitive.Root>
-				{/snippet}
 					</PieChart>
 				</div>
 

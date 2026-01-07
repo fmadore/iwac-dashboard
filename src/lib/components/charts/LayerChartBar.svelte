@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { BarChart } from 'layerchart';
+	import { BarChart, Tooltip as TooltipPrimitive } from 'layerchart';
 	import { scaleBand } from 'd3-scale';
 	import { cubicInOut } from 'svelte/easing';
-	import { ChartContainer, ChartTooltip, type ChartConfig } from '$lib/components/ui/chart/index.js';
+	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
+	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 
 	interface ChartDataItem {
@@ -159,6 +160,29 @@
 		if (effectiveXAxisLabelRotate > 0) return 80;
 		return data.length > 10 ? 60 : 40;
 	});
+
+	function tooltipLabelFromPayload(payload: any[]): string {
+		const first = payload?.[0];
+		return (
+			first?.payload?.category ??
+			first?.payload?.name ??
+			first?.label ??
+			first?.name ??
+			''
+		);
+	}
+
+	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
+		return (payload ?? [])
+			.map((item: any) => {
+				const key = item?.key ?? item?.name;
+				const name = key === 'documents' ? t('chart.documents') : (item?.name ?? item?.key ?? '');
+				const value = item?.value;
+				const color = item?.payload?.color ?? item?.color;
+				return { key, name, value, color } satisfies TooltipItem;
+			})
+			.filter((i) => i.name && i.value !== undefined);
+	}
 </script>
 
 <div
@@ -207,7 +231,14 @@
 					}}
 				>
 					{#snippet tooltip({ context })}
-						<ChartTooltip items={context.tooltip?.payload ?? []} />
+						<TooltipPrimitive.Root context={context} variant="none">
+							{#snippet children()}
+								<LayerChartTooltip
+									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
+									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+								/>
+							{/snippet}
+						</TooltipPrimitive.Root>
 					{/snippet}
 				</BarChart>
 			{:else}
@@ -247,7 +278,14 @@
 					}}
 				>
 					{#snippet tooltip({ context })}
-						<ChartTooltip items={context.tooltip?.payload ?? []} />
+						<TooltipPrimitive.Root context={context} variant="none">
+							{#snippet children()}
+								<LayerChartTooltip
+									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
+									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+								/>
+							{/snippet}
+						</TooltipPrimitive.Root>
 					{/snippet}
 				</BarChart>
 			{/if}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { scaleTime, scaleBand } from 'd3-scale';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
 
 	// Types for duration data
 	interface CoveragePeriod {
@@ -116,15 +117,55 @@
 		}
 		return ticks;
 	});
+
+	let containerEl = $state<HTMLDivElement | null>(null);
+	let tooltipOpen = $state(false);
+	let tooltipX = $state(0);
+	let tooltipY = $state(0);
+	let tooltipItem = $state<(typeof chartData)[number] | null>(null);
+
+	function updateTooltipPosition(e: PointerEvent) {
+		if (!containerEl) return;
+		const rect = containerEl.getBoundingClientRect();
+		tooltipX = e.clientX - rect.left + 12;
+		tooltipY = e.clientY - rect.top + 12;
+	}
+
+	function showTooltip(e: PointerEvent, item: (typeof chartData)[number]) {
+		tooltipOpen = true;
+		tooltipItem = item;
+		updateTooltipPosition(e);
+	}
+
+	function hideTooltip() {
+		tooltipOpen = false;
+		tooltipItem = null;
+	}
+
+	function durationTooltipItems(item: (typeof chartData)[number]): TooltipItem[] {
+		return [
+			{ name: item.country, value: item.periodLabel, color: getCountryColor(item.country) },
+			{ name: t('coverage.articles'), value: item.totalArticles }
+		];
+	}
 </script>
 
 {#key chartKey}
 	<div
-		class="h-full w-full {className}"
+		bind:this={containerEl}
+		class="relative h-full w-full {className}"
 		style="height: {height}px;"
 		role="img"
 		aria-label={t('coverage.chart_aria')}
 	>
+		{#if tooltipOpen && tooltipItem}
+			<div
+				class="pointer-events-none absolute left-0 top-0 z-50"
+				style="transform: translate({tooltipX}px, {tooltipY}px);"
+			>
+				<LayerChartTooltip label={tooltipItem.name} items={durationTooltipItems(tooltipItem)} />
+			</div>
+		{/if}
 		{#if chartData.length > 0}
 			<svg
 				viewBox="0 0 {chartWidth} {chartHeight}"
@@ -176,6 +217,8 @@
 							rx={4}
 							ry={4}
 							class="cursor-pointer transition-opacity duration-200 hover:opacity-70"
+							onpointermove={(e) => showTooltip(e, item)}
+							onpointerleave={hideTooltip}
 						>
 							<title
 								>{item.name}: {item.periodLabel} ({item.country}) - {item.totalArticles.toLocaleString()}
