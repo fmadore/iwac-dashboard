@@ -9,7 +9,7 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
-	import BarChartRace from '$lib/components/charts/BarChartRace.svelte';
+	import { BarChartRace } from '$lib/components/visualizations/charts/d3/index.js';
 	import {
 		FileText,
 		Tags,
@@ -744,8 +744,12 @@
 					<Card.Content class="p-6">
 						<div class="flex items-center justify-between">
 							<div>
-								<p class="text-sm font-medium text-muted-foreground">{t('scary.total_occurrences')}</p>
-								<p class="text-2xl font-bold">{(globalData?.total_occurrences ?? 0).toLocaleString()}</p>
+								<p class="text-sm font-medium text-muted-foreground">
+									{t('scary.total_occurrences')}
+								</p>
+								<p class="text-2xl font-bold">
+									{(globalData?.total_occurrences ?? 0).toLocaleString()}
+								</p>
 							</div>
 							<div class="rounded-full bg-chart-4/10 p-3">
 								<TrendingUp class="h-5 w-5 text-chart-4" />
@@ -762,8 +766,10 @@
 				<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 					<!-- View Mode Toggle -->
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="text-sm font-medium text-muted-foreground mr-2">{t('scary.view_mode')}:</span>
-						<div class="inline-flex rounded-lg border border-border p-1 bg-muted/30">
+						<span class="mr-2 text-sm font-medium text-muted-foreground"
+							>{t('scary.view_mode')}:</span
+						>
+						<div class="inline-flex rounded-lg border border-border bg-muted/30 p-1">
 							<Button
 								variant={viewMode === 'race' ? 'default' : 'ghost'}
 								size="sm"
@@ -856,7 +862,7 @@
 							<Button variant="outline" size="icon" onclick={reset} title={t('scary.reset')}>
 								<RotateCcw class="h-4 w-4" />
 							</Button>
-							<span class="ml-2 min-w-16 text-center text-lg font-bold tabular-nums text-primary">
+							<span class="ml-2 min-w-16 text-center text-lg font-bold text-primary tabular-nums">
 								{currentYear}
 							</span>
 						</div>
@@ -954,7 +960,9 @@
 				<Card.Content>
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{#each Object.entries(metadata.term_definitions) as [family, variants]}
-							<div class="group rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50">
+							<div
+								class="group rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50"
+							>
 								<h4 class="mb-2 font-semibold text-foreground capitalize">{family}</h4>
 								<div class="flex flex-wrap gap-1.5">
 									{#each variants as variant}

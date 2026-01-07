@@ -8,8 +8,8 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph } from '$lib/components/network/index.js';
-	import StatsCard from '$lib/components/stats-card.svelte';
+	import { NetworkGraph } from '$lib/components/visualizations/network/index.js';
+	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import type {
 		GlobalNetworkData,
 		GlobalNetworkNode,
@@ -17,7 +17,16 @@
 		EntityType,
 		NodeSizeBy
 	} from '$lib/types/network.js';
-	import { ZoomIn, ZoomOut, Maximize2, Users, Building2, Calendar, Tag, MapPin } from '@lucide/svelte';
+	import {
+		ZoomIn,
+		ZoomOut,
+		Maximize2,
+		Users,
+		Building2,
+		Calendar,
+		Tag,
+		MapPin
+	} from '@lucide/svelte';
 
 	// Data state
 	let networkData = $state<GlobalNetworkData | null>(null);
@@ -64,9 +73,7 @@
 		if (!networkData) return [];
 		return networkData.edges.filter(
 			(e) =>
-				e.weight >= minEdgeWeight &&
-				filteredNodeIds.has(e.source) &&
-				filteredNodeIds.has(e.target)
+				e.weight >= minEdgeWeight && filteredNodeIds.has(e.source) && filteredNodeIds.has(e.target)
 		);
 	});
 
@@ -203,10 +210,7 @@
 			<StatsCard title={t('network.total_entities')} value={networkData.meta.totalNodes} />
 			<StatsCard title={t('network.visible_nodes')} value={filteredNodes.length} />
 			<StatsCard title={t('network.visible_edges')} value={filteredEdgeCount} />
-			<StatsCard
-				title={t('network.max_weight')}
-				value={networkData.meta.weightMax}
-			/>
+			<StatsCard title={t('network.max_weight')} value={networkData.meta.weightMax} />
 		</div>
 
 		<!-- Entity Type Filters -->
@@ -219,7 +223,7 @@
 						{@const isEnabled = enabledTypes.has(type as EntityType)}
 						{@const count = nodeCountsByType[type as EntityType]}
 						<button
-							class="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-all border"
+							class="flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-all"
 							class:opacity-40={!isEnabled}
 							style:background-color={isEnabled ? `${config.color}20` : 'transparent'}
 							style:border-color={config.color}
@@ -289,10 +293,20 @@
 
 					<!-- Zoom Controls -->
 					<div class="ml-auto flex items-center gap-1">
-						<Button variant="outline" size="icon" onclick={handleZoomIn} title={t('network.zoom_in')}>
+						<Button
+							variant="outline"
+							size="icon"
+							onclick={handleZoomIn}
+							title={t('network.zoom_in')}
+						>
 							<ZoomIn class="h-4 w-4" />
 						</Button>
-						<Button variant="outline" size="icon" onclick={handleZoomOut} title={t('network.zoom_out')}>
+						<Button
+							variant="outline"
+							size="icon"
+							onclick={handleZoomOut}
+							title={t('network.zoom_out')}
+						>
 							<ZoomOut class="h-4 w-4" />
 						</Button>
 						<Button
@@ -346,15 +360,15 @@
 					{@const nodeColor = entityTypeConfig[selectedNode.type].color}
 					{@const NodeIcon = entityTypeConfig[selectedNode.type].icon}
 					<div
-						class="absolute right-4 top-4 z-10 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm"
+						class="absolute top-4 right-4 z-10 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm"
 					>
 						<div class="flex items-start justify-between gap-2">
-							<div class="flex-1 min-w-0">
+							<div class="min-w-0 flex-1">
 								<div class="flex items-center gap-2">
 									<span style="color: {nodeColor}">
 										<NodeIcon class="h-4 w-4 shrink-0" />
 									</span>
-									<h3 class="font-semibold truncate">{selectedNode.label}</h3>
+									<h3 class="truncate font-semibold">{selectedNode.label}</h3>
 								</div>
 								<Badge variant="outline" class="mt-1">
 									{t(entityTypeConfig[selectedNode.type].label)}

@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import AppSidebar from '$lib/components/app-sidebar.svelte';
-	import LanguageToggle from '$lib/components/language-toggle.svelte';
-	import ThemeToggle from '$lib/components/theme-toggle.svelte';
-	import FullscreenToggle from '$lib/components/fullscreen-toggle.svelte';
-	import UrlStateSync from '$lib/components/url-state-sync.svelte';
-	import SafeModeWatcher from '$lib/components/safe-mode-watcher.svelte';
+	import { AppSidebar, FullscreenToggle } from '$lib/components/layout/index.js';
+	import { LanguageToggle, ThemeToggle } from '$lib/components/controls/index.js';
+	import { UrlStateSync, SafeModeWatcher } from '$lib/components/utilities/index.js';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import '../app.css';
@@ -60,7 +57,7 @@
 				<LanguageToggle />
 			</div>
 		</header>
-		<main class="min-w-0 flex-1 w-full overflow-x-hidden overflow-y-auto p-4 md:p-6">
+		<main class="w-full min-w-0 flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6">
 			{@render children?.()}
 		</main>
 	</Sidebar.Inset>

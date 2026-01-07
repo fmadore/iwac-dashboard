@@ -47,27 +47,30 @@ Static SvelteKit dashboard for the Islam West Africa Collection (IWAC), fully pr
 ## Project Structure
 
 ```
-src/
-├── lib/
-│   ├── components/
-│   │   ├── ui/                    # shadcn-svelte components
-│   │   ├── charts/                # Chart components (LayerChart/D3)
-│   │   ├── facets/                # Faceted visualization components
-│   │   ├── lazy/                  # Lazy loading components
-│   │   ├── app-sidebar.svelte     # Main navigation sidebar
-│   │   └── ...
-│   ├── stores/
-│   │   ├── itemsStore.ts          # Global data store
-│   │   └── translationStore.ts    # i18n store
-│   └── utils/
-│       └── dataFetcher.ts         # Data loading utilities
-├── routes/
-│   ├── +layout.svelte             # Root layout
-│   ├── +page.svelte               # Overview
-│   └── ...
-scripts/                           # Python data generation scripts
-static/data/                       # Static JSON files
+src/lib/components/
+├── controls/              # Language/Theme toggles
+├── dashboard/             # OverviewStatsGrid, StatsCard
+├── facets/                # FacetPie
+├── layout/                # AppSidebar, FullscreenToggle
+├── lazy/                  # LazyLoad, LazyComponent
+├── ui/                    # shadcn-svelte (DO NOT MODIFY)
+├── utilities/             # SafeModeWatcher, UrlStateSync
+└── visualizations/
+    ├── charts/
+    │   ├── d3/            # BarChartRace, CooccurrenceMatrix, StackedBarChart, TimelineChart
+    │   └── layerchart/    # Bar, Duration, PieChart, Tooltip, Treemap
+    ├── network/           # NetworkGraph, NetworkControls, NetworkNodePanel
+    ├── world-map/         # WorldMapVisualization, Map, ChoroplethLayer
+    └── Wordcloud.svelte
 ```
+
+**Import Pattern (use barrel exports with `/index.js`):**
+```ts
+import { AppSidebar } from '$lib/components/layout/index.js';
+import { TimelineChart } from '$lib/components/visualizations/charts/d3/index.js';
+import { Bar, PieChart } from '$lib/components/visualizations/charts/layerchart/index.js';
+```
+
 
 ## Tool Usage
 - **Svelte MCP:** ALWAYS use for Svelte code. Workflow: `list-sections` -> `get-documentation` -> Write -> `svelte-autofixer`.

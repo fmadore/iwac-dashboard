@@ -3,7 +3,7 @@
 	import { scaleBand } from 'd3-scale';
 	import { cubicInOut } from 'svelte/easing';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
-	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
+	import Tooltip, { type TooltipItem } from '../layerchart/Tooltip.svelte';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
 	interface Props {
@@ -173,9 +173,9 @@
 			{/snippet}
 
 			{#snippet timelineTooltip({ context })}
-				<TooltipPrimitive.Root context={context} variant="none">
+				<TooltipPrimitive.Root {context} variant="none">
 					{#snippet children({ data })}
-						<LayerChartTooltip
+						<Tooltip
 							label={data?.monthLabel ?? ''}
 							items={data ? buildTooltipItems(data) : []}
 							indicator="dot"
@@ -186,9 +186,8 @@
 
 			<ChartContainer
 				config={chartConfig}
-				class="aspect-auto h-full w-full min-w-0 justify-start flex-col items-stretch"
+				class="aspect-auto h-full w-full min-w-0 flex-col items-stretch justify-start"
 			>
-
 				<BarChart
 					data={normalizedChartData}
 					xScale={scaleBand().padding(0.2)}

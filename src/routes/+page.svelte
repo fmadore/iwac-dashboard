@@ -3,7 +3,7 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { overviewStore } from '$lib/stores/overviewStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import OverviewStatsGrid from '$lib/components/overview-stats-grid.svelte';
+	import OverviewStatsGrid from '$lib/components/dashboard/OverviewStatsGrid.svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 
 	// Svelte 5: Get store values directly as state

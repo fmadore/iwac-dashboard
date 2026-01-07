@@ -9,7 +9,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
-	import WordCloud from '$lib/components/wordcloud.svelte';
+	import { Wordcloud as WordCloud } from '$lib/components/visualizations/index.js';
 
 	// Use URL sync hook
 	const urlSync = useUrlSync();
@@ -70,9 +70,7 @@
 	);
 
 	// Calculate total frequency for percentages
-	let totalFrequency = $derived(
-		currentData.reduce((sum, [, freq]) => sum + freq, 0)
-	);
+	let totalFrequency = $derived(currentData.reduce((sum, [, freq]) => sum + freq, 0));
 
 	// Enhanced word data with rank, percentage, and cumulative percentage
 	let enrichedWordData = $derived.by(() => {
@@ -106,9 +104,7 @@
 	});
 
 	// Max frequency for bar width calculation
-	let maxFrequency = $derived(
-		currentData.length > 0 ? currentData[0][1] : 1
-	);
+	let maxFrequency = $derived(currentData.length > 0 ? currentData[0][1] : 1);
 
 	let availableCountries = $derived(metadata?.countries || []);
 	let availableYears = $derived(metadata?.years || []);
@@ -296,19 +292,21 @@
 		{#if currentMetrics}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
 				<Card class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.articles')}</h3>
+					<h3 class="pb-2 text-sm font-medium text-muted-foreground">{t('words.articles')}</h3>
 					<div class="text-2xl font-bold">{currentMetrics.total_articles.toLocaleString()}</div>
 				</Card>
 				<Card class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.total_words')}</h3>
+					<h3 class="pb-2 text-sm font-medium text-muted-foreground">{t('words.total_words')}</h3>
 					<div class="text-2xl font-bold">{currentMetrics.total_words.toLocaleString()}</div>
 				</Card>
 				<Card class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.unique_words')}</h3>
+					<h3 class="pb-2 text-sm font-medium text-muted-foreground">{t('words.unique_words')}</h3>
 					<div class="text-2xl font-bold">{currentMetrics.unique_words.toLocaleString()}</div>
 				</Card>
 				<Card class="p-6">
-					<h3 class="text-sm font-medium text-muted-foreground pb-2">{t('words.displayed_words')}</h3>
+					<h3 class="pb-2 text-sm font-medium text-muted-foreground">
+						{t('words.displayed_words')}
+					</h3>
 					<div class="text-2xl font-bold">{currentData.length}</div>
 				</Card>
 			</div>
@@ -396,9 +394,11 @@
 												<Table.Cell class="font-medium">{item.word}</Table.Cell>
 												<Table.Cell>
 													<div class="flex items-center gap-2">
-														<div class="relative h-2 w-full max-w-24 overflow-hidden rounded-full bg-muted">
+														<div
+															class="relative h-2 w-full max-w-24 overflow-hidden rounded-full bg-muted"
+														>
 															<div
-																class="absolute left-0 top-0 h-full rounded-full bg-primary transition-all"
+																class="absolute top-0 left-0 h-full rounded-full bg-primary transition-all"
 																style="width: {(item.frequency / maxFrequency) * 100}%"
 															></div>
 														</div>
@@ -421,13 +421,13 @@
 
 							{#if !searchQuery.trim() && filteredWords.length > INITIAL_WORDS_COUNT}
 								<div class="flex justify-center pt-2">
-									<Button
-										variant="outline"
-										onclick={() => (showAllWords = !showAllWords)}
-									>
+									<Button variant="outline" onclick={() => (showAllWords = !showAllWords)}>
 										{showAllWords ? t('words.show_less') : t('words.show_more')}
 										<span class="ml-1 text-muted-foreground">
-											({showAllWords ? INITIAL_WORDS_COUNT : filteredWords.length - INITIAL_WORDS_COUNT} {showAllWords ? t('words.displayed_words').toLowerCase() : 'more'})
+											({showAllWords
+												? INITIAL_WORDS_COUNT
+												: filteredWords.length - INITIAL_WORDS_COUNT}
+											{showAllWords ? t('words.displayed_words').toLowerCase() : 'more'})
 										</span>
 									</Button>
 								</div>

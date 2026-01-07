@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { scaleBand } from 'd3-scale';
-	import { BarChart, Highlight, Tooltip as TooltipPrimitive, type ChartContextValue } from 'layerchart';
+	import {
+		BarChart,
+		Highlight,
+		Tooltip as TooltipPrimitive,
+		type ChartContextValue
+	} from 'layerchart';
 	import { cubicInOut } from 'svelte/easing';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
-	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
+	import Tooltip, { type TooltipItem } from '../layerchart/Tooltip.svelte';
 	import { languageStore, t } from '$lib/stores/translationStore.svelte.js';
 
 	interface SeriesData {
@@ -23,7 +28,14 @@
 		animate?: boolean;
 	}
 
-	let { title = '', years = [], series = [], height = '600px', colors = {}, animate = true }: Props = $props();
+	let {
+		title = '',
+		years = [],
+		series = [],
+		height = '600px',
+		colors = {},
+		animate = true
+	}: Props = $props();
 	let containerWidth = $state(0);
 	let context = $state<ChartContextValue>();
 	let mounted = $state(false);
@@ -207,71 +219,68 @@
 	{#if mounted && containerWidth > 0 && chartData.length > 0 && seriesDefs.length > 0}
 		<!-- Chart area takes remaining space -->
 		<div class="min-h-0 flex-1">
-			<ChartContainer
-				config={chartConfig}
-				class="h-full w-full min-w-0 aspect-auto justify-start"
-			>
-			<BarChart
-				bind:context
-				data={chartData}
-				xScale={scaleBand().padding(0.25)}
-				x="year"
-				axis="x"
-				rule={false}
-				padding={{ left: 52, right: 16, top: title ? 24 : 8, bottom: bottomPadding }}
-				series={visibleSeriesDefs.map((def, index) => ({
-					key: def.key,
-					label: def.label,
-					color: def.color,
-					props: index === 0 ? { rounded: 'bottom' } : undefined
-				}))}
-				seriesLayout="stack"
-				legend={false}
-				props={{
-					bars: {
-						stroke: 'none',
-						initialY: shouldAnimate ? context?.height : undefined,
-						initialHeight: shouldAnimate ? 0 : undefined,
-						motion: shouldAnimate
-							? {
-									y: { type: 'tween', duration: animationDuration, easing: cubicInOut },
-									height: { type: 'tween', duration: animationDuration, easing: cubicInOut }
-								}
-							: undefined
-					},
-					highlight: { area: false },
-					xAxis: {
-						ticks: xAxisTicks,
-						format: (d: string) => d,
-						tickLabelProps: {
-							rotate: effectiveXAxisLabelRotate > 0 ? effectiveXAxisLabelRotate : undefined,
-							textAnchor: effectiveXAxisLabelRotate > 0 ? 'start' : 'middle',
-							dy: effectiveXAxisLabelRotate > 0 ? '0.5em' : undefined,
-							dx: effectiveXAxisLabelRotate > 0 ? 2 : undefined
+			<ChartContainer config={chartConfig} class="aspect-auto h-full w-full min-w-0 justify-start">
+				<BarChart
+					bind:context
+					data={chartData}
+					xScale={scaleBand().padding(0.25)}
+					x="year"
+					axis="x"
+					rule={false}
+					padding={{ left: 52, right: 16, top: title ? 24 : 8, bottom: bottomPadding }}
+					series={visibleSeriesDefs.map((def, index) => ({
+						key: def.key,
+						label: def.label,
+						color: def.color,
+						props: index === 0 ? { rounded: 'bottom' } : undefined
+					}))}
+					seriesLayout="stack"
+					legend={false}
+					props={{
+						bars: {
+							stroke: 'none',
+							initialY: shouldAnimate ? context?.height : undefined,
+							initialHeight: shouldAnimate ? 0 : undefined,
+							motion: shouldAnimate
+								? {
+										y: { type: 'tween', duration: animationDuration, easing: cubicInOut },
+										height: { type: 'tween', duration: animationDuration, easing: cubicInOut }
+									}
+								: undefined
+						},
+						highlight: { area: false },
+						xAxis: {
+							ticks: xAxisTicks,
+							format: (d: string) => d,
+							tickLabelProps: {
+								rotate: effectiveXAxisLabelRotate > 0 ? effectiveXAxisLabelRotate : undefined,
+								textAnchor: effectiveXAxisLabelRotate > 0 ? 'start' : 'middle',
+								dy: effectiveXAxisLabelRotate > 0 ? '0.5em' : undefined,
+								dx: effectiveXAxisLabelRotate > 0 ? 2 : undefined
+							}
 						}
-					}
-				}}
-			>
-				{#snippet belowMarks()}
-					<Highlight area={{ class: 'fill-muted' }} />
-				{/snippet}
+					}}
+				>
+					{#snippet belowMarks()}
+						<Highlight area={{ class: 'fill-muted' }} />
+					{/snippet}
 
-				{#snippet tooltip({ context })}
-					<TooltipPrimitive.Root context={context} variant="none">
-						{#snippet children()}
-							<LayerChartTooltip
-								label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
-								items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
-							/>
-						{/snippet}
-					</TooltipPrimitive.Root>
-				{/snippet}
-			</BarChart>
+					{#snippet tooltip({ context })}
+						<TooltipPrimitive.Root {context} variant="none">
+							{#snippet children()}
+								<Tooltip
+									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
+									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+								/>
+							{/snippet}
+						</TooltipPrimitive.Root>
+					{/snippet}
+				</BarChart>
 			</ChartContainer>
 		</div>
 
 		<!-- Custom centered legend with click-to-toggle (fixed height, no shrink) -->
-		<div class="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-2 pb-2 pt-3">
+		<div class="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-3 pb-2">
 			{#each sortedSeriesDefs as def (def.key)}
 				<button
 					type="button"
@@ -279,15 +288,14 @@
 					class:opacity-40={hiddenSeries.has(def.key)}
 					onclick={() => toggleSeries(def.key)}
 				>
-					<span
-						class="h-3 w-3 shrink-0 rounded-full"
-						style="background-color: {def.color};"
-					></span>
+					<span class="h-3 w-3 shrink-0 rounded-full" style="background-color: {def.color};"></span>
 					<span class="text-foreground">{def.label}</span>
 				</button>
 			{/each}
 		</div>
 	{:else}
-		<div class="flex h-full w-full items-center justify-center text-muted-foreground">{t('chart.no_data')}</div>
+		<div class="flex h-full w-full items-center justify-center text-muted-foreground">
+			{t('chart.no_data')}
+		</div>
 	{/if}
 </div>

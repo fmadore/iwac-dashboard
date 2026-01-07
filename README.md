@@ -77,9 +77,9 @@ npm run dev -- --open
 - **UI Components**: shadcn-svelte (Card, Button, Table, Skeleton, etc.)
 - **Styling**: Tailwind CSS v4 with CSS variables theming
 - **Visualizations**:
-  - ECharts (preferred for new charts)
+  - LayerChart (preferred for new charts)
   - D3.js (custom visualizations, treemaps, word clouds)
-  - d3-cloud for word cloud layouts
+  - ECharts (complex charts with many options)
 - **Icons**: Lucide Svelte
 - **Theme Management**: mode-watcher
 - **Data Processing**: Python scripts generating static JSON files
@@ -95,98 +95,85 @@ iwac-dashboard/
 ├── src/
 │   ├── lib/
 │   │   ├── components/
+│   │   │   ├── controls/                    # Controls (toggles)
+│   │   │   │   ├── LanguageToggle.svelte    # EN/FR language switcher
+│   │   │   │   ├── ThemeToggle.svelte       # Dark/light mode toggle
+│   │   │   │   └── index.ts                 # Barrel export
+│   │   │   ├── dashboard/                   # Dashboard components
+│   │   │   │   ├── OverviewStatsGrid.svelte # Overview statistics grid
+│   │   │   │   ├── StatsCard.svelte         # Statistics display card
+│   │   │   │   └── index.ts
+│   │   │   ├── facets/                      # Faceted visualizations
+│   │   │   │   └── FacetPie.svelte          # Pie chart facet
+│   │   │   ├── layout/                      # Layout components
+│   │   │   │   ├── AppSidebar.svelte        # Navigation sidebar
+│   │   │   │   ├── FullscreenToggle.svelte  # Fullscreen mode toggle
+│   │   │   │   └── index.ts
+│   │   │   ├── lazy/                        # Lazy loading components
+│   │   │   │   ├── LazyLoad.svelte          # Viewport lazy loading
+│   │   │   │   ├── LazyComponent.svelte     # Dynamic import lazy loading
+│   │   │   │   └── index.ts
 │   │   │   ├── ui/                          # shadcn-svelte components
 │   │   │   │   ├── card/                    # Card component
 │   │   │   │   ├── button/                  # Button component
 │   │   │   │   ├── table/                   # Table component
-│   │   │   │   ├── skeleton/                # Loading skeleton
-│   │   │   │   ├── badge/                   # Badge component
 │   │   │   │   └── ...                      # Other UI components
-│   │   │   ├── charts/                      # Visualization components
-│   │   │   │   ├── BarChartRace.svelte      # Animated racing bar chart
-│   │   │   │   ├── CustomTreemap.svelte     # D3 treemap
-│   │   │   │   ├── EChartsBarChart.svelte   # ECharts bar chart
-│   │   │   │   ├── LayerChartPieChart.svelte # LayerChart pie chart
-│   │   │   │   ├── StackedBarChart.svelte   # Stacked bar chart
-│   │   │   │   ├── TimelineChart.svelte     # Timeline visualization
-│   │   │   │   └── utils.ts                 # Chart utilities
-│   │   │   ├── facets/                      # Faceted visualizations
-│   │   │   │   └── FacetPie.svelte          # Pie chart facet
-│   │   │   ├── app-sidebar.svelte           # Navigation sidebar
-│   │   │   ├── language-toggle.svelte       # EN/FR language switcher
-│   │   │   ├── theme-toggle.svelte          # Dark/light mode toggle
-│   │   │   ├── fullscreen-toggle.svelte     # Fullscreen mode toggle
-│   │   │   ├── stats-card.svelte            # Statistics display card
-│   │   │   ├── overview-stats-grid.svelte   # Overview statistics grid
-│   │   │   ├── wordcloud.svelte             # Word cloud visualization
-│   │   │   └── url-state-sync.svelte        # URL state synchronization
+│   │   │   ├── utilities/                   # Utility components
+│   │   │   │   ├── SafeModeWatcher.svelte   # Safe mode watcher
+│   │   │   │   ├── UrlStateSync.svelte      # URL state synchronization
+│   │   │   │   └── index.ts
+│   │   │   └── visualizations/              # All visualizations
+│   │   │       ├── charts/
+│   │   │       │   ├── d3/                  # D3-based charts
+│   │   │       │   │   ├── BarChartRace.svelte
+│   │   │       │   │   ├── CooccurrenceMatrix.svelte
+│   │   │       │   │   ├── StackedBarChart.svelte
+│   │   │       │   │   ├── TimelineChart.svelte
+│   │   │       │   │   ├── WordAssociations.svelte
+│   │   │       │   │   └── index.ts
+│   │   │       │   ├── layerchart/          # LayerChart-based charts
+│   │   │       │   │   ├── Bar.svelte
+│   │   │       │   │   ├── Duration.svelte
+│   │   │       │   │   ├── PieChart.svelte
+│   │   │       │   │   ├── Tooltip.svelte
+│   │   │       │   │   ├── Treemap.svelte
+│   │   │       │   │   └── index.ts
+│   │   │       │   ├── utils.ts             # Chart utilities
+│   │   │       │   └── index.ts
+│   │   │       ├── network/                 # Network visualizations
+│   │   │       │   ├── NetworkGraph.svelte
+│   │   │       │   ├── NetworkControls.svelte
+│   │   │       │   ├── NetworkNodePanel.svelte
+│   │   │       │   └── index.ts
+│   │   │       ├── world-map/               # Map visualizations
+│   │   │       │   ├── WorldMapVisualization.svelte
+│   │   │       │   ├── Map.svelte
+│   │   │       │   ├── ChoroplethLayer.svelte
+│   │   │       │   └── index.ts
+│   │   │       ├── Wordcloud.svelte         # Word cloud visualization
+│   │   │       └── index.ts
 │   │   ├── stores/                          # Svelte stores
-│   │   │   ├── itemsStore.ts                # Global data store
-│   │   │   └── translationStore.ts          # i18n translation store
+│   │   │   ├── itemsStore.svelte.ts         # Global data store
+│   │   │   ├── translationStore.svelte.ts   # i18n translation store
+│   │   │   └── ...
 │   │   ├── types/                           # TypeScript definitions
-│   │   │   └── index.ts                     # Type exports
 │   │   ├── hooks/                           # Custom Svelte hooks
-│   │   ├── index.ts                         # Library exports
-│   │   └── utils.ts                         # Utility functions
+│   │   └── utils/                           # Utility functions
 │   ├── routes/                              # SvelteKit file-based routing
 │   │   ├── +layout.svelte                   # Root layout with sidebar
-│   │   ├── +layout.js                       # Layout load function
 │   │   ├── +page.svelte                     # Overview dashboard (/)
-│   │   ├── +page.ts                         # Page load function
-│   │   ├── +error.svelte                    # Error page
 │   │   ├── countries/+page.svelte           # Country treemap view
 │   │   ├── languages/+page.svelte           # Language distribution
 │   │   ├── entities/+page.svelte            # Entity index table
 │   │   ├── timeline/+page.svelte            # Timeline analysis
-│   │   ├── categories/+page.svelte          # Category distribution
-│   │   ├── words/+page.svelte               # Word cloud view
-│   │   ├── scary/+page.svelte               # Scary terms analysis
-│   │   └── sitemap.xml/+server.ts           # Sitemap generation
+│   │   └── ...
 │   ├── app.html                             # HTML template
-│   ├── app.css                              # Global styles with CSS variables
-│   ├── app.d.ts                             # App type definitions
-│   └── demo.spec.ts                         # Demo test
+│   └── app.css                              # Global styles with CSS variables
 ├── scripts/                                 # Python data generation scripts
-│   ├── generate_overview_stats.py           # Overview statistics
-│   ├── generate_index_entities.py           # Entity index data
-│   ├── generate_language_facets.py          # Language distribution
-│   ├── generate_treemap.py                  # Country treemap data
-│   ├── generate_wordcloud.py                # Word frequency data
-│   ├── generate_timeline.py                 # Timeline data
-│   ├── generate_categories.py               # Category data
-│   ├── generate_scary_terms.py              # Scary terms analysis
-│   ├── generate-pwa-icons.js                # PWA icon generation
-│   └── requirements.txt                     # Python dependencies
-├── static/                                  # Static assets
-│   ├── data/                                # Static JSON data files
-│   │   ├── overview-stats.json              # Overview statistics
-│   │   ├── index-entities.json              # Entity data
-│   │   ├── language-*.json                  # Language facets
-│   │   ├── treemap-*.json                   # Treemap data
-│   │   ├── wordcloud-*.json                 # Word cloud data
-│   │   ├── timeline-*.json                  # Timeline data
-│   │   ├── categories-*.json                # Category data
-│   │   └── scary-terms-*.json               # Scary terms data
-│   ├── favicon.png                          # Favicon
-│   ├── pwa-*.png                            # PWA icons
-│   └── robots.txt                           # Robots.txt
-├── build/                                   # Production build output
-│   ├── *.html                               # Prerendered pages
-│   ├── _app/                                # SvelteKit app files
-│   └── data/                                # Copied JSON data
-├── e2e/                                     # E2E tests
-│   └── demo.test.ts                         # Playwright tests
-├── docs/                                    # Documentation
-├── svelte.config.js                         # SvelteKit configuration
-├── vite.config.ts                           # Vite configuration
-├── tsconfig.json                            # TypeScript configuration
-├── tailwind.config.js                       # Tailwind CSS configuration
-├── playwright.config.ts                     # Playwright configuration
-├── vitest-setup-client.ts                   # Vitest setup
-├── eslint.config.js                         # ESLint configuration
-├── components.json                          # shadcn-svelte configuration
-└── package.json                             # Dependencies and scripts
+├── static/data/                             # Static JSON data files
+└── build/                                   # Production build output
 ```
+
 
 ## Building
 
@@ -300,7 +287,7 @@ The site is configured for deployment at a subpath (`/iwac-dashboard/`) using th
 3. **Use CSS variables** - No hardcoded colors
 4. **Static JSON data only** - All data from `/data/*.json`
 5. **Bilingual required** - All text must support EN/FR
-6. **ECharts preferred** - Use ECharts for new visualizations
+6. **LayerChart preferred** - Use LayerChart for new visualizations
 
 ### Color System
 

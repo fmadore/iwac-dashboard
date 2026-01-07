@@ -4,8 +4,10 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import CooccurrenceMatrix from '$lib/components/charts/CooccurrenceMatrix.svelte';
-	import WordAssociations from '$lib/components/charts/WordAssociations.svelte';
+	import {
+		CooccurrenceMatrix,
+		WordAssociations
+	} from '$lib/components/visualizations/charts/d3/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import {

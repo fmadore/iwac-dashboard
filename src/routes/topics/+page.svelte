@@ -6,7 +6,7 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import LayerChartBar from '$lib/components/charts/LayerChartBar.svelte';
+	import { Bar as LayerChartBar } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { Search, ArrowRight, FileText, BrainCircuit, Target, AlertCircle } from '@lucide/svelte';
 	import type { TopicsSummaryData, TopicSummary } from '$lib/types/topics.js';
 
@@ -212,11 +212,16 @@
 					<div>
 						<Card.Title>{t('topics.all_topics')}</Card.Title>
 						<Card.Description>
-							{t('topics.showing_topics', [filteredTopics.length.toString(), stats.uniqueTopics.toString()])}
+							{t('topics.showing_topics', [
+								filteredTopics.length.toString(),
+								stats.uniqueTopics.toString()
+							])}
 						</Card.Description>
 					</div>
 					<div class="relative w-full sm:w-64">
-						<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+						<Search
+							class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+						/>
 						<Input
 							type="text"
 							placeholder={t('topics.search_topics')}
@@ -237,16 +242,19 @@
 								class="group flex items-start justify-between rounded-lg border bg-card p-4 transition-colors hover:bg-accent"
 							>
 								<div class="min-w-0 flex-1">
-									<p class="font-medium leading-tight group-hover:text-accent-foreground">
+									<p class="leading-tight font-medium group-hover:text-accent-foreground">
 										{topic.label}
 									</p>
 									<p class="mt-1 text-sm text-muted-foreground">
-										{topic.count.toLocaleString()} {t('topics.documents').toLowerCase()}
+										{topic.count.toLocaleString()}
+										{t('topics.documents').toLowerCase()}
 									</p>
 								</div>
 								<div class="ml-3 flex shrink-0 items-center gap-2">
 									<Badge variant="secondary">{topic.count}</Badge>
-									<ArrowRight class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+									<ArrowRight
+										class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1"
+									/>
 								</div>
 							</a>
 						{/each}

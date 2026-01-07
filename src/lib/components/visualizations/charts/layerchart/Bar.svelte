@@ -3,7 +3,7 @@
 	import { scaleBand } from 'd3-scale';
 	import { cubicInOut } from 'svelte/easing';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
-	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
+	import Tooltip, { type TooltipItem } from './Tooltip.svelte';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 
 	interface ChartDataItem {
@@ -147,7 +147,8 @@
 		}
 		if (orientation === 'vertical') {
 			const fallbackMaxChars = itemCount > 10 ? 8 : itemCount > 6 ? 12 : 20;
-			const maxChars = perItemWidth > 0 ? Math.max(4, Math.floor(perItemWidth / 7)) : fallbackMaxChars;
+			const maxChars =
+				perItemWidth > 0 ? Math.max(4, Math.floor(perItemWidth / 7)) : fallbackMaxChars;
 			return (d: string) => (d.length > maxChars ? d.slice(0, maxChars - 1) + '…' : d);
 		}
 		return (d: string) => d;
@@ -163,13 +164,7 @@
 
 	function tooltipLabelFromPayload(payload: any[]): string {
 		const first = payload?.[0];
-		return (
-			first?.payload?.category ??
-			first?.payload?.name ??
-			first?.label ??
-			first?.name ??
-			''
-		);
+		return first?.payload?.category ?? first?.payload?.name ?? first?.label ?? first?.name ?? '';
 	}
 
 	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
@@ -193,7 +188,7 @@
 	aria-label={t('chart.documents_by_category_aria')}
 >
 	{#if chartData.length > 0}
-		<ChartContainer config={chartConfig} class="h-full w-full min-w-0 aspect-auto justify-start">
+		<ChartContainer config={chartConfig} class="aspect-auto h-full w-full min-w-0 justify-start">
 			{#if orientation === 'horizontal'}
 				<BarChart
 					data={chartData}
@@ -231,9 +226,9 @@
 					}}
 				>
 					{#snippet tooltip({ context })}
-						<TooltipPrimitive.Root context={context} variant="none">
+						<TooltipPrimitive.Root {context} variant="none">
 							{#snippet children()}
-								<LayerChartTooltip
+								<Tooltip
 									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
 									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
 								/>
@@ -278,9 +273,9 @@
 					}}
 				>
 					{#snippet tooltip({ context })}
-						<TooltipPrimitive.Root context={context} variant="none">
+						<TooltipPrimitive.Root {context} variant="none">
 							{#snippet children()}
-								<LayerChartTooltip
+								<Tooltip
 									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
 									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
 								/>

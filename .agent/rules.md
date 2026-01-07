@@ -207,7 +207,7 @@ export async function load({ fetch }) {
 2. **D3.js** (custom visualizations, treemaps, word clouds)
 3. **ECharts** (complex charts with many options)
 
-Chart components go in `$lib/components/charts/`.
+Chart components are in `$lib/components/visualizations/charts/` (organized by library: `d3/` or `layerchart/`).
 
 ### 8. TypeScript
 - Strict TypeScript required
@@ -219,49 +219,42 @@ Chart components go in `$lib/components/charts/`.
 ## Project Structure
 
 ```
-src/
-├── lib/
-│   ├── components/
-│   │   ├── ui/                    # shadcn-svelte components (DO NOT MODIFY)
-│   │   ├── charts/                # D3/LayerChart/ECharts visualizations
-│   │   ├── facets/                # Faceted visualization components
-│   │   ├── lazy/                  # LazyLoad, LazyComponent
-│   │   ├── world-map/             # Leaflet map components
-│   │   └── *.svelte               # App-level components
-│   ├── stores/                    # Class-based Svelte 5 stores
-│   │   ├── translationStore.svelte.ts  # i18n
-│   │   ├── itemsStore.svelte.ts        # Global items
-│   │   ├── overviewStore.svelte.ts     # Overview data
-│   │   ├── mapDataStore.svelte.ts      # Map data
-│   │   └── urlManager.svelte.ts        # URL state
-│   ├── types/                     # TypeScript definitions
-│   ├── hooks/                     # Custom Svelte hooks
-│   ├── utils/                     # Utility functions
-│   └── index.ts                   # Library exports
-├── routes/                        # SvelteKit file-based routing
-│   ├── +layout.svelte             # Root layout
-│   ├── +page.svelte               # Overview (/)
-│   ├── countries/                 # Treemap view
-│   ├── languages/                 # Language distribution
-│   ├── entities/                  # Entity index
-│   ├── timeline/                  # Timeline analysis
-│   ├── categories/                # Category distribution
-│   ├── words/                     # Word cloud
-│   ├── scary/                     # "Scary" terms analysis
-│   ├── cooccurrence/              # Co-occurrence matrix
-│   ├── topics/                    # Topic modeling
-│   ├── references/                # Bibliographic references
-│   └── spatial/                   # Map views
-├── app.css                        # Global styles + CSS variables
-├── app.html                       # HTML template
-└── app.d.ts                       # App type definitions
+src/lib/components/
+├── controls/              # LanguageToggle, ThemeToggle
+├── dashboard/             # OverviewStatsGrid, StatsCard
+├── facets/                # FacetPie
+├── layout/                # AppSidebar, FullscreenToggle
+├── lazy/                  # LazyLoad, LazyComponent
+├── ui/                    # shadcn-svelte (DO NOT MODIFY)
+├── utilities/             # SafeModeWatcher, UrlStateSync
+└── visualizations/
+    ├── charts/
+    │   ├── d3/            # BarChartRace, CooccurrenceMatrix, StackedBarChart, TimelineChart, WordAssociations
+    │   ├── layerchart/    # Bar, Duration, PieChart, Tooltip, Treemap
+    │   └── utils.ts
+    ├── network/           # NetworkGraph, NetworkControls, NetworkNodePanel, NetworkLegend, NetworkMapView
+    ├── world-map/         # WorldMapVisualization, Map, ChoroplethLayer, MapFilters, ViewModeToggle
+    └── Wordcloud.svelte
 
-scripts/                           # Python data generators
-├── generate_*.py                  # Data generation scripts
-└── requirements.txt               # Python dependencies
-
-static/data/                       # Generated JSON data files
+src/lib/stores/            # Class-based Svelte 5 stores (*.svelte.ts)
+src/lib/types/             # TypeScript definitions
+src/lib/hooks/             # Custom Svelte hooks
+src/lib/utils/             # Utility functions
+src/routes/                # SvelteKit file-based routing
+scripts/                   # Python data generators
+static/data/               # Generated JSON data files
 ```
+
+**Import Pattern (use barrel exports with `/index.js`):**
+```ts
+import { AppSidebar } from '$lib/components/layout/index.js';
+import { StatsCard } from '$lib/components/dashboard/index.js';
+import { TimelineChart } from '$lib/components/visualizations/charts/d3/index.js';
+import { Bar, PieChart, Treemap } from '$lib/components/visualizations/charts/layerchart/index.js';
+import { NetworkGraph } from '$lib/components/visualizations/network/index.js';
+import { WorldMapVisualization } from '$lib/components/visualizations/world-map/index.js';
+```
+
 
 ---
 

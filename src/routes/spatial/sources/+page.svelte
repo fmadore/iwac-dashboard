@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { onMount } from 'svelte';
-	import StatsCard from '$lib/components/stats-card.svelte';
+	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { base } from '$app/paths';
 
 	// Types

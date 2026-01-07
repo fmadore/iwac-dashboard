@@ -4,7 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import StackedBarChart from '$lib/components/charts/StackedBarChart.svelte';
+	import { StackedBarChart } from '$lib/components/visualizations/charts/d3/index.js';
 
 	interface SeriesData {
 		name: string;
@@ -86,7 +86,9 @@
 			<div class="grid gap-4 md:grid-cols-3">
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium text-muted-foreground">Total References</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground"
+							>Total References</Card.Title
+						>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">{data.total_records.toLocaleString()}</div>
@@ -106,7 +108,9 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium text-muted-foreground">Reference Types</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground"
+							>Reference Types</Card.Title
+						>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">{data.series.length}</div>

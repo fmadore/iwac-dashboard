@@ -15,7 +15,7 @@
 	} from 'layerchart';
 	import { Treemap } from 'layerchart';
 	import type { TreemapData, TreemapNode, TreemapConfig } from '$lib/types/treemap.js';
-	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
+	import ChartTooltip, { type TooltipItem } from './Tooltip.svelte';
 
 	// Props - compatible interface with CustomTreemap
 	interface Props {
@@ -123,7 +123,10 @@
 		const items: TooltipItem[] = [];
 		items.push({ name: '', value: `${formatValue(node.value ?? 0)} items` });
 		if (node.children && node.children.length > 0) {
-			items.push({ name: '', value: `${node.children.length} subcategories · Click to drill down` });
+			items.push({
+				name: '',
+				value: `${node.children.length} subcategories · Click to drill down`
+			});
 		}
 		return items;
 	}
@@ -255,7 +258,7 @@
 						{#snippet children({ data })}
 							{#if data}
 								{@const node = data as any}
-								<LayerChartTooltip
+								<ChartTooltip
 									label={node.data?.name}
 									items={treemapTooltipItems(node)}
 									indicator="dot"

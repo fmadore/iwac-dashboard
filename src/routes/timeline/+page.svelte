@@ -4,7 +4,7 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import TimelineChart from '$lib/components/charts/TimelineChart.svelte';
+	import { TimelineChart } from '$lib/components/visualizations/charts/d3/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 
@@ -246,7 +246,9 @@
 		<div class="grid gap-4 md:grid-cols-3">
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium text-muted-foreground">{t('timeline.total_records')}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('timeline.total_records')}</Card.Title
+					>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">{activeData.total_records.toLocaleString()}</div>
@@ -255,7 +257,9 @@
 
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium text-muted-foreground">{t('timeline.month_range')}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('timeline.month_range')}</Card.Title
+					>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">
@@ -266,7 +270,9 @@
 
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
-					<Card.Title class="text-sm font-medium text-muted-foreground">{t('timeline.monthly_additions')}</Card.Title>
+					<Card.Title class="text-sm font-medium text-muted-foreground"
+						>{t('timeline.monthly_additions')}</Card.Title
+					>
 				</Card.Header>
 				<Card.Content>
 					<div class="text-2xl font-bold">

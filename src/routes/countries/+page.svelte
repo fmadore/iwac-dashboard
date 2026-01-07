@@ -2,7 +2,7 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { itemsStore } from '$lib/stores/itemsStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import LayerChartTreemap from '$lib/components/charts/LayerChartTreemap.svelte';
+	import { Treemap as LayerChartTreemap } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { base } from '$app/paths';
 	import type { TreemapData, TreemapNode } from '$lib/types/index.js';
 	import { SvelteMap } from 'svelte/reactivity';

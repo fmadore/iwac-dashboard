@@ -7,8 +7,12 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkMapView, NetworkNodePanel, NetworkLegend } from '$lib/components/network/index.js';
-	import StatsCard from '$lib/components/stats-card.svelte';
+	import {
+		NetworkMapView,
+		NetworkNodePanel,
+		NetworkLegend
+	} from '$lib/components/visualizations/network/index.js';
+	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import type { SpatialNetworkData, NetworkNode, NodeSizeBy } from '$lib/types/network.js';
 	import { Maximize2 } from '@lucide/svelte';
 

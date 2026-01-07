@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LayerChartPieChart from '$lib/components/charts/LayerChartPieChart.svelte';
+	import { PieChart as LayerChartPieChart } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -149,7 +149,9 @@
 					</div>
 				{/if}
 				{#if selectedType || selectedCountry}
-					<Button variant="secondary" size="sm" onclick={handleClearFilters}>{t('filters.clear')}</Button>
+					<Button variant="secondary" size="sm" onclick={handleClearFilters}
+						>{t('filters.clear')}</Button
+					>
 				{/if}
 			</div>
 		</Card.Content>
@@ -182,7 +184,8 @@
 				</Card.Title>
 				<Card.Description>
 					{t('chart.languages_count', [String(filteredChartData().length)])} •
-					{totalDocs().toLocaleString()} {t('chart.documents').toLowerCase()}
+					{totalDocs().toLocaleString()}
+					{t('chart.documents').toLowerCase()}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="pt-0">

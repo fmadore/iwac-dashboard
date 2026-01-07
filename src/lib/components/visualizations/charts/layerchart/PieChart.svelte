@@ -3,7 +3,7 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { PieChart, Tooltip as TooltipPrimitive } from 'layerchart';
 	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
-	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
+	import Tooltip, { type TooltipItem } from './Tooltip.svelte';
 
 	interface PieDataItem {
 		label: string;
@@ -92,11 +92,13 @@
 
 	// Group small slices into "Others" (keeps the same behavior as the old ECharts version).
 	const grouped = $derived.by(() => {
-		if (!data.length) return { processedData: [] as PieDataItem[], othersGroupDetails: [] as PieDataItem[] };
+		if (!data.length)
+			return { processedData: [] as PieDataItem[], othersGroupDetails: [] as PieDataItem[] };
 
 		const sorted = [...data].sort((a, b) => b.value - a.value);
 		const total = sorted.reduce((sum, item) => sum + item.value, 0);
-		if (!total) return { processedData: [] as PieDataItem[], othersGroupDetails: [] as PieDataItem[] };
+		if (!total)
+			return { processedData: [] as PieDataItem[], othersGroupDetails: [] as PieDataItem[] };
 
 		const topSlicePercent = ((sorted[0]?.value ?? 0) / total) * 100;
 
@@ -147,7 +149,10 @@
 			};
 		}
 
-		return { processedData: [...mainSlices, ...smallSlices], othersGroupDetails: [] as PieDataItem[] };
+		return {
+			processedData: [...mainSlices, ...smallSlices],
+			othersGroupDetails: [] as PieDataItem[]
+		};
 	});
 
 	const processedData = $derived(grouped.processedData);
@@ -177,7 +182,9 @@
 				value: item.value,
 				configColor: resolvedColor,
 				cssColorVar: `var(--color-${key})`,
-				isOthers: othersGroupDetails.length > 0 && item.label === processedData[processedData.length - 1]?.label
+				isOthers:
+					othersGroupDetails.length > 0 &&
+					item.label === processedData[processedData.length - 1]?.label
 			};
 		});
 	});
@@ -215,7 +222,13 @@
 						color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color
 					}
 				]
-			: [{ name: '', value: percent, color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color }];
+			: [
+					{
+						name: '',
+						value: percent,
+						color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color
+					}
+				];
 
 		if (othersGroupDetails.length > 0 && hovered?.isOthers) {
 			for (const item of othersGroupDetails) {
@@ -232,16 +245,19 @@
 
 <div class="h-full w-full" role="img" aria-label={t('chart.pie_distribution_aria')}>
 	{#if layerData.length > 0}
-		<Chart.Container config={chartConfig} class="mx-auto w-full max-w-2xl flex-col items-center justify-start aspect-auto">
+		<Chart.Container
+			config={chartConfig}
+			class="mx-auto aspect-auto w-full max-w-2xl flex-col items-center justify-start"
+		>
 			<div class="w-full">
-				<div class="mx-auto w-full max-w-md aspect-square">
+				<div class="mx-auto aspect-square w-full max-w-md">
 					<PieChart
 						data={visibleLayerData}
 						key="key"
 						label="label"
 						value="value"
 						legend={false}
-						cRange={cRange}
+						{cRange}
 						innerRadius={normalizedInnerRadius}
 						outerRadius={normalizedOuterRadius}
 						padding={{ top: 8, bottom: 8, left: 8, right: 8 }}
@@ -250,16 +266,14 @@
 						}}
 					>
 						{#snippet tooltip({ context })}
-							<TooltipPrimitive.Root context={context} variant="none">
+							<TooltipPrimitive.Root {context} variant="none">
 								{#snippet children()}
-									<LayerChartTooltip
-										label={
-											context.tooltip?.payload?.[0]?.payload?.label ??
+									<Tooltip
+										label={context.tooltip?.payload?.[0]?.payload?.label ??
 											context.tooltip?.payload?.[0]?.label ??
 											context.tooltip?.payload?.[0]?.payload?.name ??
 											context.tooltip?.payload?.[0]?.name ??
-											''
-										}
+											''}
 										items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
 										indicator="dot"
 									/>
@@ -275,13 +289,11 @@
 							{#each layerData as item (item.key)}
 								<button
 									type="button"
-									class="flex min-w-0 items-center gap-2 rounded-sm px-1 text-left hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+									class="flex min-w-0 items-center gap-2 rounded-sm px-1 text-left hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
 									aria-pressed={hiddenLabels.has(item.label)}
-									aria-label={
-										hiddenLabels.has(item.label)
-											? t('chart.legend_toggle_show_aria', [item.label])
-											: t('chart.legend_toggle_hide_aria', [item.label])
-									}
+									aria-label={hiddenLabels.has(item.label)
+										? t('chart.legend_toggle_show_aria', [item.label])
+										: t('chart.legend_toggle_hide_aria', [item.label])}
 									onclick={() => toggleLabel(item.label)}
 								>
 									<span
@@ -296,11 +308,20 @@
 									>
 										{item.label}
 									</span>
-									<span class="font-mono text-foreground tabular-nums" class:opacity-60={hiddenLabels.has(item.label)}>
+									<span
+										class="font-mono text-foreground tabular-nums"
+										class:opacity-60={hiddenLabels.has(item.label)}
+									>
 										{item.value.toLocaleString()}
 									</span>
-									<span class="text-muted-foreground tabular-nums" class:opacity-60={hiddenLabels.has(item.label)}>
-										{formatPercent(item.value, hiddenLabels.has(item.label) ? totalValue : visibleTotalValue)}
+									<span
+										class="text-muted-foreground tabular-nums"
+										class:opacity-60={hiddenLabels.has(item.label)}
+									>
+										{formatPercent(
+											item.value,
+											hiddenLabels.has(item.label) ? totalValue : visibleTotalValue
+										)}
 									</span>
 								</button>
 							{/each}
@@ -310,6 +331,8 @@
 			</div>
 		</Chart.Container>
 	{:else}
-		<div class="flex h-50 items-center justify-center text-muted-foreground">{t('chart.no_data')}</div>
+		<div class="flex h-50 items-center justify-center text-muted-foreground">
+			{t('chart.no_data')}
+		</div>
 	{/if}
 </div>

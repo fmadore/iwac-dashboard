@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scaleTime, scaleBand } from 'd3-scale';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-	import LayerChartTooltip, { type TooltipItem } from './LayerChartTooltip.svelte';
+	import Tooltip, { type TooltipItem } from './Tooltip.svelte';
 
 	// Types for duration data
 	interface CoveragePeriod {
@@ -160,10 +160,10 @@
 	>
 		{#if tooltipOpen && tooltipItem}
 			<div
-				class="pointer-events-none absolute left-0 top-0 z-50"
+				class="pointer-events-none absolute top-0 left-0 z-50"
 				style="transform: translate({tooltipX}px, {tooltipY}px);"
 			>
-				<LayerChartTooltip label={tooltipItem.name} items={durationTooltipItems(tooltipItem)} />
+				<Tooltip label={tooltipItem.name} items={durationTooltipItems(tooltipItem)} />
 			</div>
 		{/if}
 		{#if chartData.length > 0}

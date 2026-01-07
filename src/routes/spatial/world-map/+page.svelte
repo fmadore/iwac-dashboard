@@ -1,8 +1,8 @@
 <script lang="ts">
-	import WorldMapVisualization from '$lib/components/world-map/WorldMapVisualization.svelte';
+	import { WorldMapVisualization } from '$lib/components/visualizations/world-map/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
-	import StatsCard from '$lib/components/stats-card.svelte';
+	import { StatsCard } from '$lib/components/dashboard/index.js';
 
 	// Reactive metadata
 	const metadata = $derived(mapDataStore.metadata);
@@ -12,7 +12,7 @@
 	<title>{t('worldmap.title')} | {t('app.title')}</title>
 </svelte:head>
 
-<div class="container mx-auto py-6 space-y-6">
+<div class="container mx-auto space-y-6 py-6">
 	<!-- Page Header -->
 	<div class="space-y-2">
 		<h1 class="text-3xl font-bold tracking-tight text-foreground">{t('worldmap.title')}</h1>

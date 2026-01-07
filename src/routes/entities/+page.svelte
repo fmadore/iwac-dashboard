@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import EntitiesTable from './entities-table.svelte';
-	import LayerChartBar from '$lib/components/charts/LayerChartBar.svelte';
+	import { Bar as LayerChartBar } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
 	type ApiChartData = { labels?: string[]; values?: number[] };

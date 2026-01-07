@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import StatsCard from '$lib/components/stats-card.svelte';
-	import LayerChartDuration from '$lib/components/charts/LayerChartDuration.svelte';
+	import { StatsCard } from '$lib/components/dashboard/index.js';
+	import { Duration as LayerChartDuration } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 

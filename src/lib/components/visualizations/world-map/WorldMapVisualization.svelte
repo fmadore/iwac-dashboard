@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Map from '$lib/components/world-map/Map.svelte';
-	import ViewModeToggle from '$lib/components/world-map/ViewModeToggle.svelte';
-	import MapFilters from '$lib/components/world-map/MapFilters.svelte';
+	import Map from './Map.svelte';
+	import ViewModeToggle from './ViewModeToggle.svelte';
+	import MapFilters from './MapFilters.svelte';
 	import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -15,8 +15,8 @@
 
 <div class="flex h-full flex-col overflow-hidden">
 	<!-- Main Map Area -->
-	<div class="flex-1 relative z-0">
-		<Card.Root class="h-full border-0 rounded-none">
+	<div class="relative z-0 flex-1">
+		<Card.Root class="h-full rounded-none border-0">
 			<Card.Header class="pb-2">
 				<div class="flex flex-col gap-3">
 					<div class="flex items-start justify-between">
@@ -30,7 +30,7 @@
 							<ViewModeToggle />
 						</div>
 					</div>
-					
+
 					<!-- Filters Row -->
 					{#if hasFiltersAvailable}
 						<MapFilters />
@@ -45,15 +45,15 @@
 
 	<!-- Selected Location Details -->
 	{#if selectedLocation}
-		<div class="border-t border-border p-4 bg-background">
-			<div class="bg-card rounded-lg p-4 shadow-sm border border-border">
-				<h3 class="font-semibold text-lg mb-2 text-foreground">{selectedLocation.name}</h3>
+		<div class="border-t border-border bg-background p-4">
+			<div class="rounded-lg border border-border bg-card p-4 shadow-sm">
+				<h3 class="mb-2 text-lg font-semibold text-foreground">{selectedLocation.name}</h3>
 				<div class="space-y-1 text-sm text-muted-foreground">
 					<p><strong>{t('table.countries')}:</strong> {selectedLocation.country}</p>
 					<p>
-						<strong>{t('worldmap.article_count')}:</strong> 
-						{selectedLocation.articleCount === 1 
-							? t('worldmap.article') 
+						<strong>{t('worldmap.article_count')}:</strong>
+						{selectedLocation.articleCount === 1
+							? t('worldmap.article')
 							: t('worldmap.articles', [selectedLocation.articleCount.toLocaleString()])}
 					</p>
 				</div>

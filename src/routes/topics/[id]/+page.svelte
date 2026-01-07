@@ -7,8 +7,10 @@
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-	import LayerChartBar from '$lib/components/charts/LayerChartBar.svelte';
-	import LayerChartPieChart from '$lib/components/charts/LayerChartPieChart.svelte';
+	import {
+		Bar as LayerChartBar,
+		PieChart as LayerChartPieChart
+	} from '$lib/components/visualizations/charts/layerchart/index.js';
 	import {
 		ArrowLeft,
 		FileText,
@@ -73,9 +75,10 @@
 
 		if (!itemId) return null;
 
-		const baseUrl = languageStore.current === 'fr'
-			? 'https://islam.zmo.de/s/afrique_ouest/item/'
-			: 'https://islam.zmo.de/s/westafrica/item/';
+		const baseUrl =
+			languageStore.current === 'fr'
+				? 'https://islam.zmo.de/s/afrique_ouest/item/'
+				: 'https://islam.zmo.de/s/westafrica/item/';
 
 		return baseUrl + itemId;
 	}
@@ -367,9 +370,9 @@
 								</Table.Head>
 								<Table.Head class="min-w-[110px]">
 									<button
-									type="button"
-									class="flex items-center gap-1 hover:text-foreground"
-									onclick={() => toggleSort('date')}
+										type="button"
+										class="flex items-center gap-1 hover:text-foreground"
+										onclick={() => toggleSort('date')}
 									>
 										<Calendar class="h-4 w-4" />
 										{t('topics.date')}
@@ -386,31 +389,12 @@
 								</Table.Head>
 								<Table.Head class="min-w-[90px]">
 									<button
-									type="button"
-									class="flex items-center gap-1 hover:text-foreground"
-									onclick={() => toggleSort('confidence')}
-								>
-									{t('topics.confidence')}
-									{#if sortKey === 'confidence'}
-										{#if sortDirection === 'asc'}
-											<ArrowUp class="h-4 w-4" />
-										{:else}
-											<ArrowDown class="h-4 w-4" />
-										{/if}
-									{:else}
-										<ArrowUpDown class="h-4 w-4" />
-									{/if}
-								</button>
-							</Table.Head>
-							{#if topicData.ai_fields.length > 0}
-								<Table.Head class="min-w-[110px]">
-									<button
 										type="button"
 										class="flex items-center gap-1 hover:text-foreground"
-										onclick={() => toggleSort('polarity')}
+										onclick={() => toggleSort('confidence')}
 									>
-										{t('topics.polarity')}
-										{#if sortKey === 'polarity'}
+										{t('topics.confidence')}
+										{#if sortKey === 'confidence'}
 											{#if sortDirection === 'asc'}
 												<ArrowUp class="h-4 w-4" />
 											{:else}
@@ -421,14 +405,33 @@
 										{/if}
 									</button>
 								</Table.Head>
-							{/if}
-						</Table.Row>
+								{#if topicData.ai_fields.length > 0}
+									<Table.Head class="min-w-[110px]">
+										<button
+											type="button"
+											class="flex items-center gap-1 hover:text-foreground"
+											onclick={() => toggleSort('polarity')}
+										>
+											{t('topics.polarity')}
+											{#if sortKey === 'polarity'}
+												{#if sortDirection === 'asc'}
+													<ArrowUp class="h-4 w-4" />
+												{:else}
+													<ArrowDown class="h-4 w-4" />
+												{/if}
+											{:else}
+												<ArrowUpDown class="h-4 w-4" />
+											{/if}
+										</button>
+									</Table.Head>
+								{/if}
+							</Table.Row>
 						</Table.Header>
 						<Table.Body>
 							{#each sortedDocs as doc (doc.url || doc.title)}
 								{@const itemUrl = getItemUrl(doc)}
 								<Table.Row>
-									<Table.Cell class="font-medium whitespace-normal break-words">
+									<Table.Cell class="font-medium break-words whitespace-normal">
 										{#if itemUrl}
 											<a
 												href={itemUrl}
@@ -474,7 +477,7 @@
 											{/if}
 										</Table.Cell>
 									{/if}
-							</Table.Row>
+								</Table.Row>
 							{/each}
 						</Table.Body>
 					</Table.Root>

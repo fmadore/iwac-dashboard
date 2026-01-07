@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import StatsCard from '$lib/components/stats-card.svelte';
+	import StatsCard from './StatsCard.svelte';
 	import type { OverviewSummary } from '$lib/stores/overviewStore.svelte.js';
 
 	interface Props {

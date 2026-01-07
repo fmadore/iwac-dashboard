@@ -9,7 +9,7 @@
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
-	import StackedBarChart from '$lib/components/charts/StackedBarChart.svelte';
+	import { StackedBarChart } from '$lib/components/visualizations/charts/d3/index.js';
 
 	// Use URL sync hook
 	const urlSync = useUrlSync();

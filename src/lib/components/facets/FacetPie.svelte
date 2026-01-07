@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
-	import LayerChartPieChart from '$lib/components/charts/LayerChartPieChart.svelte';
+	import { PieChart } from '$lib/components/visualizations/charts/layerchart/index.js';
 
 	interface PieItem {
 		label: string;
@@ -18,7 +18,7 @@
 	<Card.Content>
 		<div class="mx-auto flex aspect-square max-h-100 items-center justify-center">
 			{#if data.length > 0}
-				<LayerChartPieChart
+				<PieChart
 					{data}
 					innerRadius="40%"
 					outerRadius="75%"
