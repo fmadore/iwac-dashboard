@@ -103,7 +103,6 @@ iwac-dashboard/
 │   │   │   │   ├── badge/                   # Badge component
 │   │   │   │   └── ...                      # Other UI components
 │   │   │   ├── charts/                      # Visualization components
-│   │   │   │   ├── BarChart.svelte          # D3 bar chart
 │   │   │   │   ├── BarChartRace.svelte      # Animated racing bar chart
 │   │   │   │   ├── CustomTreemap.svelte     # D3 treemap
 │   │   │   │   ├── EChartsBarChart.svelte   # ECharts bar chart

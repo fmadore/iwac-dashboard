@@ -263,7 +263,7 @@
 								value={selectedCountry ?? 'all-countries'}
 								onValueChange={(v) => handleCountryChange(v === 'all-countries' ? undefined : v)}
 							>
-								<Select.Trigger class="w-[200px]" id="countrySelect">
+								<Select.Trigger class="w-50" id="countrySelect">
 									{selectedCountry || t('filters.all_countries')}
 								</Select.Trigger>
 								<Select.Content>
@@ -326,7 +326,7 @@
 						height="600px"
 					/>
 				{:else}
-					<div class="flex h-[600px] w-full flex-col items-center justify-center gap-4">
+					<div class="flex h-150 w-full flex-col items-center justify-center gap-4">
 						<Loader2 class="h-8 w-8 animate-spin text-muted-foreground" />
 						<p class="text-sm text-muted-foreground">
 							{countryLoading ? t('common.loading') : t('categories.loading_chart')}

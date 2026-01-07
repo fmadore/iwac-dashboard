@@ -173,7 +173,7 @@
 		</div>
 
 		<!-- Treemap Chart -->
-		<div class="h-[600px] p-4">
+		<div class="h-150 p-4">
 			<Chart>
 				{#snippet children({ context })}
 					<Svg>
@@ -268,7 +268,7 @@
 			</Chart>
 		</div>
 	{:else}
-		<div class="flex h-[600px] w-full items-center justify-center">
+		<div class="flex h-150 w-full items-center justify-center">
 			<div
 				class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"
 			></div>

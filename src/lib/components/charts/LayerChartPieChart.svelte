@@ -290,7 +290,7 @@
 										style="background-color: {item.cssColorVar}"
 									></span>
 									<span
-										class="max-w-[10rem] truncate font-medium"
+										class="max-w-40 truncate font-medium"
 										class:line-through={hiddenLabels.has(item.label)}
 										class:opacity-60={hiddenLabels.has(item.label)}
 									>
@@ -310,6 +310,6 @@
 			</div>
 		</Chart.Container>
 	{:else}
-		<div class="flex h-[200px] items-center justify-center text-muted-foreground">{t('chart.no_data')}</div>
+		<div class="flex h-50 items-center justify-center text-muted-foreground">{t('chart.no_data')}</div>
 	{/if}
 </div>

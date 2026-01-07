@@ -16,7 +16,7 @@
 		<Card.Title>{title}</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<div class="mx-auto flex aspect-square max-h-[400px] items-center justify-center">
+		<div class="mx-auto flex aspect-square max-h-100 items-center justify-center">
 			{#if data.length > 0}
 				<LayerChartPieChart
 					{data}
@@ -28,7 +28,7 @@
 					minSlicePercent={0.5}
 				/>
 			{:else}
-				<div class="flex h-[200px] items-center justify-center text-muted-foreground">No data</div>
+				<div class="flex h-50 items-center justify-center text-muted-foreground">No data</div>
 			{/if}
 		</div>
 	</Card.Content>
