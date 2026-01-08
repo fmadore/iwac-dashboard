@@ -14,6 +14,7 @@
 		Tooltip
 	} from 'layerchart';
 	import { Treemap } from 'layerchart';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 	import type { TreemapData, TreemapNode, TreemapConfig } from '$lib/types/treemap.js';
 	import ChartTooltip, { type TooltipItem } from './Tooltip.svelte';
 
@@ -22,6 +23,19 @@
 		data: TreemapData;
 		responsive?: boolean;
 		config?: Partial<TreemapConfig>;
+		/** Externally-managed drilldown selection (NestedTreemap pattern). */
+		selectedNested?: TreemapNode | null;
+		/** Whether to render the internal breadcrumb UI. */
+		showBreadcrumb?: boolean;
+		/** Pass-through layout options (LayerChart Treemap props). */
+		tile?: any;
+		maintainAspectRatio?: boolean;
+		paddingOuter?: number;
+		paddingInner?: number;
+		paddingTop?: number;
+		paddingBottom?: number;
+		paddingLeft?: number;
+		paddingRight?: number;
 		onNodeClick?: (node: TreemapNode) => void;
 		onNodeHover?: (node: TreemapNode | null) => void;
 		selectedNode?: TreemapNode | null;
@@ -31,6 +45,16 @@
 		data,
 		responsive = false,
 		config = {},
+		selectedNested = $bindable(),
+		showBreadcrumb = true,
+		tile,
+		maintainAspectRatio,
+		paddingOuter,
+		paddingInner,
+		paddingTop,
+		paddingBottom,
+		paddingLeft,
+		paddingRight,
 		onNodeClick,
 		onNodeHover,
 		selectedNode = $bindable()
@@ -66,6 +90,15 @@
 	// Animation configuration
 	const animationDuration = $derived.by(() => config.animation?.duration ?? 800);
 
+	// Treemap layout configuration (compatible with LayerChart NestedTreemap example)
+	const tileValue = $derived.by(() => tile ?? config.tile ?? 'squarify');
+	const paddingOuterValue = $derived.by(() => paddingOuter ?? config.padding?.outer);
+	const paddingInnerValue = $derived.by(() => paddingInner ?? config.padding?.inner);
+	const paddingTopValue = $derived.by(() => paddingTop ?? config.padding?.top);
+	const paddingBottomValue = $derived.by(() => paddingBottom ?? config.padding?.bottom);
+	const paddingLeftValue = $derived.by(() => paddingLeft ?? config.padding?.left);
+	const paddingRightValue = $derived.by(() => paddingRight ?? config.padding?.right);
+
 	// Treemap hierarchy
 	const complexDataHierarchy = $derived.by(() => {
 		if (!data) return null;
@@ -93,13 +126,22 @@
 			.sort((a, b) => (b.value || 0) - (a.value || 0));
 	});
 
-	// Currently selected/zoomed node for drill-down
-	let selectedNested = $state<TreemapNode | null>(null);
+	const activeDomain = $derived.by(() => {
+		if (selectedNested) return selectedNested;
+		if (complexDataHierarchy) return complexDataHierarchy as unknown as TreemapNode;
+		return null;
+	});
 
-	// Initialize selectedNested when hierarchy is ready
 	$effect(() => {
-		if (complexDataHierarchy && !selectedNested) {
-			selectedNested = complexDataHierarchy as TreemapNode;
+		if (!complexDataHierarchy) return;
+		const root = complexDataHierarchy as unknown as TreemapNode;
+		if (!selectedNested) {
+			selectedNested = root;
+			return;
+		}
+		const selectedRoot = selectedNested.ancestors().at(-1) as TreemapNode | undefined;
+		if (!selectedRoot || selectedRoot.data?.name !== root.data?.name) {
+			selectedNested = root;
 		}
 	});
 
@@ -121,13 +163,7 @@
 	function treemapTooltipItems(node: any): TooltipItem[] {
 		if (!node) return [];
 		const items: TooltipItem[] = [];
-		items.push({ name: '', value: `${formatValue(node.value ?? 0)} items` });
-		if (node.children && node.children.length > 0) {
-			items.push({
-				name: '',
-				value: `${node.children.length} subcategories · Click to drill down`
-			});
-		}
+		items.push({ name: t('chart.documents'), value: formatValue(node.value ?? 0) });
 		return items;
 	}
 
@@ -147,33 +183,35 @@
 	class:h-full={responsive}
 	class:w-full={responsive}
 >
-	{#if complexDataHierarchy && selectedNested}
-		<!-- Breadcrumb Navigation -->
-		<div
-			class="flex items-center gap-1 rounded-md border-b border-border bg-card/90 px-3 py-2 text-sm"
-		>
-			{#each selectedNested.ancestors().reverse() as item, index (index)}
-				{#if index > 0}
-					<span class="text-muted-foreground">/</span>
-				{/if}
-				<button
-					class="rounded-sm px-2 py-1 font-medium transition-colors {item === selectedNested
-						? 'cursor-default bg-muted text-foreground'
-						: 'cursor-pointer text-primary hover:bg-muted/50 hover:text-primary/80'}"
-					class:pointer-events-none={item === selectedNested}
-					onclick={() => (selectedNested = item as TreemapNode)}
-				>
-					<div class="text-left">
-						<div class="text-sm">
-							{index === 0 ? 'Islam West Africa Collection' : item.data.name}
+	{#if complexDataHierarchy && activeDomain}
+		{#if showBreadcrumb}
+			<!-- Breadcrumb Navigation -->
+			<div
+				class="flex items-center gap-1 rounded-md border-b border-border bg-card/90 px-3 py-2 text-sm"
+			>
+				{#each activeDomain.ancestors().reverse() as item, index (index)}
+					{#if index > 0}
+						<span class="text-muted-foreground">/</span>
+					{/if}
+					<button
+						class="rounded-sm px-2 py-1 font-medium transition-colors {item === activeDomain
+							? 'cursor-default bg-muted text-foreground'
+							: 'cursor-pointer text-primary hover:bg-muted/50 hover:text-primary/80'}"
+						class:pointer-events-none={item === activeDomain}
+						onclick={() => (selectedNested = item as TreemapNode)}
+					>
+						<div class="text-left">
+							<div class="text-sm">
+								{index === 0 ? t('app.subtitle') : item.data.name}
+							</div>
+							<div class="text-xs text-muted-foreground">
+								{formatValue(item.value ?? 0)}
+							</div>
 						</div>
-						<div class="text-xs text-muted-foreground">
-							{formatValue(item.value ?? 0)}
-						</div>
-					</div>
-				</button>
-			{/each}
-		</div>
+					</button>
+				{/each}
+			</div>
+		{/if}
 
 		<!-- Treemap Chart -->
 		<div class="h-150 p-4">
@@ -181,25 +219,49 @@
 				{#snippet children({ context })}
 					<Svg>
 						<Bounds
-							domain={selectedNested}
+							domain={activeDomain}
 							motion={{ type: 'tween', duration: animationDuration, easing: cubicOut }}
 						>
 							{#snippet children({ xScale, yScale })}
 								<ChartClipPath>
-									<Treemap hierarchy={complexDataHierarchy} tile="squarify">
+									<Treemap
+										hierarchy={complexDataHierarchy}
+										tile={tileValue}
+										{maintainAspectRatio}
+										paddingOuter={paddingOuterValue}
+										paddingInner={paddingInnerValue}
+										paddingTop={paddingTopValue}
+										paddingBottom={paddingBottomValue}
+										paddingLeft={paddingLeftValue}
+										paddingRight={paddingRightValue}
+									>
 										{#snippet children({ nodes })}
-											{#each nodes as node (getNodeKey(node))}
+											{@const rootKey = complexDataHierarchy ? getNodeKey(complexDataHierarchy) : ''}
+											{@const activeKey = activeDomain ? getNodeKey(activeDomain) : ''}
+											{@const visibleNodes = nodes.filter((n: any) => {
+												if (!activeDomain) return false;
+												// Initial load: show absolutely everything (parents + leaves) when at root.
+												if (activeKey === rootKey) return true;
+												if (!n.parent) return false;
+												const parentKey = getNodeKey(n.parent);
+												return parentKey === activeKey;
+											})}
+											{#each visibleNodes as node (getNodeKey(node))}
 												<Group
 													x={xScale(node.x0)}
 													y={yScale(node.y0)}
 													onclick={() => {
-														if (node.children) {
-															onNodeClick?.(node as TreemapNode);
-															selectedNested = node as TreemapNode;
-														}
+													onNodeClick?.(node as TreemapNode);
+													if (node.children) selectedNested = node as TreemapNode;
 													}}
-													onpointermove={(e) => context.tooltip.show(e, node)}
-													onpointerleave={context.tooltip.hide}
+													onpointermove={(e) => {
+														onNodeHover?.(node as TreemapNode);
+														context.tooltip.show(e, node);
+													}}
+													onpointerleave={() => {
+														onNodeHover?.(null);
+														context.tooltip.hide();
+													}}
 												>
 													{@const nodeWidth = xScale(node.x1) - xScale(node.x0)}
 													{@const nodeHeight = yScale(node.y1) - yScale(node.y0)}
@@ -224,7 +286,7 @@
 																<tspan>{node.data.name}</tspan>
 																{#if node.children}
 																	<tspan class="text-[8px] font-light opacity-80">
-																		{' '}{formatValue(node.value ?? 0)}
+																		 {formatValue(node.value ?? 0)}
 																	</tspan>
 																{/if}
 															</text>
