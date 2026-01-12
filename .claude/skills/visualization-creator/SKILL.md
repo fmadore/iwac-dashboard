@@ -4,7 +4,7 @@ description: |
   Create new visualizations for the IWAC Dashboard. Use this skill when:
   - Adding a new chart, graph, map, or data visualization
   - Creating Python data generation scripts for new visualizations
-  - Building reusable visualization components with LayerChart or D3
+  - Building reusable visualization components with LayerChart, D3, Leaflet (maps), or Sigma.js (networks)
   This skill enforces the project's patterns: Svelte 5 runes, CSS variables, i18n, shadcn-svelte, and static data generation.
 model: opus
 ---
@@ -112,10 +112,20 @@ Before creating new components, check for reusable ones:
 - `BarChartRace.svelte` - Animated bar chart race
 - `WordAssociations.svelte` - Word association graphs
 
+**Map components** (`src/lib/components/visualizations/world-map/`):
+- `WorldMapVisualization.svelte` - Main map container with controls
+- `Map.svelte` - Leaflet map wrapper
+- `ChoroplethLayer.svelte` - Choropleth coloring layer
+- Uses `mapDataStore` for state management (viewMode, filters, selected location)
+
+**Network components** (`src/lib/components/visualizations/network/`):
+- `NetworkGraph.svelte` - Sigma.js graph renderer
+- `NetworkControls.svelte` - Graph interaction controls
+- `NetworkNodePanel.svelte` - Node detail panel
+- Uses Graphology for graph data structure and ForceAtlas2 for layout
+
 **Other visualizations**:
-- `Wordcloud.svelte` - Word clouds
-- `world-map/` - Leaflet-based maps
-- `network/` - Sigma.js network graphs
+- `Wordcloud.svelte` - D3 word clouds
 
 ### Step 5: Create New Visualization Component
 
@@ -200,6 +210,130 @@ src/lib/components/visualizations/NewVisualization.svelte            # Standalon
 </script>
 
 <div bind:this={container} class="h-[400px] w-full"></div>
+```
+
+#### Component Template (Leaflet Map)
+
+For geographic visualizations, use Leaflet with the existing map components:
+
+```svelte
+<script lang="ts">
+    import { t } from '$lib/stores/translationStore.svelte.js';
+    import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
+    import { Map, ChoroplethLayer } from '$lib/components/visualizations/world-map/index.js';
+
+    let { locations = [] }: { locations: GeoLocation[] } = $props();
+
+    interface GeoLocation {
+        lat: number;
+        lng: number;
+        country: string;
+        value: number;
+    }
+</script>
+
+<div class="h-[500px] w-full">
+    <Map
+        center={[12, 0]}
+        zoom={4}
+        locations={locations}
+    >
+        <ChoroplethLayer
+            data={locations}
+            valueField="value"
+            colorScale="blues"
+        />
+    </Map>
+</div>
+```
+
+**Map data store** (`mapDataStore.svelte.ts`):
+- `viewMode`: 'bubbles' | 'choropleth'
+- `selectedLocation`: Currently selected location
+- `filters`: sourceCountry, yearRange
+- `filteredLocations`: Derived filtered data
+
+#### Component Template (Sigma.js Network)
+
+For network/graph visualizations, use Sigma.js with Graphology:
+
+```svelte
+<script lang="ts">
+    import { t } from '$lib/stores/translationStore.svelte.js';
+    import Graph from 'graphology';
+    import Sigma from 'sigma';
+    import forceAtlas2 from 'graphology-layout-forceatlas2';
+
+    let { nodes = [], edges = [] }: { nodes: NetworkNode[], edges: NetworkEdge[] } = $props();
+
+    let container: HTMLDivElement;
+    let sigma: Sigma | null = null;
+
+    interface NetworkNode {
+        id: string;
+        label: string;
+        size: number;
+        color?: string;
+    }
+
+    interface NetworkEdge {
+        source: string;
+        target: string;
+        weight: number;
+    }
+
+    $effect(() => {
+        if (container && nodes.length > 0) {
+            initGraph();
+        }
+        return () => {
+            sigma?.kill();
+        };
+    });
+
+    function initGraph() {
+        const graph = new Graph();
+
+        // Add nodes
+        nodes.forEach(node => {
+            graph.addNode(node.id, {
+                label: node.label,
+                size: node.size,
+                color: node.color || 'var(--chart-1)',
+                x: Math.random(),
+                y: Math.random()
+            });
+        });
+
+        // Add edges
+        edges.forEach(edge => {
+            graph.addEdge(edge.source, edge.target, { weight: edge.weight });
+        });
+
+        // Apply ForceAtlas2 layout
+        forceAtlas2.assign(graph, { iterations: 100 });
+
+        // Render with Sigma
+        sigma = new Sigma(graph, container, {
+            renderLabels: true,
+            labelColor: { color: 'var(--foreground)' }
+        });
+    }
+</script>
+
+<div bind:this={container} class="h-[600px] w-full"></div>
+```
+
+**Network data format** (from `generate_network.py`):
+```json
+{
+    "nodes": [
+        { "id": "node1", "label": "Entity Name", "size": 10, "type": "person" }
+    ],
+    "edges": [
+        { "source": "node1", "target": "node2", "weight": 5 }
+    ]
+}
 ```
 
 ### Step 6: Styling Requirements
