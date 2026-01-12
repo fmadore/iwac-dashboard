@@ -386,7 +386,30 @@ export const translations = {
 		'coverage.chart_description': 'Horizontal bars show the years each newspaper is represented in the collection. Gaps indicate periods with no articles.',
 		'coverage.chart_aria': 'Duration chart showing newspaper publication periods',
 		'coverage.period': 'Period',
-		'coverage.articles': 'Articles'
+		'coverage.articles': 'Articles',
+		// Entity Spatial
+		'nav.entity_spatial': 'Entity Footprint',
+		'entity_spatial.title': 'Entity Geographic Footprint',
+		'entity_spatial.description': 'Explore where index entities appear across West Africa',
+		'entity_spatial.select_category': 'Select Category',
+		'entity_spatial.select_entity': 'Select Entity',
+		'entity_spatial.search_entity': 'Search for an entity...',
+		'entity_spatial.no_entity_selected': 'Select an entity to view its geographic footprint',
+		'entity_spatial.articles_count': 'Articles',
+		'entity_spatial.countries_count': 'Countries',
+		'entity_spatial.time_period': 'Time Period',
+		'entity_spatial.locations': 'locations',
+		'entity_spatial.showing_first_100': 'Showing first 100 of {0} results',
+		'entity_spatial.map_title': 'Geographic Distribution: {0}',
+		'entity_spatial.map_description': 'Click on a location marker to see the list of articles mentioning this entity at that location.',
+		'entity_spatial.no_locations': 'No location data for this entity',
+		'entity_spatial.location_panel_description': 'Articles mentioning {0} in {1}',
+		'entity_spatial.article_singular': 'article',
+		'entity_spatial.articles_plural': 'articles',
+		'entity_spatial.type_article': 'Article',
+		'entity_spatial.type_publication': 'Publication',
+		'entity_spatial.untitled': 'Untitled',
+		'entity_spatial.view_in_iwac': 'View in IWAC'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -778,7 +801,30 @@ export const translations = {
 		'coverage.chart_description': 'Les barres horizontales indiquent les années où chaque journal est représenté dans la collection. Les lacunes indiquent les périodes sans articles.',
 		'coverage.chart_aria': 'Graphique de durée montrant les périodes de publication des journaux',
 		'coverage.period': 'Période',
-		'coverage.articles': 'Articles'
+		'coverage.articles': 'Articles',
+		// Entity Spatial
+		'nav.entity_spatial': 'Empreinte des entités',
+		'entity_spatial.title': 'Empreinte Géographique des Entités',
+		'entity_spatial.description': "Explorez où les entités de l'index apparaissent en Afrique de l'Ouest",
+		'entity_spatial.select_category': 'Sélectionner une Catégorie',
+		'entity_spatial.select_entity': 'Sélectionner une Entité',
+		'entity_spatial.search_entity': 'Rechercher une entité...',
+		'entity_spatial.no_entity_selected': 'Sélectionnez une entité pour voir son empreinte géographique',
+		'entity_spatial.articles_count': 'Articles',
+		'entity_spatial.countries_count': 'Pays',
+		'entity_spatial.time_period': 'Période',
+		'entity_spatial.locations': 'localisations',
+		'entity_spatial.showing_first_100': 'Affichage des 100 premiers sur {0} résultats',
+		'entity_spatial.map_title': 'Distribution Géographique: {0}',
+		'entity_spatial.map_description': 'Cliquez sur un marqueur de localisation pour voir la liste des articles mentionnant cette entité à cet endroit.',
+		'entity_spatial.no_locations': 'Aucune donnée de localisation pour cette entité',
+		'entity_spatial.location_panel_description': 'Articles mentionnant {0} à {1}',
+		'entity_spatial.article_singular': 'article',
+		'entity_spatial.articles_plural': 'articles',
+		'entity_spatial.type_article': 'Article',
+		'entity_spatial.type_publication': 'Publication',
+		'entity_spatial.untitled': 'Sans titre',
+		'entity_spatial.view_in_iwac': 'Voir dans IWAC'
 	}
 } as const;
 

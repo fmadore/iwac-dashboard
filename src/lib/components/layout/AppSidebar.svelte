@@ -18,7 +18,8 @@
 		Newspaper,
 		Network,
 		Share2,
-		CalendarRange
+		CalendarRange,
+		UserCircle
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -47,7 +48,8 @@
 
 	const spatialAnalysisItems = [
 		{ href: `${base}/spatial/world-map`, icon: MapPin, label: 'nav.world_map' },
-		{ href: `${base}/spatial/sources`, icon: Newspaper, label: 'nav.sources' }
+		{ href: `${base}/spatial/sources`, icon: Newspaper, label: 'nav.sources' },
+		{ href: `${base}/entity-spatial`, icon: UserCircle, label: 'nav.entity_spatial' }
 	];
 
 	const networkAnalysisItems = [

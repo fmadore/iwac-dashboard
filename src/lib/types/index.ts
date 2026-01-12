@@ -4,6 +4,9 @@ export type * from './treemap.js';
 // Export world map types
 export type * from './worldmap.js';
 
+// Export entity spatial types
+export type * from './entity-spatial.js';
+
 export interface OmekaItem {
 	id: number;
 	title: string;
