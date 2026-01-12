@@ -8,6 +8,18 @@ Static SvelteKit dashboard for the Islam West Africa Collection (IWAC) database.
 
 **Stack:** Svelte 5 (Runes), SvelteKit 2 (adapter-static), shadcn-svelte, Tailwind CSS v4, LayerChart/D3/ECharts, Python data generation.
 
+**Dataset:** Hugging Face `fmadore/islam-west-africa-collection` (19,000+ documents on Islam in West Africa)
+
+## IWAC Dataset Skill
+
+**IMPORTANT:** When creating new visualizations or data pipelines, use the `iwac-dataset` skill. It provides:
+- Complete dataset schema and field references
+- Loading patterns for all 6 subsets (articles, publications, documents, audiovisual, index, references)
+- Common query patterns for filtering by country, topic, sentiment, dates
+- Understanding of domain-specific terms and semantic fields
+
+The skill helps you efficiently fetch data from Hugging Face and generate Python scripts that follow the existing patterns in `scripts/generate_*.py`.
+
 ## Commands
 
 ```bash
@@ -28,10 +40,6 @@ cd scripts
 pip install -r requirements.txt
 python generate_overview_stats.py    # Run individual generators
 ```
-
-### IWAC Dataset Skill
-
-Use the `iwac-dataset` skill when creating new visualizations that require fetching data from Hugging Face. This skill provides efficient access to the IWAC dataset (`fmadore/islam-west-africa-collection`) and helps generate Python scripts for new data pipelines.
 
 ## Architecture
 
