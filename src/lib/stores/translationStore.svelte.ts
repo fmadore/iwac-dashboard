@@ -409,7 +409,11 @@ export const translations = {
 		'entity_spatial.type_article': 'Article',
 		'entity_spatial.type_publication': 'Publication',
 		'entity_spatial.untitled': 'Untitled',
-		'entity_spatial.view_in_iwac': 'View in IWAC'
+		'entity_spatial.view_in_iwac': 'View in IWAC',
+		'entity_spatial.showing_range': 'Showing {0}-{1} of {2}',
+		'entity_spatial.page_of': 'Page {0} of {1}',
+		'entity_spatial.previous': 'Previous',
+		'entity_spatial.next': 'Next'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -824,7 +828,11 @@ export const translations = {
 		'entity_spatial.type_article': 'Article',
 		'entity_spatial.type_publication': 'Publication',
 		'entity_spatial.untitled': 'Sans titre',
-		'entity_spatial.view_in_iwac': 'Voir dans IWAC'
+		'entity_spatial.view_in_iwac': 'Voir dans IWAC',
+		'entity_spatial.showing_range': 'Affichage {0}-{1} sur {2}',
+		'entity_spatial.page_of': 'Page {0} sur {1}',
+		'entity_spatial.previous': 'Précédent',
+		'entity_spatial.next': 'Suivant'
 	}
 } as const;
 

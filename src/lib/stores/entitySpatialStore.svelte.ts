@@ -5,7 +5,7 @@
  * - Selected entity category
  * - Selected entity
  * - Selected location on map
- * - Lazy loading of entity details by type
+ * - Lazy loading of individual entity details
  */
 
 import { base } from '$app/paths';
@@ -14,8 +14,7 @@ import type {
 	EntitySummary,
 	EntityDetail,
 	EntityLocation,
-	EntitySpatialIndex,
-	EntityTypeDetails
+	EntitySpatialIndex
 } from '$lib/types/entity-spatial.js';
 
 class EntitySpatialStore {
@@ -33,11 +32,11 @@ class EntitySpatialStore {
 	// Data - index (summaries)
 	indexData = $state<EntitySpatialIndex | null>(null);
 
-	// Data - details by type (lazy loaded)
-	detailsByType = $state<Partial<Record<EntityType, EntityTypeDetails>>>({});
+	// Data - currently loaded entity detail (one at a time)
+	currentEntityDetail = $state<EntityDetail | null>(null);
 
-	// Track which types have been loaded
-	loadedTypes = $state<Set<EntityType>>(new Set());
+	// Cache of loaded entity details to avoid re-fetching
+	entityCache = $state<Map<string, EntityDetail>>(new Map());
 
 	// Derived: entities in current category
 	get entitiesInCategory(): EntitySummary[] {
@@ -57,10 +56,7 @@ class EntitySpatialStore {
 
 	// Derived: current entity details
 	get currentEntity(): EntityDetail | null {
-		if (!this.selectedEntityId) return null;
-		const typeDetails = this.detailsByType[this.selectedCategory];
-		if (!typeDetails) return null;
-		return typeDetails[String(this.selectedEntityId)] ?? null;
+		return this.currentEntityDetail;
 	}
 
 	// Derived: locations for current entity
@@ -93,25 +89,21 @@ class EntitySpatialStore {
 	}
 
 	// Actions
-	async setCategory(category: EntityType) {
+	setCategory(category: EntityType) {
 		this.selectedCategory = category;
 		this.selectedEntityId = null;
 		this.selectedLocation = null;
+		this.currentEntityDetail = null;
 		this.searchQuery = '';
-
-		// Load details for this category if not already loaded
-		if (!this.loadedTypes.has(category)) {
-			await this.loadTypeDetails(category);
-		}
 	}
 
 	async setSelectedEntity(entityId: number | null) {
 		this.selectedEntityId = entityId;
 		this.selectedLocation = null;
+		this.currentEntityDetail = null;
 
-		// Ensure details are loaded for current category
-		if (entityId && !this.loadedTypes.has(this.selectedCategory)) {
-			await this.loadTypeDetails(this.selectedCategory);
+		if (entityId) {
+			await this.loadEntityDetail(entityId);
 		}
 	}
 
@@ -138,33 +130,45 @@ class EntitySpatialStore {
 		this.isLoading = false;
 	}
 
-	// Load entity details for a specific type
-	async loadTypeDetails(entityType: EntityType): Promise<void> {
-		if (this.loadedTypes.has(entityType)) {
+	// Load details for a specific entity
+	async loadEntityDetail(entityId: number): Promise<void> {
+		const cacheKey = `${this.selectedCategory}/${entityId}`;
+
+		// Check cache first
+		const cached = this.entityCache.get(cacheKey);
+		if (cached) {
+			this.currentEntityDetail = cached;
 			return;
 		}
 
 		this.isLoadingDetails = true;
 
 		try {
-			const response = await fetch(`${base}/data/entity-spatial/${entityType}.json`);
+			const response = await fetch(
+				`${base}/data/entity-spatial/${this.selectedCategory}/${entityId}.json`
+			);
 
 			if (!response.ok) {
-				console.warn(`Failed to load details for ${entityType}: ${response.status}`);
-				// Mark as loaded anyway to prevent repeated attempts
-				this.loadedTypes = new Set([...this.loadedTypes, entityType]);
-				this.detailsByType[entityType] = {};
+				// Entity might not have location data - this is normal
+				if (response.status === 404) {
+					console.info(`No location data for entity ${entityId}`);
+					this.currentEntityDetail = null;
+				} else {
+					console.warn(`Failed to load entity ${entityId}: ${response.status}`);
+				}
 				return;
 			}
 
-			const details: EntityTypeDetails = await response.json();
-			this.detailsByType[entityType] = details;
-			this.loadedTypes = new Set([...this.loadedTypes, entityType]);
+			const detail: EntityDetail = await response.json();
+			this.currentEntityDetail = detail;
+
+			// Add to cache
+			const newCache = new Map(this.entityCache);
+			newCache.set(cacheKey, detail);
+			this.entityCache = newCache;
 		} catch (error) {
-			console.error(`Error loading details for ${entityType}:`, error);
-			// Mark as loaded to prevent repeated attempts
-			this.loadedTypes = new Set([...this.loadedTypes, entityType]);
-			this.detailsByType[entityType] = {};
+			console.error(`Error loading entity ${entityId}:`, error);
+			this.currentEntityDetail = null;
 		} finally {
 			this.isLoadingDetails = false;
 		}
@@ -176,8 +180,8 @@ class EntitySpatialStore {
 		this.selectedLocation = null;
 		this.searchQuery = '';
 		this.indexData = null;
-		this.detailsByType = {};
-		this.loadedTypes = new Set();
+		this.currentEntityDetail = null;
+		this.entityCache = new Map();
 		this.isLoading = true;
 		this.isLoadingDetails = false;
 		this.error = null;

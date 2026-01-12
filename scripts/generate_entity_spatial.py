@@ -6,12 +6,14 @@ Generates entity-location-article mapping data for the IWAC Dashboard.
 This data enables the entity spatial visualization showing where entities
 (persons, events, topics, organisations) appear geographically.
 
-Output Structure (split by entity type for lazy loading):
-- static/data/entity-spatial/index.json - Entity summaries for picker (~100KB)
-- static/data/entity-spatial/Personnes.json - Person entity details
-- static/data/entity-spatial/Événements.json - Event entity details
-- static/data/entity-spatial/Sujets.json - Topic entity details
-- static/data/entity-spatial/Organisations.json - Organization entity details
+Output Structure (one JSON file per entity for optimal lazy loading):
+- static/data/entity-spatial/index.json - Entity summaries for picker (~200-400KB)
+- static/data/entity-spatial/Personnes/{entity_id}.json - Individual person details
+- static/data/entity-spatial/Événements/{entity_id}.json - Individual event details
+- static/data/entity-spatial/Sujets/{entity_id}.json - Individual topic details
+- static/data/entity-spatial/Organisations/{entity_id}.json - Individual org details
+
+Each entity file is typically 1-50KB, loaded only when that entity is selected.
 """
 
 import json
@@ -352,12 +354,19 @@ class EntitySpatialGenerator:
         logger.info(f"Matched {matched_entities} entity mentions")
 
     def generate_output(self) -> None:
-        """Generate split output files by entity type."""
-        logger.info("Generating split output files...")
+        """Generate individual output files per entity."""
+        logger.info("Generating individual entity files...")
 
-        # Build index (summaries) and details by type
+        # Build index (summaries) and prepare entity details
         index_data: Dict[str, List[Dict]] = {t: [] for t in INCLUDED_ENTITY_TYPES}
-        details_by_type: Dict[str, Dict[str, Dict]] = {t: {} for t in INCLUDED_ENTITY_TYPES}
+
+        # Create subdirectories for each entity type
+        for entity_type in INCLUDED_ENTITY_TYPES:
+            type_dir = self.output_dir / entity_type
+            type_dir.mkdir(parents=True, exist_ok=True)
+
+        entities_with_locations = 0
+        total_files_size = 0
 
         for entity_id, entity in self.entity_by_id.items():
             entity_type = entity['type']
@@ -407,9 +416,9 @@ class EntitySpatialGenerator:
                 'locationCount': len(locations_list)
             })
 
-            # Add to details (only if has location data)
+            # Save individual entity file (only if has location data)
             if locations_list:
-                details_by_type[entity_type][str(entity_id)] = {
+                entity_detail = {
                     'id': entity_id,
                     'name': entity['name'],
                     'type': entity_type,
@@ -421,6 +430,13 @@ class EntitySpatialGenerator:
                     'locations': locations_list
                 }
 
+                entity_path = self.output_dir / entity_type / f'{entity_id}.json'
+                with open(entity_path, 'w', encoding='utf-8') as f:
+                    json.dump(entity_detail, f, ensure_ascii=False, separators=(',', ':'))
+
+                total_files_size += entity_path.stat().st_size
+                entities_with_locations += 1
+
         # Sort index entries by article count
         for entity_type in index_data:
             index_data[entity_type].sort(key=lambda x: x['articleCount'], reverse=True)
@@ -431,6 +447,7 @@ class EntitySpatialGenerator:
             'typeLabels': TYPE_LABELS,
             'metadata': {
                 'totalEntities': len(self.entity_by_id),
+                'entitiesWithLocations': entities_with_locations,
                 'entityTypes': list(INCLUDED_ENTITY_TYPES),
                 'generatedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
                 'dataSource': DATASET_ID
@@ -443,18 +460,8 @@ class EntitySpatialGenerator:
 
         index_size = index_path.stat().st_size / 1024
         logger.info(f"Saved index to {index_path} ({index_size:.1f} KB)")
-
-        # Save detail files per entity type
-        for entity_type, details in details_by_type.items():
-            if not details:
-                continue
-
-            type_path = self.output_dir / f'{entity_type}.json'
-            with open(type_path, 'w', encoding='utf-8') as f:
-                json.dump(details, f, ensure_ascii=False, separators=(',', ':'))
-
-            type_size = type_path.stat().st_size / (1024 * 1024)
-            logger.info(f"Saved {entity_type} ({len(details)} entities) to {type_path} ({type_size:.2f} MB)")
+        logger.info(f"Generated {entities_with_locations} individual entity files")
+        logger.info(f"Total entity files size: {total_files_size / (1024 * 1024):.2f} MB")
 
     def process(self) -> None:
         """Run the full data generation pipeline."""

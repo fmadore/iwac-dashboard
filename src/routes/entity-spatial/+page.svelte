@@ -35,8 +35,6 @@
 	onMount(() => {
 		if (pageData.indexData) {
 			entitySpatialStore.setIndexData(pageData.indexData);
-			// Pre-load details for the default category (Personnes)
-			entitySpatialStore.loadTypeDetails('Personnes');
 		} else if (pageData.error) {
 			entitySpatialStore.setError(pageData.error);
 		}

@@ -36,7 +36,7 @@ export interface EntitySummary {
 	locationCount: number;
 }
 
-/** Full entity details with all location data (from {Type}.json) */
+/** Full entity details with all location data (from {Type}/{entityId}.json) */
 export interface EntityDetail {
 	id: number;
 	name: string;
@@ -69,14 +69,12 @@ export interface EntitySpatialIndex {
 	/** Generation metadata */
 	metadata: {
 		totalEntities: number;
+		entitiesWithLocations: number;
 		entityTypes: EntityType[];
 		generatedAt: string;
 		dataSource: string;
 	};
 }
-
-/** Entity details for a specific type (from {Type}.json) */
-export type EntityTypeDetails = Record<string, EntityDetail>;
 
 /** Props for EntityLocationMap component */
 export interface EntityLocationMapProps {
