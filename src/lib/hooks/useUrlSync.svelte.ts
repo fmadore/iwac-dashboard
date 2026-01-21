@@ -38,6 +38,8 @@ export interface FilterState {
 	order?: string;
 	view?: string;
 	term?: string;
+	entity?: string;
+	focus?: string;
 	[key: string]: string | number | undefined;
 }
 
@@ -132,7 +134,9 @@ export function useUrlSync() {
 				view: urlManager.get('view') as string | undefined,
 				year: urlManager.get('year') as string | undefined,
 				order: urlManager.get('order') as string | undefined,
-				term: urlManager.get('term') as string | undefined
+				term: urlManager.get('term') as string | undefined,
+				entity: urlManager.get('entity') as string | undefined,
+				focus: urlManager.get('focus') as string | undefined
 			};
 		},
 		setFilter,

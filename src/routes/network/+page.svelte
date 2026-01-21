@@ -10,6 +10,7 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { NetworkGraph, NetworkEntitySearch } from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
+	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import type {
 		GlobalNetworkData,
 		GlobalNetworkNode,
@@ -26,8 +27,12 @@
 		Calendar,
 		Tag,
 		MapPin,
-		Focus
+		Focus,
+		X
 	} from '@lucide/svelte';
+
+	// URL sync
+	const urlSync = useUrlSync();
 
 	// Data state
 	let networkData = $state<GlobalNetworkData | null>(null);
@@ -40,6 +45,7 @@
 	let maxNodes = $state(100); // Show more nodes now that we filter by type
 	let selectedNode = $state<GlobalNetworkNode | null>(null);
 	let autoFocusOnSelect = $state(true); // Auto-zoom to selection
+	let focusMode = $state(false); // When true, show ego network only
 
 	// Entity type filters - all enabled by default
 	let enabledTypes = $state<Set<EntityType>>(
@@ -48,6 +54,10 @@
 
 	// Component ref
 	let graphComponent: ReturnType<typeof NetworkGraph> | null = $state(null);
+
+	// Derive URL params for entity selection
+	const urlEntityId = $derived(urlSync.filters.entity);
+	const urlFocusMode = $derived(urlSync.filters.focus === 'true');
 
 	// Entity type config with colors and icons
 	const entityTypeConfig: Record<EntityType, { label: string; color: string; icon: typeof Users }> =
@@ -79,9 +89,46 @@
 		);
 	});
 
+	// Ego network for focus mode - shows ALL edges connected to selected node (ignoring weight filter)
+	const egoNetworkData = $derived.by(() => {
+		if (!focusMode || !selectedNode || !networkData) return null;
+
+		const selectedId = selectedNode.id;
+
+		// Get ALL edges connected to selected node from raw data (ignore weight filter)
+		const egoEdges = networkData.edges.filter(
+			(e) => e.source === selectedId || e.target === selectedId
+		);
+
+		// Get all neighbor IDs from these edges
+		const neighborIds = new Set<string>();
+		neighborIds.add(selectedId);
+		for (const edge of egoEdges) {
+			neighborIds.add(edge.source);
+			neighborIds.add(edge.target);
+		}
+
+		// Get neighbor nodes that exist and match enabled types
+		const egoNodes = networkData.nodes.filter(
+			(n) => neighborIds.has(n.id) && enabledTypes.has(n.type)
+		);
+
+		// Filter edges to only include those where both endpoints are in egoNodes
+		const egoNodeIds = new Set(egoNodes.map((n) => n.id));
+		const validEgoEdges = egoEdges.filter(
+			(e) => egoNodeIds.has(e.source) && egoNodeIds.has(e.target)
+		);
+
+		return { nodes: egoNodes, edges: validEgoEdges };
+	});
+
+	// Display nodes/edges - use ego network in focus mode, filtered otherwise
+	const displayNodes = $derived(focusMode && egoNetworkData ? egoNetworkData.nodes : filteredNodes);
+	const displayEdges = $derived(focusMode && egoNetworkData ? egoNetworkData.edges : filteredEdges);
+
 	// Stats
 	const maxEdgeWeight = $derived(networkData?.meta.weightMax ?? 50);
-	const filteredEdgeCount = $derived(filteredEdges.length);
+	const filteredEdgeCount = $derived(displayEdges.length);
 
 	// Count nodes by type for legend
 	const nodeCountsByType = $derived.by(() => {
@@ -127,9 +174,36 @@
 		loadData();
 	});
 
+	// Sync URL → state on load (restore entity selection from URL)
+	$effect(() => {
+		if (networkData && urlEntityId && !selectedNode) {
+			const node = networkData.nodes.find((n) => n.id === urlEntityId);
+			if (node) {
+				selectedNode = node;
+				focusMode = urlFocusMode;
+				// Focus on the node after graph is ready
+				if (graphComponent) {
+					requestAnimationFrame(() => {
+						graphComponent?.focusOnSelection(node.id);
+					});
+				}
+			}
+		}
+	});
+
 	// Event handlers
 	function handleNodeClick(node: GlobalNetworkNode | null) {
 		selectedNode = node;
+		focusMode = false; // Exit focus mode when clicking a new node or stage
+
+		// Update URL
+		if (node) {
+			urlSync.setFilter('entity', node.id);
+		} else {
+			urlSync.clearFilter('entity');
+		}
+		urlSync.clearFilter('focus');
+
 		// Auto-focus on the selected node and its neighbors
 		if (node && autoFocusOnSelect && graphComponent) {
 			// Small delay to let selection state propagate
@@ -141,6 +215,16 @@
 
 	function handleSearchSelect(node: GlobalNetworkNode | null) {
 		selectedNode = node;
+		focusMode = false;
+
+		// Update URL
+		if (node) {
+			urlSync.setFilter('entity', node.id);
+		} else {
+			urlSync.clearFilter('entity');
+		}
+		urlSync.clearFilter('focus');
+
 		if (node && graphComponent) {
 			// Always focus when selecting from search
 			requestAnimationFrame(() => {
@@ -151,12 +235,22 @@
 
 	function handleClosePanel() {
 		selectedNode = null;
+		focusMode = false;
+		urlSync.clearFilter('entity');
+		urlSync.clearFilter('focus');
 	}
 
 	function handleFocusSelected() {
 		if (selectedNode && graphComponent) {
+			focusMode = true;
+			urlSync.setFilter('focus', 'true');
 			graphComponent.focusOnSelection(selectedNode.id);
 		}
+	}
+
+	function handleExitFocusMode() {
+		focusMode = false;
+		urlSync.clearFilter('focus');
 	}
 
 	function handleZoomIn() {
@@ -233,7 +327,7 @@
 		<!-- Stats Cards -->
 		<div class="grid gap-4 md:grid-cols-4">
 			<StatsCard title={t('network.total_entities')} value={networkData.meta.totalNodes} />
-			<StatsCard title={t('network.visible_nodes')} value={filteredNodes.length} />
+			<StatsCard title={t('network.visible_nodes')} value={displayNodes.length} />
 			<StatsCard title={t('network.visible_edges')} value={filteredEdgeCount} />
 			<StatsCard title={t('network.max_weight')} value={networkData.meta.weightMax} />
 		</div>
@@ -379,17 +473,36 @@
 			<div class="h-150">
 				<NetworkGraph
 					bind:this={graphComponent}
-					nodes={filteredNodes}
-					edges={filteredEdges}
+					nodes={displayNodes}
+					edges={displayEdges}
 					selectedNodeId={selectedNode?.id}
 					{nodeSizeBy}
 					entityTypeColors={entityTypeConfig}
+					{focusMode}
 					onNodeClick={handleNodeClick}
 				/>
 
-				<!-- Legend -->
+				<!-- Focus Mode Indicator -->
+				{#if focusMode && selectedNode}
+					<div class="absolute top-4 left-4 z-20">
+						<Badge variant="secondary" class="flex items-center gap-2 px-3 py-1.5">
+							<Focus class="h-3.5 w-3.5" />
+							<span>{t('network.focus_mode')}</span>
+							<button
+								class="ml-1 rounded-full p-0.5 hover:bg-muted"
+								onclick={handleExitFocusMode}
+								title={t('network.exit_focus')}
+							>
+								<X class="h-3 w-3" />
+							</button>
+						</Badge>
+					</div>
+				{/if}
+
+				<!-- Legend - Hidden on mobile when entity panel is visible -->
 				<div
-					class="absolute bottom-4 left-4 z-10 flex flex-col gap-2 rounded-lg border bg-card/95 p-3 text-sm shadow-sm backdrop-blur-sm"
+					class="absolute left-4 z-10 flex flex-col gap-2 rounded-lg border bg-card/95 p-3 text-sm shadow-sm backdrop-blur-sm
+					       {selectedNode ? 'hidden sm:flex sm:bottom-4' : 'bottom-4'}"
 				>
 					<div class="font-medium">{t('network.legend')}</div>
 					{#each Object.entries(entityTypeConfig) as [type, config] (type)}
@@ -403,7 +516,10 @@
 						{/if}
 					{/each}
 					<div class="mt-1 border-t pt-2 text-xs text-muted-foreground">
-						{t('network.nodes')}: {filteredNodes.length} • {t('network.edges')}: {filteredEdgeCount}
+						{t('network.nodes')}: {displayNodes.length} • {t('network.edges')}: {filteredEdgeCount}
+						{#if focusMode}
+							<div class="mt-1 text-primary">{t('network.showing_all_connections')}</div>
+						{/if}
 					</div>
 				</div>
 
@@ -412,7 +528,7 @@
 					{@const nodeColor = entityTypeConfig[selectedNode.type].color}
 					{@const NodeIcon = entityTypeConfig[selectedNode.type].icon}
 					<div
-						class="absolute z-10 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm
+						class="absolute z-20 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm
 						       bottom-4 left-4 right-4 p-3
 						       sm:bottom-auto sm:top-4 sm:right-4 sm:left-auto sm:w-64 sm:p-4
 						       lg:w-72"
@@ -431,16 +547,16 @@
 							</div>
 							<div class="flex items-center gap-1">
 								<Button
-									variant="ghost"
+									variant={focusMode ? 'default' : 'ghost'}
 									size="sm"
 									class="h-7 w-7 p-0"
-									onclick={handleFocusSelected}
-									title={t('network.focus_selection')}
+									onclick={focusMode ? handleExitFocusMode : handleFocusSelected}
+									title={focusMode ? t('network.exit_focus') : t('network.focus_selection')}
 								>
 									<Focus class="h-4 w-4" />
 								</Button>
 								<Button variant="ghost" size="sm" class="h-7 w-7 p-0" onclick={handleClosePanel}>
-									×
+									<X class="h-4 w-4" />
 								</Button>
 							</div>
 						</div>

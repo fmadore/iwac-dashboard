@@ -16,6 +16,7 @@
 		selectedNodeId?: string | null;
 		nodeSizeBy?: NodeSizeBy;
 		entityTypeColors?: Record<EntityType, EntityTypeConfig>;
+		focusMode?: boolean;
 		onNodeClick?: (node: GlobalNetworkNode | null) => void;
 		onNodeHover?: (node: GlobalNetworkNode | null) => void;
 	}
@@ -26,6 +27,7 @@
 		selectedNodeId = null,
 		nodeSizeBy = 'strength',
 		entityTypeColors,
+		focusMode = false,
 		onNodeClick,
 		onNodeHover
 	}: Props = $props();
@@ -264,6 +266,17 @@
 					const isSelected = node === selectedNodeId;
 					const isNeighbor = selectedNodeId && graph.hasEdge(node, selectedNodeId);
 
+					// In focus mode, the ego network is already filtered at page level
+					// Show all nodes at full visibility, highlight selected
+					if (focusMode && selectedNodeId) {
+						if (isSelected) {
+							return { ...data, size: data.size * 1.4, zIndex: 2, highlighted: true };
+						}
+						// All other nodes (neighbors) at full visibility
+						return { ...data, zIndex: 1 };
+					}
+
+					// Normal mode: dim non-connected nodes
 					if (selectedNodeId) {
 						if (isSelected) {
 							return { ...data, size: data.size * 1.4, zIndex: 2, highlighted: true };
@@ -276,14 +289,26 @@
 					return data;
 				},
 				edgeReducer: (edge, data) => {
+					// In focus mode, show all edges prominently (ego network is pre-filtered)
+					if (focusMode && selectedNodeId) {
+						const [source, target] = graph.extremities(edge);
+						if (source === selectedNodeId || target === selectedNodeId) {
+							const highlightColor = isDark ? 'rgba(249, 115, 22, 0.8)' : 'rgba(234, 88, 12, 0.9)';
+							return { ...data, color: highlightColor, size: data.size * 2.5 };
+						}
+						// Other edges in focus mode (between neighbors) shown normally
+						return data;
+					}
+
+					// Normal mode: highlight edges to selected, hide others completely
 					if (selectedNodeId) {
 						const [source, target] = graph.extremities(edge);
 						if (source === selectedNodeId || target === selectedNodeId) {
-							const highlightColor = isDark ? 'rgba(249, 115, 22, 0.7)' : 'rgba(234, 88, 12, 0.8)';
+							const highlightColor = isDark ? 'rgba(249, 115, 22, 0.8)' : 'rgba(234, 88, 12, 0.9)';
 							return { ...data, color: highlightColor, size: data.size * 2.5 };
 						} else {
-							const dimColor = isDark ? 'rgba(100, 100, 100, 0.15)' : 'rgba(100, 100, 100, 0.12)';
-							return { ...data, color: dimColor, size: data.size * 0.5 };
+							// Hide non-connected edges completely to avoid hatched appearance
+							return { ...data, hidden: true };
 						}
 					}
 					return data;
@@ -334,9 +359,10 @@
 		sigmaInstance.refresh();
 	}
 
-	// Re-render when selection changes
+	// Re-render when selection or focus mode changes
 	$effect(() => {
 		const _ = selectedNodeId;
+		const __ = focusMode;
 		if (sigmaInstance && graphInstance) {
 			sigmaInstance.refresh();
 		}

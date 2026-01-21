@@ -41,7 +41,7 @@
 		scary: new Set(['lang', 'theme', 'view', 'country']),
 		cooccurrence: new Set(['lang', 'theme', 'view', 'country', 'order', 'term']),
 		spatial: new Set(['lang', 'theme', 'view']),
-		network: new Set(['lang', 'theme']),
+		network: new Set(['lang', 'theme', 'entity', 'focus']),
 		'network-map': new Set(['lang', 'theme'])
 	};
 

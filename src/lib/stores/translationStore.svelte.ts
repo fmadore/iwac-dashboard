@@ -377,6 +377,9 @@ export const translations = {
 		'network.top_entities': 'Top entities',
 		'network.showing_first_100': 'Showing first 100 results',
 		'network.focus_selection': 'Focus',
+		'network.focus_mode': 'Focus Mode',
+		'network.exit_focus': 'Exit Focus',
+		'network.showing_all_connections': 'Showing all connections',
 		// Network Map
 		'network_map.title': 'Network Map',
 		'network_map.description': 'Explore location relationships on a geographic map. Edges show co-occurrence connections between places.',
@@ -801,6 +804,9 @@ export const translations = {
 		'network.top_entities': 'Entités principales',
 		'network.showing_first_100': 'Affichage des 100 premiers résultats',
 		'network.focus_selection': 'Centrer',
+		'network.focus_mode': 'Mode focus',
+		'network.exit_focus': 'Quitter le focus',
+		'network.showing_all_connections': 'Affichage de toutes les connexions',
 		// Network Map
 		'network_map.title': 'Carte réseau',
 		'network_map.description': 'Explorez les relations entre lieux sur une carte géographique. Les arêtes montrent les connexions de co-occurrence entre les lieux.',
