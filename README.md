@@ -1,358 +1,183 @@
 # IWAC Dashboard
 
-A modern, static data visualization dashboard for the **Islam West Africa Collection (IWAC)** database. Built with SvelteKit, Svelte 5, shadcn-svelte, and fully prerendered as static HTML for deployment.
+An interactive visualization platform for exploring the **Islam West Africa Collection** — a dataset of 19,000+ documents on Islam and Muslims in West Africa.
 
-## Overview
+🌐 **[Access the Dashboard](https://fmadore.github.io/iwac-dashboard/)** | 📊 **[Dataset on Hugging Face](https://huggingface.co/datasets/fmadore/islam-west-africa-collection)**
 
-This dashboard provides interactive visualizations and analytics for the IWAC dataset from Hugging Face (`fmadore/islam-west-africa-collection`), featuring:
+## What Is This?
 
-- 📊 **Overview Dashboard** - Key statistics and summary cards
-- 🗺️ **Country Treemap** - Hierarchical visualization of document distribution by country
-- 🌍 **Language Analysis** - Distribution of documents by language with pie charts
-- 📚 **Entity Index** - Searchable, sortable table of all entities with filtering
-- 📈 **Timeline View** - Temporal analysis of document creation and growth
-- 🏷️ **Categories** - Document categorization and distribution
-- 🔍 **Word Cloud** - Most frequent terms across the collection
-- ⚠️ **Scary Terms** - Analysis of concerning terminology patterns
-- 🌐 **Bilingual Support** - Full English/French interface with real-time switching
-- 🎨 **Dark/Light Mode** - Theme switching with system preference detection
-- 📱 **PWA Support** - Progressive Web App with offline capabilities
+The IWAC Dashboard transforms a large scholarly dataset into an accessible, interactive exploration tool. It enables researchers to discover patterns, relationships, and trends across thousands of documents — without writing code or querying databases.
 
-## Data Flow
+**Designed for:** Scholars in Islamic studies, African studies, religious studies, media studies, digital humanities, and related fields.
 
-The dashboard uses a **static data generation approach**:
+**Languages:** Fully bilingual interface (English/French) with real-time switching.
 
-1. **Python Scripts** (in `scripts/`) fetch data from Hugging Face
-2. Scripts process and generate **static JSON files**
-3. JSON files saved to **both** `static/data/` and `build/data/`
-4. Svelte components fetch from `/data/[filename].json` using `fetch()`
-5. All pages use `export const prerender = true;` for static site generation
+## Geographic & Temporal Coverage
 
-### Python Data Generators
+- **Countries:** Côte d'Ivoire, Burkina Faso, Benin, Togo, Niger, Nigeria
+- **Time span:** Documents from 1912 to present
+- **Document types:** Press articles, academic publications, archival documents, audiovisual materials
 
-- `generate_overview_stats.py` - Overall statistics and counts
-- `generate_index_entities.py` - Entity data and bar charts
-- `generate_language_facets.py` - Language distribution data
-- `generate_treemap.py` - Country treemap data
-- `generate_wordcloud.py` - Word frequency data
-- `generate_timeline.py` - Temporal analysis data
-- `generate_categories.py` - Category distribution data
-- `generate_scary_terms.py` - Concerning terminology analysis
+---
 
-### Running Data Generation
+## Explore the Dashboard
+
+### Overview
+
+The entry point provides key statistics at a glance: total documents, language distribution, country coverage, and recent additions to the collection.
+
+### Geographic Analysis
+
+| Page | What You Can Discover |
+|------|----------------------|
+| **Country Distribution** | Which West African countries have the most documentation? Interactive treemap showing document density by nation. |
+| **World Map** | Geographic spread of the collection visualized on an interactive choropleth map. |
+| **Sources Map** | Where are the newspapers and publication sources located? |
+| **Entity Geographic Footprint** | Select any person, organization, or topic and see where they appear across the region. Track an imam's influence, an organization's reach, or a concept's geographic spread. |
+
+### Temporal Analysis
+
+| Page | What You Can Discover |
+|------|----------------------|
+| **Timeline** | How has coverage of Islam in West Africa evolved over time? View growth trajectories, monthly additions, and identify periods of intensive documentation. |
+| **Categories Over Time** | How has the composition of document types changed across decades? |
+| **References by Year** | Publication patterns and bibliographic trends across time periods. |
+
+### Textual Analysis
+
+| Page | What You Can Discover |
+|------|----------------------|
+| **Word Cloud & Frequency** | What terms appear most frequently? Filter by country or year to see regional and temporal variations in terminology. |
+| **Word Co-occurrence** | Which terms appear together? Identify semantic clusters and conceptual relationships in the literature. |
+| **Topic Modeling** | What themes emerge from automated analysis? Browse detected topics and their prevalence. |
+| **Sensitive Terms** | Track concerning or problematic terminology over time. Useful for critical discourse analysis and understanding media framing. |
+
+### Network Analysis
+
+| Page | What You Can Discover |
+|------|----------------------|
+| **Entity Network** | How are people, organizations, places, and topics connected? Interactive graph showing relationships based on co-mentions in documents. |
+| **Spatial Network** | Which locations are mentioned together? Geographic clusters and regional connections visualized on a map. |
+
+### Entity & Reference Data
+
+| Page | What You Can Discover |
+|------|----------------------|
+| **Entity Index** | Searchable directory of all persons, organizations, events, locations, and topics extracted from the collection. |
+| **Language Distribution** | What languages are represented? Breakdown by document type and country. |
+| **Top Authors** | Who has contributed most to the scholarly literature? Publication counts and activity periods. |
+
+---
+
+## Research Questions You Can Explore
+
+The dashboard helps researchers investigate questions such as:
+
+**Geographic patterns**
+- Where is Islamic practice and scholarship most documented in francophone West Africa?
+- How does coverage differ between coastal and Sahelian countries?
+
+**Temporal dynamics**
+- How has media attention to Islam in West Africa changed since independence?
+- What events correlate with spikes in documentation?
+
+**Actors and networks**
+- Who are the key religious leaders, scholars, and organizations mentioned?
+- How are different actors connected through co-mentions?
+
+**Discourse analysis**
+- What terminology characterizes coverage of Islam in this region?
+- How do word patterns differ between countries or time periods?
+- What potentially problematic framings appear in the sources?
+
+**Entity tracking**
+- Where does a specific religious leader appear in the documentary record?
+- What is the geographic footprint of a particular Islamic organization?
+
+---
+
+## Features
+
+- **No coding required** — All visualizations are interactive and filterable through the interface
+- **Shareable views** — URLs preserve your filters and selections for sharing with colleagues
+- **Offline capable** — Works without internet connection after initial load
+- **Dark/Light themes** — Choose your preferred display mode
+- **Responsive design** — Works on desktop, tablet, and mobile devices
+- **Export options** — Download visualizations as SVG files
+
+---
+
+## Data Source
+
+All data comes from the [Islam West Africa Collection](https://huggingface.co/datasets/fmadore/islam-west-africa-collection) on Hugging Face, a curated dataset documenting how francophone West African newspapers have covered Islam and Muslims from the colonial period to the present.
+
+The collection includes:
+- **Articles**: Press coverage from major West African newspapers
+- **Publications**: Academic papers, books, and scholarly works
+- **Documents**: Archival materials and unpublished texts
+- **Audiovisual**: Recordings and multimedia materials
+- **References**: Bibliographic citations and author metadata
+
+---
+
+## Citation
+
+If you use this dashboard in your research, please cite:
+
+```
+Madore, Frédérick. Islam West Africa Collection Dashboard.
+https://fmadore.github.io/iwac-dashboard/
+```
+
+---
+
+## For Developers
+
+<details>
+<summary>Technical details and contribution guide</summary>
+
+### Technology Stack
+
+- **Framework**: SvelteKit with Svelte 5, TypeScript
+- **UI**: shadcn-svelte, Tailwind CSS v4
+- **Visualizations**: LayerChart, D3.js, Leaflet, Sigma.js
+- **Data**: Python scripts generating static JSON from Hugging Face
+
+### Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### Data Generation
 
 ```bash
 cd scripts
 pip install -r requirements.txt
-python generate_overview_stats.py
-python generate_index_entities.py
-python generate_language_facets.py
-python generate_treemap.py
-python generate_wordcloud.py
-python generate_timeline.py
-python generate_categories.py
-python generate_scary_terms.py
+python generate_overview_stats.py  # Run individual generators
 ```
 
-## Developing
+### Project Structure
 
-Install dependencies:
+- `src/routes/` — Page components
+- `src/lib/components/visualizations/` — Chart and map components
+- `src/lib/stores/` — State management
+- `scripts/` — Python data generation
+- `static/data/` — Pre-computed JSON files
 
-```bash
-npm install
-```
+See [CLAUDE.md](./CLAUDE.md) for detailed development guidelines.
 
-Start the development server:
+</details>
 
-```bash
-npm run dev
+---
 
-# or start and open in browser
-npm run dev -- --open
-```
+## License
 
-## Technology Stack
-
-- **Framework**: SvelteKit with **Svelte 5** (runes mode) and TypeScript
-- **UI Components**: shadcn-svelte (Card, Button, Table, Skeleton, etc.)
-- **Styling**: Tailwind CSS v4 with CSS variables theming
-- **Visualizations**:
-  - LayerChart (preferred for new charts)
-  - D3.js (custom visualizations, treemaps, word clouds)
-  - ECharts (complex charts with many options)
-- **Icons**: Lucide Svelte
-- **Theme Management**: mode-watcher
-- **Data Processing**: Python scripts generating static JSON files
-- **Testing**: Vitest (unit) + Playwright (E2E)
-- **Build Tool**: Vite
-- **PWA**: @vite-pwa/sveltekit
-- **Adapter**: @sveltejs/adapter-static (full prerendering)
-
-## Project Structure
-
-```
-iwac-dashboard/
-├── src/
-│   ├── lib/
-│   │   ├── components/
-│   │   │   ├── controls/                    # Controls (toggles)
-│   │   │   │   ├── LanguageToggle.svelte    # EN/FR language switcher
-│   │   │   │   ├── ThemeToggle.svelte       # Dark/light mode toggle
-│   │   │   │   └── index.ts                 # Barrel export
-│   │   │   ├── dashboard/                   # Dashboard components
-│   │   │   │   ├── OverviewStatsGrid.svelte # Overview statistics grid
-│   │   │   │   ├── StatsCard.svelte         # Statistics display card
-│   │   │   │   └── index.ts
-│   │   │   ├── facets/                      # Faceted visualizations
-│   │   │   │   └── FacetPie.svelte          # Pie chart facet
-│   │   │   ├── layout/                      # Layout components
-│   │   │   │   ├── AppSidebar.svelte        # Navigation sidebar
-│   │   │   │   ├── FullscreenToggle.svelte  # Fullscreen mode toggle
-│   │   │   │   └── index.ts
-│   │   │   ├── lazy/                        # Lazy loading components
-│   │   │   │   ├── LazyLoad.svelte          # Viewport lazy loading
-│   │   │   │   ├── LazyComponent.svelte     # Dynamic import lazy loading
-│   │   │   │   └── index.ts
-│   │   │   ├── ui/                          # shadcn-svelte components
-│   │   │   │   ├── card/                    # Card component
-│   │   │   │   ├── button/                  # Button component
-│   │   │   │   ├── table/                   # Table component
-│   │   │   │   └── ...                      # Other UI components
-│   │   │   ├── utilities/                   # Utility components
-│   │   │   │   ├── SafeModeWatcher.svelte   # Safe mode watcher
-│   │   │   │   ├── UrlStateSync.svelte      # URL state synchronization
-│   │   │   │   └── index.ts
-│   │   │   └── visualizations/              # All visualizations
-│   │   │       ├── charts/
-│   │   │       │   ├── d3/                  # D3-based charts
-│   │   │       │   │   ├── BarChartRace.svelte
-│   │   │       │   │   ├── CooccurrenceMatrix.svelte
-│   │   │       │   │   ├── StackedBarChart.svelte
-│   │   │       │   │   ├── TimelineChart.svelte
-│   │   │       │   │   ├── WordAssociations.svelte
-│   │   │       │   │   └── index.ts
-│   │   │       │   ├── layerchart/          # LayerChart-based charts
-│   │   │       │   │   ├── Bar.svelte
-│   │   │       │   │   ├── Duration.svelte
-│   │   │       │   │   ├── PieChart.svelte
-│   │   │       │   │   ├── Tooltip.svelte
-│   │   │       │   │   ├── Treemap.svelte
-│   │   │       │   │   └── index.ts
-│   │   │       │   ├── utils.ts             # Chart utilities
-│   │   │       │   └── index.ts
-│   │   │       ├── network/                 # Network visualizations
-│   │   │       │   ├── NetworkGraph.svelte
-│   │   │       │   ├── NetworkControls.svelte
-│   │   │       │   ├── NetworkNodePanel.svelte
-│   │   │       │   └── index.ts
-│   │   │       ├── world-map/               # Map visualizations
-│   │   │       │   ├── WorldMapVisualization.svelte
-│   │   │       │   ├── Map.svelte
-│   │   │       │   ├── ChoroplethLayer.svelte
-│   │   │       │   └── index.ts
-│   │   │       ├── Wordcloud.svelte         # Word cloud visualization
-│   │   │       └── index.ts
-│   │   ├── stores/                          # Svelte stores
-│   │   │   ├── itemsStore.svelte.ts         # Global data store
-│   │   │   ├── translationStore.svelte.ts   # i18n translation store
-│   │   │   └── ...
-│   │   ├── types/                           # TypeScript definitions
-│   │   ├── hooks/                           # Custom Svelte hooks
-│   │   └── utils/                           # Utility functions
-│   ├── routes/                              # SvelteKit file-based routing
-│   │   ├── +layout.svelte                   # Root layout with sidebar
-│   │   ├── +page.svelte                     # Overview dashboard (/)
-│   │   ├── countries/+page.svelte           # Country treemap view
-│   │   ├── languages/+page.svelte           # Language distribution
-│   │   ├── entities/+page.svelte            # Entity index table
-│   │   ├── timeline/+page.svelte            # Timeline analysis
-│   │   └── ...
-│   ├── app.html                             # HTML template
-│   └── app.css                              # Global styles with CSS variables
-├── scripts/                                 # Python data generation scripts
-├── static/data/                             # Static JSON data files
-└── build/                                   # Production build output
-```
-
-
-## Building
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The build process:
-
-1. Prerenders all pages to static HTML
-2. Copies static assets to `build/`
-3. Generates service worker for PWA
-4. Creates a fully static site ready for deployment
-
-Preview the production build:
-
-```bash
-npm run preview
-```
-
-## Available Scripts
-
-```bash
-npm run dev              # Start development server
-npm run build            # Build for production
-npm run preview          # Preview production build
-npm run check            # Type-check with svelte-check
-npm run check:watch      # Type-check in watch mode
-npm run format           # Format code with Prettier
-npm run lint             # Lint code with ESLint and Prettier
-npm test                 # Run all tests
-npm run test:unit        # Run unit tests with Vitest
-npm run test:e2e         # Run E2E tests with Playwright
-npm run generate-icons   # Generate PWA icons
-```
-
-## Key Features
-
-### Svelte 5 Runes Mode
-
-This project uses **Svelte 5 with runes mode** exclusively:
-
-```svelte
-<script>
-	// Props
-	let { count = 0 } = $props();
-
-	// State
-	let items = $state([]);
-
-	// Derived values
-	const doubled = $derived(count * 2);
-
-	// Effects
-	$effect(() => {
-		console.log('Count changed:', count);
-	});
-</script>
-```
-
-### Internationalization (i18n)
-
-Full bilingual support (English/French) with:
-
-- Store-based translation system (`translationStore.ts`)
-- Language toggle component in header
-- All text uses `$t('key')` for translation
-- Charts and visualizations update reactively with language changes
-
-```svelte
-<script>
-	import { t, languageStore } from '$lib/stores/translationStore.js';
-</script>
-
-<h1>{$t('app.title')}</h1><p>{$t('stats.total_items')}</p>
-```
-
-### Theme System
-
-- Dark/light mode with system preference detection
-- CSS variables for theming (in `src/app.css`)
-- `mode-watcher` package for theme management
-- All colors use CSS variables for theme compatibility
-
-### PWA Support
-
-- Progressive Web App with offline capabilities
-- Service worker for caching
-- Manifest file for installation
-- Generated icons in multiple sizes
-
-## Deployment
-
-This is a **fully static site** that can be deployed to:
-
-- GitHub Pages
-- Netlify
-- Vercel
-- Any static hosting service
-
-The site is configured for deployment at a subpath (`/iwac-dashboard/`) using the `base` path from `$app/paths`.
-
-## Development Guidelines
-
-### Critical Rules
-
-1. **Always use Svelte 5 syntax** - No Svelte 4 patterns
-2. **Use shadcn-svelte components** - Never create custom basic UI
-3. **Use CSS variables** - No hardcoded colors
-4. **Static JSON data only** - All data from `/data/*.json`
-5. **Bilingual required** - All text must support EN/FR
-6. **LayerChart preferred** - Use LayerChart for new visualizations
-
-### Color System
-
-Always reference CSS variables from our theme:
-
-```svelte
-<!-- ✅ Correct -->
-<div class="bg-background text-foreground">
-	<div class="border border-border bg-card text-card-foreground">
-		<span class="text-muted-foreground">Muted text</span>
-	</div>
-</div>
-
-<!-- ❌ Wrong -->
-<div class="bg-blue-500 text-white">
-	<span class="text-gray-500">Muted</span>
-</div>
-```
-
-### Data Loading Pattern
-
-```svelte
-<script>
-	import { base } from '$app/paths';
-
-	let data = $state([]);
-	let loading = $state(true);
-	let error = $state(null);
-
-	async function loadData() {
-		try {
-			const response = await fetch(`${base}/data/filename.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			data = await response.json();
-		} catch (e) {
-			error = e.message;
-		} finally {
-			loading = false;
-		}
-	}
-
-	$effect(() => {
-		loadData();
-	});
-</script>
-```
-
-## Pages Overview
-
-| Route         | Description                                               |
-| ------------- | --------------------------------------------------------- |
-| `/`           | Overview dashboard with key statistics and charts         |
-| `/countries`  | Interactive treemap of document distribution by country   |
-| `/languages`  | Language distribution with pie charts and facets          |
-| `/entities`   | Searchable entity index table with sorting and filtering  |
-| `/timeline`   | Temporal analysis with timeline charts and growth metrics |
-| `/categories` | Document categorization and distribution analysis         |
-| `/words`      | Word cloud visualization of frequent terms                |
-| `/scary`      | Analysis of concerning terminology patterns               |
-
-## Dataset
-
-This dashboard visualizes the **Islam West Africa Collection (IWAC)** dataset:
-
-- **Source**: Hugging Face Dataset `fmadore/islam-west-africa-collection`
-- **Content**: Islamic manuscripts, documents, and texts from West Africa
-- **Countries**: Côte d'Ivoire, Burkina Faso, Benin, Togo, Niger, Nigeria
-- **Languages**: Multiple languages including Arabic, French, English, and local languages
+This project is open source. The underlying dataset is available under its own license on Hugging Face.

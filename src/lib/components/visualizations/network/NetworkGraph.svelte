@@ -37,7 +37,10 @@
 	let layoutProgress = $state(0);
 	let isInitialized = $state(false);
 	let currentNodesKey = $state('');
-	
+	let isDestroyed = false; // Track if component is unmounted
+	let initRetryCount = 0;
+	const MAX_INIT_RETRIES = 3;
+
 	// Cache layout positions to reuse when nodes reappear
 	let positionCache: Map<string, { x: number; y: number }> = new Map();
 
@@ -90,7 +93,7 @@
 	});
 
 	async function initGraph() {
-		if (!browser || !containerElement) return;
+		if (!browser || !containerElement || isDestroyed) return;
 		if (nodes.length === 0) return;
 
 		// If same nodes, just update attributes instead of rebuilding
@@ -100,18 +103,43 @@
 		}
 
 		const container = containerElement;
-		const rect = container.getBoundingClientRect();
-		if (rect.width === 0 || rect.height === 0) {
-			requestAnimationFrame(() => initGraph());
+
+		// Ensure container is in the DOM and has dimensions
+		if (!container.isConnected) {
+			if (initRetryCount < MAX_INIT_RETRIES) {
+				initRetryCount++;
+				setTimeout(() => initGraph(), 100 * initRetryCount);
+			}
 			return;
 		}
 
-		// Cleanup existing
+		const rect = container.getBoundingClientRect();
+		if (rect.width === 0 || rect.height === 0) {
+			if (initRetryCount < MAX_INIT_RETRIES) {
+				initRetryCount++;
+				requestAnimationFrame(() => initGraph());
+			}
+			return;
+		}
+
+		// Reset retry count on successful dimension check
+		initRetryCount = 0;
+
+		// Cleanup existing instance properly
 		if (sigmaInstance) {
-			sigmaInstance.kill();
+			try {
+				sigmaInstance.kill();
+			} catch {
+				// Ignore cleanup errors
+			}
 			sigmaInstance = null;
 			graphInstance = null;
+			// Small delay to let WebGL context be released
+			await new Promise((resolve) => setTimeout(resolve, 50));
 		}
+
+		// Check again if destroyed during async operation
+		if (isDestroyed) return;
 
 		isLayoutRunning = true;
 		layoutProgress = 0;
@@ -212,6 +240,12 @@
 			layoutProgress = 80;
 			await tick();
 
+			// Check if destroyed during layout
+			if (isDestroyed || !containerElement?.isConnected) {
+				isLayoutRunning = false;
+				return;
+			}
+
 			// Theme-aware label and edge colors
 			const foregroundColor = isDark ? '#fafafa' : '#0a0a0a';
 			const defaultEdgeColor = isDark ? 'rgba(180, 180, 180, 0.3)' : 'rgba(60, 60, 60, 0.35)';
@@ -310,14 +344,14 @@
 
 	// Rebuild graph when nodes change significantly
 	$effect(() => {
-		if (browser && containerElement && nodes.length > 0) {
+		if (browser && containerElement && nodes.length > 0 && !isDestroyed) {
 			// Access nodesKey to track it
 			const currentKey = nodesKey;
 			// Debounce rebuilds - longer delay to batch rapid filter changes
 			const timeout = setTimeout(() => {
-				if (currentKey !== currentNodesKey) {
+				if (!isDestroyed && currentKey !== currentNodesKey) {
 					initGraph();
-				} else {
+				} else if (!isDestroyed) {
 					updateGraphAttributes();
 				}
 			}, 400);
@@ -326,14 +360,26 @@
 	});
 
 	onMount(() => {
-		if (containerElement && nodes.length > 0) {
-			initGraph();
-		}
+		isDestroyed = false;
+
+		// Delay initial graph to ensure container is fully ready
+		const initTimeout = setTimeout(() => {
+			if (containerElement && nodes.length > 0 && !isDestroyed) {
+				initGraph();
+			}
+		}, 50);
 
 		return () => {
+			isDestroyed = true;
+			clearTimeout(initTimeout);
 			if (sigmaInstance) {
-				sigmaInstance.kill();
+				try {
+					sigmaInstance.kill();
+				} catch {
+					// Ignore cleanup errors
+				}
 				sigmaInstance = null;
+				graphInstance = null;
 			}
 		};
 	});
@@ -356,6 +402,80 @@
 		if (pos) {
 			sigmaInstance.getCamera().animate({ x: pos.x, y: pos.y, ratio: 0.3 }, { duration: 400 });
 		}
+	}
+
+	/**
+	 * Focus on a node and all its neighbors (ego network view)
+	 * Calculates bounding box of node + neighbors and zooms to fit
+	 */
+	export function focusOnSelection(nodeId: string) {
+		if (!sigmaInstance || !graphInstance) return;
+
+		const graph = graphInstance;
+		const sigma = sigmaInstance;
+
+		// Get the selected node position
+		const nodePos = sigma.getNodeDisplayData(nodeId);
+		if (!nodePos) return;
+
+		// Collect all positions: selected node + neighbors
+		const positions: Array<{ x: number; y: number }> = [{ x: nodePos.x, y: nodePos.y }];
+
+		// Get all neighbors
+		const neighbors = graph.neighbors(nodeId);
+		for (const neighborId of neighbors) {
+			const neighborPos = sigma.getNodeDisplayData(neighborId);
+			if (neighborPos) {
+				positions.push({ x: neighborPos.x, y: neighborPos.y });
+			}
+		}
+
+		// Calculate bounding box
+		let minX = Infinity,
+			minY = Infinity,
+			maxX = -Infinity,
+			maxY = -Infinity;
+
+		for (const pos of positions) {
+			minX = Math.min(minX, pos.x);
+			minY = Math.min(minY, pos.y);
+			maxX = Math.max(maxX, pos.x);
+			maxY = Math.max(maxY, pos.y);
+		}
+
+		// Calculate center
+		const centerX = (minX + maxX) / 2;
+		const centerY = (minY + maxY) / 2;
+
+		// Calculate ratio to fit all nodes with some padding
+		const width = maxX - minX;
+		const height = maxY - minY;
+		const size = Math.max(width, height);
+
+		// Determine zoom ratio - smaller ratio = more zoomed in
+		// Add padding factor (0.6 means 60% of viewport used by content)
+		let ratio = 0.15; // Default for single node or very tight cluster
+		if (size > 0.01) {
+			// Normalize based on graph size and add padding
+			ratio = Math.min(0.8, Math.max(0.1, size * 1.5));
+		}
+
+		// Animate camera to focus on the ego network
+		sigma.getCamera().animate(
+			{
+				x: centerX,
+				y: centerY,
+				ratio: ratio
+			},
+			{ duration: 400 }
+		);
+	}
+
+	/**
+	 * Check if a node exists in the current graph
+	 */
+	export function hasNode(nodeId: string): boolean {
+		return graphInstance?.hasNode(nodeId) ?? false;
 	}
 </script>
 

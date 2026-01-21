@@ -8,7 +8,7 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph } from '$lib/components/visualizations/network/index.js';
+	import { NetworkGraph, NetworkEntitySearch } from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import type {
 		GlobalNetworkData,
@@ -25,7 +25,8 @@
 		Building2,
 		Calendar,
 		Tag,
-		MapPin
+		MapPin,
+		Focus
 	} from '@lucide/svelte';
 
 	// Data state
@@ -38,6 +39,7 @@
 	let minEdgeWeight = $state(5); // Higher default for less clutter
 	let maxNodes = $state(100); // Show more nodes now that we filter by type
 	let selectedNode = $state<GlobalNetworkNode | null>(null);
+	let autoFocusOnSelect = $state(true); // Auto-zoom to selection
 
 	// Entity type filters - all enabled by default
 	let enabledTypes = $state<Set<EntityType>>(
@@ -128,10 +130,33 @@
 	// Event handlers
 	function handleNodeClick(node: GlobalNetworkNode | null) {
 		selectedNode = node;
+		// Auto-focus on the selected node and its neighbors
+		if (node && autoFocusOnSelect && graphComponent) {
+			// Small delay to let selection state propagate
+			requestAnimationFrame(() => {
+				graphComponent?.focusOnSelection(node.id);
+			});
+		}
+	}
+
+	function handleSearchSelect(node: GlobalNetworkNode | null) {
+		selectedNode = node;
+		if (node && graphComponent) {
+			// Always focus when selecting from search
+			requestAnimationFrame(() => {
+				graphComponent?.focusOnSelection(node.id);
+			});
+		}
 	}
 
 	function handleClosePanel() {
 		selectedNode = null;
+	}
+
+	function handleFocusSelected() {
+		if (selectedNode && graphComponent) {
+			graphComponent.focusOnSelection(selectedNode.id);
+		}
 	}
 
 	function handleZoomIn() {
@@ -216,107 +241,134 @@
 		<!-- Entity Type Filters -->
 		<Card.Root>
 			<Card.Content class="py-4">
-				<div class="flex flex-wrap items-center gap-3">
+				<div class="space-y-3">
 					<Label class="text-sm font-medium">{t('network.entity_types')}:</Label>
-					{#each Object.entries(entityTypeConfig) as [type, config] (type)}
-						{@const Icon = config.icon}
-						{@const isEnabled = enabledTypes.has(type as EntityType)}
-						{@const count = nodeCountsByType[type as EntityType]}
-						<button
-							class="flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-all"
-							class:opacity-40={!isEnabled}
-							style:background-color={isEnabled ? `${config.color}20` : 'transparent'}
-							style:border-color={config.color}
-							onclick={() => toggleEntityType(type as EntityType)}
-						>
-							<span style="color: {config.color}"><Icon class="h-4 w-4" /></span>
-							<span>{t(config.label)}</span>
-							<Badge variant="secondary" class="ml-1 h-5 px-1.5 text-xs">{count}</Badge>
-						</button>
-					{/each}
+					<div class="flex flex-wrap gap-2">
+						{#each Object.entries(entityTypeConfig) as [type, config] (type)}
+							{@const Icon = config.icon}
+							{@const isEnabled = enabledTypes.has(type as EntityType)}
+							{@const count = nodeCountsByType[type as EntityType]}
+							<button
+								class="flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs sm:text-sm sm:px-3 sm:py-1.5 sm:gap-2 transition-all"
+								class:opacity-40={!isEnabled}
+								style:background-color={isEnabled ? `${config.color}20` : 'transparent'}
+								style:border-color={config.color}
+								onclick={() => toggleEntityType(type as EntityType)}
+							>
+								<span style="color: {config.color}"><Icon class="h-3.5 w-3.5 sm:h-4 sm:w-4" /></span>
+								<span class="hidden xs:inline">{t(config.label)}</span>
+								<Badge variant="secondary" class="h-4 px-1 text-[10px] sm:ml-1 sm:h-5 sm:px-1.5 sm:text-xs">{count}</Badge>
+							</button>
+						{/each}
+					</div>
 				</div>
 			</Card.Content>
 		</Card.Root>
 
-		<!-- Controls -->
+		<!-- Search and Controls -->
 		<Card.Root>
 			<Card.Content class="py-4">
-				<div class="flex flex-wrap items-center gap-4">
-					<!-- Node Size Selector -->
-					<div class="flex items-center gap-2">
-						<Label class="text-sm font-medium">{t('network.node_size')}:</Label>
-						<Select.Root type="single" value={nodeSizeBy} onValueChange={handleNodeSizeChange}>
-							<Select.Trigger class="w-40">
-								{t(nodeSizeOptions.find((o) => o.value === nodeSizeBy)?.label || '')}
-							</Select.Trigger>
-							<Select.Content>
-								{#each nodeSizeOptions as option (option.value)}
-									<Select.Item value={option.value}>{t(option.label)}</Select.Item>
-								{/each}
-							</Select.Content>
-						</Select.Root>
-					</div>
-
-					<!-- Max Nodes Filter -->
-					<div class="flex items-center gap-2">
-						<Label class="text-sm font-medium">{t('network.max_nodes')}:</Label>
-						<div class="flex w-28 items-center gap-2">
-							<Slider
-								type="single"
-								value={maxNodes}
-								min={20}
-								max={300}
-								step={20}
-								onValueChange={handleMaxNodesChange}
-								class="flex-1"
+				<div class="space-y-4">
+					<!-- Search Bar - Full Width on Mobile -->
+					<div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+						<div class="w-full sm:w-72 lg:w-80">
+							<NetworkEntitySearch
+								nodes={filteredNodes}
+								selectedNode={selectedNode}
+								onSelect={handleSearchSelect}
 							/>
-							<span class="w-10 text-right text-sm text-muted-foreground">{maxNodes}</span>
+						</div>
+						<!-- Focus button when node is selected -->
+						{#if selectedNode}
+							<Button
+								variant="outline"
+								size="sm"
+								onclick={handleFocusSelected}
+								class="shrink-0"
+							>
+								<Focus class="h-4 w-4 mr-2" />
+								{t('network.focus_selection')}
+							</Button>
+						{/if}
+						<!-- Zoom Controls - Move to right on larger screens -->
+						<div class="flex items-center gap-1 sm:ml-auto">
+							<Button
+								variant="outline"
+								size="icon"
+								onclick={handleZoomIn}
+								title={t('network.zoom_in')}
+							>
+								<ZoomIn class="h-4 w-4" />
+							</Button>
+							<Button
+								variant="outline"
+								size="icon"
+								onclick={handleZoomOut}
+								title={t('network.zoom_out')}
+							>
+								<ZoomOut class="h-4 w-4" />
+							</Button>
+							<Button
+								variant="outline"
+								size="icon"
+								onclick={handleResetCamera}
+								title={t('network.reset_view')}
+							>
+								<Maximize2 class="h-4 w-4" />
+							</Button>
 						</div>
 					</div>
 
-					<!-- Edge Weight Filter -->
-					<div class="flex items-center gap-2">
-						<Label class="text-sm font-medium">{t('network.min_edge_weight')}:</Label>
-						<div class="flex w-28 items-center gap-2">
-							<Slider
-								type="single"
-								value={minEdgeWeight}
-								min={2}
-								max={Math.min(maxEdgeWeight, 50)}
-								step={1}
-								onValueChange={handleSliderChange}
-								class="flex-1"
-							/>
-							<span class="w-8 text-right text-sm text-muted-foreground">{minEdgeWeight}</span>
+					<!-- Filter Controls - Responsive Grid -->
+					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						<!-- Node Size Selector -->
+						<div class="flex items-center gap-2">
+							<Label class="text-sm font-medium whitespace-nowrap">{t('network.node_size')}:</Label>
+							<Select.Root type="single" value={nodeSizeBy} onValueChange={handleNodeSizeChange}>
+								<Select.Trigger class="flex-1 min-w-0">
+									{t(nodeSizeOptions.find((o) => o.value === nodeSizeBy)?.label || '')}
+								</Select.Trigger>
+								<Select.Content>
+									{#each nodeSizeOptions as option (option.value)}
+										<Select.Item value={option.value}>{t(option.label)}</Select.Item>
+									{/each}
+								</Select.Content>
+							</Select.Root>
 						</div>
-					</div>
 
-					<!-- Zoom Controls -->
-					<div class="ml-auto flex items-center gap-1">
-						<Button
-							variant="outline"
-							size="icon"
-							onclick={handleZoomIn}
-							title={t('network.zoom_in')}
-						>
-							<ZoomIn class="h-4 w-4" />
-						</Button>
-						<Button
-							variant="outline"
-							size="icon"
-							onclick={handleZoomOut}
-							title={t('network.zoom_out')}
-						>
-							<ZoomOut class="h-4 w-4" />
-						</Button>
-						<Button
-							variant="outline"
-							size="icon"
-							onclick={handleResetCamera}
-							title={t('network.reset_view')}
-						>
-							<Maximize2 class="h-4 w-4" />
-						</Button>
+						<!-- Max Nodes Filter -->
+						<div class="flex items-center gap-2">
+							<Label class="text-sm font-medium whitespace-nowrap">{t('network.max_nodes')}:</Label>
+							<div class="flex flex-1 items-center gap-2">
+								<Slider
+									type="single"
+									value={maxNodes}
+									min={20}
+									max={300}
+									step={20}
+									onValueChange={handleMaxNodesChange}
+									class="flex-1"
+								/>
+								<span class="w-10 text-right text-sm text-muted-foreground">{maxNodes}</span>
+							</div>
+						</div>
+
+						<!-- Edge Weight Filter -->
+						<div class="flex items-center gap-2">
+							<Label class="text-sm font-medium whitespace-nowrap">{t('network.min_edge_weight')}:</Label>
+							<div class="flex flex-1 items-center gap-2">
+								<Slider
+									type="single"
+									value={minEdgeWeight}
+									min={2}
+									max={Math.min(maxEdgeWeight, 50)}
+									step={1}
+									onValueChange={handleSliderChange}
+									class="flex-1"
+								/>
+								<span class="w-8 text-right text-sm text-muted-foreground">{minEdgeWeight}</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</Card.Content>
@@ -355,12 +407,15 @@
 					</div>
 				</div>
 
-				<!-- Selected Node Panel -->
+				<!-- Selected Node Panel - Responsive positioning -->
 				{#if selectedNode}
 					{@const nodeColor = entityTypeConfig[selectedNode.type].color}
 					{@const NodeIcon = entityTypeConfig[selectedNode.type].icon}
 					<div
-						class="absolute top-4 right-4 z-10 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm"
+						class="absolute z-10 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm
+						       bottom-4 left-4 right-4 p-3
+						       sm:bottom-auto sm:top-4 sm:right-4 sm:left-auto sm:w-64 sm:p-4
+						       lg:w-72"
 					>
 						<div class="flex items-start justify-between gap-2">
 							<div class="min-w-0 flex-1">
@@ -368,28 +423,39 @@
 									<span style="color: {nodeColor}">
 										<NodeIcon class="h-4 w-4 shrink-0" />
 									</span>
-									<h3 class="truncate font-semibold">{selectedNode.label}</h3>
+									<h3 class="truncate font-semibold text-sm sm:text-base">{selectedNode.label}</h3>
 								</div>
-								<Badge variant="outline" class="mt-1">
+								<Badge variant="outline" class="mt-1 text-xs">
 									{t(entityTypeConfig[selectedNode.type].label)}
 								</Badge>
 							</div>
-							<Button variant="ghost" size="sm" class="h-6 w-6 p-0" onclick={handleClosePanel}>
-								×
-							</Button>
+							<div class="flex items-center gap-1">
+								<Button
+									variant="ghost"
+									size="sm"
+									class="h-7 w-7 p-0"
+									onclick={handleFocusSelected}
+									title={t('network.focus_selection')}
+								>
+									<Focus class="h-4 w-4" />
+								</Button>
+								<Button variant="ghost" size="sm" class="h-7 w-7 p-0" onclick={handleClosePanel}>
+									×
+								</Button>
+							</div>
 						</div>
-						<div class="mt-3 grid grid-cols-3 gap-2 text-center">
-							<div class="rounded bg-muted p-2">
-								<div class="text-lg font-bold">{selectedNode.count}</div>
-								<div class="text-xs text-muted-foreground">{t('network.articles')}</div>
+						<div class="mt-3 grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+							<div class="rounded bg-muted p-1.5 sm:p-2">
+								<div class="text-base sm:text-lg font-bold">{selectedNode.count}</div>
+								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('network.articles')}</div>
 							</div>
-							<div class="rounded bg-muted p-2">
-								<div class="text-lg font-bold">{selectedNode.degree}</div>
-								<div class="text-xs text-muted-foreground">{t('network.connections')}</div>
+							<div class="rounded bg-muted p-1.5 sm:p-2">
+								<div class="text-base sm:text-lg font-bold">{selectedNode.degree}</div>
+								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('network.connections')}</div>
 							</div>
-							<div class="rounded bg-muted p-2">
-								<div class="text-lg font-bold">{selectedNode.strength}</div>
-								<div class="text-xs text-muted-foreground">{t('network.strength')}</div>
+							<div class="rounded bg-muted p-1.5 sm:p-2">
+								<div class="text-base sm:text-lg font-bold">{selectedNode.strength}</div>
+								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('network.strength')}</div>
 							</div>
 						</div>
 					</div>
