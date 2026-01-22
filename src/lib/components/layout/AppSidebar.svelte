@@ -19,7 +19,8 @@
 		Network,
 		Share2,
 		CalendarRange,
-		UserCircle
+		UserCircle,
+		Hash
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -41,6 +42,7 @@
 
 	const textualAnalysisItems = [
 		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' },
+		{ href: `${base}/keywords`, icon: Hash, label: 'nav.keywords' },
 		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' },
 		{ href: `${base}/cooccurrence`, icon: Grid3X3, label: 'nav.cooccurrence' },
 		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' }

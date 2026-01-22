@@ -40,6 +40,10 @@ export interface FilterState {
 	term?: string;
 	entity?: string;
 	focus?: string;
+	facet?: string;
+	newspaper?: string;
+	topN?: number;
+	keywords?: string;
 	[key: string]: string | number | undefined;
 }
 
@@ -136,7 +140,11 @@ export function useUrlSync() {
 				order: urlManager.get('order') as string | undefined,
 				term: urlManager.get('term') as string | undefined,
 				entity: urlManager.get('entity') as string | undefined,
-				focus: urlManager.get('focus') as string | undefined
+				focus: urlManager.get('focus') as string | undefined,
+				facet: urlManager.get('facet') as string | undefined,
+				newspaper: urlManager.get('newspaper') as string | undefined,
+				topN: urlManager.get('topN') as number | undefined,
+				keywords: urlManager.get('keywords') as string | undefined
 			};
 		},
 		setFilter,
