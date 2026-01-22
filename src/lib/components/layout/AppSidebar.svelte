@@ -45,7 +45,8 @@
 		{ href: `${base}/keywords`, icon: Hash, label: 'nav.keywords' },
 		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' },
 		{ href: `${base}/cooccurrence`, icon: Grid3X3, label: 'nav.cooccurrence' },
-		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' }
+		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' },
+		{ href: `${base}/topic-network`, icon: Network, label: 'nav.topic_network' }
 	];
 
 	const spatialAnalysisItems = [

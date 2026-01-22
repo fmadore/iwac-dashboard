@@ -44,6 +44,7 @@ export interface FilterState {
 	newspaper?: string;
 	topN?: number;
 	keywords?: string;
+	topic?: string;
 	[key: string]: string | number | undefined;
 }
 
@@ -144,7 +145,8 @@ export function useUrlSync() {
 				facet: urlManager.get('facet') as string | undefined,
 				newspaper: urlManager.get('newspaper') as string | undefined,
 				topN: urlManager.get('topN') as number | undefined,
-				keywords: urlManager.get('keywords') as string | undefined
+				keywords: urlManager.get('keywords') as string | undefined,
+				topic: urlManager.get('topic') as string | undefined
 			};
 		},
 		setFilter,

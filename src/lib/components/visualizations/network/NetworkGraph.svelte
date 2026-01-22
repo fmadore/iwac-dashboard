@@ -52,7 +52,9 @@
 		organization: '#8b5cf6',
 		event: '#f97316',
 		subject: '#22c55e',
-		location: '#ec4899'
+		location: '#ec4899',
+		topic: '#22c55e',
+		article: '#3b82f6'
 	};
 
 	function getNodeColor(type: EntityType): string {

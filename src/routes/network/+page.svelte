@@ -28,7 +28,9 @@
 		Tag,
 		MapPin,
 		Focus,
-		X
+		X,
+		Hash,
+		FileText
 	} from '@lucide/svelte';
 
 	// URL sync
@@ -66,7 +68,9 @@
 			organization: { label: 'network.type_organization', color: '#8b5cf6', icon: Building2 },
 			event: { label: 'network.type_event', color: '#f97316', icon: Calendar },
 			subject: { label: 'network.type_subject', color: '#22c55e', icon: Tag },
-			location: { label: 'network.type_location', color: '#ec4899', icon: MapPin }
+			location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
+			topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
+			article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText }
 		};
 
 	// Filter nodes by enabled types
@@ -137,7 +141,9 @@
 			organization: 0,
 			event: 0,
 			subject: 0,
-			location: 0
+			location: 0,
+			topic: 0,
+			article: 0
 		};
 		for (const node of filteredNodes) {
 			counts[node.type]++;
