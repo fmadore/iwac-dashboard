@@ -47,6 +47,8 @@ export default defineConfig(({ mode }) => {
 				workbox: {
 					// Cache static assets
 					globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+					// Increase limit for large files (keywords page ~12.6MB, JSON data files ~6MB)
+					maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MiB
 					// Cache JSON data files
 					runtimeCaching: [
 						{
