@@ -42,7 +42,8 @@
 		cooccurrence: new Set(['lang', 'theme', 'view', 'country', 'order', 'term']),
 		spatial: new Set(['lang', 'theme', 'view']),
 		network: new Set(['lang', 'theme', 'entity', 'focus']),
-		'network-map': new Set(['lang', 'theme'])
+		'network-map': new Set(['lang', 'theme']),
+		keywords: new Set(['lang', 'theme', 'type', 'view', 'facet', 'country', 'newspaper', 'topN', 'keywords'])
 	};
 
 	function pruneUrlParamsForRoute(pathname: string) {
