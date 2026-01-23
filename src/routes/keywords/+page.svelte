@@ -9,6 +9,7 @@
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import { KeywordsLineChart } from '$lib/components/visualizations/charts/layerchart/index.js';
+	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
 	import { Search, Check, Plus } from '@lucide/svelte';
 
 	// Props from page load
@@ -97,21 +98,29 @@
 	// Search query for keyword selection
 	let searchQuery = $state('');
 
-	// Pagination for All Keywords table
-	let tablePage = $state(1);
-	const tableItemsPerPage = 50;
-
-	// Calculate pagination
-	const tableTotalPages = $derived(Math.ceil(currentData.all_keywords.length / tableItemsPerPage));
-	const tableStartIndex = $derived((tablePage - 1) * tableItemsPerPage);
-	const tableEndIndex = $derived(Math.min(tableStartIndex + tableItemsPerPage, currentData.all_keywords.length));
-	const tablePaginatedKeywords = $derived(currentData.all_keywords.slice(tableStartIndex, tableEndIndex));
-
-	// Reset table page when keyword type changes
-	$effect(() => {
-		const _ = keywordType; // Create dependency
-		tablePage = 1;
-	});
+	// Table columns for DataTable component
+	const tableColumns = $derived.by<ColumnDef<{ keyword: string; total: number; articles: number }>[]>(() => [
+		{
+			key: 'keyword',
+			label: t('keywords.keyword'),
+			align: 'left' as const,
+			width: 'w-2/5'
+		},
+		{
+			key: 'total',
+			label: t('keywords.occurrences'),
+			align: 'right' as const,
+			width: 'w-1/4',
+			render: (row) => row.total.toLocaleString()
+		},
+		{
+			key: 'articles',
+			label: t('keywords.articles'),
+			align: 'right' as const,
+			width: 'w-1/4',
+			render: (row) => row.articles.toLocaleString()
+		}
+	]);
 
 	// Get available keywords based on current facet
 	const availableKeywords = $derived.by(() => {
@@ -567,74 +576,42 @@
 	<!-- Top Keywords Table -->
 	<Card>
 		<CardHeader>
-			<div class="flex items-start justify-between">
-				<div>
-					<CardTitle>{t('keywords.all_keywords_table')}</CardTitle>
-					<CardDescription class="mt-1.5">
-						{t('keywords.showing_range', [tableStartIndex + 1, tableEndIndex, currentData.all_keywords.length])}
-					</CardDescription>
-				</div>
-				{#if tableTotalPages > 1}
-					<div class="flex items-center gap-2">
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={tablePage === 1}
-							onclick={() => tablePage--}
-						>
-							{t('keywords.previous')}
-						</Button>
-						<span class="text-sm text-muted-foreground">
-							{t('keywords.page_of', [tablePage, tableTotalPages])}
-						</span>
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={tablePage === tableTotalPages}
-							onclick={() => tablePage++}
-						>
-							{t('keywords.next')}
-						</Button>
-					</div>
-				{/if}
-			</div>
+			<CardTitle>{t('keywords.all_keywords_table')}</CardTitle>
+			<CardDescription>{currentData.all_keywords.length.toLocaleString()} {t('keywords.keywords')}</CardDescription>
 		</CardHeader>
 		<CardContent>
-			<div class="rounded-md border">
-				<table class="w-full">
-					<thead>
-						<tr class="border-b bg-muted/50">
-							<th class="p-3 text-left text-sm font-medium">{t('keywords.rank')}</th>
-							<th class="p-3 text-left text-sm font-medium">{t('keywords.keyword')}</th>
-							<th class="p-3 text-right text-sm font-medium">{t('keywords.occurrences')}</th>
-							<th class="p-3 text-right text-sm font-medium">{t('keywords.articles')}</th>
-							<th class="p-3 text-center text-sm font-medium">{t('keywords.actions')}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each tablePaginatedKeywords as item, idx (item.keyword)}
-							<tr class="border-b last:border-0">
-								<td class="p-3 text-sm text-muted-foreground">{tableStartIndex + idx + 1}</td>
-								<td class="p-3 text-sm font-medium">{item.keyword}</td>
-								<td class="p-3 text-right text-sm tabular-nums">{item.total.toLocaleString()}</td>
-								<td class="p-3 text-right text-sm tabular-nums">{item.articles.toLocaleString()}</td>
-								<td class="p-3 text-center">
-									<Button
-										variant="ghost"
-										size="sm"
-										onclick={() => {
-											handleViewModeChange('compare');
-											toggleKeyword(item.keyword);
-										}}
-									>
-										{selectedKeywords.includes(item.keyword) ? t('keywords.remove') : t('keywords.add')}
-									</Button>
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
+			<DataTable
+				data={currentData.all_keywords}
+				columns={tableColumns}
+				searchPlaceholder={t('keywords.search_keywords')}
+				noResultsText={t('table.no_results')}
+				pageSize={50}
+				defaultSortKey="total"
+				defaultSortDir="desc"
+			>
+				{#snippet cellRenderer({ row, column, value })}
+					{#if column.key === 'keyword'}
+						<div class="flex items-center justify-between gap-2">
+							<span class="truncate font-medium" title={row.keyword}>{row.keyword}</span>
+							<Button
+								variant="ghost"
+								size="sm"
+								onclick={() => {
+									handleViewModeChange('compare');
+									toggleKeyword(row.keyword);
+								}}
+								class="flex-shrink-0"
+							>
+								{selectedKeywords.includes(row.keyword) ? t('keywords.remove') : t('keywords.add')}
+							</Button>
+						</div>
+					{:else}
+						<span class="block truncate tabular-nums" title={String(value ?? '')}>
+							{value ?? '—'}
+						</span>
+					{/if}
+				{/snippet}
+			</DataTable>
 		</CardContent>
 	</Card>
 
