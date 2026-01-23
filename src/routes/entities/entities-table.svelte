@@ -166,7 +166,8 @@
 			key: 'countries',
 			label: t('table.countries'),
 			width: 'w-1/5',
-			align: 'left'
+			align: 'left',
+			sortable: false
 		}
 	]);
 
@@ -316,6 +317,7 @@
 		defaultSortKey="frequency"
 		defaultSortDir="desc"
 		pageSize={50}
+		striped={true}
 	>
 		{#snippet cellRenderer({ row, column, value })}
 			{#if column.key === 'Titre'}
@@ -343,6 +345,18 @@
 						—
 					{/if}
 				</span>
+			{:else if column.key === 'countries'}
+				{#if row.countries}
+					<div class="flex flex-wrap gap-1">
+						{#each row.countries.split('|').map(c => c.trim()) as country}
+							<Badge variant="outline" class="text-xs">
+								{country}
+							</Badge>
+						{/each}
+					</div>
+				{:else}
+					<span class="text-muted-foreground">—</span>
+				{/if}
 			{:else}
 				<span class="block truncate" title={String(value ?? '')}>
 					{value ?? '—'}

@@ -38,6 +38,7 @@
 		defaultSortDir?: 'asc' | 'desc';
 		cellRenderer?: Snippet<[{ row: T; column: ColumnDef<T>; value: any }]>;
 		rowClass?: (row: T) => string;
+		striped?: boolean;
 	};
 
 	let {
@@ -53,7 +54,8 @@
 		defaultSortKey = columns[0]?.key ?? '',
 		defaultSortDir = 'asc',
 		cellRenderer,
-		rowClass
+		rowClass,
+		striped = false
 	}: DataTableProps<TData> = $props();
 
 	// Table state
@@ -257,7 +259,7 @@
 						</TableRow>
 					{:else}
 						{#each paginatedRows as row, idx (idx)}
-							<TableRow class={rowClass?.(row) ?? ''}>
+							<TableRow class={`${rowClass?.(row) ?? ''} ${striped && idx % 2 === 1 ? 'bg-muted/30' : ''}`}>
 								{#each columns as column (column.key)}
 									{@const value = getCellValue(row, column)}
 									<TableCell
