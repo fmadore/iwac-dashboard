@@ -74,12 +74,44 @@
 	// Number of top keywords to show
 	const topN = $derived(Number(urlSync.filters.topN) || 5);
 
-	// Selected keywords for comparison mode (stored as comma-separated string)
-	const selectedKeywordsStr = $derived(urlSync.filters.keywords as string || '');
-	const selectedKeywords = $derived(selectedKeywordsStr ? selectedKeywordsStr.split(',') : []);
+	// Helper functions to convert between keyword names and indices
+	function keywordToId(keyword: string): number | undefined {
+		const index = currentData.all_keywords.findIndex((item) => item.keyword === keyword);
+		return index >= 0 ? index : undefined;
+	}
+
+	function idToKeyword(id: number): string | undefined {
+		return currentData.all_keywords[id]?.keyword;
+	}
+
+	// Selected keywords for comparison mode (stored as comma-separated IDs in URL)
+	const selectedKeywordIds = $derived(urlSync.filters.keywords as string || '');
+	const selectedKeywords = $derived.by(() => {
+		if (!selectedKeywordIds) return [];
+		return selectedKeywordIds
+			.split(',')
+			.map((id) => idToKeyword(Number(id)))
+			.filter((kw): kw is string => kw !== undefined);
+	});
 
 	// Search query for keyword selection
 	let searchQuery = $state('');
+
+	// Pagination for All Keywords table
+	let tablePage = $state(1);
+	const tableItemsPerPage = 50;
+
+	// Calculate pagination
+	const tableTotalPages = $derived(Math.ceil(currentData.all_keywords.length / tableItemsPerPage));
+	const tableStartIndex = $derived((tablePage - 1) * tableItemsPerPage);
+	const tableEndIndex = $derived(Math.min(tableStartIndex + tableItemsPerPage, currentData.all_keywords.length));
+	const tablePaginatedKeywords = $derived(currentData.all_keywords.slice(tableStartIndex, tableEndIndex));
+
+	// Reset table page when keyword type changes
+	$effect(() => {
+		const _ = keywordType; // Create dependency
+		tablePage = 1;
+	});
 
 	// Get available keywords based on current facet
 	const availableKeywords = $derived.by(() => {
@@ -188,7 +220,13 @@
 		} else if (current.size < 10) {
 			current.add(keyword);
 		}
-		const newValue = Array.from(current).join(',');
+		// Convert keywords to IDs for URL
+		const ids = Array.from(current)
+			.map((kw) => keywordToId(kw))
+			.filter((id): id is number => id !== undefined)
+			.sort((a, b) => a - b);
+
+		const newValue = ids.join(',');
 		if (newValue) {
 			urlSync.setFilter('keywords', newValue);
 		} else {
@@ -199,6 +237,18 @@
 	function clearSelectedKeywords() {
 		urlSync.clearFilter('keywords');
 	}
+
+	function clearAllFilters() {
+		urlSync.clearFilter('facet');
+		urlSync.clearFilter('country');
+		urlSync.clearFilter('newspaper');
+		urlSync.clearFilter('keywords');
+	}
+
+	// Check if any filters are active
+	const hasActiveFilters = $derived.by(() => {
+		return facetType !== 'global' || selectedCountry || selectedNewspaper || selectedKeywords.length > 0;
+	});
 
 	// Chart title
 	const chartTitle = $derived.by(() => {
@@ -218,6 +268,23 @@
 			return t('keywords.filtered_by_newspaper', [selectedNewspaper]);
 		}
 		return t('keywords.all_data');
+	});
+
+	// Empty state message
+	const emptyStateMessage = $derived.by(() => {
+		if (viewMode === 'compare' && selectedKeywords.length === 0) {
+			return t('keywords.select_keywords_prompt');
+		}
+		if (viewMode === 'compare' && selectedKeywords.length > 0) {
+			// Keywords selected but no data (likely due to facet filter)
+			if (facetType === 'country' && selectedCountry) {
+				return t('keywords.no_data_for_country', [selectedCountry]);
+			}
+			if (facetType === 'newspaper' && selectedNewspaper) {
+				return t('keywords.no_data_for_newspaper', [selectedNewspaper]);
+			}
+		}
+		return t('chart.no_data');
 	});
 </script>
 
@@ -279,7 +346,14 @@
 		<!-- Controls Sidebar -->
 		<Card class="lg:col-span-1">
 			<CardHeader>
-				<CardTitle class="text-base">{t('keywords.filters')}</CardTitle>
+				<div class="flex items-center justify-between">
+					<CardTitle class="text-base">{t('keywords.filters')}</CardTitle>
+					{#if hasActiveFilters}
+						<Button variant="ghost" size="sm" onclick={clearAllFilters}>
+							{t('common.clear')}
+						</Button>
+					{/if}
+				</div>
 			</CardHeader>
 			<CardContent class="space-y-6">
 				<!-- Facet Selection -->
@@ -350,22 +424,24 @@
 				<!-- View Mode -->
 				<div class="space-y-2">
 					<Label>{t('keywords.view_mode')}</Label>
-					<div class="flex gap-2">
+					<div class="flex flex-wrap gap-2">
 						<Button
 							variant={viewMode === 'top' ? 'default' : 'outline'}
 							size="sm"
-							class="flex-1"
+							class="flex-1 min-w-0"
+							title={t('keywords.top_frequent')}
 							onclick={() => handleViewModeChange('top')}
 						>
-							{t('keywords.top_frequent')}
+							<span class="truncate">{t('keywords.top_frequent')}</span>
 						</Button>
 						<Button
 							variant={viewMode === 'compare' ? 'default' : 'outline'}
 							size="sm"
-							class="flex-1"
+							class="flex-1 min-w-0"
+							title={t('keywords.compare')}
 							onclick={() => handleViewModeChange('compare')}
 						>
-							{t('keywords.compare')}
+							<span class="truncate">{t('keywords.compare')}</span>
 						</Button>
 					</div>
 				</div>
@@ -466,10 +542,22 @@
 				{#if chartSeries.length > 0}
 					<KeywordsLineChart series={chartSeries} height={450} />
 				{:else}
-					<div class="flex h-[450px] items-center justify-center">
-						<p class="text-muted-foreground">
-							{viewMode === 'compare' ? t('keywords.select_keywords_prompt') : t('chart.no_data')}
-						</p>
+					<div class="flex h-[450px] flex-col items-center justify-center gap-4">
+						<div class="text-center">
+							<p class="text-muted-foreground">
+								{emptyStateMessage}
+							</p>
+							{#if viewMode === 'compare' && selectedKeywords.length > 0 && hasActiveFilters}
+								<p class="mt-2 text-sm text-muted-foreground">
+									{t('keywords.try_different_filters')}
+								</p>
+							{/if}
+						</div>
+						{#if hasActiveFilters && viewMode === 'compare' && selectedKeywords.length > 0}
+							<Button variant="outline" size="sm" onclick={clearAllFilters}>
+								{t('keywords.clear_filters')}
+							</Button>
+						{/if}
 					</div>
 				{/if}
 			</CardContent>
@@ -479,10 +567,37 @@
 	<!-- Top Keywords Table -->
 	<Card>
 		<CardHeader>
-			<CardTitle>{t('keywords.all_keywords_table')}</CardTitle>
-			<CardDescription>
-				{t('keywords.showing_keywords', [Math.min(100, currentData.all_keywords.length), currentData.all_keywords.length])}
-			</CardDescription>
+			<div class="flex items-start justify-between">
+				<div>
+					<CardTitle>{t('keywords.all_keywords_table')}</CardTitle>
+					<CardDescription class="mt-1.5">
+						{t('keywords.showing_range', [tableStartIndex + 1, tableEndIndex, currentData.all_keywords.length])}
+					</CardDescription>
+				</div>
+				{#if tableTotalPages > 1}
+					<div class="flex items-center gap-2">
+						<Button
+							variant="outline"
+							size="sm"
+							disabled={tablePage === 1}
+							onclick={() => tablePage--}
+						>
+							{t('keywords.previous')}
+						</Button>
+						<span class="text-sm text-muted-foreground">
+							{t('keywords.page_of', [tablePage, tableTotalPages])}
+						</span>
+						<Button
+							variant="outline"
+							size="sm"
+							disabled={tablePage === tableTotalPages}
+							onclick={() => tablePage++}
+						>
+							{t('keywords.next')}
+						</Button>
+					</div>
+				{/if}
+			</div>
 		</CardHeader>
 		<CardContent>
 			<div class="rounded-md border">
@@ -497,9 +612,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each currentData.all_keywords.slice(0, 100) as item, idx (item.keyword)}
+						{#each tablePaginatedKeywords as item, idx (item.keyword)}
 							<tr class="border-b last:border-0">
-								<td class="p-3 text-sm text-muted-foreground">{idx + 1}</td>
+								<td class="p-3 text-sm text-muted-foreground">{tableStartIndex + idx + 1}</td>
 								<td class="p-3 text-sm font-medium">{item.keyword}</td>
 								<td class="p-3 text-right text-sm tabular-nums">{item.total.toLocaleString()}</td>
 								<td class="p-3 text-right text-sm tabular-nums">{item.articles.toLocaleString()}</td>

@@ -18,9 +18,6 @@
 
 	let { series = [], height = 400 }: Props = $props();
 
-	// Force re-render on language change
-	const chartKey = $derived(`keywords-chart-${languageStore.current}`);
-
 	// Transform data for LayerChart - one data point per year with all keywords
 	const chartData = $derived.by(() => {
 		if (series.length === 0) return [];
@@ -94,8 +91,7 @@
 	});
 </script>
 
-{#key chartKey}
-	<div class="flex h-full w-full flex-col" style="height: {height}px;" role="img" aria-label={t('keywords.chart_aria')}>
+<div class="flex h-full w-full flex-col" style="height: {height}px;" role="img" aria-label={t('keywords.chart_aria')}>
 		{#if chartData.length > 0 && series.length > 0}
 			<div class="flex-1 min-h-0">
 				<Chart
@@ -172,4 +168,3 @@
 			</div>
 		{/if}
 	</div>
-{/key}
