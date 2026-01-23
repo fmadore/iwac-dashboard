@@ -91,13 +91,14 @@
 	const animationDuration = $derived.by(() => config.animation?.duration ?? 800);
 
 	// Treemap layout configuration (compatible with LayerChart NestedTreemap example)
+	// Default padding creates nested visual effect - paddingTop for labels, paddingInner for separation
 	const tileValue = $derived.by(() => tile ?? config.tile ?? 'squarify');
-	const paddingOuterValue = $derived.by(() => paddingOuter ?? config.padding?.outer);
-	const paddingInnerValue = $derived.by(() => paddingInner ?? config.padding?.inner);
-	const paddingTopValue = $derived.by(() => paddingTop ?? config.padding?.top);
-	const paddingBottomValue = $derived.by(() => paddingBottom ?? config.padding?.bottom);
-	const paddingLeftValue = $derived.by(() => paddingLeft ?? config.padding?.left);
-	const paddingRightValue = $derived.by(() => paddingRight ?? config.padding?.right);
+	const paddingOuterValue = $derived.by(() => paddingOuter ?? config.padding?.outer ?? 4);
+	const paddingInnerValue = $derived.by(() => paddingInner ?? config.padding?.inner ?? 2);
+	const paddingTopValue = $derived.by(() => paddingTop ?? config.padding?.top ?? 20);
+	const paddingBottomValue = $derived.by(() => paddingBottom ?? config.padding?.bottom ?? 2);
+	const paddingLeftValue = $derived.by(() => paddingLeft ?? config.padding?.left ?? 2);
+	const paddingRightValue = $derived.by(() => paddingRight ?? config.padding?.right ?? 2);
 
 	// Treemap hierarchy
 	const complexDataHierarchy = $derived.by(() => {
@@ -239,10 +240,11 @@
 											{@const activeKey = activeDomain ? getNodeKey(activeDomain) : ''}
 											{@const visibleNodes = nodes.filter((n: any) => {
 												if (!activeDomain) return false;
+												// Show all nodes except the root itself for nested visualization
 												if (!n.parent) return false;
-												// Only show immediate children of the current active domain
-												const parentKey = getNodeKey(n.parent);
-												return parentKey === activeKey;
+												// Check if this node is a descendant of the active domain
+												const ancestors = n.ancestors();
+												return ancestors.some((a: any) => getNodeKey(a) === activeKey);
 											})}
 											{#each visibleNodes as node (getNodeKey(node))}
 												<Group
@@ -264,40 +266,64 @@
 													{@const nodeWidth = xScale(node.x1) - xScale(node.x0)}
 													{@const nodeHeight = yScale(node.y1) - yScale(node.y0)}
 													{@const nodeColor = getNodeColor(node)}
+													{@const nodeDepth = node.depth}
+													{@const isParent = !!node.children}
+													{@const isCountry = nodeDepth === 1}
+													{@const isDocType = nodeDepth === 2}
 													<g transition:fade={{ duration: 600 }}>
 														<Rect
 															width={nodeWidth}
 															height={nodeHeight}
-															stroke="var(--border)"
-															stroke-width={1}
+															stroke={isParent ? 'var(--foreground)' : 'var(--border)'}
+															stroke-width={isCountry ? 2 : 1}
 															fill={nodeColor}
-															fillOpacity={node.children ? 0.5 : 1}
-															rx={5}
+															fillOpacity={isParent ? 0.3 : 0.9}
+															rx={isCountry ? 8 : isDocType ? 4 : 2}
 															class="treemap-node cursor-pointer"
 														/>
-														<RectClipPath width={nodeWidth} height={nodeHeight}>
-															<text
-																x={4}
-																y={16 * 0.6 + 4}
-																class="pointer-events-none fill-white text-[10px] font-medium drop-shadow-sm"
-															>
-																<tspan>{node.data.name}</tspan>
-																{#if node.children}
-																	<tspan class="text-[8px] font-light opacity-80">
-																		 {formatValue(node.value ?? 0)}
+														{#if isParent}
+															<!-- Parent label with background for visibility -->
+															<RectClipPath width={nodeWidth} height={paddingTopValue}>
+																<rect
+																	width={nodeWidth}
+																	height={paddingTopValue}
+																	fill={nodeColor}
+																	fill-opacity="0.8"
+																/>
+																<text
+																	x={4}
+																	y={isCountry ? 14 : 12}
+																	class="pointer-events-none fill-white drop-shadow-md"
+																	class:text-xs={isCountry}
+																	class:font-bold={isCountry}
+																	class:text-[10px]={isDocType}
+																	class:font-semibold={isDocType}
+																>
+																	<tspan>{node.data.name}</tspan>
+																	<tspan class="font-normal opacity-80" dx={4}>
+																		{formatValue(node.value ?? 0)}
 																	</tspan>
-																{/if}
-															</text>
-															{#if !node.children}
+																</text>
+															</RectClipPath>
+														{:else}
+															<!-- Leaf node label -->
+															<RectClipPath width={nodeWidth} height={nodeHeight}>
+																<text
+																	x={4}
+																	y={12}
+																	class="pointer-events-none fill-white text-[9px] font-medium drop-shadow-sm"
+																>
+																	{node.data.name}
+																</text>
 																<Text
 																	value={formatValue(node.value ?? 0)}
-																	class="pointer-events-none fill-white/80 text-[8px] font-normal drop-shadow-sm"
+																	class="pointer-events-none fill-white/90 text-[8px] font-normal drop-shadow-sm"
 																	verticalAnchor="start"
 																	x={4}
-																	y={16}
+																	y={12}
 																/>
-															{/if}
-														</RectClipPath>
+															</RectClipPath>
+														{/if}
 													</g>
 												</Group>
 											{/each}
