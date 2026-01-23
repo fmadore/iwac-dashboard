@@ -274,11 +274,11 @@
 														<Rect
 															width={nodeWidth}
 															height={nodeHeight}
-															stroke={isParent ? 'var(--foreground)' : 'var(--border)'}
-															stroke-width={isCountry ? 2 : 1}
+															stroke="var(--border)"
+															stroke-width={1}
 															fill={nodeColor}
-															fillOpacity={isParent ? 0.3 : 0.9}
-															rx={isCountry ? 8 : isDocType ? 4 : 2}
+															fillOpacity={isParent ? 0.4 : 0.9}
+															rx={isCountry ? 6 : isDocType ? 3 : 2}
 															class="treemap-node cursor-pointer"
 														/>
 														{#if isParent}
