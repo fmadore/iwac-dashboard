@@ -5,22 +5,19 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import * as Table from '$lib/components/ui/table/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import {
 		Bar as LayerChartBar,
 		PieChart as LayerChartPieChart
 	} from '$lib/components/visualizations/charts/layerchart/index.js';
+	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
 	import {
 		ArrowLeft,
 		FileText,
 		Calendar,
 		Globe2,
 		Percent,
-		AlertCircle,
-		ArrowUpDown,
-		ArrowUp,
-		ArrowDown
+		AlertCircle
 	} from '@lucide/svelte';
 	import type { TopicDetailData, TopicDocument } from '$lib/types/topics.js';
 
@@ -32,9 +29,46 @@
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
-	// Sorting state
-	let sortKey = $state<'title' | 'country' | 'date' | 'confidence' | 'polarity'>('confidence');
-	let sortDirection = $state<'asc' | 'desc'>('desc');
+	// Table column definitions
+	const tableColumns = $derived.by<ColumnDef<TopicDocument>[]>(() => {
+		const columns: ColumnDef<TopicDocument>[] = [
+			{
+				key: 'title',
+				label: t('table.title'),
+				align: 'left' as const,
+				render: (row) => row.title || row.ocr_title || 'Untitled'
+			},
+			{
+				key: 'country',
+				label: t('filters.country'),
+				align: 'left' as const
+			},
+			{
+				key: 'date',
+				label: t('topics.date'),
+				align: 'left' as const,
+				render: (row) => row.pub_date || row.date || '—'
+			},
+			{
+				key: 'topic_prob',
+				label: t('topics.confidence'),
+				align: 'left' as const,
+				render: (row) => `${(row.topic_prob * 100).toFixed(0)}%`
+			}
+		];
+
+		// Add polarity column if AI fields are available
+		if (topicData && topicData.ai_fields.length > 0) {
+			columns.push({
+				key: 'gemini_polarite',
+				label: t('topics.polarity'),
+				align: 'left' as const,
+				render: (row) => row.gemini_polarite || row.chatgpt_polarite || '—'
+			});
+		}
+
+		return columns;
+	});
 
 	// Load topic data
 	async function loadData(id: string) {
@@ -106,53 +140,6 @@
 		return '';
 	}
 
-	// Sort function
-	function toggleSort(key: typeof sortKey) {
-		if (sortKey === key) {
-			sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-		} else {
-			sortKey = key;
-			sortDirection = key === 'confidence' ? 'desc' : 'asc';
-		}
-	}
-
-	// Sorted documents
-	const sortedDocs = $derived.by(() => {
-		if (!topicData) return [];
-		const docs = [...topicData.docs];
-
-		docs.sort((a, b) => {
-			let comparison = 0;
-
-			switch (sortKey) {
-				case 'title':
-					const titleA = (a.title || a.ocr_title || '').toLowerCase();
-					const titleB = (b.title || b.ocr_title || '').toLowerCase();
-					comparison = titleA.localeCompare(titleB);
-					break;
-				case 'country':
-					comparison = (a.country || '').localeCompare(b.country || '');
-					break;
-				case 'date':
-					const dateA = a.pub_date || a.date || '';
-					const dateB = b.pub_date || b.date || '';
-					comparison = dateA.localeCompare(dateB);
-					break;
-				case 'confidence':
-					comparison = a.topic_prob - b.topic_prob;
-					break;
-				case 'polarity':
-					const polA = a.gemini_polarite || a.chatgpt_polarite || '';
-					const polB = b.gemini_polarite || b.chatgpt_polarite || '';
-					comparison = polA.localeCompare(polB);
-					break;
-			}
-
-			return sortDirection === 'asc' ? comparison : -comparison;
-		});
-
-		return docs.slice(0, 50);
-	});
 
 	// Process country distribution for pie chart
 	const countryChartData = $derived.by(() => {
@@ -324,164 +311,67 @@
 			<Card.Header>
 				<Card.Title>{t('topics.top_documents')}</Card.Title>
 				<Card.Description>
-					{t('topics.showing_documents', [Math.min(topicData.docs.length, 50).toString()])}
+					{topicData.docs.length.toLocaleString()} {t('stats.documents')}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<div class="overflow-x-auto">
-					<Table.Root class="w-full table-auto">
-						<Table.Header>
-							<Table.Row>
-								<Table.Head class="min-w-[180px]">
-									<button
-										type="button"
-										class="flex items-center gap-1 hover:text-foreground"
-										onclick={() => toggleSort('title')}
+				<DataTable
+					data={topicData.docs}
+					columns={tableColumns}
+					searchPlaceholder={t('common.search')}
+					noResultsText={t('table.no_results')}
+					pageSize={50}
+					defaultSortKey="topic_prob"
+					defaultSortDir="desc"
+				>
+					{#snippet cellRenderer({ row, column, value })}
+						{#if column.key === 'title'}
+							{@const itemUrl = getItemUrl(row)}
+							<div class="font-medium break-words whitespace-normal">
+								{#if itemUrl}
+									<a
+										href={itemUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="line-clamp-2 text-primary underline-offset-4 hover:underline"
 									>
-										{t('table.title')}
-										{#if sortKey === 'title'}
-											{#if sortDirection === 'asc'}
-												<ArrowUp class="h-4 w-4" />
-											{:else}
-												<ArrowDown class="h-4 w-4" />
-											{/if}
-										{:else}
-											<ArrowUpDown class="h-4 w-4" />
-										{/if}
-									</button>
-								</Table.Head>
-								<Table.Head class="min-w-[120px]">
-									<button
-										type="button"
-										class="flex items-center gap-1 hover:text-foreground"
-										onclick={() => toggleSort('country')}
-									>
-										{t('filters.country')}
-										{#if sortKey === 'country'}
-											{#if sortDirection === 'asc'}
-												<ArrowUp class="h-4 w-4" />
-											{:else}
-												<ArrowDown class="h-4 w-4" />
-											{/if}
-										{:else}
-											<ArrowUpDown class="h-4 w-4" />
-										{/if}
-									</button>
-								</Table.Head>
-								<Table.Head class="min-w-[110px]">
-									<button
-										type="button"
-										class="flex items-center gap-1 hover:text-foreground"
-										onclick={() => toggleSort('date')}
-									>
-										<Calendar class="h-4 w-4" />
-										{t('topics.date')}
-										{#if sortKey === 'date'}
-											{#if sortDirection === 'asc'}
-												<ArrowUp class="h-4 w-4" />
-											{:else}
-												<ArrowDown class="h-4 w-4" />
-											{/if}
-										{:else}
-											<ArrowUpDown class="h-4 w-4" />
-										{/if}
-									</button>
-								</Table.Head>
-								<Table.Head class="min-w-[90px]">
-									<button
-										type="button"
-										class="flex items-center gap-1 hover:text-foreground"
-										onclick={() => toggleSort('confidence')}
-									>
-										{t('topics.confidence')}
-										{#if sortKey === 'confidence'}
-											{#if sortDirection === 'asc'}
-												<ArrowUp class="h-4 w-4" />
-											{:else}
-												<ArrowDown class="h-4 w-4" />
-											{/if}
-										{:else}
-											<ArrowUpDown class="h-4 w-4" />
-										{/if}
-									</button>
-								</Table.Head>
-								{#if topicData.ai_fields.length > 0}
-									<Table.Head class="min-w-[110px]">
-										<button
-											type="button"
-											class="flex items-center gap-1 hover:text-foreground"
-											onclick={() => toggleSort('polarity')}
-										>
-											{t('topics.polarity')}
-											{#if sortKey === 'polarity'}
-												{#if sortDirection === 'asc'}
-													<ArrowUp class="h-4 w-4" />
-												{:else}
-													<ArrowDown class="h-4 w-4" />
-												{/if}
-											{:else}
-												<ArrowUpDown class="h-4 w-4" />
-											{/if}
-										</button>
-									</Table.Head>
+										{row.title || row.ocr_title || 'Untitled'}
+									</a>
+								{:else}
+									<span class="line-clamp-2">{row.title || row.ocr_title || 'Untitled'}</span>
 								{/if}
-							</Table.Row>
-						</Table.Header>
-						<Table.Body>
-							{#each sortedDocs as doc (doc.url || doc.title)}
-								{@const itemUrl = getItemUrl(doc)}
-								<Table.Row>
-									<Table.Cell class="font-medium break-words whitespace-normal">
-										{#if itemUrl}
-											<a
-												href={itemUrl}
-												target="_blank"
-												rel="noopener noreferrer"
-												class="line-clamp-2 text-primary underline-offset-4 hover:underline"
-											>
-												{doc.title || doc.ocr_title || 'Untitled'}
-											</a>
-										{:else}
-											<span class="line-clamp-2">{doc.title || doc.ocr_title || 'Untitled'}</span>
-										{/if}
-										{#if doc.newspaper}
-											<span class="block text-xs text-muted-foreground">{doc.newspaper}</span>
-										{/if}
-									</Table.Cell>
-									<Table.Cell>
-										{#if doc.country}
-											<Badge variant="outline" class={getCountryClass(doc.country)}>
-												{doc.country}
-											</Badge>
-										{:else}
-											<span class="text-muted-foreground">—</span>
-										{/if}
-									</Table.Cell>
-									<Table.Cell class="text-sm">
-										{doc.pub_date || doc.date || '—'}
-									</Table.Cell>
-									<Table.Cell>
-										<Badge variant="secondary">
-											{(doc.topic_prob * 100).toFixed(0)}%
-										</Badge>
-									</Table.Cell>
-									{#if topicData.ai_fields.length > 0}
-										<Table.Cell>
-											{@const polarity = doc.gemini_polarite || doc.chatgpt_polarite}
-											{#if polarity}
-												<Badge variant="outline" class={getPolarityClass(polarity)}>
-													{polarity}
-												</Badge>
-											{:else}
-												<span class="text-muted-foreground">—</span>
-											{/if}
-										</Table.Cell>
-									{/if}
-								</Table.Row>
-							{/each}
-						</Table.Body>
-					</Table.Root>
-				</div>
+								{#if row.newspaper}
+									<span class="block text-xs text-muted-foreground">{row.newspaper}</span>
+								{/if}
+							</div>
+						{:else if column.key === 'country'}
+							{#if row.country}
+								<Badge variant="outline" class={getCountryClass(row.country)}>
+									{row.country}
+								</Badge>
+							{:else}
+								<span class="text-muted-foreground">—</span>
+							{/if}
+						{:else if column.key === 'topic_prob'}
+							<Badge variant="secondary">
+								{value}
+							</Badge>
+						{:else if column.key === 'gemini_polarite'}
+							{@const polarity = row.gemini_polarite || row.chatgpt_polarite}
+							{#if polarity}
+								<Badge variant="outline" class={getPolarityClass(polarity)}>
+									{polarity}
+								</Badge>
+							{:else}
+								<span class="text-muted-foreground">—</span>
+							{/if}
+						{:else}
+							<span class="block truncate text-sm" title={String(value ?? '')}>
+								{value ?? '—'}
+							</span>
+						{/if}
+					{/snippet}
+				</DataTable>
 			</Card.Content>
 		</Card.Root>
 	{/if}

@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import * as Table from '$lib/components/ui/table/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
 
 	interface AuthorData {
 		author: string;
@@ -26,7 +25,46 @@
 	let responseData = $state<AuthorsResponse | null>(null);
 	let loading = $state(true);
 	let error = $state<string | null>(null);
-	let searchTerm = $state('');
+
+	// Table column definitions
+	const tableColumns: ColumnDef<AuthorData>[] = [
+		{
+			key: 'author',
+			label: 'Author',
+			align: 'left' as const
+		},
+		{
+			key: 'publication_count',
+			label: 'Publications',
+			align: 'right' as const
+		},
+		{
+			key: 'year_range',
+			label: 'Year Range',
+			align: 'left' as const,
+			sortable: false,
+			render: (row) => {
+				if (row.earliest_year && row.latest_year) {
+					return `${row.earliest_year}–${row.latest_year}`;
+				}
+				return '—';
+			}
+		},
+		{
+			key: 'top_type',
+			label: 'Most Common Type',
+			align: 'left' as const,
+			sortable: false,
+			searchable: false,
+			render: (row) => {
+				const topType = Object.entries(row.types).sort((a, b) => b[1] - a[1])[0];
+				if (topType) {
+					return `${t(`type.${topType[0]}`, [topType[0]])} (${topType[1]})`;
+				}
+				return '—';
+			}
+		}
+	];
 
 	async function loadData() {
 		try {
@@ -42,9 +80,6 @@
 		}
 	}
 
-	const filteredAuthors = $derived(
-		data.filter((author) => author.author.toLowerCase().includes(searchTerm.toLowerCase()))
-	);
 
 	$effect(() => {
 		loadData();
@@ -131,68 +166,19 @@
 			<!-- Authors Table -->
 			<Card.Root>
 				<Card.Header>
-					<div class="flex items-center justify-between">
-						<div class="space-y-1">
-							<Card.Title>Authors by Publication Count</Card.Title>
-							<Card.Description>Search and explore top authors</Card.Description>
-						</div>
-						<div class="w-72">
-							<Input
-								type="search"
-								placeholder={t('common.search')}
-								bind:value={searchTerm}
-								class="w-full"
-							/>
-						</div>
-					</div>
+					<Card.Title>Authors by Publication Count</Card.Title>
+					<Card.Description>Search and explore top authors</Card.Description>
 				</Card.Header>
 				<Card.Content>
-					<Table.Root>
-						<Table.Header>
-							<Table.Row>
-								<Table.Head class="w-12">#</Table.Head>
-								<Table.Head>Author</Table.Head>
-								<Table.Head class="text-right">Publications</Table.Head>
-								<Table.Head>Year Range</Table.Head>
-								<Table.Head>Most Common Type</Table.Head>
-							</Table.Row>
-						</Table.Header>
-						<Table.Body>
-							{#each filteredAuthors.slice(0, 100) as author, i}
-								{@const topType = Object.entries(author.types).sort((a, b) => b[1] - a[1])[0]}
-								<Table.Row>
-									<Table.Cell class="font-medium">{i + 1}</Table.Cell>
-									<Table.Cell class="font-medium">{author.author}</Table.Cell>
-									<Table.Cell class="text-right">{author.publication_count}</Table.Cell>
-									<Table.Cell class="text-muted-foreground">
-										{#if author.earliest_year && author.latest_year}
-											{author.earliest_year}–{author.latest_year}
-										{:else}
-											—
-										{/if}
-									</Table.Cell>
-									<Table.Cell class="text-muted-foreground">
-										{#if topType}
-											{t(`type.${topType[0]}`, [topType[0]])} ({topType[1]})
-										{:else}
-											—
-										{/if}
-									</Table.Cell>
-								</Table.Row>
-							{:else}
-								<Table.Row>
-									<Table.Cell colspan={5} class="text-center text-muted-foreground">
-										{t('table.no_results')}
-									</Table.Cell>
-								</Table.Row>
-							{/each}
-						</Table.Body>
-					</Table.Root>
-					{#if filteredAuthors.length > 100}
-						<p class="mt-4 text-sm text-muted-foreground">
-							Showing top 100 of {filteredAuthors.length.toLocaleString()} results
-						</p>
-					{/if}
+					<DataTable
+						data={data}
+						columns={tableColumns}
+						searchPlaceholder={t('common.search')}
+						noResultsText={t('table.no_results')}
+						pageSize={50}
+						defaultSortKey="publication_count"
+						defaultSortDir="desc"
+					/>
 				</Card.Content>
 			</Card.Root>
 		</div>
