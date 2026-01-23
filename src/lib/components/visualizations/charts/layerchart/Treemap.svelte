@@ -236,13 +236,11 @@
 										paddingRight={paddingRightValue}
 									>
 										{#snippet children({ nodes })}
-											{@const rootKey = complexDataHierarchy ? getNodeKey(complexDataHierarchy) : ''}
 											{@const activeKey = activeDomain ? getNodeKey(activeDomain) : ''}
 											{@const visibleNodes = nodes.filter((n: any) => {
 												if (!activeDomain) return false;
-												// Initial load: show absolutely everything (parents + leaves) when at root.
-												if (activeKey === rootKey) return true;
 												if (!n.parent) return false;
+												// Only show immediate children of the current active domain
 												const parentKey = getNodeKey(n.parent);
 												return parentKey === activeKey;
 											})}
