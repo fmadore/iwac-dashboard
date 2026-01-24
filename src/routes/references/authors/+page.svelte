@@ -2,8 +2,9 @@
 	import { base } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
+	import { ExternalLink } from '@lucide/svelte';
 
 	interface AuthorData {
 		author: string;
@@ -11,6 +12,14 @@
 		types: Record<string, number>;
 		earliest_year?: number;
 		latest_year?: number;
+		o_id?: string;
+	}
+
+	// Build islam.zmo.de URL based on current language
+	function getItemUrl(oId: string): string {
+		const lang = languageStore.current;
+		const path = lang === 'fr' ? 'afrique_ouest' : 'westafrica';
+		return `https://islam.zmo.de/s/${path}/item/${oId}`;
 	}
 
 	interface AuthorsResponse {
@@ -178,7 +187,25 @@
 						pageSize={50}
 						defaultSortKey="publication_count"
 						defaultSortDir="desc"
-					/>
+					>
+						{#snippet cellRenderer({ row, column, value })}
+							{#if column.key === 'author' && row.o_id}
+								<a
+									href={getItemUrl(row.o_id)}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-flex items-center gap-1 text-primary hover:underline"
+								>
+									{value}
+									<ExternalLink class="h-3 w-3" />
+								</a>
+							{:else if column.render}
+								{column.render(row)}
+							{:else}
+								{value}
+							{/if}
+						{/snippet}
+					</DataTable>
 				</Card.Content>
 			</Card.Root>
 		</div>

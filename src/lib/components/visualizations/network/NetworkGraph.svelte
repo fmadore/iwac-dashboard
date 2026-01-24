@@ -54,7 +54,8 @@
 		subject: '#22c55e',
 		location: '#ec4899',
 		topic: '#22c55e',
-		article: '#3b82f6'
+		article: '#3b82f6',
+		author: '#3b82f6'
 	};
 
 	function getNodeColor(type: EntityType): string {
@@ -246,6 +247,13 @@
 
 			// Check if destroyed during layout
 			if (isDestroyed || !containerElement?.isConnected) {
+				isLayoutRunning = false;
+				return;
+			}
+
+			// Verify container is still valid and has dimensions
+			const containerRect = container.getBoundingClientRect();
+			if (!container.isConnected || containerRect.width === 0 || containerRect.height === 0) {
 				isLayoutRunning = false;
 				return;
 			}

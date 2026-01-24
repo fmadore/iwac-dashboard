@@ -30,7 +30,8 @@
 		subject: Tag,
 		location: MapPin,
 		topic: Hash,
-		article: FileText
+		article: FileText,
+		author: Users
 	};
 
 	// Entity type colors
@@ -41,7 +42,8 @@
 		subject: '#22c55e',
 		location: '#ec4899',
 		topic: '#22c55e',
-		article: '#3b82f6'
+		article: '#3b82f6',
+		author: '#3b82f6'
 	};
 
 	// Filter nodes based on search query

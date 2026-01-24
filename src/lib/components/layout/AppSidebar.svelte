@@ -20,7 +20,9 @@
 		Share2,
 		CalendarRange,
 		UserCircle,
-		Hash
+		Hash,
+		Building2,
+		Users
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -37,7 +39,9 @@
 
 	const referencesItems = [
 		{ href: `${base}/references/by-year`, icon: BookMarked, label: 'nav.references_by_year' },
-		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' }
+		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' },
+		{ href: `${base}/references/publishers`, icon: Building2, label: 'nav.publishers' },
+		{ href: `${base}/references/coauthor-network`, icon: Users, label: 'nav.coauthor_network' }
 	];
 
 	const textualAnalysisItems = [
