@@ -374,3 +374,9 @@
 	--animate-accordion-up: accordion-up 0.2s ease-out;
 	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
 }
+
+/* Leaflet map z-index isolation - prevents map from overlapping modals/sheets */
+.leaflet-container {
+	isolation: isolate;
+	z-index: 0;
+}
