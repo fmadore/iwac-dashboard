@@ -554,7 +554,17 @@ export const translations = {
 		'provenance.publications': 'Publications',
 		'provenance.year_range': 'Year Range',
 		'provenance.top_type': 'Top Type',
-		'provenance.run_script_hint': 'Run the generate_references.py script to generate provenance map data.'
+		'provenance.run_script_hint': 'Run the generate_references.py script to generate provenance map data.',
+		// Map Popup (reusable)
+		'map_popup.publications': 'publications',
+		'map_popup.articles': 'articles',
+		'map_popup.view_details': 'Click for details',
+		'map_popup.view_in_iwac': 'View in IWAC',
+		'map_popup.showing': 'Showing {0}-{1} of {2}',
+		'map_popup.page_of': 'Page {0} of {1}',
+		'map_popup.previous': 'Previous',
+		'map_popup.next': 'Next',
+		'map_popup.untitled': 'Untitled'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -1114,7 +1124,17 @@ export const translations = {
 		'provenance.publications': 'Publications',
 		'provenance.year_range': 'Période',
 		'provenance.top_type': 'Type principal',
-		'provenance.run_script_hint': 'Exécutez le script generate_references.py pour générer les données de la carte des provenances.'
+		'provenance.run_script_hint': 'Exécutez le script generate_references.py pour générer les données de la carte des provenances.',
+		// Map Popup (reusable)
+		'map_popup.publications': 'publications',
+		'map_popup.articles': 'articles',
+		'map_popup.view_details': 'Cliquez pour les détails',
+		'map_popup.view_in_iwac': 'Voir dans IWAC',
+		'map_popup.showing': 'Affichage {0}-{1} sur {2}',
+		'map_popup.page_of': 'Page {0} sur {1}',
+		'map_popup.previous': 'Précédent',
+		'map_popup.next': 'Suivant',
+		'map_popup.untitled': 'Sans titre'
 	}
 } as const;
 

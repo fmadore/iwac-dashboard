@@ -7,6 +7,9 @@ export type * from './worldmap.js';
 // Export entity spatial types
 export type * from './entity-spatial.js';
 
+// Export map location types (reusable map components)
+export type * from './map-location.js';
+
 export interface OmekaItem {
 	id: number;
 	title: string;

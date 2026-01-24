@@ -6,9 +6,11 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
+	import { MapLocationPopover, MapLocationSheet } from '$lib/components/visualizations/map/index.js';
 	import { ExternalLink, MapPin } from '@lucide/svelte';
 	import { scaleSqrt } from 'd3-scale';
 	import type { ProvenanceMapData } from './+page.js';
+	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 
 	// Get preloaded data from +page.ts
 	let { data: pageData } = $props<{
@@ -28,11 +30,37 @@
 	let markersLayer: L.LayerGroup | null = null;
 	let mapLoading = $state(true);
 
+	// Popover and sheet state
+	let hoveredLocation = $state<MapLocation | null>(null);
+	let selectedLocation = $state<MapLocation | null>(null);
+	let popoverPosition = $state<PopoverPosition | null>(null);
+
 	// Build islam.zmo.de URL based on current language
 	function getItemUrl(oId: string): string {
 		const lang = languageStore.current;
 		const path = lang === 'fr' ? 'afrique_ouest' : 'westafrica';
 		return `https://islam.zmo.de/s/${path}/item/${oId}`;
+	}
+
+	// Transform ProvenanceLocation to MapLocation
+	function toMapLocation(location: ProvenanceMapData['locations'][0]): MapLocation {
+		return {
+			name: location.name,
+			lat: location.lat,
+			lng: location.lng,
+			count: location.count,
+			yearRange: location.earliestYear && location.latestYear
+				? { start: location.earliestYear, end: location.latestYear }
+				: undefined,
+			externalUrl: location.o_id ? getItemUrl(location.o_id) : undefined,
+			items: location.publications.map(pub => ({
+				id: pub.pub_id,
+				title: pub.title,
+				type: pub.type,
+				year: pub.year,
+				authors: pub.authors
+			}))
+		};
 	}
 
 	// Tile layer configuration
@@ -108,7 +136,7 @@
 	}
 
 	function addMarkers() {
-		if (!L || !map || !markersLayer || !mapData) return;
+		if (!L || !map || !markersLayer || !mapData || !mapElement) return;
 
 		markersLayer.clearLayers();
 
@@ -133,69 +161,46 @@
 				fillOpacity: 0.6
 			});
 
-			// Create popup content
-			const popupContent = createPopupContent(location);
-			marker.bindPopup(popupContent, {
-				maxWidth: 350,
-				maxHeight: 400,
-				className: 'provenance-popup'
+			// Hover handlers
+			marker.on('mouseover', (e: L.LeafletMouseEvent) => {
+				marker.setStyle({ fillOpacity: 0.85, weight: 3 });
+
+				// Calculate position relative to map container
+				if (mapElement) {
+					const containerPoint = map!.latLngToContainerPoint(e.latlng);
+					const mapRect = mapElement.getBoundingClientRect();
+
+					// Determine if popover should appear above or below
+					const placement = containerPoint.y < 150 ? 'bottom' : 'top';
+
+					popoverPosition = {
+						x: containerPoint.x,
+						y: placement === 'top' ? containerPoint.y - 10 : containerPoint.y + 10,
+						placement
+					};
+					hoveredLocation = toMapLocation(location);
+				}
+			});
+
+			marker.on('mouseout', () => {
+				marker.setStyle({ fillOpacity: 0.6, weight: 2 });
+				hoveredLocation = null;
+				popoverPosition = null;
+			});
+
+			// Click handler opens sheet
+			marker.on('click', () => {
+				selectedLocation = toMapLocation(location);
+				hoveredLocation = null;
+				popoverPosition = null;
 			});
 
 			marker.addTo(markersLayer);
 		}
 	}
 
-	function createPopupContent(location: ProvenanceMapData['locations'][0]): string {
-		const lang = languageStore.current;
-		const linkHtml = location.o_id
-			? `<a href="${getItemUrl(location.o_id)}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline inline-flex items-center gap-1">
-				${location.name}
-				<svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-					<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-					<polyline points="15 3 21 3 21 9"></polyline>
-					<line x1="10" y1="14" x2="21" y2="3"></line>
-				</svg>
-			</a>`
-			: location.name;
-
-		const yearRange =
-			location.earliestYear && location.latestYear
-				? `${location.earliestYear}–${location.latestYear}`
-				: '';
-
-		let html = `
-			<div class="provenance-popup-content">
-				<h3 class="font-semibold text-base mb-2">${linkHtml}</h3>
-				<div class="text-sm text-muted-foreground mb-2">
-					<strong>${location.count}</strong> ${lang === 'fr' ? 'publication(s)' : 'publication(s)'}
-					${yearRange ? `<span class="ml-2">(${yearRange})</span>` : ''}
-				</div>
-				<div class="max-h-48 overflow-y-auto">
-					<ul class="space-y-1.5">
-		`;
-
-		for (const pub of location.publications.slice(0, 15)) {
-			const authors = pub.authors.length > 0 ? pub.authors.join(', ') : '';
-			html += `
-				<li class="text-xs border-l-2 border-primary/30 pl-2">
-					<div class="font-medium line-clamp-2">${pub.title || 'Untitled'}</div>
-					${authors ? `<div class="text-muted-foreground">${authors}</div>` : ''}
-					<div class="text-muted-foreground">${pub.type}${pub.year ? ` (${pub.year})` : ''}</div>
-				</li>
-			`;
-		}
-
-		if (location.publications.length > 15) {
-			html += `<li class="text-xs text-muted-foreground italic">...${lang === 'fr' ? 'et' : 'and'} ${location.publications.length - 15} ${lang === 'fr' ? 'autres' : 'more'}</li>`;
-		}
-
-		html += `
-					</ul>
-				</div>
-			</div>
-		`;
-
-		return html;
+	function handleSheetClose() {
+		selectedLocation = null;
 	}
 
 	// Watch for theme changes
@@ -308,6 +313,13 @@
 							<Skeleton class="h-full w-full" />
 						</div>
 					{/if}
+
+					<!-- Hover popover -->
+					<MapLocationPopover
+						location={hoveredLocation}
+						position={popoverPosition}
+						itemLabel="publications"
+					/>
 				</div>
 			</Card.Content>
 		</Card.Root>
@@ -397,27 +409,38 @@
 	{/if}
 </div>
 
+<!-- Sheet for location details (at page level to avoid clipping) -->
+<MapLocationSheet
+	location={selectedLocation}
+	onClose={handleSheetClose}
+	itemLabel="publications"
+/>
+
 <style>
-	:global(.provenance-popup .leaflet-popup-content-wrapper) {
+	:global(.leaflet-popup-content-wrapper) {
+		background: var(--card);
+		color: var(--foreground);
 		border-radius: 0.5rem;
-		padding: 0;
+		box-shadow: 0 4px 12px color-mix(in oklch, var(--foreground) 18%, transparent);
 	}
 
-	:global(.provenance-popup .leaflet-popup-content) {
-		margin: 0.75rem;
-		font-family: inherit;
+	:global(.leaflet-popup-tip) {
+		background: var(--card);
 	}
 
-	:global(.provenance-popup-content) {
-		font-size: 0.875rem;
+	:global(.leaflet-control-zoom) {
+		border: 1px solid var(--border) !important;
+		border-radius: 8px !important;
+		overflow: hidden;
 	}
 
-	:global(.dark .provenance-popup .leaflet-popup-content-wrapper) {
-		background-color: hsl(var(--card));
-		color: hsl(var(--card-foreground));
+	:global(.leaflet-control-zoom a) {
+		background: var(--card) !important;
+		color: var(--foreground) !important;
+		border-color: var(--border) !important;
 	}
 
-	:global(.dark .provenance-popup .leaflet-popup-tip) {
-		background-color: hsl(var(--card));
+	:global(.leaflet-control-zoom a:hover) {
+		background: var(--accent) !important;
 	}
 </style>

@@ -4,7 +4,9 @@
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { entitySpatialStore } from '$lib/stores/entitySpatialStore.svelte.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
 	import type { EntityLocation } from '$lib/types/entity-spatial.js';
+	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 	import { scaleSqrt, scaleLinear } from 'd3-scale';
 
 	interface Props {
@@ -30,6 +32,22 @@
 
 	// Force reactivity on language change
 	const lang = $derived(languageStore.current);
+
+	// Popover state
+	let hoveredLocation = $state<MapLocation | null>(null);
+	let popoverPosition = $state<PopoverPosition | null>(null);
+
+	// Transform EntityLocation to MapLocation
+	function toMapLocation(location: EntityLocation): MapLocation {
+		return {
+			name: location.name,
+			lat: location.lat,
+			lng: location.lng,
+			count: location.articleCount,
+			country: location.country,
+			items: [] // Items are loaded separately via entitySpatialStore
+		};
+	}
 
 	// Tile layer configuration
 	const tileLayerOptions = {
@@ -190,25 +208,36 @@
 					? t('worldmap.article')
 					: t('worldmap.articles', [location.articleCount.toLocaleString()]);
 
-			marker.bindPopup(`
-				<strong>${location.name}</strong><br>
-				<span style="color: var(--muted-foreground)">${location.country}</span><br>
-				${articleText}
-			`);
-
-			marker.on('mouseover', () => {
+			// Hover handlers for popover
+			marker.on('mouseover', (e: L.LeafletMouseEvent) => {
 				marker.setStyle({ fillOpacity: 0.9, weight: 3 });
-				marker.openPopup();
+
+				// Calculate position relative to map container
+				if (mapElement && map) {
+					const containerPoint = map.latLngToContainerPoint(e.latlng);
+					const placement = containerPoint.y < 150 ? 'bottom' : 'top';
+
+					popoverPosition = {
+						x: containerPoint.x,
+						y: placement === 'top' ? containerPoint.y - 10 : containerPoint.y + 10,
+						placement
+					};
+					hoveredLocation = toMapLocation(location);
+				}
 			});
 
 			marker.on('mouseout', () => {
 				if (selectedLocation?.name !== location.name) {
 					marker.setStyle({ fillOpacity: 0.7, weight: 2 });
 				}
+				hoveredLocation = null;
+				popoverPosition = null;
 			});
 
 			marker.on('click', () => {
 				entitySpatialStore.setSelectedLocation(location);
+				hoveredLocation = null;
+				popoverPosition = null;
 			});
 
 			markersLayer!.addLayer(marker);
@@ -228,7 +257,14 @@
 		bind:this={mapElement}
 		style="height: {height};"
 		data-testid="entity-map-container"
-	></div>
+	>
+		<!-- Hover popover -->
+		<MapLocationPopover
+			location={hoveredLocation}
+			position={popoverPosition}
+			itemLabel="articles"
+		/>
+	</div>
 
 	{#if mapLoading}
 		<div class="absolute inset-0 flex items-center justify-center bg-background/80">

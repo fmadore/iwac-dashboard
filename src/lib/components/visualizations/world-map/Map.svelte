@@ -6,7 +6,9 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import ChoroplethLayer from './ChoroplethLayer.svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
 	import type { GeoJsonData, LocationData } from '$lib/types/worldmap.js';
+	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 	import { scaleLinear, scaleSqrt } from 'd3-scale';
 
 	// Props
@@ -37,6 +39,22 @@
 	// Legend state
 	let showLegend = $state(true);
 	let legendItems = $state<{ color: string; label: string }[]>([]);
+
+	// Popover state
+	let hoveredLocation = $state<MapLocation | null>(null);
+	let popoverPosition = $state<PopoverPosition | null>(null);
+
+	// Transform LocationData to MapLocation
+	function toMapLocation(location: LocationData): MapLocation {
+		return {
+			name: location.name,
+			lat: location.lat,
+			lng: location.lng,
+			count: location.articleCount,
+			country: location.country,
+			items: [] // World map locations don't have item details
+		};
+	}
 
 	// Derived state - use filtered data when filters are active
 	const viewMode = $derived(mapDataStore.viewMode);
@@ -311,27 +329,34 @@
 				fillOpacity: 0.7
 			});
 
-			const articleText = location.articleCount === 1 
-				? t('worldmap.article') 
-				: t('worldmap.articles', [location.articleCount.toLocaleString()]);
-
-			marker.bindPopup(`
-				<strong>${location.name}</strong><br>
-				<span style="color: var(--muted-foreground)">${location.country}</span><br>
-				${articleText}
-			`);
-
-			marker.on('mouseover', () => {
+			// Hover handlers for popover
+			marker.on('mouseover', (e: L.LeafletMouseEvent) => {
 				marker.setStyle({ fillOpacity: 0.9, weight: 3 });
-				marker.openPopup();
+
+				// Calculate position relative to map container
+				if (mapElement && map) {
+					const containerPoint = map.latLngToContainerPoint(e.latlng);
+					const placement = containerPoint.y < 150 ? 'bottom' : 'top';
+
+					popoverPosition = {
+						x: containerPoint.x,
+						y: placement === 'top' ? containerPoint.y - 10 : containerPoint.y + 10,
+						placement
+					};
+					hoveredLocation = toMapLocation(location);
+				}
 			});
 
 			marker.on('mouseout', () => {
 				marker.setStyle({ fillOpacity: 0.7, weight: 2 });
+				hoveredLocation = null;
+				popoverPosition = null;
 			});
 
 			marker.on('click', () => {
 				mapDataStore.setSelectedLocation(location);
+				hoveredLocation = null;
+				popoverPosition = null;
 			});
 
 			markersLayer!.addLayer(marker);
@@ -340,12 +365,19 @@
 </script>
 
 <div class="map-wrapper relative">
-	<div 
-		class="map-container relative z-0" 
-		bind:this={mapElement} 
-		style="height: {height};" 
+	<div
+		class="map-container relative z-0"
+		bind:this={mapElement}
+		style="height: {height};"
 		data-testid="map-container"
-	></div>
+	>
+		<!-- Hover popover -->
+		<MapLocationPopover
+			location={hoveredLocation}
+			position={popoverPosition}
+			itemLabel="articles"
+		/>
+	</div>
 
 	{#if mapLoading}
 		<div class="absolute inset-0 flex items-center justify-center bg-background/80">

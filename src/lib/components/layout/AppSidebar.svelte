@@ -84,7 +84,7 @@
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
 	</Sidebar.Header>
-	<Sidebar.Content>
+	<Sidebar.Content class="!flex-initial">
 		<Sidebar.Group>
 			<Sidebar.GroupLabel>{t('nav.overview')}</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
