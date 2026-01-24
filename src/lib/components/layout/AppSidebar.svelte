@@ -41,7 +41,8 @@
 		{ href: `${base}/references/by-year`, icon: BookMarked, label: 'nav.references_by_year' },
 		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' },
 		{ href: `${base}/references/publishers`, icon: Building2, label: 'nav.publishers' },
-		{ href: `${base}/references/coauthor-network`, icon: Users, label: 'nav.coauthor_network' }
+		{ href: `${base}/references/coauthor-network`, icon: Users, label: 'nav.coauthor_network' },
+		{ href: `${base}/references/provenance-map`, icon: MapPin, label: 'nav.provenance_map' }
 	];
 
 	const textualAnalysisItems = [

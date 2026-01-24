@@ -293,6 +293,244 @@ def find_entity_id(name: str, lookup: Dict[str, Dict[str, Any]], entity_types: L
     return None
 
 
+def parse_coordinates(coord_str: str) -> Optional[Tuple[float, float]]:
+    """Parse coordinates from the Coordonnées field.
+
+    Expected formats: "lat, lng" or "lat,lng"
+    Returns (lat, lng) tuple or None if parsing fails.
+    """
+    if not coord_str or (isinstance(coord_str, float) and pd.isna(coord_str)):
+        return None
+
+    coord_str = str(coord_str).strip()
+    if not coord_str:
+        return None
+
+    # Try common formats: "lat, lng" or "lat,lng"
+    match = re.match(r'^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$', coord_str)
+    if match:
+        try:
+            lat = float(match.group(1))
+            lng = float(match.group(2))
+            # Validate ranges
+            if -90 <= lat <= 90 and -180 <= lng <= 180:
+                return (lat, lng)
+        except ValueError:
+            pass
+
+    return None
+
+
+def build_coord_lookup(index_df: pd.DataFrame) -> Dict[str, Dict[str, Any]]:
+    """Build a lookup from location names to their coordinates and metadata.
+
+    Returns a dict mapping normalized names to {coordinates, original_name, o_id, type}.
+    """
+    if index_df.empty:
+        return {}
+
+    lookup: Dict[str, Dict[str, Any]] = {}
+
+    # Find relevant columns
+    title_col = None
+    for col in ["Titre", "title", "Title"]:
+        if col in index_df.columns:
+            title_col = col
+            break
+
+    coord_col = None
+    for col in ["Coordonnées", "coordinates", "coordonnees"]:
+        if col in index_df.columns:
+            coord_col = col
+            break
+
+    id_col = None
+    for col in ["o:id", "o_id", "id"]:
+        if col in index_df.columns:
+            id_col = col
+            break
+
+    type_col = None
+    for col in ["Type", "type"]:
+        if col in index_df.columns:
+            type_col = col
+            break
+
+    if not title_col or not coord_col:
+        logger.warning(f"Could not find required columns. Found: {list(index_df.columns)}")
+        return {}
+
+    logger.info(f"Building coord lookup from columns: title={title_col}, coord={coord_col}, id={id_col}")
+
+    entries_with_coords = 0
+
+    for _, row in index_df.iterrows():
+        title = row.get(title_col)
+        if not title or (isinstance(title, float) and pd.isna(title)):
+            continue
+
+        coords = parse_coordinates(row.get(coord_col, ""))
+        if not coords:
+            continue
+
+        title = str(title).strip()
+        normalized = " ".join(title.lower().split())
+
+        o_id = None
+        if id_col:
+            id_val = row.get(id_col)
+            if id_val and not (isinstance(id_val, float) and pd.isna(id_val)):
+                o_id = str(id_val).strip()
+
+        entity_type = ""
+        if type_col:
+            type_val = row.get(type_col)
+            if type_val and not (isinstance(type_val, float) and pd.isna(type_val)):
+                entity_type = str(type_val).strip()
+
+        if normalized not in lookup:
+            lookup[normalized] = {
+                "coordinates": coords,
+                "original_name": title,
+                "o_id": o_id,
+                "type": entity_type
+            }
+            entries_with_coords += 1
+
+    logger.info(f"Built coord lookup with {entries_with_coords} locations")
+    return lookup
+
+
+def generate_provenance_map_data(
+    records: List[Dict[str, Any]],
+    coord_lookup: Dict[str, Dict[str, Any]],
+    name_lookup: Optional[Dict[str, Dict[str, Any]]] = None
+) -> Dict[str, Any]:
+    """Generate provenance map data for references.
+
+    Creates location markers with:
+    - GPS coordinates
+    - Publication count (for marker sizing)
+    - List of linked publications
+    """
+    logger.info("Generating provenance map data...")
+
+    # Aggregate publications by provenance location
+    # Use pub_id to track unique publications per location
+    location_data: Dict[str, Dict[str, Any]] = defaultdict(lambda: {
+        "pub_ids": set(),
+        "publications": [],
+        "types": defaultdict(int),
+        "years": []
+    })
+
+    # Track unique publications for provenance extraction
+    seen_pub_ids: Dict[str, Dict[str, Any]] = {}
+
+    for record in records:
+        pub_id = record["pub_id"]
+        if pub_id in seen_pub_ids:
+            continue
+
+        # Get provenance from record (we need to add this to process_references_data)
+        provenance_list = record.get("provenance_list", [])
+        if not provenance_list:
+            continue
+
+        seen_pub_ids[pub_id] = {
+            "title": record.get("title", ""),
+            "type": record.get("type", "Unknown"),
+            "year": record.get("year"),
+            "authors": record.get("authors_list", [])
+        }
+
+        for provenance in provenance_list:
+            normalized = " ".join(provenance.lower().split())
+
+            # Check if we have coordinates for this location
+            if normalized not in coord_lookup:
+                continue
+
+            if pub_id not in location_data[normalized]["pub_ids"]:
+                location_data[normalized]["pub_ids"].add(pub_id)
+                location_data[normalized]["types"][record.get("type", "Unknown")] += 1
+                if record.get("year"):
+                    location_data[normalized]["years"].append(record["year"])
+                location_data[normalized]["publications"].append({
+                    "pub_id": pub_id,
+                    "title": record.get("title", ""),
+                    "type": record.get("type", "Unknown"),
+                    "year": record.get("year"),
+                    "authors": record.get("authors_list", [])[:3]  # Limit to first 3 authors
+                })
+
+    logger.info(f"Found {len(location_data)} unique provenance locations with coordinates")
+
+    if not location_data:
+        return {
+            "locations": [],
+            "meta": {
+                "totalLocations": 0,
+                "totalPublications": 0,
+                "generatedAt": datetime.now().isoformat()
+            }
+        }
+
+    # Build location list with coordinates
+    locations = []
+    max_count = max(len(data["pub_ids"]) for data in location_data.values())
+
+    for normalized, data in location_data.items():
+        coord_entry = coord_lookup[normalized]
+        lat, lng = coord_entry["coordinates"]
+
+        location_entry = {
+            "name": coord_entry["original_name"],
+            "lat": lat,
+            "lng": lng,
+            "count": len(data["pub_ids"]),
+            "countNorm": len(data["pub_ids"]) / max_count if max_count > 0 else 0,
+            "types": dict(data["types"]),
+            "publications": data["publications"][:50]  # Limit for popup display
+        }
+
+        # Add o_id if available
+        if coord_entry.get("o_id"):
+            location_entry["o_id"] = coord_entry["o_id"]
+
+        # Add year range if available
+        if data["years"]:
+            location_entry["earliestYear"] = min(data["years"])
+            location_entry["latestYear"] = max(data["years"])
+
+        locations.append(location_entry)
+
+    # Sort by count descending
+    locations.sort(key=lambda x: x["count"], reverse=True)
+
+    # Calculate bounds
+    lats = [loc["lat"] for loc in locations]
+    lngs = [loc["lng"] for loc in locations]
+
+    result = {
+        "locations": locations,
+        "bounds": {
+            "north": max(lats),
+            "south": min(lats),
+            "east": max(lngs),
+            "west": min(lngs)
+        } if locations else None,
+        "meta": {
+            "totalLocations": len(locations),
+            "totalPublications": len(seen_pub_ids),
+            "maxCount": max_count,
+            "generatedAt": datetime.now().isoformat()
+        }
+    }
+
+    return result
+
+
 def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
     """Process references data and extract normalized records."""
     if df.empty:
@@ -315,8 +553,9 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
     title_col = find_column(["title", "Title", "o:title"])
     id_col = find_column(["identifier", "Identifier", "id", "ID", "o:id"])
     publisher_col = find_column(["publisher", "Publisher", "editeur", "Editeur"])
+    provenance_col = find_column(["provenance", "Provenance", "place", "Place", "lieu", "Lieu"])
 
-    logger.info(f"Found columns: author={author_col}, country={country_col}, date={date_col}, type={type_col}, id={id_col}, publisher={publisher_col}")
+    logger.info(f"Found columns: author={author_col}, country={country_col}, date={date_col}, type={type_col}, id={id_col}, publisher={publisher_col}, provenance={provenance_col}")
     
     records = []
     skipped_no_year = 0
@@ -366,6 +605,11 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
         if publisher_col:
             publishers = normalize_publishers(row.get(publisher_col))
 
+        # Extract provenance locations (can be multiple, pipe-separated)
+        provenance = []
+        if provenance_col:
+            provenance = normalize_multivalue_field(row.get(provenance_col), "|")
+
         # Create records with different tracking
         # For temporal analysis: need year
         if year:
@@ -380,6 +624,7 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
                         "title": title,
                         "publishers_list": publishers,  # Keep full list for publisher stats
                         "authors_list": authors,  # Keep full list for co-author network
+                        "provenance_list": provenance,  # Keep full list for map
                         "has_year": True,
                         "has_author": author is not None
                     })
@@ -398,6 +643,7 @@ def process_references_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
                             "title": title,
                             "publishers_list": publishers,
                             "authors_list": authors,  # Keep full list for co-author network
+                            "provenance_list": provenance,  # Keep full list for map
                             "has_year": False,
                             "has_author": True
                         })
@@ -667,7 +913,10 @@ def generate_publishers_data(
     return result
 
 
-def generate_coauthor_network(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+def generate_coauthor_network(
+    records: List[Dict[str, Any]],
+    name_lookup: Optional[Dict[str, Dict[str, Any]]] = None
+) -> Dict[str, Any]:
     """Generate co-author network data.
 
     Creates a network where:
@@ -765,12 +1014,13 @@ def generate_coauthor_network(records: List[Dict[str, Any]]) -> Dict[str, Any]:
 
     nodes = []
     author_id_map = {}
+    matched_count = 0
 
     for author in all_coauthors:
         author_id = make_author_id(author)
         author_id_map[author] = author_id
 
-        nodes.append({
+        node_data = {
             "id": author_id,
             "type": "author",
             "label": author,
@@ -778,7 +1028,19 @@ def generate_coauthor_network(records: List[Dict[str, Any]]) -> Dict[str, Any]:
             "degree": author_degree[author],
             "strength": author_strength[author],
             "labelPriority": author_priority[author]
-        })
+        }
+
+        # Look up o:id from index (filter to Personnes type for authors)
+        if name_lookup:
+            o_id = find_entity_id(author, name_lookup, ["Personnes"])
+            if o_id:
+                node_data["o_id"] = o_id
+                matched_count += 1
+
+        nodes.append(node_data)
+
+    if name_lookup:
+        logger.info(f"Matched {matched_count}/{len(nodes)} co-authors to index entries")
 
     # Build edges
     max_weight = max(data["weight"] for data in edge_weights.values())
@@ -900,6 +1162,7 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
                 for country in countries_with_files
             ],
             "coauthor_network": "references/coauthor-network.json",
+            "provenance_map": "references/provenance-map.json",
             "metadata": "references/metadata.json"
         },
         "generated_at": datetime.now().isoformat()
@@ -1002,8 +1265,16 @@ def main():
 
     # Generate co-author network
     logger.info("Generating co-author network...")
-    coauthor_network = generate_coauthor_network(records)
+    coauthor_network = generate_coauthor_network(records, name_lookup=name_lookup)
     save_json(coauthor_network, output_dir / "coauthor-network.json")
+
+    # Build coordinate lookup for provenance map
+    coord_lookup = build_coord_lookup(index_df) if not index_df.empty else {}
+
+    # Generate provenance map data
+    logger.info("Generating provenance map data...")
+    provenance_map = generate_provenance_map_data(records, coord_lookup, name_lookup)
+    save_json(provenance_map, output_dir / "provenance-map.json")
 
     # Get countries with enough data
     country_counts = Counter(r["country"] for r in records)
@@ -1045,6 +1316,7 @@ def main():
     logger.info(f"  - Global authors: authors.json")
     logger.info(f"  - Global publishers: publishers.json")
     logger.info(f"  - Co-author network: coauthor-network.json")
+    logger.info(f"  - Provenance map: provenance-map.json")
     logger.info(f"  - Country files: {len(countries_with_files)} × 3 (by-year + authors + publishers)")
     logger.info(f"  - Metadata: metadata.json")
 

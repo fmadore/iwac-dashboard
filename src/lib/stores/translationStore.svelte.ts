@@ -52,6 +52,7 @@ export const translations = {
 		'common.filter': 'Filter',
 		'common.reset': 'Reset',
 		'common.clear': 'Clear',
+		'common.view_on_iwac': 'View on IWAC',
 		'table.search_placeholder': 'Search title, type, or country...',
 		'table.rows_count': '{0} rows',
 		'table.no_results': 'No results',
@@ -536,7 +537,24 @@ export const translations = {
 		'coauthor.coauthors': 'Co-authors',
 		'coauthor.joint_pubs': 'Joint Pubs',
 		'coauthor.instructions': 'Click on an author node to see their collaboration statistics. Use the controls to filter the network by minimum co-authorships.',
-		'coauthor.run_script_hint': 'Run the generate_references.py script to generate co-author network data.'
+		'coauthor.run_script_hint': 'Run the generate_references.py script to generate co-author network data.',
+		// Provenance Map
+		'nav.provenance_map': 'Provenance Map',
+		'provenance.title': 'Provenance Map',
+		'provenance.description': 'Geographic distribution of bibliographic references by place of origin or publication',
+		'provenance.total_locations': 'Total Locations',
+		'provenance.total_publications': 'Total Publications',
+		'provenance.top_location': 'Top Location',
+		'provenance.map_title': 'Geographic Distribution',
+		'provenance.map_description': 'Click on a marker to see publications from that location. Marker size indicates publication count.',
+		'provenance.legend_size': 'Marker size = publication count',
+		'provenance.top_locations': 'Top Locations',
+		'provenance.top_locations_description': 'Locations with the most publications',
+		'provenance.location': 'Location',
+		'provenance.publications': 'Publications',
+		'provenance.year_range': 'Year Range',
+		'provenance.top_type': 'Top Type',
+		'provenance.run_script_hint': 'Run the generate_references.py script to generate provenance map data.'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -590,6 +608,7 @@ export const translations = {
 		'common.filter': 'Filtrer',
 		'common.reset': 'Réinitialiser',
 		'common.clear': 'Effacer',
+		'common.view_on_iwac': 'Voir sur IWAC',
 		'table.search_placeholder': 'Rechercher un titre, un type ou un pays...',
 		'table.rows_count': '{0} lignes',
 		'table.no_results': 'Aucun résultat',
@@ -1078,7 +1097,24 @@ export const translations = {
 		'coauthor.coauthors': 'Co-auteurs',
 		'coauthor.joint_pubs': 'Pubs conjointes',
 		'coauthor.instructions': 'Cliquez sur un nœud d\'auteur pour voir ses statistiques de collaboration. Utilisez les contrôles pour filtrer le réseau par nombre minimum de co-signatures.',
-		'coauthor.run_script_hint': 'Exécutez le script generate_references.py pour générer les données du réseau de co-auteurs.'
+		'coauthor.run_script_hint': 'Exécutez le script generate_references.py pour générer les données du réseau de co-auteurs.',
+		// Provenance Map
+		'nav.provenance_map': 'Carte des provenances',
+		'provenance.title': 'Carte des provenances',
+		'provenance.description': 'Distribution géographique des références bibliographiques par lieu d\'origine ou de publication',
+		'provenance.total_locations': 'Total des lieux',
+		'provenance.total_publications': 'Total des publications',
+		'provenance.top_location': 'Lieu principal',
+		'provenance.map_title': 'Distribution géographique',
+		'provenance.map_description': 'Cliquez sur un marqueur pour voir les publications de ce lieu. La taille du marqueur indique le nombre de publications.',
+		'provenance.legend_size': 'Taille du marqueur = nombre de publications',
+		'provenance.top_locations': 'Lieux principaux',
+		'provenance.top_locations_description': 'Lieux avec le plus de publications',
+		'provenance.location': 'Lieu',
+		'provenance.publications': 'Publications',
+		'provenance.year_range': 'Période',
+		'provenance.top_type': 'Type principal',
+		'provenance.run_script_hint': 'Exécutez le script generate_references.py pour générer les données de la carte des provenances.'
 	}
 } as const;
 

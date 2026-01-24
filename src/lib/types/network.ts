@@ -101,6 +101,8 @@ export interface GlobalNetworkNode {
 	degree: number;
 	strength: number;
 	labelPriority: number;
+	/** Optional Omeka o:id for linking to islam.zmo.de */
+	o_id?: string;
 }
 
 /** Edge structure for global network */

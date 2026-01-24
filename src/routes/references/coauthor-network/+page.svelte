@@ -6,7 +6,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
-	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { NetworkGraph, NetworkEntitySearch } from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
@@ -23,8 +23,16 @@
 		Hash,
 		FileText,
 		Focus,
-		X
+		X,
+		ExternalLink
 	} from '@lucide/svelte';
+
+	// Build islam.zmo.de URL based on current language
+	function getItemUrl(oId: string): string {
+		const lang = languageStore.current;
+		const path = lang === 'fr' ? 'afrique_ouest' : 'westafrica';
+		return `https://islam.zmo.de/s/${path}/item/${oId}`;
+	}
 
 	// Type definitions for co-author network (compatible with GlobalNetworkNode)
 	interface CoauthorNetworkNode extends GlobalNetworkNode {
@@ -474,6 +482,17 @@
 								</Badge>
 							</div>
 							<div class="flex items-center gap-1">
+								{#if selectedNode.o_id}
+									<a
+										href={getItemUrl(selectedNode.o_id)}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="inline-flex h-7 w-7 items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+										title={t('common.view_on_iwac')}
+									>
+										<ExternalLink class="h-4 w-4" />
+									</a>
+								{/if}
 								<Button
 									variant={focusMode ? 'default' : 'ghost'}
 									size="sm"
