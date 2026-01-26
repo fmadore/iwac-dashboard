@@ -3,7 +3,7 @@
 	import type { Map as MapLibreMap, MapLayerMouseEvent, GeoJSONSource } from 'maplibre-gl';
 	import { MAP_CONTEXT_KEY, type MapContext } from './BaseMap.svelte';
 	import { createChoroplethScale } from './utils/scales.js';
-	import { getThemeColors, createThemeObserver, getCssVar } from './utils/theme.js';
+	import { getThemeColors, createThemeObserver, getCssVarAsHex } from './utils/theme.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import type { ChoroplethData } from './types.js';
 
@@ -24,14 +24,15 @@
 		onClick?: (countryName: string, value: number) => void;
 	}
 
+	// Sequential orange gradient (light to dark) for MapLibre compatibility
 	const DEFAULT_COLOR_RANGE = [
-		'oklch(0.95 0.02 220)',
-		'oklch(0.85 0.06 55)',
-		'oklch(0.75 0.10 55)',
-		'oklch(0.65 0.13 55)',
-		'oklch(0.55 0.15 55)',
-		'oklch(0.50 0.16 55)',
-		'oklch(0.45 0.17 55)'
+		'#fff7ed', // orange-50
+		'#ffedd5', // orange-100
+		'#fed7aa', // orange-200
+		'#fdba74', // orange-300
+		'#fb923c', // orange-400
+		'#f97316', // orange-500
+		'#ea580c'  // orange-600
 	];
 
 	let {
@@ -66,10 +67,15 @@
 
 	function getFeatureColor(countryName: string): string {
 		const value = data[countryName];
-		if (value === undefined || value === 0) {
-			return getCssVar('--muted', 'oklch(0.92 0.01 220)');
+		if (value === undefined || value === 0 || !Number.isFinite(value)) {
+			return getCssVarAsHex('--muted', '#e5e7eb');
 		}
-		return colorScale(value);
+		const color = colorScale(value);
+		// Safeguard against invalid colors (NaN in interpolation)
+		if (!color || color.includes('NaN')) {
+			return getCssVarAsHex('--muted', '#e5e7eb');
+		}
+		return color;
 	}
 
 	function createGeoJsonWithColors() {
@@ -309,6 +315,7 @@
 
 		// Add line layer for borders
 		if (!map.getLayer(LINE_LAYER_ID)) {
+			const colors = getThemeColors();
 			map.addLayer({
 				id: LINE_LAYER_ID,
 				type: 'line',
@@ -317,14 +324,14 @@
 					'line-color': [
 						'case',
 						['boolean', ['feature-state', 'hover'], false],
-						getCssVar('--primary', '#3b82f6'),
-						getCssVar('--border', '#e5e5e5')
+						colors.primary,
+						colors.border
 					],
 					'line-width': [
 						'case',
 						['boolean', ['feature-state', 'hover'], false],
 						2,
-						1
+						0.5
 					]
 				}
 			});
@@ -382,13 +389,17 @@
 		return cleanup;
 	});
 
-	// Update when data or colors change
+	// Update when data or colors change (only if map is ready)
 	$effect(() => {
+		// Track dependencies
 		void data;
 		void colorRange;
 		void scaleMode;
 		void lang;
 
-		updateLayer();
+		// Only update if map and source exist
+		if (map && map.getSource(SOURCE_ID)) {
+			updateLayer();
+		}
 	});
 </script>

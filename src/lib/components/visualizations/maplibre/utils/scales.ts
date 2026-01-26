@@ -34,24 +34,50 @@ export function createChoroplethScale(
 		return () => colorRange[0];
 	}
 
+	const min = Math.min(...validData);
+	const max = Math.max(...validData);
+
+	// Handle edge case where all values are the same
+	if (min === max) {
+		return () => colorRange[Math.floor(colorRange.length / 2)];
+	}
+
+	// Quantile mode: assigns discrete colors based on data distribution
 	if (mode === 'quantile') {
 		return scaleQuantile<string>().domain(validData).range(colorRange);
 	}
 
-	const min = Math.min(...validData);
-	const max = Math.max(...validData);
+	// For log and linear modes, create threshold-based scale for discrete colors
+	const numBins = colorRange.length;
 
 	if (mode === 'log') {
 		const safeMin = Math.max(1, min);
-		return scaleLog<string>()
-			.domain([safeMin, max])
-			.range([colorRange[0], colorRange[colorRange.length - 1]])
-			.clamp(true);
+		const safeMax = Math.max(safeMin + 1, max);
+		const logMin = Math.log10(safeMin);
+		const logMax = Math.log10(safeMax);
+		const step = (logMax - logMin) / numBins;
+
+		// Create thresholds in log space
+		const thresholds = Array.from({ length: numBins - 1 }, (_, i) =>
+			Math.pow(10, logMin + (i + 1) * step)
+		);
+
+		return (value: number) => {
+			if (!Number.isFinite(value) || value <= 0) return colorRange[0];
+			const idx = thresholds.findIndex((t) => value < t);
+			return idx === -1 ? colorRange[colorRange.length - 1] : colorRange[idx];
+		};
 	}
 
-	return scaleLinear<string>()
-		.domain([min, max])
-		.range([colorRange[0], colorRange[colorRange.length - 1]]);
+	// Linear mode with thresholds
+	const step = (max - min) / numBins;
+	const thresholds = Array.from({ length: numBins - 1 }, (_, i) => min + (i + 1) * step);
+
+	return (value: number) => {
+		if (!Number.isFinite(value)) return colorRange[0];
+		const idx = thresholds.findIndex((t) => value < t);
+		return idx === -1 ? colorRange[colorRange.length - 1] : colorRange[idx];
+	};
 }
 
 /**

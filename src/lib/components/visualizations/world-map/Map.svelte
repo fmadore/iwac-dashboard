@@ -24,14 +24,15 @@
 	let worldGeo: GeoJsonData | null = $state(null);
 	let dataLoading = $state(true);
 	let bubbleColorRange = $state<[string, string]>(['#3b82f6', '#ef4444']);
+	// Sequential orange gradient (light to dark) for choropleth
 	let choroplethColorRange = $state<string[]>([
-		'#e5e7eb',
-		'#fcd34d',
-		'#fbbf24',
-		'#f59e0b',
-		'#d97706',
-		'#b45309',
-		'#92400e'
+		'#fff7ed', // orange-50
+		'#ffedd5', // orange-100
+		'#fed7aa', // orange-200
+		'#fdba74', // orange-300
+		'#fb923c', // orange-400
+		'#f97316', // orange-500
+		'#ea580c'  // orange-600
 	]);
 
 	// Legend state
@@ -70,15 +71,15 @@
 			getCssVarAsHex('--chart-6', '#ef4444')
 		];
 
-		// Choropleth palette (discrete steps), pulled from theme variables.
+		// Sequential orange gradient for choropleth (consistent light to dark)
 		choroplethColorRange = [
-			getCssVarAsHex('--muted', '#e5e7eb'),
-			getCssVarAsHex('--chart-15', '#fcd34d'),
-			getCssVarAsHex('--chart-5', '#fbbf24'),
-			getCssVarAsHex('--chart-1', '#f59e0b'),
-			getCssVarAsHex('--chart-11', '#d97706'),
-			getCssVarAsHex('--chart-6', '#b45309'),
-			getCssVarAsHex('--primary', '#92400e')
+			'#fff7ed', // orange-50
+			'#ffedd5', // orange-100
+			'#fed7aa', // orange-200
+			'#fdba74', // orange-300
+			'#fb923c', // orange-400
+			'#f97316', // orange-500
+			'#ea580c'  // orange-600
 		];
 	}
 
@@ -93,8 +94,8 @@
 		try {
 			dataLoading = true;
 
-			// Load world GeoJSON for choropleth
-			const geoResponse = await fetch(`${base}/data/maps/world_countries.geojson`);
+			// Load simplified world GeoJSON for choropleth (1MB vs 5MB original)
+			const geoResponse = await fetch(`${base}/data/maps/world_countries_simple.geojson`);
 			if (geoResponse.ok) {
 				worldGeo = await geoResponse.json();
 			}
