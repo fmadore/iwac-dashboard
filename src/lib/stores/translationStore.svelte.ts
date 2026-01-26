@@ -541,6 +541,14 @@ export const translations = {
 		// Provenance Map
 		'nav.provenance_map': 'Provenance Map',
 		'provenance.title': 'Provenance Map',
+
+		// Treemap
+		'nav.treemap': 'Treemap',
+		'treemap.title': 'References Treemap',
+		'treemap.description': 'Hierarchical view of references by country and document type',
+		'treemap.total_references': 'Total References',
+		'treemap.countries': 'Countries',
+		'treemap.document_types': 'Document Types',
 		'provenance.description': 'Geographic distribution of bibliographic references by place of origin or publication',
 		'provenance.total_locations': 'Total Locations',
 		'provenance.total_publications': 'Total Publications',
@@ -1111,6 +1119,14 @@ export const translations = {
 		// Provenance Map
 		'nav.provenance_map': 'Carte des provenances',
 		'provenance.title': 'Carte des provenances',
+
+		// Treemap
+		'nav.treemap': 'Treemap',
+		'treemap.title': 'Treemap des références',
+		'treemap.description': 'Vue hiérarchique des références par pays et type de document',
+		'treemap.total_references': 'Références totales',
+		'treemap.countries': 'Pays',
+		'treemap.document_types': 'Types de documents',
 		'provenance.description': 'Distribution géographique des références bibliographiques par lieu d\'origine ou de publication',
 		'provenance.total_locations': 'Total des lieux',
 		'provenance.total_publications': 'Total des publications',

@@ -22,7 +22,8 @@
 		UserCircle,
 		Hash,
 		Building2,
-		Users
+		Users,
+		TreePine
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -39,6 +40,7 @@
 
 	const referencesItems = [
 		{ href: `${base}/references/by-year`, icon: BookMarked, label: 'nav.references_by_year' },
+		{ href: `${base}/references/treemap`, icon: TreePine, label: 'nav.treemap' },
 		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' },
 		{ href: `${base}/references/publishers`, icon: Building2, label: 'nav.publishers' },
 		{ href: `${base}/references/coauthor-network`, icon: Users, label: 'nav.coauthor_network' },

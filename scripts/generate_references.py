@@ -1094,6 +1094,68 @@ def generate_coauthor_network(
     }
 
 
+def generate_treemap_data(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Generate treemap data for country → reference type hierarchy.
+
+    Creates a hierarchical structure:
+    - Root: "References"
+    - Level 1: Countries
+    - Level 2: Reference types (leaf nodes with values)
+    """
+    logger.info("Generating treemap data (country → reference type)...")
+
+    # Aggregate by country and type, tracking unique pub_ids
+    country_type_pub_ids: Dict[str, Dict[str, set]] = defaultdict(lambda: defaultdict(set))
+
+    for record in records:
+        country = record["country"]
+        ref_type = record["type"]
+        pub_id = record["pub_id"]
+
+        country_type_pub_ids[country][ref_type].add(pub_id)
+
+    # Build hierarchical structure
+    children = []
+    total_count = 0
+
+    for country in sorted(country_type_pub_ids.keys()):
+        if country == "Unknown":
+            continue  # Skip unknown country
+
+        type_data = country_type_pub_ids[country]
+        country_children = []
+        country_total = 0
+
+        for ref_type in sorted(type_data.keys()):
+            count = len(type_data[ref_type])
+            if count > 0:
+                country_children.append({
+                    "name": ref_type,
+                    "value": count
+                })
+                country_total += count
+
+        if country_children:
+            children.append({
+                "name": country,
+                "children": country_children
+            })
+            total_count += country_total
+
+    result = {
+        "name": "References",
+        "children": children,
+        "meta": {
+            "totalCountries": len(children),
+            "totalReferences": total_count,
+            "generatedAt": datetime.now().isoformat()
+        }
+    }
+
+    logger.info(f"Generated treemap with {len(children)} countries, {total_count} references")
+    return result
+
+
 def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Generate metadata about the references dataset."""
     year_records = [r for r in records if r["has_year"]]
@@ -1163,6 +1225,7 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
             ],
             "coauthor_network": "references/coauthor-network.json",
             "provenance_map": "references/provenance-map.json",
+            "treemap": "references/treemap.json",
             "metadata": "references/metadata.json"
         },
         "generated_at": datetime.now().isoformat()
@@ -1276,6 +1339,11 @@ def main():
     provenance_map = generate_provenance_map_data(records, coord_lookup, name_lookup)
     save_json(provenance_map, output_dir / "provenance-map.json")
 
+    # Generate treemap data (country → reference type)
+    logger.info("Generating treemap data...")
+    treemap_data = generate_treemap_data(records)
+    save_json(treemap_data, output_dir / "treemap.json")
+
     # Get countries with enough data
     country_counts = Counter(r["country"] for r in records)
     countries_with_files = [
@@ -1317,6 +1385,7 @@ def main():
     logger.info(f"  - Global publishers: publishers.json")
     logger.info(f"  - Co-author network: coauthor-network.json")
     logger.info(f"  - Provenance map: provenance-map.json")
+    logger.info(f"  - Treemap: treemap.json")
     logger.info(f"  - Country files: {len(countries_with_files)} × 3 (by-year + authors + publishers)")
     logger.info(f"  - Metadata: metadata.json")
 

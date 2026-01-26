@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
@@ -7,8 +6,8 @@
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { MapLocationPopover, MapLocationSheet } from '$lib/components/visualizations/map/index.js';
+	import { BaseMap, CircleLayer, type CircleDataPoint, calculateBounds } from '$lib/components/visualizations/maplibre/index.js';
 	import { ExternalLink, MapPin } from '@lucide/svelte';
-	import { scaleSqrt } from 'd3-scale';
 	import type { ProvenanceMapData } from './+page.js';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 
@@ -22,13 +21,6 @@
 
 	const mapData = $derived(pageData.mapData);
 	const error = $derived(pageData.error);
-
-	// Map state
-	let mapElement: HTMLDivElement | null = $state(null);
-	let map: L.Map | null = $state(null);
-	let L: typeof import('leaflet') | null = null;
-	let markersLayer: L.LayerGroup | null = null;
-	let mapLoading = $state(true);
 
 	// Popover and sheet state
 	let hoveredLocation = $state<MapLocation | null>(null);
@@ -63,197 +55,58 @@
 		};
 	}
 
-	// Tile layer configuration
-	const tileLayerOptions = {
-		light: {
-			url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-		},
-		dark: {
-			url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-		}
-	};
+	// Transform locations to CircleDataPoints for MapLibre
+	const circleData = $derived<CircleDataPoint[]>(
+		mapData?.locations.map((location) => ({
+			id: location.name,
+			lat: location.lat,
+			lng: location.lng,
+			value: location.count,
+			label: location.name,
+			o_id: location.o_id,
+			earliestYear: location.earliestYear,
+			latestYear: location.latestYear,
+			types: location.types,
+			publications: location.publications
+		})) ?? []
+	);
 
-	function isDarkActive(): boolean {
-		if (!browser) return false;
-		return document.documentElement.classList.contains('dark');
-	}
+	// Calculate bounds from locations
+	const bounds = $derived.by(() => {
+		if (!mapData?.locations?.length) return undefined;
+		const coords = mapData.locations.map(l => ({ lat: l.lat, lng: l.lng }));
+		return calculateBounds(coords) ?? undefined;
+	});
 
-	async function initMap() {
-		if (!browser || !mapElement || !mapData) return;
-
-		try {
-			L = await import('leaflet');
-			await import('leaflet/dist/leaflet.css');
-
-			// Clean up existing map
-			if (map) {
-				map.remove();
-				map = null;
+	// Handle hover from CircleLayer
+	function handleHover(item: CircleDataPoint | null, position: PopoverPosition | null) {
+		if (item && mapData) {
+			const location = mapData.locations.find(l => l.name === item.id);
+			if (location) {
+				hoveredLocation = toMapLocation(location);
+				popoverPosition = position;
 			}
-
-			// Create map
-			const isDark = isDarkActive();
-			const tileOptions = isDark ? tileLayerOptions.dark : tileLayerOptions.light;
-
-			map = L.map(mapElement, {
-				zoomControl: true,
-				scrollWheelZoom: true
-			});
-
-			// Add tile layer
-			L.tileLayer(tileOptions.url, {
-				attribution: tileOptions.attribution,
-				maxZoom: 18
-			}).addTo(map);
-
-			// Set initial view
-			if (mapData.bounds) {
-				const bounds = L.latLngBounds(
-					[mapData.bounds.south, mapData.bounds.west],
-					[mapData.bounds.north, mapData.bounds.east]
-				);
-				map.fitBounds(bounds, { padding: [50, 50] });
-			} else {
-				// Default to West Africa
-				map.setView([12, 0], 5);
-			}
-
-			// Create markers layer
-			markersLayer = L.layerGroup().addTo(map);
-
-			// Add markers
-			addMarkers();
-
-			mapLoading = false;
-		} catch (e) {
-			console.error('Failed to initialize map:', e);
-			mapLoading = false;
+		} else {
+			hoveredLocation = null;
+			popoverPosition = null;
 		}
 	}
 
-	function addMarkers() {
-		if (!L || !map || !markersLayer || !mapData || !mapElement) return;
-
-		markersLayer.clearLayers();
-
-		// Create size scale
-		const sizeScale = scaleSqrt()
-			.domain([1, mapData.meta.maxCount])
-			.range([8, 40]);
-
-		const isDark = isDarkActive();
-		const fillColor = isDark ? '#f97316' : '#ea580c';
-		const strokeColor = isDark ? '#fed7aa' : '#9a3412';
-
-		for (const location of mapData.locations) {
-			const radius = sizeScale(location.count);
-
-			const marker = L.circleMarker([location.lat, location.lng], {
-				radius: radius,
-				fillColor: fillColor,
-				color: strokeColor,
-				weight: 2,
-				opacity: 0.9,
-				fillOpacity: 0.6
-			});
-
-			// Hover handlers
-			marker.on('mouseover', (e: L.LeafletMouseEvent) => {
-				marker.setStyle({ fillOpacity: 0.85, weight: 3 });
-
-				// Calculate position relative to map container
-				if (mapElement) {
-					const containerPoint = map!.latLngToContainerPoint(e.latlng);
-					const mapRect = mapElement.getBoundingClientRect();
-
-					// Determine if popover should appear above or below
-					const placement = containerPoint.y < 150 ? 'bottom' : 'top';
-
-					popoverPosition = {
-						x: containerPoint.x,
-						y: placement === 'top' ? containerPoint.y - 10 : containerPoint.y + 10,
-						placement
-					};
-					hoveredLocation = toMapLocation(location);
-				}
-			});
-
-			marker.on('mouseout', () => {
-				marker.setStyle({ fillOpacity: 0.6, weight: 2 });
-				hoveredLocation = null;
-				popoverPosition = null;
-			});
-
-			// Click handler opens sheet
-			marker.on('click', () => {
+	// Handle click from CircleLayer
+	function handleClick(item: CircleDataPoint) {
+		if (mapData) {
+			const location = mapData.locations.find(l => l.name === item.id);
+			if (location) {
 				selectedLocation = toMapLocation(location);
 				hoveredLocation = null;
 				popoverPosition = null;
-			});
-
-			marker.addTo(markersLayer);
+			}
 		}
 	}
 
 	function handleSheetClose() {
 		selectedLocation = null;
 	}
-
-	// Watch for theme changes
-	$effect(() => {
-		if (browser && map && L && mapData) {
-			const isDark = isDarkActive();
-			const tileOptions = isDark ? tileLayerOptions.dark : tileLayerOptions.light;
-
-			// Update tile layer
-			map.eachLayer((layer: L.Layer) => {
-				if ((layer as L.TileLayer).setUrl) {
-					(layer as L.TileLayer).setUrl(tileOptions.url);
-				}
-			});
-
-			// Refresh markers with new colors
-			addMarkers();
-		}
-	});
-
-	onMount(() => {
-		if (mapData) {
-			initMap();
-		}
-
-		// Theme observer
-		const observer = new MutationObserver(() => {
-			if (map && L) {
-				const isDark = isDarkActive();
-				const tileOptions = isDark ? tileLayerOptions.dark : tileLayerOptions.light;
-
-				map.eachLayer((layer: L.Layer) => {
-					if ((layer as L.TileLayer).setUrl) {
-						(layer as L.TileLayer).setUrl(tileOptions.url);
-					}
-				});
-
-				addMarkers();
-			}
-		});
-
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ['class']
-		});
-
-		return () => {
-			observer.disconnect();
-			if (map) {
-				map.remove();
-			}
-		};
-	});
 </script>
 
 <svelte:head>
@@ -307,12 +160,18 @@
 				<Card.Description>{t('provenance.map_description')}</Card.Description>
 			</Card.Header>
 			<Card.Content class="p-0">
-				<div class="relative h-[600px]" bind:this={mapElement}>
-					{#if mapLoading}
-						<div class="absolute inset-0 flex items-center justify-center bg-muted/50">
-							<Skeleton class="h-full w-full" />
-						</div>
-					{/if}
+				<div class="relative h-[600px]">
+					<BaseMap height="600px" bounds={bounds} zoom={5}>
+						{#if circleData.length > 0}
+							<CircleLayer
+								data={circleData}
+								radiusRange={[8, 40]}
+								colorRange={['#f97316', '#ea580c']}
+								onHover={handleHover}
+								onClick={handleClick}
+							/>
+						{/if}
+					</BaseMap>
 
 					<!-- Hover popover -->
 					<MapLocationPopover
@@ -415,32 +274,3 @@
 	onClose={handleSheetClose}
 	itemLabel="publications"
 />
-
-<style>
-	:global(.leaflet-popup-content-wrapper) {
-		background: var(--card);
-		color: var(--foreground);
-		border-radius: 0.5rem;
-		box-shadow: 0 4px 12px color-mix(in oklch, var(--foreground) 18%, transparent);
-	}
-
-	:global(.leaflet-popup-tip) {
-		background: var(--card);
-	}
-
-	:global(.leaflet-control-zoom) {
-		border: 1px solid var(--border) !important;
-		border-radius: 8px !important;
-		overflow: hidden;
-	}
-
-	:global(.leaflet-control-zoom a) {
-		background: var(--card) !important;
-		color: var(--foreground) !important;
-		border-color: var(--border) !important;
-	}
-
-	:global(.leaflet-control-zoom a:hover) {
-		background: var(--accent) !important;
-	}
-</style>

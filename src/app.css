@@ -375,8 +375,8 @@
 	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
 }
 
-/* Leaflet map z-index isolation - prevents map from overlapping modals/sheets */
-.leaflet-container {
+/* MapLibre map z-index isolation - prevents map from overlapping modals/sheets */
+.maplibregl-map {
 	isolation: isolate;
 	z-index: 0;
 }

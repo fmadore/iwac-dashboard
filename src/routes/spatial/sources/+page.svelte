@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
+	import { BaseMap, CircleLayer, type CircleDataPoint } from '$lib/components/visualizations/maplibre/index.js';
 	import { base } from '$app/paths';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 
@@ -35,32 +36,30 @@
 	let data = $state<SourcesData | null>(null);
 	let loading = $state(true);
 	let error = $state<string | null>(null);
-	let map = $state<any>(null);
-	let mapContainer = $state<HTMLDivElement | null>(null);
-	let L = $state<any>(null);
 
 	// Popover state
 	let hoveredLocation = $state<MapLocation | null>(null);
 	let popoverPosition = $state<PopoverPosition | null>(null);
-
-	// Transform Source to MapLocation
-	function toMapLocation(source: Source): MapLocation {
-		return {
-			name: source.name,
-			lat: source.lat!,
-			lng: source.lng!,
-			count: source.count,
-			country: source.countries.length > 0 ? source.countries[0] : undefined,
-			externalUrl: source.id ? getSourceUrl(source.id) : undefined,
-			items: []
-		};
-	}
 
 	// Derived
 	const sourcesWithCoords = $derived(
 		data?.sources.filter((s) => s.lat !== undefined && s.lng !== undefined) ?? []
 	);
 	const metadata = $derived(data?.metadata);
+
+	// Transform sources to CircleDataPoints for MapLibre
+	const circleData = $derived<CircleDataPoint[]>(
+		sourcesWithCoords.map((source) => ({
+			id: source.id ?? source.name,
+			lat: source.lat!,
+			lng: source.lng!,
+			value: source.count,
+			label: source.name,
+			// Store additional data for popover
+			countries: source.countries,
+			byType: source.byType
+		}))
+	);
 
 	// Load data
 	onMount(async () => {
@@ -77,13 +76,6 @@
 		}
 	});
 
-	// Initialize map when data and container are ready
-	$effect(() => {
-		if (!loading && data && mapContainer && !map && typeof window !== 'undefined') {
-			initMap();
-		}
-	});
-
 	// Helper function to get the source URL based on current locale
 	function getSourceUrl(id: number | string): string {
 		const baseUrl =
@@ -93,96 +85,27 @@
 		return baseUrl + id;
 	}
 
-	// Helper function to resolve CSS variable color values for Leaflet
-	function getCssColor(varName: string): string {
-		if (typeof document === 'undefined') return '#000';
-		return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#000';
-	}
-
-	async function initMap() {
-		if (!mapContainer) return;
-
-		// Dynamically import Leaflet
-		const leaflet = await import('leaflet');
-		L = leaflet.default;
-
-		// Import Leaflet CSS
-		await import('leaflet/dist/leaflet.css');
-
-		// Define world bounds to prevent panning outside the world
-		const southWest = L.latLng(-85, -180);
-		const northEast = L.latLng(85, 180);
-		const worldBounds = L.latLngBounds(southWest, northEast);
-
-		// Create map centered on West Africa with bounds restrictions
-		map = L.map(mapContainer, {
-			maxBounds: worldBounds,
-			maxBoundsViscosity: 1.0,
-			minZoom: 2
-		}).setView([10.0, 0.0], 4);
-
-		// Add tile layer
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '© OpenStreetMap contributors',
-			noWrap: true
-		}).addTo(map);
-
-		// Add markers for sources with coordinates
-		addMarkers();
-	}
-
-	function addMarkers() {
-		if (!map || !L || !sourcesWithCoords.length) return;
-
-		// Calculate size range
-		const counts = sourcesWithCoords.map((s) => s.count);
-		const maxCount = Math.max(...counts);
-		const minCount = Math.min(...counts);
-
-		sourcesWithCoords.forEach((source) => {
-			if (source.lat === undefined || source.lng === undefined) return;
-
-			// Calculate marker size based on count
-			const sizeScale =
-				minCount === maxCount ? 1 : (source.count - minCount) / (maxCount - minCount);
-			const radius = 8 + sizeScale * 20;
-
-			// Create circle marker with resolved CSS colors
-			const primaryColor = getCssColor('--primary');
-			const primaryForeground = getCssColor('--primary-foreground');
-			const marker = L.circleMarker([source.lat, source.lng], {
-				radius,
-				fillColor: primaryColor,
-				color: primaryForeground,
-				weight: 2,
-				opacity: 0.9,
-				fillOpacity: 0.6
-			}).addTo(map);
-
-			// Hover handlers for popover
-			marker.on('mouseover', (e: any) => {
-				marker.setStyle({ fillOpacity: 0.85, weight: 3 });
-
-				// Calculate position relative to map container
-				if (mapContainer && map) {
-					const containerPoint = map.latLngToContainerPoint(e.latlng);
-					const placement = containerPoint.y < 150 ? 'bottom' : 'top';
-
-					popoverPosition = {
-						x: containerPoint.x,
-						y: placement === 'top' ? containerPoint.y - 10 : containerPoint.y + 10,
-						placement
-					};
-					hoveredLocation = toMapLocation(source);
-				}
-			});
-
-			marker.on('mouseout', () => {
-				marker.setStyle({ fillOpacity: 0.6, weight: 2 });
-				hoveredLocation = null;
-				popoverPosition = null;
-			});
-		});
+	// Handle hover from CircleLayer
+	function handleHover(item: CircleDataPoint | null, position: PopoverPosition | null) {
+		if (item) {
+			// Find the original source to get full data
+			const source = sourcesWithCoords.find((s) => (s.id ?? s.name) === item.id);
+			if (source) {
+				hoveredLocation = {
+					name: source.name,
+					lat: source.lat!,
+					lng: source.lng!,
+					count: source.count,
+					country: source.countries.length > 0 ? source.countries[0] : undefined,
+					externalUrl: source.id ? getSourceUrl(source.id) : undefined,
+					items: []
+				};
+				popoverPosition = position;
+			}
+		} else {
+			hoveredLocation = null;
+			popoverPosition = null;
+		}
 	}
 </script>
 
@@ -229,8 +152,16 @@
 				<h2 class="text-lg font-semibold">{t('sources.map_title')}</h2>
 				<p class="text-sm text-muted-foreground">{t('sources.map_description')}</p>
 			</div>
-			<div class="relative h-125 w-full" style="z-index: 0;">
-				<div bind:this={mapContainer} class="h-full w-full"></div>
+			<div class="relative" style="z-index: 0;">
+				<BaseMap height="500px" center={[0, 10]} zoom={4}>
+					{#if circleData.length > 0}
+						<CircleLayer
+							data={circleData}
+							radiusRange={[8, 28]}
+							onHover={handleHover}
+						/>
+					{/if}
+				</BaseMap>
 				<!-- Hover popover -->
 				<MapLocationPopover
 					location={hoveredLocation}
