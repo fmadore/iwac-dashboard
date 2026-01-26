@@ -73,3 +73,24 @@ export function createOpacityScale(
 ): (value: number) => number {
 	return scaleLinear().domain(domain).range(range);
 }
+
+/**
+ * Darken a hex color by a given amount (0-1)
+ */
+export function darkenColor(hex: string, amount: number): string {
+	// Remove # if present
+	const color = hex.replace('#', '');
+
+	// Parse RGB
+	const r = parseInt(color.substring(0, 2), 16);
+	const g = parseInt(color.substring(2, 4), 16);
+	const b = parseInt(color.substring(4, 6), 16);
+
+	// Darken
+	const newR = Math.round(r * (1 - amount));
+	const newG = Math.round(g * (1 - amount));
+	const newB = Math.round(b * (1 - amount));
+
+	// Convert back to hex
+	return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+}

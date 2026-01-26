@@ -2,7 +2,7 @@
 	import { getContext, onMount } from 'svelte';
 	import type { Map as MapLibreMap, MapLayerMouseEvent, GeoJSONSource } from 'maplibre-gl';
 	import { MAP_CONTEXT_KEY, type MapContext } from './BaseMap.svelte';
-	import { createRadiusScale, createColorScale } from './utils/scales.js';
+	import { createRadiusScale, createColorScale, darkenColor } from './utils/scales.js';
 	import { getThemeColors, createThemeObserver } from './utils/theme.js';
 	import { getPopoverPosition } from './utils/coordinates.js';
 	import { createPointFeature, toGeoJsonSource, type CircleDataPoint } from './types.js';
@@ -59,13 +59,18 @@
 			const isSelected = selectedId !== null && point.id === selectedId;
 			const isHovered = hoveredId !== null && point.id === hoveredId;
 
+			// Subtle stroke - slightly darker than fill for definition
+			const strokeColor = isSelected
+				? colors.primary
+				: darkenColor(color, 0.15);
+
 			return createPointFeature(point.id, point.lng, point.lat, {
 				...point,
 				radius: isSelected ? radius * 1.2 : radius,
 				color,
-				strokeColor: isSelected ? colors.primary : colors.background,
-				strokeWidth: isSelected || isHovered ? 3 : 2,
-				opacity: isSelected || isHovered ? 0.9 : 0.7
+				strokeColor,
+				strokeWidth: isSelected || isHovered ? 2 : 1,
+				opacity: isSelected || isHovered ? 0.9 : 0.8
 			});
 		});
 
