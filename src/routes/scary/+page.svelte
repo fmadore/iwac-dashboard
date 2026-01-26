@@ -201,13 +201,8 @@
 			globalData = await globalResponse.json();
 			metadata = await metadataResponse.json();
 
-			// Set default selections
-			if (availableCountries.length > 0 && !urlSync.hasFilter('country')) {
-				urlSync.setFilter('country', availableCountries[0]);
-			}
-			if (!urlSync.hasFilter('view')) {
-				urlSync.setFilter('view', 'race');
-			}
+			// Note: Don't auto-set country - let user choose
+			// Only set view mode if not already set (race is default anyway via $derived)
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Failed to load scary terms data';
 			console.error('Error loading scary terms data:', err);
@@ -571,6 +566,14 @@
 	function handleViewModeChange(value: string | undefined) {
 		pause();
 		urlSync.setFilter('view', value || 'race');
+		// Auto-select first country when switching to country view if none selected
+		if (value === 'country' && !selectedCountry && availableCountries.length > 0) {
+			urlSync.setFilter('country', availableCountries[0]);
+		}
+		// Clear country when switching away from country view
+		if (value !== 'country' && selectedCountry) {
+			urlSync.clearFilter('country');
+		}
 	}
 
 	function handleCountryChange(value: string | undefined) {

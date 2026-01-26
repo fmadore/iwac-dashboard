@@ -77,9 +77,11 @@
 	const selectedTerm = $derived(urlSync.filters.term);
 
 	// Get active matrix data based on filters
+	// Falls back to global if selected country has no data
 	const activeMatrixData = $derived.by((): CooccurrenceData | null => {
-		if (selectedCountry && countryMatrixData[selectedCountry]) {
-			return countryMatrixData[selectedCountry];
+		if (selectedCountry) {
+			// Only use country data if it exists, otherwise fall back to global
+			return countryMatrixData[selectedCountry] ?? globalMatrixData;
 		}
 		return globalMatrixData;
 	});
