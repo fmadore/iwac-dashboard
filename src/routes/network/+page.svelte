@@ -387,54 +387,13 @@
 		<Card.Root>
 			<Card.Content class="py-4">
 				<div class="space-y-4">
-					<!-- Search Bar - Full Width on Mobile -->
-					<div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-						<div class="w-full sm:w-72 lg:w-80">
-							<NetworkEntitySearch
-								nodes={filteredNodes}
-								selectedNode={selectedNode}
-								onSelect={handleSearchSelect}
-							/>
-						</div>
-						<!-- Focus button when node is selected -->
-						{#if selectedNode}
-							<Button
-								variant="outline"
-								size="sm"
-								onclick={handleFocusSelected}
-								class="shrink-0"
-							>
-								<Focus class="h-4 w-4 mr-2" />
-								{t('network.focus_selection')}
-							</Button>
-						{/if}
-						<!-- Zoom Controls - Move to right on larger screens -->
-						<div class="flex items-center gap-1 sm:ml-auto">
-							<Button
-								variant="outline"
-								size="icon"
-								onclick={handleZoomIn}
-								title={t('network.zoom_in')}
-							>
-								<ZoomIn class="h-4 w-4" />
-							</Button>
-							<Button
-								variant="outline"
-								size="icon"
-								onclick={handleZoomOut}
-								title={t('network.zoom_out')}
-							>
-								<ZoomOut class="h-4 w-4" />
-							</Button>
-							<Button
-								variant="outline"
-								size="icon"
-								onclick={handleResetCamera}
-								title={t('network.reset_view')}
-							>
-								<Maximize2 class="h-4 w-4" />
-							</Button>
-						</div>
+					<!-- Search Bar -->
+					<div class="w-full sm:w-72 lg:w-80">
+						<NetworkEntitySearch
+							nodes={filteredNodes}
+							selectedNode={selectedNode}
+							onSelect={handleSearchSelect}
+						/>
 					</div>
 
 					<!-- Filter Controls - Responsive Grid -->
@@ -533,27 +492,78 @@
 					onNodeClick={handleNodeClick}
 				/>
 
-				<!-- Focus Mode Indicator -->
+				<!-- Graph Controls Toolbar (top-right, next to fullscreen) -->
+				<div class="absolute top-2 right-[42px] z-40 flex items-center gap-1">
+					<!-- Zoom Controls -->
+					<Button
+						variant="outline"
+						size="icon"
+						class="h-[30px] w-[30px] bg-background/80 backdrop-blur-sm"
+						onclick={handleZoomIn}
+						title={t('network.zoom_in')}
+					>
+						<ZoomIn class="h-4 w-4" />
+					</Button>
+					<Button
+						variant="outline"
+						size="icon"
+						class="h-[30px] w-[30px] bg-background/80 backdrop-blur-sm"
+						onclick={handleZoomOut}
+						title={t('network.zoom_out')}
+					>
+						<ZoomOut class="h-4 w-4" />
+					</Button>
+					<Button
+						variant="outline"
+						size="icon"
+						class="h-[30px] w-[30px] bg-background/80 backdrop-blur-sm"
+						onclick={handleResetCamera}
+						title={t('network.reset_view')}
+					>
+						<Maximize2 class="h-4 w-4" />
+					</Button>
+
+					<!-- Separator when node is selected -->
+					{#if selectedNode}
+						<div class="mx-1 h-5 w-px bg-border"></div>
+
+						<!-- Focus/Exit Focus -->
+						<Button
+							variant={focusMode ? 'default' : 'outline'}
+							size="icon"
+							class="h-[30px] w-[30px] {focusMode ? '' : 'bg-background/80 backdrop-blur-sm'}"
+							onclick={focusMode ? handleExitFocusMode : handleFocusSelected}
+							title={focusMode ? t('network.exit_focus') : t('network.focus_selection')}
+						>
+							<Focus class="h-4 w-4" />
+						</Button>
+
+						<!-- Close Selection -->
+						<Button
+							variant="outline"
+							size="icon"
+							class="h-[30px] w-[30px] bg-background/80 backdrop-blur-sm"
+							onclick={handleClosePanel}
+							title={t('common.close')}
+						>
+							<X class="h-4 w-4" />
+						</Button>
+					{/if}
+				</div>
+
+				<!-- Focus Mode Indicator (bottom-right, subtle) -->
 				{#if focusMode && selectedNode}
-					<div class="absolute top-4 left-4 z-20">
-						<Badge variant="secondary" class="flex items-center gap-2 px-3 py-1.5">
-							<Focus class="h-3.5 w-3.5" />
-							<span>{t('network.focus_mode')}</span>
-							<button
-								class="ml-1 rounded-full p-0.5 hover:bg-muted"
-								onclick={handleExitFocusMode}
-								title={t('network.exit_focus')}
-							>
-								<X class="h-3 w-3" />
-							</button>
+					<div class="absolute bottom-4 right-4 z-10">
+						<Badge variant="secondary" class="text-xs">
+							<Focus class="h-3 w-3 mr-1" />
+							{t('network.focus_mode')}
 						</Badge>
 					</div>
 				{/if}
 
-				<!-- Legend - Hidden on mobile when entity panel is visible -->
+				<!-- Legend -->
 				<div
-					class="absolute left-4 z-10 flex flex-col gap-2 rounded-lg border bg-card/95 p-3 text-sm shadow-sm backdrop-blur-sm
-					       {selectedNode ? 'hidden sm:flex sm:bottom-4' : 'bottom-4'}"
+					class="absolute bottom-4 left-4 z-10 flex flex-col gap-2 rounded-lg border bg-card/95 p-3 text-sm shadow-sm backdrop-blur-sm"
 				>
 					<div class="font-medium">{t('network.legend')}</div>
 					{#each Object.entries(entityTypeConfig) as [type, config] (type)}
@@ -574,69 +584,58 @@
 					</div>
 				</div>
 
-				<!-- Selected Node Panel - Responsive positioning -->
-				{#if selectedNode}
-					{@const nodeColor = entityTypeConfig[selectedNode.type].color}
-					{@const NodeIcon = entityTypeConfig[selectedNode.type].icon}
-					<div
-						class="absolute z-20 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm
-						       bottom-4 left-4 right-4 p-3
-						       sm:bottom-auto sm:top-4 sm:right-4 sm:left-auto sm:w-64 sm:p-4
-						       lg:w-72"
-					>
-						<div class="flex items-start justify-between gap-2">
-							<div class="min-w-0 flex-1">
-								<div class="flex items-center gap-2">
-									<span style="color: {nodeColor}">
-										<NodeIcon class="h-4 w-4 shrink-0" />
-									</span>
-									<h3 class="truncate font-semibold text-sm sm:text-base">{selectedNode.label}</h3>
-								</div>
-								<Badge variant="outline" class="mt-1 text-xs">
-									{t(entityTypeConfig[selectedNode.type].label)}
-								</Badge>
-							</div>
-							<div class="flex items-center gap-1">
-								<Button
-									variant={focusMode ? 'default' : 'ghost'}
-									size="sm"
-									class="h-7 w-7 p-0"
-									onclick={focusMode ? handleExitFocusMode : handleFocusSelected}
-									title={focusMode ? t('network.exit_focus') : t('network.focus_selection')}
-								>
-									<Focus class="h-4 w-4" />
-								</Button>
-								<Button variant="ghost" size="sm" class="h-7 w-7 p-0" onclick={handleClosePanel}>
-									<X class="h-4 w-4" />
-								</Button>
-							</div>
-						</div>
-						<div class="mt-3 grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
-							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.count}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('network.articles')}</div>
-							</div>
-							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.degree}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('network.connections')}</div>
-							</div>
-							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.strength}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('network.strength')}</div>
-							</div>
-						</div>
-					</div>
-				{/if}
 			</div>
 		</Card.Root>
 
-		<!-- Instructions -->
+		<!-- Selected Node Panel / Instructions -->
 		<Card.Root>
 			<Card.Content class="py-4">
-				<p class="text-sm text-muted-foreground">
-					<strong>{t('network.tip')}:</strong>
-					{t('network.instructions')}
-				</p>
+				{#if selectedNode}
+					{@const nodeColor = entityTypeConfig[selectedNode.type].color}
+					{@const NodeIcon = entityTypeConfig[selectedNode.type].icon}
+					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+						<!-- Node Info -->
+						<div class="flex items-center gap-3 min-w-0">
+							<div
+								class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+								style="background-color: {nodeColor}20"
+							>
+								<span style="color: {nodeColor}">
+									<NodeIcon class="h-5 w-5" />
+								</span>
+							</div>
+							<div class="min-w-0">
+								<h3 class="truncate font-semibold">{selectedNode.label}</h3>
+								<Badge variant="outline" class="text-xs" style="border-color: {nodeColor}; color: {nodeColor}">
+									{t(entityTypeConfig[selectedNode.type].label)}
+								</Badge>
+							</div>
+						</div>
+
+						<!-- Stats -->
+						<div class="flex items-center gap-4 rounded-lg bg-muted px-4 py-2">
+							<div class="text-center">
+								<div class="text-lg font-bold">{selectedNode.count}</div>
+								<div class="text-xs text-muted-foreground">{t('network.articles')}</div>
+							</div>
+							<div class="h-8 w-px bg-border"></div>
+							<div class="text-center">
+								<div class="text-lg font-bold">{selectedNode.degree}</div>
+								<div class="text-xs text-muted-foreground">{t('network.connections')}</div>
+							</div>
+							<div class="h-8 w-px bg-border"></div>
+							<div class="text-center">
+								<div class="text-lg font-bold">{selectedNode.strength}</div>
+								<div class="text-xs text-muted-foreground">{t('network.strength')}</div>
+							</div>
+						</div>
+					</div>
+				{:else}
+					<p class="text-sm text-muted-foreground">
+						<strong>{t('network.tip')}:</strong>
+						{t('network.instructions')}
+					</p>
+				{/if}
 			</Card.Content>
 		</Card.Root>
 	{/if}

@@ -975,7 +975,7 @@
 	<!-- Fullscreen button -->
 	<button
 		onclick={toggleFullscreen}
-		class="absolute top-2 right-2 z-40 rounded-md border bg-background/80 p-1.5 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+		class="absolute top-2 right-2 z-40 flex h-[30px] w-[30px] items-center justify-center rounded-md border bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-accent-foreground"
 		title={isFullscreen ? t('network.exit_fullscreen') : t('network.fullscreen')}
 	>
 		{#if isFullscreen}
