@@ -4,6 +4,9 @@
 	import type { GlobalNetworkNode, GlobalNetworkEdge, NodeSizeBy, EntityType } from '$lib/types/network.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 
+	// Layout types
+	export type LayoutType = 'force' | 'circular' | 'radial';
+
 	interface EntityTypeConfig {
 		label: string;
 		color: string;
@@ -17,6 +20,7 @@
 		nodeSizeBy?: NodeSizeBy;
 		entityTypeColors?: Record<EntityType, EntityTypeConfig>;
 		focusMode?: boolean;
+		layoutType?: LayoutType;
 		onNodeClick?: (node: GlobalNetworkNode | null) => void;
 		onNodeHover?: (node: GlobalNetworkNode | null) => void;
 	}
@@ -28,6 +32,7 @@
 		nodeSizeBy = 'strength',
 		entityTypeColors,
 		focusMode = false,
+		layoutType = 'force',
 		onNodeClick,
 		onNodeHover
 	}: Props = $props();
@@ -46,8 +51,44 @@
 	// Track hovered node for visual feedback
 	let hoveredNodeId = $state<string | null>(null);
 
+	// Tooltip state
+	let tooltipVisible = $state(false);
+	let tooltipX = $state(0);
+	let tooltipY = $state(0);
+	let tooltipNode = $state<GlobalNetworkNode | null>(null);
+	let tooltipConnections = $state<Array<{ node: GlobalNetworkNode; weight: number }>>([]);
+
 	// Cache layout positions to reuse when nodes reappear
 	let positionCache: Map<string, { x: number; y: number }> = new Map();
+
+	// Get top connections for a node
+	function getTopConnections(nodeId: string, limit: number = 5): Array<{ node: GlobalNetworkNode; weight: number }> {
+		if (!nodeId) return [];
+
+		const nodeMap = new Map(nodes.map(n => [n.id, n]));
+		const connections: Array<{ node: GlobalNetworkNode; weight: number }> = [];
+
+		for (const edge of edges) {
+			let connectedId: string | null = null;
+			if (edge.source === nodeId) {
+				connectedId = edge.target;
+			} else if (edge.target === nodeId) {
+				connectedId = edge.source;
+			}
+
+			if (connectedId) {
+				const connectedNode = nodeMap.get(connectedId);
+				if (connectedNode) {
+					connections.push({ node: connectedNode, weight: edge.weight });
+				}
+			}
+		}
+
+		// Sort by weight descending and take top N
+		return connections
+			.sort((a, b) => b.weight - a.weight)
+			.slice(0, limit);
+	}
 
 	// Default colors per entity type
 	const defaultColors: Record<EntityType, string> = {
@@ -559,6 +600,12 @@
 				hoveredNodeId = node;
 				onNodeHover?.(nodeData);
 				container.style.cursor = 'pointer';
+
+				// Set tooltip data
+				tooltipNode = nodeData;
+				tooltipConnections = getTopConnections(node);
+				tooltipVisible = true;
+
 				// Refresh to apply hover effects
 				sigmaInstance.refresh({ skipIndexation: true });
 			});
@@ -567,8 +614,22 @@
 				hoveredNodeId = null;
 				onNodeHover?.(null);
 				container.style.cursor = 'default';
+
+				// Hide tooltip
+				tooltipVisible = false;
+				tooltipNode = null;
+
 				// Refresh to remove hover effects
 				sigmaInstance.refresh({ skipIndexation: true });
+			});
+
+			// Track mouse position for tooltip
+			container.addEventListener('mousemove', (e: MouseEvent) => {
+				if (tooltipVisible) {
+					const rect = container.getBoundingClientRect();
+					tooltipX = e.clientX - rect.left;
+					tooltipY = e.clientY - rect.top;
+				}
 			});
 
 			currentNodesKey = nodesKey;
@@ -745,6 +806,7 @@
 
 <div class="relative h-full w-full">
 	<div bind:this={containerElement} class="h-full w-full rounded-lg bg-card border"></div>
+
 	{#if isLayoutRunning}
 		<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-background/80">
 			<div class="text-center">
@@ -753,6 +815,70 @@
 					{t('network.computing_layout')} {layoutProgress}%
 				</p>
 			</div>
+		</div>
+	{/if}
+
+	<!-- Rich Tooltip -->
+	{#if tooltipVisible && tooltipNode}
+		{@const nodeColor = entityTypeColors?.[tooltipNode.type]?.color ?? getNodeColor(tooltipNode.type)}
+		<div
+			class="pointer-events-none absolute z-50 max-w-xs rounded-lg border bg-popover/95 p-3 text-popover-foreground shadow-lg backdrop-blur-sm transition-opacity"
+			style="left: {tooltipX + 15}px; top: {tooltipY - 10}px; transform: translateY(-100%);"
+		>
+			<!-- Header -->
+			<div class="mb-2 flex items-center gap-2">
+				<div
+					class="h-3 w-3 shrink-0 rounded-full"
+					style="background-color: {nodeColor}"
+				></div>
+				<span class="font-semibold leading-tight">{tooltipNode.label}</span>
+			</div>
+
+			<!-- Type Badge -->
+			<div
+				class="mb-2 inline-block rounded px-1.5 py-0.5 text-xs font-medium"
+				style="background-color: {nodeColor}20; color: {nodeColor}"
+			>
+				{entityTypeColors?.[tooltipNode.type]?.label ? t(entityTypeColors[tooltipNode.type].label) : tooltipNode.type}
+			</div>
+
+			<!-- Stats Grid -->
+			<div class="mb-2 grid grid-cols-3 gap-2 text-center text-xs">
+				<div class="rounded bg-muted px-1.5 py-1">
+					<div class="font-bold">{tooltipNode.count}</div>
+					<div class="text-muted-foreground">{t('network.articles')}</div>
+				</div>
+				<div class="rounded bg-muted px-1.5 py-1">
+					<div class="font-bold">{tooltipNode.degree}</div>
+					<div class="text-muted-foreground">{t('network.connections')}</div>
+				</div>
+				<div class="rounded bg-muted px-1.5 py-1">
+					<div class="font-bold">{tooltipNode.strength}</div>
+					<div class="text-muted-foreground">{t('network.strength')}</div>
+				</div>
+			</div>
+
+			<!-- Top Connections -->
+			{#if tooltipConnections.length > 0}
+				<div class="border-t pt-2">
+					<div class="mb-1 text-xs font-medium text-muted-foreground">{t('network.top_connections')}:</div>
+					<div class="space-y-0.5">
+						{#each tooltipConnections as conn (conn.node.id)}
+							{@const connColor = entityTypeColors?.[conn.node.type]?.color ?? getNodeColor(conn.node.type)}
+							<div class="flex items-center justify-between gap-2 text-xs">
+								<div class="flex items-center gap-1.5 min-w-0">
+									<div
+										class="h-2 w-2 shrink-0 rounded-full"
+										style="background-color: {connColor}"
+									></div>
+									<span class="truncate">{conn.node.label}</span>
+								</div>
+								<span class="shrink-0 text-muted-foreground">×{conn.weight}</span>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>

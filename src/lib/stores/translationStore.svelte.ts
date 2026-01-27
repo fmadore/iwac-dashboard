@@ -381,6 +381,7 @@ export const translations = {
 		'network.focus_mode': 'Focus Mode',
 		'network.exit_focus': 'Exit Focus',
 		'network.showing_all_connections': 'Showing all connections',
+		'network.top_connections': 'Top connections',
 		// Network Map
 		'network_map.title': 'Network Map',
 		'network_map.description': 'Explore location relationships on a geographic map. Edges show co-occurrence connections between places.',
@@ -959,6 +960,7 @@ export const translations = {
 		'network.focus_mode': 'Mode focus',
 		'network.exit_focus': 'Quitter le focus',
 		'network.showing_all_connections': 'Affichage de toutes les connexions',
+		'network.top_connections': 'Connexions principales',
 		// Network Map
 		'network_map.title': 'Carte réseau',
 		'network_map.description': 'Explorez les relations entre lieux sur une carte géographique. Les arêtes montrent les connexions de co-occurrence entre les lieux.',
