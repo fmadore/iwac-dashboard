@@ -8,7 +8,7 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph, NetworkEntitySearch } from '$lib/components/visualizations/network/index.js';
+	import { NetworkGraph, NetworkEntitySearch, type LayoutType } from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import type {
@@ -30,7 +30,10 @@
 		Focus,
 		X,
 		Hash,
-		FileText
+		FileText,
+		CircleDot,
+		Waypoints,
+		Network
 	} from '@lucide/svelte';
 
 	// URL sync
@@ -48,6 +51,7 @@
 	let selectedNode = $state<GlobalNetworkNode | null>(null);
 	let autoFocusOnSelect = $state(true); // Auto-zoom to selection
 	let focusMode = $state(false); // When true, show ego network only
+	let layoutType = $state<LayoutType>('force'); // Layout algorithm
 
 	// Entity type filters - all enabled by default
 	let enabledTypes = $state<Set<EntityType>>(
@@ -158,6 +162,18 @@
 		{ value: 'degree', label: 'network.size_by_degree' },
 		{ value: 'strength', label: 'network.size_by_strength' }
 	];
+
+	const layoutOptions: { value: LayoutType; label: string; icon: typeof Network }[] = [
+		{ value: 'force', label: 'network.layout_force', icon: Waypoints },
+		{ value: 'circular', label: 'network.layout_circular', icon: CircleDot },
+		{ value: 'radial', label: 'network.layout_radial', icon: Network }
+	];
+
+	function handleLayoutChange(value: string | undefined) {
+		if (value) {
+			layoutType = value as LayoutType;
+		}
+	}
 
 	async function loadData() {
 		try {
@@ -422,7 +438,7 @@
 					</div>
 
 					<!-- Filter Controls - Responsive Grid -->
-					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 						<!-- Node Size Selector -->
 						<div class="flex items-center gap-2">
 							<Label class="text-sm font-medium whitespace-nowrap">{t('network.node_size')}:</Label>
@@ -471,6 +487,32 @@
 								<span class="w-8 text-right text-sm text-muted-foreground">{minEdgeWeight}</span>
 							</div>
 						</div>
+
+						<!-- Layout Selector -->
+						<div class="flex items-center gap-2">
+							<Label class="text-sm font-medium whitespace-nowrap">{t('network.layout')}:</Label>
+							<Select.Root type="single" value={layoutType} onValueChange={handleLayoutChange}>
+								<Select.Trigger class="flex-1 min-w-0">
+									{@const currentLayout = layoutOptions.find((o) => o.value === layoutType)}
+									{#if currentLayout}
+										<span class="flex items-center gap-2">
+											<currentLayout.icon class="h-4 w-4" />
+											{t(currentLayout.label)}
+										</span>
+									{/if}
+								</Select.Trigger>
+								<Select.Content>
+									{#each layoutOptions as option (option.value)}
+										<Select.Item value={option.value}>
+											<span class="flex items-center gap-2">
+												<option.icon class="h-4 w-4" />
+												{t(option.label)}
+											</span>
+										</Select.Item>
+									{/each}
+								</Select.Content>
+							</Select.Root>
+						</div>
 					</div>
 				</div>
 			</Card.Content>
@@ -485,6 +527,7 @@
 					edges={displayEdges}
 					selectedNodeId={selectedNode?.id}
 					{nodeSizeBy}
+					{layoutType}
 					entityTypeColors={entityTypeConfig}
 					{focusMode}
 					onNodeClick={handleNodeClick}

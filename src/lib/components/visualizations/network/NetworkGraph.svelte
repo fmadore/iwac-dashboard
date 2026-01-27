@@ -58,6 +58,81 @@
 	let tooltipNode = $state<GlobalNetworkNode | null>(null);
 	let tooltipConnections = $state<Array<{ node: GlobalNetworkNode; weight: number }>>([]);
 
+	// Fullscreen state
+	let isFullscreen = $state(false);
+	let wrapperElement: HTMLDivElement | null = $state(null);
+
+	// Tooltip positioning with simple bounds checking
+	const TOOLTIP_OFFSET = 15;
+
+	// Compute tooltip style with bounds checking
+	const tooltipStyle = $derived.by(() => {
+		if (!containerElement) return '';
+
+		const rect = containerElement.getBoundingClientRect();
+		const containerWidth = rect.width;
+		const containerHeight = rect.height;
+
+		// Default: position to the right and above cursor
+		let left = tooltipX + TOOLTIP_OFFSET;
+		let top = tooltipY - TOOLTIP_OFFSET;
+		let transformY = '-100%'; // Above cursor
+
+		// If too close to right edge, flip to left of cursor
+		if (left + 280 > containerWidth) {
+			left = Math.max(10, tooltipX - TOOLTIP_OFFSET - 280);
+		}
+
+		// If too close to top, show below cursor instead
+		if (top < 220) {
+			top = tooltipY + TOOLTIP_OFFSET;
+			transformY = '0';
+		}
+
+		// Clamp to container bounds
+		left = Math.max(10, Math.min(left, containerWidth - 290));
+		top = Math.max(10, Math.min(top, containerHeight - 10));
+
+		return `left: ${left}px; top: ${top}px; transform: translateY(${transformY});`;
+	});
+
+	// Toggle fullscreen mode
+	function toggleFullscreen() {
+		if (!wrapperElement) return;
+
+		if (!document.fullscreenElement) {
+			wrapperElement.requestFullscreen().then(() => {
+				isFullscreen = true;
+			}).catch((err) => {
+				console.error('Failed to enter fullscreen:', err);
+			});
+		} else {
+			document.exitFullscreen().then(() => {
+				isFullscreen = false;
+			}).catch((err) => {
+				console.error('Failed to exit fullscreen:', err);
+			});
+		}
+	}
+
+	// Listen for fullscreen changes (e.g., user presses Escape)
+	$effect(() => {
+		if (!browser) return;
+
+		const handleFullscreenChange = () => {
+			isFullscreen = !!document.fullscreenElement;
+			// Refresh sigma when fullscreen changes to adjust to new dimensions
+			if (sigmaInstance) {
+				setTimeout(() => {
+					sigmaInstance?.refresh();
+				}, 100);
+			}
+		};
+
+		document.addEventListener('fullscreenchange', handleFullscreenChange);
+		return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+	});
+
 	// Cache layout positions to reuse when nodes reappear
 	let positionCache: Map<string, { x: number; y: number }> = new Map();
 
@@ -239,7 +314,6 @@
 			const Graph = graphologyModule.default || graphologyModule;
 			const forceAtlas2 = forceAtlas2Module;
 			const { createNodeBorderProgram } = nodeBorderModule;
-			// EdgeCurveProgram is a default export
 			const EdgeCurveProgram = edgeCurveModule.default;
 
 			const graph = new (Graph as any)();
@@ -303,12 +377,88 @@
 				}
 			}
 
-			// Run layout - skip entirely if we have cached positions for most nodes
+			// Run layout based on layout type
 			const nodeCount = nodes.length;
-			
+
 			layoutProgress = 10;
 
-			if (!skipLayout) {
+			// Apply layout based on type
+			if (layoutType === 'circular') {
+				// Circular layout - arrange nodes in a circle, grouped by entity type
+				const entityTypes = [...new Set(nodes.map(n => n.type))];
+				const nodesByType: Record<string, string[]> = {};
+
+				graph.forEachNode((nodeId: string, attrs: any) => {
+					const type = attrs.entityType || 'unknown';
+					if (!nodesByType[type]) nodesByType[type] = [];
+					nodesByType[type].push(nodeId);
+				});
+
+				// Arrange in a circle with type grouping
+				let totalIndex = 0;
+				const totalNodes = graph.order;
+				const radius = Math.max(50, totalNodes * 2);
+
+				for (const type of entityTypes) {
+					const typeNodes = nodesByType[type] || [];
+					for (const nodeId of typeNodes) {
+						const angle = (totalIndex / totalNodes) * 2 * Math.PI - Math.PI / 2;
+						graph.setNodeAttribute(nodeId, 'x', radius * Math.cos(angle));
+						graph.setNodeAttribute(nodeId, 'y', radius * Math.sin(angle));
+						totalIndex++;
+					}
+				}
+			} else if (layoutType === 'radial' && selectedNodeId && graph.hasNode(selectedNodeId)) {
+				// Radial layout - selected node in center, neighbors in concentric rings
+				const centerNode = selectedNodeId;
+				graph.setNodeAttribute(centerNode, 'x', 0);
+				graph.setNodeAttribute(centerNode, 'y', 0);
+
+				// Get neighbors at different distances
+				const visited = new Set<string>([centerNode]);
+				const rings: string[][] = [[]];
+
+				// First ring: direct neighbors
+				graph.forEachNeighbor(centerNode, (neighbor: string) => {
+					if (!visited.has(neighbor)) {
+						rings[0].push(neighbor);
+						visited.add(neighbor);
+					}
+				});
+
+				// Second ring: neighbors of neighbors
+				rings.push([]);
+				for (const nodeId of rings[0]) {
+					graph.forEachNeighbor(nodeId, (neighbor: string) => {
+						if (!visited.has(neighbor)) {
+							rings[1].push(neighbor);
+							visited.add(neighbor);
+						}
+					});
+				}
+
+				// Remaining nodes in outer ring
+				rings.push([]);
+				graph.forEachNode((nodeId: string) => {
+					if (!visited.has(nodeId)) {
+						rings[2].push(nodeId);
+					}
+				});
+
+				// Position nodes in each ring
+				const ringRadii = [60, 120, 180];
+				for (let ringIndex = 0; ringIndex < rings.length; ringIndex++) {
+					const ringNodes = rings[ringIndex];
+					const radius = ringRadii[ringIndex] || 180 + ringIndex * 60;
+
+					for (let i = 0; i < ringNodes.length; i++) {
+						const angle = (i / ringNodes.length) * 2 * Math.PI - Math.PI / 2;
+						graph.setNodeAttribute(ringNodes[i], 'x', radius * Math.cos(angle));
+						graph.setNodeAttribute(ringNodes[i], 'y', radius * Math.sin(angle));
+					}
+				}
+			} else if (!skipLayout) {
+				// Force-directed layout (default)
 				const baseIterations = Math.min(80, Math.max(30, 120 - nodeCount));
 				const iterations = hasMostlyCachedPositions ? Math.min(10, baseIterations) : baseIterations;
 
@@ -326,8 +476,10 @@
 						outboundAttractionDistribution: true
 					}
 				});
+			}
 
-				// Cache the computed positions
+			// Cache the computed positions (for force layout)
+			if (layoutType === 'force') {
 				graph.forEachNode((nodeId: string, attrs: { x: number; y: number }) => {
 					positionCache.set(nodeId, { x: attrs.x, y: attrs.y });
 				});
@@ -667,17 +819,26 @@
 		}
 	});
 
-	// Rebuild graph when nodes change significantly
+	// Track current layout type for change detection
+	let currentLayoutType = $state<LayoutType>('force');
+
+	// Rebuild graph when nodes change significantly or layout type changes
 	$effect(() => {
 		if (browser && containerElement && nodes.length > 0 && !isDestroyed) {
-			// Access nodesKey to track it
+			// Access nodesKey and layoutType to track them
 			const currentKey = nodesKey;
+			const newLayoutType = layoutType;
+
 			// Debounce rebuilds - longer delay to batch rapid filter changes
 			const timeout = setTimeout(() => {
-				if (!isDestroyed && currentKey !== currentNodesKey) {
-					initGraph();
-				} else if (!isDestroyed) {
-					updateGraphAttributes();
+				if (!isDestroyed) {
+					// Rebuild if nodes changed or layout type changed
+					if (currentKey !== currentNodesKey || newLayoutType !== currentLayoutType) {
+						currentLayoutType = newLayoutType;
+						initGraph();
+					} else {
+						updateGraphAttributes();
+					}
 				}
 			}, 400);
 			return () => clearTimeout(timeout);
@@ -804,8 +965,35 @@
 	}
 </script>
 
-<div class="relative h-full w-full">
+<div
+	bind:this={wrapperElement}
+	class="relative h-full w-full"
+	class:fullscreen-wrapper={isFullscreen}
+>
 	<div bind:this={containerElement} class="h-full w-full rounded-lg bg-card border"></div>
+
+	<!-- Fullscreen button -->
+	<button
+		onclick={toggleFullscreen}
+		class="absolute top-2 right-2 z-40 rounded-md border bg-background/80 p-1.5 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+		title={isFullscreen ? t('network.exit_fullscreen') : t('network.fullscreen')}
+	>
+		{#if isFullscreen}
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="4 14 10 14 10 20"></polyline>
+				<polyline points="20 10 14 10 14 4"></polyline>
+				<line x1="14" y1="10" x2="21" y2="3"></line>
+				<line x1="3" y1="21" x2="10" y2="14"></line>
+			</svg>
+		{:else}
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="15 3 21 3 21 9"></polyline>
+				<polyline points="9 21 3 21 3 15"></polyline>
+				<line x1="21" y1="3" x2="14" y2="10"></line>
+				<line x1="3" y1="21" x2="10" y2="14"></line>
+			</svg>
+		{/if}
+	</button>
 
 	{#if isLayoutRunning}
 		<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-background/80">
@@ -822,8 +1010,8 @@
 	{#if tooltipVisible && tooltipNode}
 		{@const nodeColor = entityTypeColors?.[tooltipNode.type]?.color ?? getNodeColor(tooltipNode.type)}
 		<div
-			class="pointer-events-none absolute z-50 max-w-xs rounded-lg border bg-popover/95 p-3 text-popover-foreground shadow-lg backdrop-blur-sm transition-opacity"
-			style="left: {tooltipX + 15}px; top: {tooltipY - 10}px; transform: translateY(-100%);"
+			class="pointer-events-none absolute z-50 max-w-xs rounded-lg border bg-popover/95 p-3 text-popover-foreground shadow-lg backdrop-blur-sm"
+			style={tooltipStyle}
 		>
 			<!-- Header -->
 			<div class="mb-2 flex items-center gap-2">
@@ -882,3 +1070,14 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.fullscreen-wrapper {
+		background-color: var(--background);
+		padding: 1rem;
+	}
+
+	.fullscreen-wrapper :global(.rounded-lg) {
+		border-radius: 0.5rem;
+	}
+</style>
