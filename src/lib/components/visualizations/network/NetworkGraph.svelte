@@ -43,6 +43,9 @@
 	let initRetryCount = 0;
 	const MAX_INIT_RETRIES = 3;
 
+	// Track hovered node for visual feedback
+	let hoveredNodeId = $state<string | null>(null);
+
 	// Cache layout positions to reuse when nodes reappear
 	let positionCache: Map<string, { x: number; y: number }> = new Map();
 
@@ -62,6 +65,25 @@
 		return entityTypeColors?.[type]?.color ?? defaultColors[type] ?? '#666666';
 	}
 
+	// Helper to lighten a color for border/halo effect
+	function lightenColor(hex: string, percent: number): string {
+		const num = parseInt(hex.replace('#', ''), 16);
+		const amt = Math.round(2.55 * percent);
+		const R = Math.min(255, (num >> 16) + amt);
+		const G = Math.min(255, ((num >> 8) & 0x00ff) + amt);
+		const B = Math.min(255, (num & 0x0000ff) + amt);
+		return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)}`;
+	}
+
+	// Helper to add alpha to hex color
+	function hexToRgba(hex: string, alpha: number): string {
+		const num = parseInt(hex.replace('#', ''), 16);
+		const R = (num >> 16) & 0xff;
+		const G = (num >> 8) & 0xff;
+		const B = num & 0xff;
+		return `rgba(${R}, ${G}, ${B}, ${alpha})`;
+	}
+
 	// Calculate node sizes based on selected metric
 	const nodeSizes = $derived.by(() => {
 		const sizes: Record<string, number> = {};
@@ -78,9 +100,9 @@
 			if (value > maxValue) maxValue = value;
 		}
 
-		// Normalize to 4-20 range (smaller for better performance)
+		// Normalize to 5-24 range (slightly larger for better visibility with borders)
 		for (const id in sizes) {
-			sizes[id] = 4 + (sizes[id] / maxValue) * 16;
+			sizes[id] = 5 + (sizes[id] / maxValue) * 19;
 		}
 
 		return sizes;
@@ -139,8 +161,17 @@
 			}
 			sigmaInstance = null;
 			graphInstance = null;
-			// Small delay to let WebGL context be released
-			await new Promise((resolve) => setTimeout(resolve, 50));
+			// Longer delay to ensure WebGL context is fully released
+			await new Promise((resolve) => setTimeout(resolve, 150));
+		}
+
+		// Additional check - ensure container can create WebGL context
+		const testCanvas = document.createElement('canvas');
+		const testCtx = testCanvas.getContext('webgl2') || testCanvas.getContext('webgl');
+		if (!testCtx) {
+			console.error('WebGL not supported');
+			isLayoutRunning = false;
+			return;
 		}
 
 		// Check again if destroyed during async operation
@@ -150,14 +181,25 @@
 		layoutProgress = 0;
 
 		try {
-			const [graphologyModule, { default: Sigma }, forceAtlas2Module] = await Promise.all([
+			const [
+				graphologyModule,
+				{ default: Sigma },
+				forceAtlas2Module,
+				nodeBorderModule,
+				edgeCurveModule
+			] = await Promise.all([
 				import('graphology'),
 				import('sigma'),
-				import('graphology-layout-forceatlas2')
+				import('graphology-layout-forceatlas2'),
+				import('@sigma/node-border'),
+				import('@sigma/edge-curve')
 			]);
 
 			const Graph = graphologyModule.default || graphologyModule;
 			const forceAtlas2 = forceAtlas2Module;
+			const { createNodeBorderProgram } = nodeBorderModule;
+			// EdgeCurveProgram is a default export
+			const EdgeCurveProgram = edgeCurveModule.default;
 
 			const graph = new (Graph as any)();
 			graphInstance = graph;
@@ -184,26 +226,34 @@
 			// Add nodes - use cached positions when available
 			for (const node of nodes) {
 				const cached = positionCache.get(node.id);
+				const nodeColor = getNodeColor(node.type);
 				graph.addNode(node.id, {
 					label: node.label,
 					x: cached?.x ?? Math.random() * 100,
 					y: cached?.y ?? Math.random() * 100,
 					size: nodeSizes[node.id] || 8,
-					color: getNodeColor(node.type),
+					color: nodeColor,
+					// Border attributes for @sigma/node-border
+					borderColor: lightenColor(nodeColor, 30),
+					borderSize: 0.15, // Relative to node size (15%)
 					// Don't use 'type' as Sigma reserves it for rendering programs
 					entityType: node.type,
 					nodeData: node
 				});
 			}
 
-			// Add edges with theme-aware colors
+			// Add edges with theme-aware colors and curvature
 			for (const edge of edges) {
 				if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
 					try {
 						graph.addEdge(edge.source, edge.target, {
 							weight: edge.weight,
-							size: 0.8 + edge.weightNorm * 3,
+							size: 1 + edge.weightNorm * 4, // Slightly thicker edges
 							color: edgeColor,
+							// Label shows co-occurrence count (only visible when forceLabel is true)
+							label: edge.weight > 1 ? `${edge.weight}` : '',
+							// Curvature for edge-curve program (0 = straight, 0.25 = gentle curve)
+							curvature: 0.2,
 							edgeData: edge
 						});
 					} catch {
@@ -260,68 +310,237 @@
 
 			// Theme-aware label and edge colors
 			const foregroundColor = isDark ? '#fafafa' : '#0a0a0a';
-			const defaultEdgeColor = isDark ? 'rgba(180, 180, 180, 0.3)' : 'rgba(60, 60, 60, 0.35)';
+			const defaultEdgeColor = isDark ? 'rgba(180, 180, 180, 0.35)' : 'rgba(80, 80, 80, 0.4)';
+
+			// Custom hover halo/glow effect function
+			const drawNodeHoverWithHalo = (
+				context: CanvasRenderingContext2D,
+				data: { x: number; y: number; size: number; label: string | null; color: string },
+				settings: any
+			) => {
+				const { x, y, size, label, color } = data;
+
+				// Parse the node color for the glow
+				const glowColor = color || (isDark ? '#fbbf24' : '#f59e0b');
+
+				// Draw multi-layer glow effect (outer to inner)
+				const glowLayers = [
+					{ radius: size + 12, opacity: 0.08 },
+					{ radius: size + 8, opacity: 0.12 },
+					{ radius: size + 5, opacity: 0.18 },
+					{ radius: size + 3, opacity: 0.25 }
+				];
+
+				for (const layer of glowLayers) {
+					context.beginPath();
+					context.arc(x, y, layer.radius, 0, Math.PI * 2);
+					context.fillStyle = hexToRgba(glowColor, layer.opacity);
+					context.fill();
+				}
+
+				// Draw the label with background for better readability
+				if (label) {
+					const fontSize = settings.labelSize || 13;
+					const fontWeight = settings.labelWeight || '600';
+					const fontFamily = settings.labelFont || 'system-ui, -apple-system, sans-serif';
+
+					context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+					const textWidth = context.measureText(label).width;
+
+					// Label position (above the node)
+					const labelX = x;
+					const labelY = y - size - 8;
+
+					// Draw label background
+					const padding = 4;
+					const bgColor = isDark ? 'rgba(10, 10, 10, 0.85)' : 'rgba(255, 255, 255, 0.9)';
+					context.fillStyle = bgColor;
+					context.beginPath();
+					context.roundRect(
+						labelX - textWidth / 2 - padding,
+						labelY - fontSize / 2 - padding,
+						textWidth + padding * 2,
+						fontSize + padding * 2,
+						4
+					);
+					context.fill();
+
+					// Draw label border
+					context.strokeStyle = hexToRgba(glowColor, 0.5);
+					context.lineWidth = 1;
+					context.stroke();
+
+					// Draw label text
+					context.fillStyle = foregroundColor;
+					context.textAlign = 'center';
+					context.textBaseline = 'middle';
+					context.fillText(label, labelX, labelY);
+				}
+			};
+
+			// Create custom node program with borders
+			const NodeBorderProgramCustom = createNodeBorderProgram({
+				borders: [
+					{ size: { value: 0.15, mode: 'relative' }, color: { attribute: 'borderColor' } },
+					{ size: { fill: true }, color: { attribute: 'color' } }
+				]
+			});
 
 			sigmaInstance = new Sigma(graph, container, {
-				renderEdgeLabels: false,
-				allowInvalidContainer: true,
+				// Use bordered nodes (node-image has rendering issues)
+				defaultNodeType: 'bordered',
+				nodeProgramClasses: {
+					bordered: NodeBorderProgramCustom
+				},
+				defaultEdgeType: 'curve',
+				edgeProgramClasses: {
+					curve: EdgeCurveProgram
+				},
+				renderEdgeLabels: true,
 				defaultEdgeColor: defaultEdgeColor,
+				// Edge label styling
+				edgeLabelFont: 'system-ui, -apple-system, sans-serif',
+				edgeLabelSize: 11,
+				edgeLabelWeight: '500',
+				edgeLabelColor: { color: foregroundColor },
+				// Custom hover effect with halo/glow
+				defaultDrawNodeHover: drawNodeHoverWithHalo,
+				// Label styling
 				labelColor: { color: foregroundColor },
-				labelFont: 'system-ui, sans-serif',
-				labelSize: 12,
+				labelFont: 'system-ui, -apple-system, sans-serif',
+				labelSize: 13,
 				labelWeight: '600',
-				labelRenderedSizeThreshold: 5,
+				labelRenderedSizeThreshold: 6,
+				// Enable z-index for proper layering
 				zIndex: true,
+				// Improved label rendering
+				labelDensity: 0.12,
+				labelGridCellSize: 100,
+				// Node reducer for selection and hover effects
 				nodeReducer: (node, data) => {
 					const isSelected = node === selectedNodeId;
+					const isHovered = node === hoveredNodeId;
 					const isNeighbor = selectedNodeId && graph.hasEdge(node, selectedNodeId);
+					const isHoveredNeighbor = hoveredNodeId && !selectedNodeId && graph.hasEdge(node, hoveredNodeId);
+
+					// Hover effect (when no selection)
+					if (isHovered && !selectedNodeId) {
+						return {
+							...data,
+							size: data.size * 1.3,
+							borderSize: 0.2,
+							borderColor: lightenColor(data.color, 50),
+							zIndex: 3,
+							forceLabel: true
+						};
+					}
+
+					// Highlight hovered neighbors
+					if (isHoveredNeighbor && !selectedNodeId) {
+						return {
+							...data,
+							size: data.size * 1.1,
+							zIndex: 2,
+							forceLabel: true
+						};
+					}
+
+					// Dim non-hovered nodes when hovering
+					if (hoveredNodeId && !selectedNodeId && !isHovered && !isHoveredNeighbor) {
+						return {
+							...data,
+							color: hexToRgba(data.color, 0.3),
+							borderColor: hexToRgba(data.borderColor || data.color, 0.2),
+							zIndex: 0
+						};
+					}
 
 					// In focus mode, the ego network is already filtered at page level
-					// Show all nodes at full visibility, highlight selected
 					if (focusMode && selectedNodeId) {
 						if (isSelected) {
-							return { ...data, size: data.size * 1.4, zIndex: 2, highlighted: true };
+							return {
+								...data,
+								size: data.size * 1.5,
+								borderSize: 0.25,
+								borderColor: isDark ? '#fbbf24' : '#f59e0b',
+								zIndex: 3,
+								forceLabel: true
+							};
 						}
-						// All other nodes (neighbors) at full visibility
-						return { ...data, zIndex: 1 };
+						return { ...data, zIndex: 1, forceLabel: true };
 					}
 
 					// Normal mode: dim non-connected nodes
 					if (selectedNodeId) {
 						if (isSelected) {
-							return { ...data, size: data.size * 1.4, zIndex: 2, highlighted: true };
+							return {
+								...data,
+								size: data.size * 1.5,
+								borderSize: 0.25,
+								borderColor: isDark ? '#fbbf24' : '#f59e0b',
+								zIndex: 3,
+								forceLabel: true
+							};
 						} else if (isNeighbor) {
-							return { ...data, zIndex: 1 };
+							return {
+								...data,
+								size: data.size * 1.05,
+								zIndex: 2,
+								forceLabel: true
+							};
 						} else {
-							return { ...data, color: data.color + '40', size: data.size * 0.8, zIndex: 0 };
+							return {
+								...data,
+								color: hexToRgba(data.color, 0.25),
+								borderColor: hexToRgba(data.borderColor || data.color, 0.15),
+								size: data.size * 0.75,
+								zIndex: 0
+							};
 						}
-					}
-					return data;
-				},
-				edgeReducer: (edge, data) => {
-					// In focus mode, show all edges prominently (ego network is pre-filtered)
-					if (focusMode && selectedNodeId) {
-						const [source, target] = graph.extremities(edge);
-						if (source === selectedNodeId || target === selectedNodeId) {
-							const highlightColor = isDark ? 'rgba(249, 115, 22, 0.8)' : 'rgba(234, 88, 12, 0.9)';
-							return { ...data, color: highlightColor, size: data.size * 2.5 };
-						}
-						// Other edges in focus mode (between neighbors) shown normally
-						return data;
 					}
 
-					// Normal mode: highlight edges to selected, hide others completely
+					return data;
+				},
+				// Edge reducer for selection and hover effects
+				edgeReducer: (edge, data) => {
+					const [source, target] = graph.extremities(edge);
+					const isConnectedToHovered = hoveredNodeId && !selectedNodeId &&
+						(source === hoveredNodeId || target === hoveredNodeId);
+					const isConnectedToSelected = selectedNodeId &&
+						(source === selectedNodeId || target === selectedNodeId);
+
+					// Hover effect on edges - show label
+					if (isConnectedToHovered) {
+						const hoverEdgeColor = isDark ? 'rgba(251, 191, 36, 0.7)' : 'rgba(245, 158, 11, 0.8)';
+						return { ...data, color: hoverEdgeColor, size: data.size * 2, forceLabel: true };
+					}
+
+					// Dim non-connected edges when hovering (no label)
+					if (hoveredNodeId && !selectedNodeId && !isConnectedToHovered) {
+						return { ...data, hidden: true };
+					}
+
+					// In focus mode, show all edges prominently with labels
+					if (focusMode && selectedNodeId) {
+						if (isConnectedToSelected) {
+							const highlightColor = isDark ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
+							return { ...data, color: highlightColor, size: data.size * 2.5, forceLabel: true };
+						}
+						return { ...data, forceLabel: true }; // Show labels for all edges in focus mode
+					}
+
+					// Normal mode: highlight edges to selected with labels, hide others
 					if (selectedNodeId) {
-						const [source, target] = graph.extremities(edge);
-						if (source === selectedNodeId || target === selectedNodeId) {
-							const highlightColor = isDark ? 'rgba(249, 115, 22, 0.8)' : 'rgba(234, 88, 12, 0.9)';
-							return { ...data, color: highlightColor, size: data.size * 2.5 };
+						if (isConnectedToSelected) {
+							const highlightColor = isDark ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
+							return { ...data, color: highlightColor, size: data.size * 2.5, forceLabel: true };
 						} else {
-							// Hide non-connected edges completely to avoid hatched appearance
 							return { ...data, hidden: true };
 						}
 					}
-					return data;
+
+					// Default: hide edge labels to avoid clutter
+					return { ...data, label: '' };
 				}
 			});
 
@@ -337,13 +556,19 @@
 
 			sigmaInstance.on('enterNode', ({ node }: { node: string }) => {
 				const nodeData = graph.getNodeAttribute(node, 'nodeData') as GlobalNetworkNode;
+				hoveredNodeId = node;
 				onNodeHover?.(nodeData);
 				container.style.cursor = 'pointer';
+				// Refresh to apply hover effects
+				sigmaInstance.refresh({ skipIndexation: true });
 			});
 
 			sigmaInstance.on('leaveNode', () => {
+				hoveredNodeId = null;
 				onNodeHover?.(null);
 				container.style.cursor = 'default';
+				// Refresh to remove hover effects
+				sigmaInstance.refresh({ skipIndexation: true });
 			});
 
 			currentNodesKey = nodesKey;
@@ -359,22 +584,25 @@
 	function updateGraphAttributes() {
 		if (!graphInstance || !sigmaInstance) return;
 
-		// Update node sizes and colors
+		// Update node sizes, colors, and border colors
 		for (const node of nodes) {
 			if (graphInstance.hasNode(node.id)) {
+				const nodeColor = getNodeColor(node.type);
 				graphInstance.setNodeAttribute(node.id, 'size', nodeSizes[node.id] || 8);
-				graphInstance.setNodeAttribute(node.id, 'color', getNodeColor(node.type));
+				graphInstance.setNodeAttribute(node.id, 'color', nodeColor);
+				graphInstance.setNodeAttribute(node.id, 'borderColor', lightenColor(nodeColor, 30));
 			}
 		}
 		sigmaInstance.refresh();
 	}
 
-	// Re-render when selection or focus mode changes
+	// Re-render when selection, focus mode, or hover changes
 	$effect(() => {
 		const _ = selectedNodeId;
 		const __ = focusMode;
+		const ___ = hoveredNodeId;
 		if (sigmaInstance && graphInstance) {
-			sigmaInstance.refresh();
+			sigmaInstance.refresh({ skipIndexation: true });
 		}
 	});
 
