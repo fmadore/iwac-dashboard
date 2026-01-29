@@ -5,188 +5,133 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-	/* Radius - slightly larger for softer feel */
-	--radius: 0.75rem;
+	--radius: 0.625rem;
 
-	/* ===========================================
-	   LIGHT THEME - West African Inspired Palette
-	   Warm earth tones, indigo accents, natural feel
-	   =========================================== */
+	/* Light theme */
+	--background: oklch(0.97 0.008 250);
+	--foreground: oklch(0.2 0.02 250);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.2 0.02 250);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.2 0.02 250);
+	--primary: oklch(0.52 0.14 250);
+	--primary-foreground: oklch(0.98 0.005 250);
+	--secondary: oklch(0.94 0.01 250);
+	--secondary-foreground: oklch(0.25 0.02 250);
+	--muted: oklch(0.92 0.008 250);
+	--muted-foreground: oklch(0.5 0.02 250);
+	--accent: oklch(0.6 0.16 30);
+	--accent-foreground: oklch(0.98 0.01 30);
+	--destructive: oklch(0.55 0.22 25);
+	--border: oklch(0.88 0.01 250);
+	--input: oklch(0.92 0.008 250);
+	--ring: oklch(0.52 0.14 250);
 
-	/* Background: Warm parchment/sand */
-	--background: oklch(0.94 0.018 75);
-	/* Foreground: Deep warm brown (not cold grey) */
-	--foreground: oklch(0.22 0.03 55);
-	/* Card: Warm white - stands out from background */
-	--card: oklch(0.99 0.006 85);
-	--card-foreground: oklch(0.22 0.03 55);
-	/* Popover: Same as card */
-	--popover: oklch(0.99 0.006 85);
-	--popover-foreground: oklch(0.22 0.03 55);
-	/* Primary: Rich terracotta - deeper and more intentional */
-	--primary: oklch(0.55 0.175 40);
-	--primary-foreground: oklch(0.98 0.01 85);
-	/* Secondary: Warm sand - distinct layer */
-	--secondary: oklch(0.91 0.025 75);
-	--secondary-foreground: oklch(0.25 0.03 55);
-	/* Muted: Darker sand for subtle elements */
-	--muted: oklch(0.87 0.022 70);
-	--muted-foreground: oklch(0.45 0.03 60);
-	/* Accent: Deep indigo - inspired by Adire cloth */
-	--accent: oklch(0.45 0.12 265);
-	--accent-foreground: oklch(0.98 0.01 85);
-	/* Destructive: Warm red, not cold */
-	--destructive: oklch(0.5 0.22 25);
-	/* Border: Warm taupe */
-	--border: oklch(0.82 0.025 70);
-	/* Input: Subtle warm fill */
-	--input: oklch(0.89 0.02 75);
-	/* Ring: Primary for focus */
-	--ring: oklch(0.55 0.175 40);
+	/* Chart colors - diverse, vibrant, distinguishable */
+	--chart-1: oklch(0.52 0.14 250);   /* Primary blue */
+	--chart-2: oklch(0.6 0.16 30);     /* Accent orange */
+	--chart-3: oklch(0.55 0.14 150);   /* Teal */
+	--chart-4: oklch(0.58 0.16 330);   /* Rose */
+	--chart-5: oklch(0.62 0.15 95);    /* Yellow-green */
+	--chart-6: oklch(0.5 0.14 290);    /* Purple */
+	--chart-7: oklch(0.65 0.14 200);   /* Cyan */
+	--chart-8: oklch(0.55 0.18 15);    /* Red-orange */
+	--chart-9: oklch(0.58 0.12 175);   /* Sea green */
+	--chart-10: oklch(0.52 0.12 310);  /* Magenta */
+	--chart-11: oklch(0.68 0.12 85);   /* Gold */
+	--chart-12: oklch(0.48 0.1 230);   /* Steel blue */
+	--chart-13: oklch(0.6 0.14 130);   /* Olive */
+	--chart-14: oklch(0.54 0.14 350);  /* Crimson */
+	--chart-15: oklch(0.58 0.1 265);   /* Slate purple */
+	--chart-16: oklch(0.55 0.12 55);   /* Amber */
 
-	/* ===========================================
-	   CHART COLORS - 16 West African Inspired Hues
-	   Bogolan, Kente, Adire, Sahel landscapes
-	   =========================================== */
+	/* Country colors */
+	--country-color-default: oklch(0.52 0.14 250);
+	--country-color-cote-divoire: oklch(0.6 0.16 30);
+	--country-color-burkina-faso: oklch(0.55 0.18 15);
+	--country-color-benin: oklch(0.55 0.14 150);
+	--country-color-togo: oklch(0.5 0.14 290);
+	--country-color-niger: oklch(0.68 0.12 85);
+	--country-color-nigeria: oklch(0.58 0.12 175);
 
-	/* Earths & Terracottas */
-	--chart-1: oklch(0.55 0.175 40);   /* Terracotta (primary) */
-	--chart-2: oklch(0.48 0.12 45);    /* Burnt umber */
-	--chart-3: oklch(0.62 0.14 55);    /* Rust orange */
-	--chart-4: oklch(0.72 0.12 70);    /* Sand gold */
-
-	/* Indigos & Blues (Adire inspiration) */
-	--chart-5: oklch(0.42 0.14 265);   /* Deep indigo */
-	--chart-6: oklch(0.52 0.12 255);   /* Medium indigo */
-	--chart-7: oklch(0.58 0.1 240);    /* Faded indigo */
-	--chart-8: oklch(0.48 0.1 230);    /* Slate blue */
-
-	/* Greens (Sahel & Forest) */
-	--chart-9: oklch(0.5 0.12 155);    /* Forest green */
-	--chart-10: oklch(0.58 0.1 145);   /* Sage green */
-	--chart-11: oklch(0.65 0.14 130);  /* Olive gold */
-	--chart-12: oklch(0.45 0.08 165);  /* Deep teal */
-
-	/* Accents (Kente & Natural) */
-	--chart-13: oklch(0.7 0.15 85);    /* Kente gold */
-	--chart-14: oklch(0.58 0.16 15);   /* Coral red */
-	--chart-15: oklch(0.52 0.1 310);   /* Muted purple */
-	--chart-16: oklch(0.4 0.06 50);    /* Dark brown */
-
-	/* Country colors - earthy, distinct */
-	--country-color-default: oklch(0.55 0.175 40);
-	--country-color-cote-divoire: oklch(0.6 0.15 55);
-	--country-color-burkina-faso: oklch(0.52 0.14 35);
-	--country-color-benin: oklch(0.5 0.12 155);
-	--country-color-togo: oklch(0.52 0.12 255);
-	--country-color-niger: oklch(0.7 0.12 85);
-	--country-color-nigeria: oklch(0.48 0.1 145);
-
-	/* Polarity colors - warm-toned */
+	/* Polarity colors */
 	--polarity-positive: oklch(0.55 0.14 150);
-	--polarity-negative: oklch(0.52 0.18 25);
-	--polarity-neutral: oklch(0.5 0.12 255);
+	--polarity-negative: oklch(0.55 0.18 25);
+	--polarity-neutral: oklch(0.52 0.12 250);
 
-	/* Sidebar: Deep warm charcoal with brown undertone */
-	--sidebar: oklch(0.2 0.025 50);
-	--sidebar-foreground: oklch(0.94 0.015 75);
-	--sidebar-primary: oklch(0.62 0.16 45);
-	--sidebar-primary-foreground: oklch(0.98 0.01 85);
-	--sidebar-accent: oklch(0.26 0.02 55);
-	--sidebar-accent-foreground: oklch(0.94 0.015 75);
-	--sidebar-border: oklch(0.32 0.025 55);
-	--sidebar-ring: oklch(0.62 0.16 45);
+	/* Sidebar */
+	--sidebar: oklch(0.18 0.02 250);
+	--sidebar-foreground: oklch(0.95 0.008 250);
+	--sidebar-primary: oklch(0.6 0.14 250);
+	--sidebar-primary-foreground: oklch(0.98 0.005 250);
+	--sidebar-accent: oklch(0.24 0.015 250);
+	--sidebar-accent-foreground: oklch(0.95 0.008 250);
+	--sidebar-border: oklch(0.3 0.015 250);
+	--sidebar-ring: oklch(0.6 0.14 250);
 }
 
 .dark {
-	/* ===========================================
-	   DARK THEME - Warm charcoal with earthy tones
-	   Not cold blue-grey, but warm deep browns
-	   =========================================== */
+	/* Dark theme */
+	--background: oklch(0.13 0.015 250);
+	--foreground: oklch(0.95 0.008 250);
+	--card: oklch(0.17 0.015 250);
+	--card-foreground: oklch(0.95 0.008 250);
+	--popover: oklch(0.17 0.015 250);
+	--popover-foreground: oklch(0.95 0.008 250);
+	--primary: oklch(0.62 0.14 250);
+	--primary-foreground: oklch(0.13 0.015 250);
+	--secondary: oklch(0.22 0.012 250);
+	--secondary-foreground: oklch(0.92 0.008 250);
+	--muted: oklch(0.25 0.01 250);
+	--muted-foreground: oklch(0.65 0.015 250);
+	--accent: oklch(0.65 0.15 30);
+	--accent-foreground: oklch(0.13 0.015 250);
+	--destructive: oklch(0.6 0.2 25);
+	--border: oklch(0.28 0.012 250);
+	--input: oklch(0.22 0.01 250);
+	--ring: oklch(0.62 0.14 250);
 
-	/* Background: Deep warm charcoal */
-	--background: oklch(0.14 0.015 50);
-	/* Foreground: Warm cream text */
-	--foreground: oklch(0.92 0.015 75);
-	/* Card: Slightly lifted warm surface */
-	--card: oklch(0.18 0.018 50);
-	--card-foreground: oklch(0.92 0.015 75);
-	/* Popover: Same as card */
-	--popover: oklch(0.18 0.018 50);
-	--popover-foreground: oklch(0.92 0.015 75);
-	/* Primary: Brighter terracotta for dark mode visibility */
-	--primary: oklch(0.62 0.165 45);
-	--primary-foreground: oklch(0.15 0.02 50);
-	/* Secondary: Subtle raised surface */
-	--secondary: oklch(0.22 0.015 55);
-	--secondary-foreground: oklch(0.9 0.015 75);
-	/* Muted: For disabled/subtle content */
-	--muted: oklch(0.26 0.012 55);
-	--muted-foreground: oklch(0.65 0.02 65);
-	/* Accent: Softer indigo for dark mode */
-	--accent: oklch(0.52 0.11 260);
-	--accent-foreground: oklch(0.95 0.01 75);
-	/* Destructive: Visible warm red */
-	--destructive: oklch(0.55 0.2 25);
-	/* Border: Warm subtle edge */
-	--border: oklch(0.28 0.018 55);
-	/* Input: Slightly visible fill */
-	--input: oklch(0.24 0.015 55);
-	/* Ring: Primary for focus */
-	--ring: oklch(0.62 0.165 45);
+	/* Chart colors - brighter for dark backgrounds */
+	--chart-1: oklch(0.62 0.14 250);
+	--chart-2: oklch(0.65 0.15 30);
+	--chart-3: oklch(0.6 0.13 150);
+	--chart-4: oklch(0.63 0.15 330);
+	--chart-5: oklch(0.68 0.14 95);
+	--chart-6: oklch(0.58 0.14 290);
+	--chart-7: oklch(0.7 0.13 200);
+	--chart-8: oklch(0.6 0.17 15);
+	--chart-9: oklch(0.63 0.12 175);
+	--chart-10: oklch(0.58 0.12 310);
+	--chart-11: oklch(0.72 0.12 85);
+	--chart-12: oklch(0.55 0.1 230);
+	--chart-13: oklch(0.65 0.13 130);
+	--chart-14: oklch(0.6 0.14 350);
+	--chart-15: oklch(0.63 0.1 265);
+	--chart-16: oklch(0.6 0.12 55);
 
-	/* ===========================================
-	   CHART COLORS - Brightened for dark backgrounds
-	   Same palette family, higher lightness
-	   =========================================== */
+	/* Country colors */
+	--country-color-default: oklch(0.62 0.14 250);
+	--country-color-cote-divoire: oklch(0.65 0.15 30);
+	--country-color-burkina-faso: oklch(0.6 0.17 15);
+	--country-color-benin: oklch(0.6 0.13 150);
+	--country-color-togo: oklch(0.58 0.14 290);
+	--country-color-niger: oklch(0.72 0.12 85);
+	--country-color-nigeria: oklch(0.63 0.12 175);
 
-	/* Earths & Terracottas */
-	--chart-1: oklch(0.62 0.165 45);   /* Terracotta */
-	--chart-2: oklch(0.55 0.12 50);    /* Burnt umber */
-	--chart-3: oklch(0.68 0.14 55);    /* Rust orange */
-	--chart-4: oklch(0.76 0.11 75);    /* Sand gold */
+	/* Polarity colors */
+	--polarity-positive: oklch(0.6 0.13 150);
+	--polarity-negative: oklch(0.6 0.17 25);
+	--polarity-neutral: oklch(0.58 0.12 250);
 
-	/* Indigos & Blues */
-	--chart-5: oklch(0.55 0.13 265);   /* Deep indigo */
-	--chart-6: oklch(0.62 0.11 255);   /* Medium indigo */
-	--chart-7: oklch(0.66 0.09 240);   /* Faded indigo */
-	--chart-8: oklch(0.56 0.1 230);    /* Slate blue */
-
-	/* Greens */
-	--chart-9: oklch(0.58 0.11 155);   /* Forest green */
-	--chart-10: oklch(0.65 0.1 145);   /* Sage green */
-	--chart-11: oklch(0.7 0.13 130);   /* Olive gold */
-	--chart-12: oklch(0.52 0.08 165);  /* Deep teal */
-
-	/* Accents */
-	--chart-13: oklch(0.75 0.14 85);   /* Kente gold */
-	--chart-14: oklch(0.64 0.15 18);   /* Coral red */
-	--chart-15: oklch(0.6 0.1 310);    /* Muted purple */
-	--chart-16: oklch(0.5 0.06 55);    /* Dark brown */
-
-	/* Country colors - brightened for visibility */
-	--country-color-default: oklch(0.62 0.165 45);
-	--country-color-cote-divoire: oklch(0.68 0.14 55);
-	--country-color-burkina-faso: oklch(0.58 0.14 40);
-	--country-color-benin: oklch(0.58 0.11 155);
-	--country-color-togo: oklch(0.6 0.12 255);
-	--country-color-niger: oklch(0.76 0.11 85);
-	--country-color-nigeria: oklch(0.55 0.1 150);
-
-	/* Polarity colors - visible on dark */
-	--polarity-positive: oklch(0.6 0.14 150);
-	--polarity-negative: oklch(0.58 0.18 25);
-	--polarity-neutral: oklch(0.58 0.11 255);
-
-	/* Sidebar: Deepest layer */
-	--sidebar: oklch(0.12 0.012 50);
-	--sidebar-foreground: oklch(0.9 0.015 75);
-	--sidebar-primary: oklch(0.65 0.16 45);
-	--sidebar-primary-foreground: oklch(0.15 0.02 50);
-	--sidebar-accent: oklch(0.18 0.015 55);
-	--sidebar-accent-foreground: oklch(0.9 0.015 75);
-	--sidebar-border: oklch(0.25 0.018 55);
-	--sidebar-ring: oklch(0.65 0.16 45);
+	/* Sidebar */
+	--sidebar: oklch(0.11 0.012 250);
+	--sidebar-foreground: oklch(0.93 0.008 250);
+	--sidebar-primary: oklch(0.65 0.14 250);
+	--sidebar-primary-foreground: oklch(0.13 0.015 250);
+	--sidebar-accent: oklch(0.18 0.012 250);
+	--sidebar-accent-foreground: oklch(0.93 0.008 250);
+	--sidebar-border: oklch(0.25 0.012 250);
+	--sidebar-ring: oklch(0.65 0.14 250);
 }
 
 @theme inline {
