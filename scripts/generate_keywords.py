@@ -18,10 +18,9 @@ The data structure supports:
 
 from __future__ import annotations
 import argparse
-import json
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Set
 from collections import defaultdict, Counter
 from datetime import datetime
 
@@ -33,65 +32,17 @@ except ImportError:
     print("pip install -r scripts/requirements.txt")
     raise
 
+# Import shared utilities
+from iwac_utils import (
+    DATASET_ID,
+    parse_pipe_separated,
+    extract_year,
+    normalize_country,
+    save_json,
+)
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-DATASET_ID = "fmadore/islam-west-africa-collection"
-
-
-def parse_pipe_separated(value: Any) -> List[str]:
-    """Parse pipe-separated values into a list of trimmed strings."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return []
-
-    if isinstance(value, (list, tuple)):
-        return [str(v).strip() for v in value if str(v).strip()]
-
-    value_str = str(value).strip()
-    if not value_str:
-        return []
-
-    # Split by pipe and clean
-    return [v.strip() for v in value_str.split('|') if v.strip()]
-
-
-def extract_year(value: Any) -> Optional[int]:
-    """Extract year from various date formats."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return None
-
-    try:
-        if isinstance(value, (pd.Timestamp, datetime)):
-            return value.year
-
-        if isinstance(value, str):
-            value = value.strip()
-            if not value:
-                return None
-            dt = pd.to_datetime(value, errors='coerce')
-            if pd.notna(dt):
-                return dt.year
-
-        dt = pd.to_datetime(value, errors='coerce')
-        if pd.notna(dt):
-            return dt.year
-
-    except Exception:
-        pass
-
-    return None
-
-
-def normalize_country(value: Any) -> str:
-    """Normalize country value to a standard string."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return "Unknown"
-
-    country_str = str(value).strip()
-    if not country_str:
-        return "Unknown"
-
-    return country_str
 
 
 def load_articles_data() -> pd.DataFrame:
@@ -141,7 +92,7 @@ def process_keywords_data(df: pd.DataFrame, field: str) -> Dict[str, Any]:
         if not keywords:
             continue
 
-        country = normalize_country(row.get('country'))
+        country = normalize_country(row.get('country'), return_list=False)
         newspaper = str(row.get('newspaper', '')).strip() or "Unknown"
 
         countries_set.add(country)
@@ -257,7 +208,7 @@ def generate_metadata(df: pd.DataFrame, subjects_data: Dict, spatial_data: Dict)
 
     # Get unique countries and newspapers
     countries = sorted(set(
-        normalize_country(row.get('country'))
+        normalize_country(row.get('country'), return_list=False)
         for _, row in df.iterrows()
     ))
 
@@ -293,17 +244,7 @@ def generate_metadata(df: pd.DataFrame, subjects_data: Dict, spatial_data: Dict)
     }
 
 
-def save_json(data: Any, path: Path) -> None:
-    """Save data to JSON file with pretty formatting."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-    try:
-        size_kb = path.stat().st_size / 1024
-        logger.info(f"Wrote {path} ({size_kb:.1f} KB)")
-    except Exception:
-        logger.info(f"Wrote {path}")
+## save_json is imported from iwac_utils
 
 
 def main():

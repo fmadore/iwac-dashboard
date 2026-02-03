@@ -16,7 +16,7 @@ Process:
 4. Generate location data with coordinates and article counts
 5. Generate country-filtered and year-filtered data for interactive filtering
 
-Output: 
+Output:
 - static/data/world-map.json (main data with filtering support)
 """
 
@@ -24,11 +24,9 @@ import json
 import argparse
 import logging
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone
 from collections import defaultdict
-import re
-import unicodedata
 
 try:
     from datasets import load_dataset
@@ -47,87 +45,19 @@ except ImportError:
     print("Install with: pip install shapely")
     HAS_SHAPELY = False
 
+# Import shared utilities
+from iwac_utils import (
+    DATASET_ID,
+    parse_coordinates,
+    normalize_location_name,
+    extract_year,
+    find_column,
+    save_json,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-
-DATASET_ID = "fmadore/islam-west-africa-collection"
-
-
-def parse_coordinates(coord_str: str) -> Optional[Tuple[float, float]]:
-    """
-    Parse coordinates from the Coordonnées field.
-    Expected formats: "lat, lng" or "lat,lng" or similar
-    Returns (lat, lng) tuple or None if parsing fails.
-    """
-    if not coord_str or pd.isna(coord_str):
-        return None
-    
-    coord_str = str(coord_str).strip()
-    if not coord_str:
-        return None
-    
-    # Try common formats
-    # Format: "lat, lng" or "lat,lng"
-    match = re.match(r'^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$', coord_str)
-    if match:
-        try:
-            lat = float(match.group(1))
-            lng = float(match.group(2))
-            # Validate ranges
-            if -90 <= lat <= 90 and -180 <= lng <= 180:
-                return (lat, lng)
-        except ValueError:
-            pass
-    
-    return None
-
-
-def normalize_location_name(name: str) -> str:
-    """Normalize a location name for matching."""
-    if not name:
-        return ""
-    # Lowercase, strip whitespace, normalize unicode
-    name = unicodedata.normalize('NFC', str(name).strip().lower())
-    return name
-
-
-def parse_year_from_date(date_str: str) -> Optional[int]:
-    """
-    Parse year from a date string in YYYY-MM-DD or similar format.
-    Returns the year as integer or None if parsing fails.
-    """
-    if not date_str or pd.isna(date_str):
-        return None
-    
-    date_str = str(date_str).strip()
-    if not date_str:
-        return None
-    
-    # Try YYYY-MM-DD format
-    match = re.match(r'^(\d{4})-\d{2}-\d{2}', date_str)
-    if match:
-        try:
-            year = int(match.group(1))
-            # Sanity check: reasonable year range for news articles
-            if 1900 <= year <= 2100:
-                return year
-        except ValueError:
-            pass
-    
-    # Try just YYYY
-    match = re.match(r'^(\d{4})$', date_str)
-    if match:
-        try:
-            year = int(match.group(1))
-            if 1900 <= year <= 2100:
-                return year
-        except ValueError:
-            pass
-    
-    return None
 
 
 class IWACWorldMapGenerator:
@@ -242,7 +172,7 @@ class IWACWorldMapGenerator:
                 for _, row in df.iterrows():
                     # Parse publication year
                     pub_date = row.get('pub_date', '')
-                    year = parse_year_from_date(pub_date)
+                    year = extract_year(pub_date)
                     
                     # Get source country (from article's country field, not spatial location)
                     source_country = row.get('country', '')
@@ -280,32 +210,13 @@ class IWACWorldMapGenerator:
     def build_location_lookup(self) -> None:
         """Build a lookup table from index entries that have coordinates."""
         logger.info("Building location lookup from index...")
-        
-        # Find the relevant columns
-        title_col = None
-        for col in ['Titre', 'title', 'dcterms:title', 'name']:
-            if col in self.index_df.columns:
-                title_col = col
-                break
-        
-        coord_col = None
-        for col in ['Coordonnées', 'coordinates', 'coordonnees', 'curation:coordinates']:
-            if col in self.index_df.columns:
-                coord_col = col
-                break
-        
-        type_col = None
-        for col in ['Type', 'type', 'Type d\'entité']:
-            if col in self.index_df.columns:
-                type_col = col
-                break
-        
-        country_col = None
-        for col in ['countries', 'country', 'pays']:
-            if col in self.index_df.columns:
-                country_col = col
-                break
-        
+
+        # Find the relevant columns using shared utility
+        title_col = find_column(self.index_df, ['Titre', 'title', 'dcterms:title', 'name'])
+        coord_col = find_column(self.index_df, ['Coordonnées', 'coordinates', 'coordonnees', 'curation:coordinates'])
+        type_col = find_column(self.index_df, ['Type', 'type', "Type d'entité"])
+        country_col = find_column(self.index_df, ['countries', 'country', 'pays'])
+
         logger.info(f"Using columns - Title: {title_col}, Coordinates: {coord_col}, Type: {type_col}, Country: {country_col}")
         
         if not title_col:
@@ -548,18 +459,7 @@ class IWACWorldMapGenerator:
     def save_data(self, data: Dict[str, Any]) -> None:
         """Save the generated data to JSON file."""
         output_path = self.output_dir / 'world-map.json'
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
-        
-        logger.info(f"Saved world map data to {output_path}")
-        
-        # Also save to build/data for production
-        build_path = Path('build/data/world-map.json')
-        if build_path.parent.exists():
-            with open(build_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Also saved to {build_path}")
+        save_json(data, output_path, minify=True)
     
     def process(self) -> None:
         """Run the full data generation pipeline."""

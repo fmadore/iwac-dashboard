@@ -17,17 +17,15 @@ Process:
 4. Match source names to index 'Titre' to retrieve GPS coordinates
 5. Generate sources data with coordinates for map visualization
 
-Output: 
+Output:
 - static/data/sources.json (main data with sources, counts, and coordinates)
 """
 
 import json
 import argparse
 import logging
-import re
-import unicodedata
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any
 from datetime import datetime, timezone
 from collections import defaultdict
 
@@ -39,13 +37,17 @@ except ImportError:
     print("pip install datasets pandas huggingface-hub pyarrow")
     exit(1)
 
+# Import shared utilities
+from iwac_utils import (
+    DATASET_ID,
+    parse_coordinates,
+    normalize_location_name,
+    find_column,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-
-DATASET_ID = "fmadore/islam-west-africa-collection"
 
 # Custom coordinate overrides for sources not in the index
 # Format: source_name -> (lat, lng)
@@ -59,43 +61,6 @@ CUSTOM_COORDINATES = {
     "Louis Audet Gosselin": (45.503343, -73.586841),
     "Le Pays": (12.36051671846299, -1.497256496296541),
 }
-
-
-def parse_coordinates(coord_str: str) -> Optional[Tuple[float, float]]:
-    """
-    Parse coordinates from the Coordonnées field.
-    Expected formats: "lat, lng" or "lat,lng" or similar
-    Returns (lat, lng) tuple or None if parsing fails.
-    """
-    if not coord_str or pd.isna(coord_str):
-        return None
-    
-    coord_str = str(coord_str).strip()
-    if not coord_str:
-        return None
-    
-    # Try common formats: "lat, lng" or "lat,lng"
-    match = re.match(r'^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$', coord_str)
-    if match:
-        try:
-            lat = float(match.group(1))
-            lng = float(match.group(2))
-            # Validate ranges
-            if -90 <= lat <= 90 and -180 <= lng <= 180:
-                return (lat, lng)
-        except ValueError:
-            pass
-    
-    return None
-
-
-def normalize_name(name: str) -> str:
-    """Normalize a name for matching (lowercase, stripped, unicode normalized)."""
-    if not name:
-        return ""
-    # Lowercase, strip whitespace, normalize unicode
-    name = unicodedata.normalize('NFC', str(name).strip().lower())
-    return name
 
 
 class IWACSourcesGenerator:
@@ -138,27 +103,12 @@ class IWACSourcesGenerator:
     def build_coord_lookup(self) -> None:
         """Build a lookup table from index entries that have coordinates."""
         logger.info("Building coordinate lookup from index...")
-        
-        # Find the relevant columns
-        title_col = None
-        for col in ['Titre', 'title', 'dcterms:title', 'name']:
-            if col in self.index_df.columns:
-                title_col = col
-                break
-        
-        coord_col = None
-        for col in ['Coordonnées', 'coordinates', 'coordonnees', 'curation:coordinates']:
-            if col in self.index_df.columns:
-                coord_col = col
-                break
-        
-        # Find the o:id column
-        id_col = None
-        for col in ['o:id', 'o_id', 'id', 'ID']:
-            if col in self.index_df.columns:
-                id_col = col
-                break
-        
+
+        # Find the relevant columns using shared utility
+        title_col = find_column(self.index_df, ['Titre', 'title', 'dcterms:title', 'name'])
+        coord_col = find_column(self.index_df, ['Coordonnées', 'coordinates', 'coordonnees', 'curation:coordinates'])
+        id_col = find_column(self.index_df, ['o:id', 'o_id', 'id', 'ID'])
+
         logger.info(f"Using columns - Title: {title_col}, Coordinates: {coord_col}, ID: {id_col}")
         
         if not title_col:
@@ -177,7 +127,7 @@ class IWACSourcesGenerator:
             if not title or pd.isna(title):
                 continue
             
-            normalized = normalize_name(title)
+            normalized = normalize_location_name(title)
             
             # Get the o:id if available (for all entries)
             oid = None
@@ -222,23 +172,14 @@ class IWACSourcesGenerator:
                 logger.info(f"Loaded {len(df)} records from {subset_name}")
                 logger.info(f"Columns: {list(df.columns)}")
                 
-                # Find source column
-                source_col = None
-                for col in ['source', 'dcterms:source', 'newspaper']:
-                    if col in df.columns:
-                        source_col = col
-                        break
-                
+                # Find source column using shared utility
+                source_col = find_column(df, ['source', 'dcterms:source', 'newspaper'])
                 if not source_col:
                     logger.warning(f"No source column found in {subset_name}")
                     continue
-                
+
                 # Find country column
-                country_col = None
-                for col in ['country', 'pays']:
-                    if col in df.columns:
-                        country_col = col
-                        break
+                country_col = find_column(df, ['country', 'pays'])
                 
                 # Process each record
                 for _, row in df.iterrows():
@@ -284,7 +225,7 @@ class IWACSourcesGenerator:
             total_items += data['count']
             
             # Try to find coordinates
-            normalized = normalize_name(source_name)
+            normalized = normalize_location_name(source_name)
             coord_data = self.coord_lookup.get(normalized)
             
             source_entry = {

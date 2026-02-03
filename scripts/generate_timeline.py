@@ -24,7 +24,6 @@ And tracks collection growth over time using the 'added_date' field.
 
 from __future__ import annotations
 import argparse
-import json
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -39,10 +38,18 @@ except ImportError:
     print("pip install -r scripts/requirements.txt")
     raise
 
+# Import shared utilities
+from iwac_utils import (
+    DATASET_ID,
+    normalize_country,
+    extract_month,
+    find_column,
+    save_json,
+)
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-DATASET_ID = "fmadore/islam-west-africa-collection"
 SUBSETS = ["articles", "audiovisual", "documents", "publications", "references"]
 
 # Mapping from subset names to document type labels (English / French)
@@ -53,58 +60,6 @@ SUBSET_TO_TYPE = {
     "audiovisual": {"en": "Audiovisuel", "fr": "Audiovisuel"},
     "references": {"en": "Reference", "fr": "Référence"},
 }
-
-
-def _normalize_country(value: Any) -> List[str]:
-    """Normalize country values to list of countries."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return ["Unknown"]
-    
-    if isinstance(value, (list, tuple)):
-        return [str(c).strip().title() for c in value if str(c).strip()]
-    
-    country_str = str(value).strip()
-    if not country_str:
-        return ["Unknown"]
-    
-    # Handle multiple countries separated by common delimiters
-    for sep in [";", ",", "|", "/"]:
-        if sep in country_str:
-            return [c.strip().title() for c in country_str.split(sep) if c.strip()]
-    
-    return [country_str.title()]
-
-
-def _extract_month(value: Any) -> Optional[str]:
-    """Extract year-month (YYYY-MM) from various date formats."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return None
-    
-    try:
-        # If it's already a datetime object
-        if isinstance(value, (pd.Timestamp, datetime)):
-            return value.strftime('%Y-%m')
-        
-        # If it's a string, try to parse it
-        if isinstance(value, str):
-            value = value.strip()
-            if not value:
-                return None
-            
-            # Try parsing with pandas
-            dt = pd.to_datetime(value, errors='coerce')
-            if pd.notna(dt):
-                return dt.strftime('%Y-%m')
-        
-        # Try generic conversion
-        dt = pd.to_datetime(value, errors='coerce')
-        if pd.notna(dt):
-            return dt.strftime('%Y-%m')
-            
-    except Exception:
-        pass
-    
-    return None
 
 
 def load_subset_data(subset: str) -> pd.DataFrame:
@@ -124,34 +79,28 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
     """Process a single subset and extract normalized data with added_date, type, and country."""
     if df.empty:
         return []
-    
-    # Try to find relevant columns with various naming patterns
-    def find_column(candidates: List[str]) -> Optional[str]:
-        for c in candidates:
-            if c in df.columns:
-                return c
-        return None
-    
-    country_col = find_column(["country", "Country", "countries", "Countries", "pays", "Pays"])
-    added_date_col = find_column(["added_date", "addedDate", "added", "created_at", "createdAt"])
-    
+
+    # Find relevant columns using shared utility
+    country_col = find_column(df, ["country", "Country", "countries", "Countries", "pays", "Pays"])
+    added_date_col = find_column(df, ["added_date", "addedDate", "added", "created_at", "createdAt"])
+
     if not added_date_col:
         logger.warning(f"No 'added_date' column found in subset '{subset_name}'")
         return []
-    
+
     # Get document type labels
     type_labels = SUBSET_TO_TYPE.get(subset_name, {"en": subset_name.title(), "fr": subset_name.title()})
-    
+
     records = []
-    
+
     for _, row in df.iterrows():
-        month = _extract_month(row.get(added_date_col))
-        
+        month = extract_month(row.get(added_date_col))
+
         if not month:
             continue
-        
-        countries = _normalize_country(row.get(country_col) if country_col else None)
-        
+
+        countries = normalize_country(row.get(country_col) if country_col else None)
+
         for country in countries:
             records.append({
                 "month": month,
@@ -160,7 +109,7 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
                 "type_fr": type_labels["fr"],
                 "country": country,
             })
-    
+
     logger.info(f"Processed {len(records)} records with added_date from '{subset_name}'")
     return records
 
@@ -349,19 +298,7 @@ def generate_metadata(all_records: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def save_json(data: Any, path: Path) -> None:
-    """Save data to JSON file with pretty formatting."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    # Calculate file size
-    try:
-        size_kb = path.stat().st_size / 1024
-        display = f"{path} ({size_kb:.1f} KB)"
-    except Exception:
-        display = str(path)
-    logger.info(f"Wrote {display}")
+## save_json is imported from iwac_utils
 
 
 def main():

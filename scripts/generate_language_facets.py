@@ -14,7 +14,7 @@ Generates JSON files for pie chart facets under static/data:
 
 The script processes these subsets:
 - articles
-- audiovisual  
+- audiovisual
 - documents
 - publications
 - references
@@ -27,7 +27,7 @@ And creates faceted data for:
 
 from __future__ import annotations
 
-import json
+import re
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
@@ -42,10 +42,18 @@ except ImportError:
     print("pip install -r scripts/requirements.txt")
     raise
 
+# Import shared utilities
+from iwac_utils import (
+    DATASET_ID,
+    normalize_country,
+    extract_year,
+    find_column,
+    save_json,
+)
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-DATASET_ID = "fmadore/islam-west-africa-collection"
 SUBSETS = ["articles", "audiovisual", "documents", "publications", "references"]
 
 
@@ -88,7 +96,6 @@ def _normalize_languages(value: Any) -> List[str]:
         s = str(value).strip()
         if not s:
             return ["Unknown"]
-        import re
         # Split on common separators (| ; , /)
         tokens = [t for t in re.split(r"[|;,/]", s) if t is not None]
 
@@ -103,60 +110,6 @@ def _normalize_languages(value: Any) -> List[str]:
     # Deduplicate while preserving order
     deduped = list(dict.fromkeys(normalized))
     return deduped if deduped else ["Unknown"]
-
-
-def _normalize_country(value: Any) -> List[str]:
-    """Normalize country values to list of countries."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return ["Unknown"]
-    
-    if isinstance(value, (list, tuple)):
-        countries = [str(c).strip().title() for c in value if str(c).strip()]
-        return countries if countries else ["Unknown"]
-    
-    country_str = str(value).strip()
-    if not country_str:
-        return ["Unknown"]
-    
-    # Handle multiple countries separated by common delimiters
-    for sep in [";", ",", "|", "/"]:
-        if sep in country_str:
-            countries = [c.strip().title() for c in country_str.split(sep) if c.strip()]
-            return countries if countries else ["Unknown"]
-    
-    return [country_str.title()]
-
-
-def _extract_year(value: Any) -> Optional[int]:
-    """Extract year from various date formats."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return None
-    
-    try:
-        if isinstance(value, str):
-            # Try to parse as date
-            dt = pd.to_datetime(value, errors="coerce")
-            if not pd.isna(dt):
-                return dt.year
-            
-            # Try to extract 4-digit year from string
-            import re
-            year_match = re.search(r'\b(19|20)\d{2}\b', value)
-            if year_match:
-                return int(year_match.group())
-        
-        elif isinstance(value, (int, float)):
-            year = int(value)
-            if 1800 <= year <= 2030:  # Reasonable year range
-                return year
-        
-        elif isinstance(value, (pd.Timestamp, datetime)):
-            return value.year
-            
-    except Exception:
-        pass
-    
-    return None
 
 
 def load_subset_data(subset: str) -> pd.DataFrame:
@@ -176,26 +129,20 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
     """Process a single subset and extract normalized data."""
     if df.empty:
         return []
-    
-    # Try to find relevant columns with various naming patterns
-    def find_column(candidates: List[str]) -> Optional[str]:
-        for col in candidates:
-            if col in df.columns:
-                return col
-        return None
-    
-    language_col = find_column(["language", "Language", "langue", "Langue", "lang"])
-    country_col = find_column(["country", "Country", "countries", "Countries", "pays", "Pays"])
-    date_col = find_column(["date", "Date", "created", "published", "year", "Year", "année"])
-    title_col = find_column(["title", "Title", "titre", "Titre", "dcterms:title"])
-    
+
+    # Find relevant columns using shared utility
+    language_col = find_column(df, ["language", "Language", "langue", "Langue", "lang"])
+    country_col = find_column(df, ["country", "Country", "countries", "Countries", "pays", "Pays"])
+    date_col = find_column(df, ["date", "Date", "created", "published", "year", "Year", "année"])
+    title_col = find_column(df, ["title", "Title", "titre", "Titre", "dcterms:title"])
+
     records = []
-    
+
     for _, row in df.iterrows():
         # Extract and normalize data
         languages = _normalize_languages(row.get(language_col) if language_col else None)
-        countries = _normalize_country(row.get(country_col) if country_col else None)
-        year = _extract_year(row.get(date_col) if date_col else None)
+        countries = normalize_country(row.get(country_col) if country_col else None)
+        year = extract_year(row.get(date_col) if date_col else None)
         title = str(row.get(title_col, "")).strip() if title_col else ""
 
         # Create a record for each country × language combination
@@ -208,7 +155,7 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
                     "year": year,
                     "title": title[:100] if title else "",
                 })
-    
+
     logger.info(f"Processed {len(records)} records from '{subset_name}'")
     return records
 
@@ -387,20 +334,7 @@ def generate_metadata(all_records: List[Dict[str, Any]]) -> Dict[str, Any]:
     return metadata
 
 
-def save_json(data: Any, path: Path) -> None:
-    """Save data as JSON file."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    try:
-        abs_path = path.resolve()
-        cwd = Path.cwd().resolve()
-        display = abs_path.relative_to(cwd)
-    except Exception:
-        display = path
-    
-    logger.info(f"Wrote {display}")
+## save_json is imported from iwac_utils
 
 
 def main():
