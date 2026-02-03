@@ -5,11 +5,13 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
+	import { useFilters } from '$lib/hooks/index.js';
 	import type { PageData } from './$types.js';
 
-	// Use URL sync hook
-	const urlSync = useUrlSync();
+	// Use enhanced filters hook with mutual exclusivity for type/country
+	const filters = useFilters({
+		mutuallyExclusive: [['type', 'country']]
+	});
 
 	let { data }: { data: PageData } = $props();
 
@@ -26,9 +28,9 @@
 		return map;
 	});
 
-	// Facet selection state from URL
-	const selectedType = $derived(urlSync.filters.type);
-	const selectedCountry = $derived(urlSync.filters.country);
+	// Facet selection state from URL (now managed by useFilters)
+	const selectedType = $derived(filters.get('type'));
+	const selectedCountry = $derived(filters.get('country'));
 
 	const typeOptions = $derived(() => data.types?.types ?? []);
 	const countryOptions = $derived(() => data.countries?.countries ?? []);
@@ -72,27 +74,25 @@
 		return data.global?.total ?? 0;
 	});
 
-	// Handlers for filter changes
+	// Handlers for filter changes - simplified with mutual exclusivity built in
 	function handleTypeChange(value: string | undefined) {
 		if (value) {
-			// When selecting a type, clear country filter
-			urlSync.setFilters({ type: value, country: undefined });
+			filters.set('type', value); // Automatically clears country due to mutuallyExclusive config
 		} else {
-			urlSync.clearFilter('type');
+			filters.clear('type');
 		}
 	}
 
 	function handleCountryChange(value: string | undefined) {
 		if (value) {
-			// When selecting a country, clear type filter
-			urlSync.setFilters({ country: value, type: undefined });
+			filters.set('country', value); // Automatically clears type due to mutuallyExclusive config
 		} else {
-			urlSync.clearFilter('country');
+			filters.clear('country');
 		}
 	}
 
 	function handleClearFilters() {
-		urlSync.clearFilters();
+		filters.clearAll();
 	}
 </script>
 
@@ -148,7 +148,7 @@
 						</Select.Root>
 					</div>
 				{/if}
-				{#if selectedType || selectedCountry}
+				{#if filters.hasActiveFilters}
 					<Button variant="secondary" size="sm" onclick={handleClearFilters}
 						>{t('filters.clear')}</Button
 					>

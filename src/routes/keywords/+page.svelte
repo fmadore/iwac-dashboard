@@ -7,7 +7,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
+	import { useFilters } from '$lib/hooks/index.js';
 	import { KeywordsLineChart } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
 	import { Search, Check, Plus } from '@lucide/svelte';
@@ -15,8 +15,11 @@
 	// Props from page load
 	let { data } = $props();
 
-	// URL sync for filter state
-	const urlSync = useUrlSync();
+	// Enhanced filters hook with defaults and exclusions
+	const filters = useFilters({
+		defaults: { topN: 5, view: 'top', facet: 'global' },
+		excludeFromActive: ['view', 'topN', 'facet', 'type'] // These are view controls, not data filters
+	});
 
 	// Data interfaces
 	interface KeywordSeriesData {
@@ -59,21 +62,21 @@
 	const metadata = $derived(data.metadata as Metadata);
 
 	// Current keyword type (subject or spatial)
-	const keywordType = $derived((urlSync.filters.type as 'subject' | 'spatial') || 'subject');
+	const keywordType = $derived((filters.get('type') as 'subject' | 'spatial') || 'subject');
 	const currentData = $derived(keywordType === 'subject' ? subjectsData : spatialData);
 
 	// View mode: 'top' (most frequent) or 'compare' (selected keywords)
-	const viewMode = $derived((urlSync.filters.view as 'top' | 'compare') || 'top');
+	const viewMode = $derived((filters.get('view') as 'top' | 'compare') || 'top');
 
 	// Facet type: 'global', 'country', or 'newspaper'
-	const facetType = $derived((urlSync.filters.facet as 'global' | 'country' | 'newspaper') || 'global');
+	const facetType = $derived((filters.get('facet') as 'global' | 'country' | 'newspaper') || 'global');
 
 	// Selected country/newspaper for faceted view
-	const selectedCountry = $derived(urlSync.filters.country);
-	const selectedNewspaper = $derived(urlSync.filters.newspaper);
+	const selectedCountry = $derived(filters.get('country'));
+	const selectedNewspaper = $derived(filters.get('newspaper'));
 
 	// Number of top keywords to show
-	const topN = $derived(Number(urlSync.filters.topN) || 5);
+	const topN = $derived(Number(filters.get('topN')) || 5);
 
 	// Helper functions to convert between keyword names and indices
 	function keywordToId(keyword: string): number | undefined {
@@ -86,7 +89,7 @@
 	}
 
 	// Selected keywords for comparison mode (stored as comma-separated IDs in URL)
-	const selectedKeywordIds = $derived(urlSync.filters.keywords as string || '');
+	const selectedKeywordIds = $derived(filters.get('keywords') as string || '');
 	const selectedKeywords = $derived.by(() => {
 		if (!selectedKeywordIds) return [];
 		return selectedKeywordIds
@@ -184,41 +187,41 @@
 
 	// Handlers
 	function handleKeywordTypeChange(value: string) {
-		urlSync.setFilter('type', value);
+		filters.set('type', value);
 		// Reset selected keywords when type changes
-		urlSync.clearFilter('keywords');
+		filters.clear('keywords');
 	}
 
 	function handleViewModeChange(value: string) {
-		urlSync.setFilter('view', value);
+		filters.set('view', value);
 	}
 
 	function handleFacetChange(value: string) {
-		urlSync.setFilter('facet', value);
+		filters.set('facet', value);
 		// Clear facet-specific selections
-		if (value !== 'country') urlSync.clearFilter('country');
-		if (value !== 'newspaper') urlSync.clearFilter('newspaper');
+		if (value !== 'country') filters.clear('country');
+		if (value !== 'newspaper') filters.clear('newspaper');
 	}
 
 	function handleCountryChange(value: string | undefined) {
 		if (value && value !== 'all') {
-			urlSync.setFilter('country', value);
+			filters.set('country', value);
 		} else {
-			urlSync.clearFilter('country');
+			filters.clear('country');
 		}
 	}
 
 	function handleNewspaperChange(value: string | undefined) {
 		if (value && value !== 'all') {
-			urlSync.setFilter('newspaper', value);
+			filters.set('newspaper', value);
 		} else {
-			urlSync.clearFilter('newspaper');
+			filters.clear('newspaper');
 		}
 	}
 
 	function handleTopNChange(value: string | undefined) {
 		if (value) {
-			urlSync.setFilter('topN', value);
+			filters.set('topN', Number(value));
 		}
 	}
 
@@ -237,27 +240,25 @@
 
 		const newValue = ids.join(',');
 		if (newValue) {
-			urlSync.setFilter('keywords', newValue);
+			filters.set('keywords', newValue);
 		} else {
-			urlSync.clearFilter('keywords');
+			filters.clear('keywords');
 		}
 	}
 
 	function clearSelectedKeywords() {
-		urlSync.clearFilter('keywords');
+		filters.clear('keywords');
 	}
 
 	function clearAllFilters() {
-		urlSync.clearFilter('facet');
-		urlSync.clearFilter('country');
-		urlSync.clearFilter('newspaper');
-		urlSync.clearFilter('keywords');
+		filters.clear('facet');
+		filters.clear('country');
+		filters.clear('newspaper');
+		filters.clear('keywords');
 	}
 
-	// Check if any filters are active
-	const hasActiveFilters = $derived.by(() => {
-		return facetType !== 'global' || selectedCountry || selectedNewspaper || selectedKeywords.length > 0;
-	});
+	// Check if any filters are active (using the hook's hasActiveFilters)
+	const hasActiveFilters = $derived(filters.hasActiveFilters || selectedKeywords.length > 0);
 
 	// Chart title
 	const chartTitle = $derived.by(() => {

@@ -8,11 +8,16 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
+	import { useFilters } from '$lib/hooks/index.js';
 	import { StackedBarChart } from '$lib/components/visualizations/charts/d3/index.js';
 
-	// Use URL sync hook
-	const urlSync = useUrlSync();
+	// Use enhanced filters hook with year range validation
+	const filters = useFilters({
+		validators: {
+			yearMin: (v) => typeof v === 'number' && v >= 1800 && v <= 2100,
+			yearMax: (v) => typeof v === 'number' && v >= 1800 && v <= 2100
+		}
+	});
 
 	interface SeriesData {
 		name: string;
@@ -73,19 +78,14 @@
 	});
 
 	// Filter states from URL
-	const selectedCountry = $derived(urlSync.filters.country);
+	const selectedCountry = $derived(filters.get('country'));
 
-	// Year range as derived value that reads from URL or defaults
-	const yearRange = $derived<[number, number]>(
-		(() => {
-			const min = urlSync.filters.yearMin;
-			const max = urlSync.filters.yearMax;
-			if (min !== undefined && max !== undefined) {
-				return [min, max];
-			}
-			return [metadata?.temporal.min_year || 1912, metadata?.temporal.max_year || 2025];
-		})()
-	);
+	// Year range using the hook's helper - now much simpler!
+	const yearRangeData = $derived(filters.yearRange);
+	const yearRange = $derived<[number, number]>([
+		yearRangeData.min ?? metadata?.temporal.min_year ?? 1912,
+		yearRangeData.max ?? metadata?.temporal.max_year ?? 2025
+	]);
 
 	// Local state for slider to avoid heavy re-renders while dragging
 	let localYearRange = $state<[number, number]>([1912, 2025]);
@@ -97,11 +97,8 @@
 
 	// Set initial year range from metadata on mount
 	$effect(() => {
-		if (metadata && !urlSync.hasFilter('yearMin') && !urlSync.hasFilter('yearMax')) {
-			urlSync.setFilters({
-				yearMin: metadata.temporal.min_year,
-				yearMax: metadata.temporal.max_year
-			});
+		if (metadata && !filters.yearRange.isSet) {
+			filters.setYearRange(metadata.temporal.min_year, metadata.temporal.max_year);
 		}
 	});
 
@@ -172,23 +169,20 @@
 	// Handlers for filter changes
 	function handleCountryChange(value: string | undefined) {
 		if (value && value !== 'all-countries') {
-			urlSync.setFilter('country', value);
+			filters.set('country', value);
 		} else {
-			urlSync.clearFilter('country');
+			filters.clear('country');
 		}
 	}
 
 	function handleYearRangeChange(value: number[]) {
 		if (value.length === 2) {
-			urlSync.setFilters({
-				yearMin: value[0],
-				yearMax: value[1]
-			});
+			filters.setYearRange(value[0], value[1]);
 		}
 	}
 
 	function handleClearFilters() {
-		urlSync.clearFilters();
+		filters.clearAll();
 	}
 </script>
 
