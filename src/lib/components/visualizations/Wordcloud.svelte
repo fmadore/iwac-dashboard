@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { browser } from '$app/environment';
-	import type { Word } from '$lib/types/index.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 
 	interface Props {
 		data?: [string, number][];
@@ -294,13 +294,13 @@
 	{#if isRendering}
 		<div class="loading-overlay">
 			<div class="loading-spinner"></div>
-			<p class="text-sm text-muted-foreground">Generating word cloud...</p>
+			<p class="text-sm text-muted-foreground">{t('words.generating')}</p>
 		</div>
 	{/if}
 
 	{#if data.length === 0}
 		<div class="empty-state">
-			<p class="text-muted-foreground">No data available for word cloud</p>
+			<p class="text-muted-foreground">{t('words.no_data')}</p>
 		</div>
 	{/if}
 </div>

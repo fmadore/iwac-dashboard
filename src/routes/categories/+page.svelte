@@ -139,19 +139,19 @@
 		const yearIndices: number[] = [];
 		const filteredYears: number[] = [];
 
-		data.years.forEach((year, index) => {
+		data.years.forEach((year: number, index: number) => {
 			if (year >= minYear && year <= maxYear) {
 				yearIndices.push(index);
 				filteredYears.push(year);
 			}
 		});
 
-		const filteredSeries = data.series.map((s) => ({
+		const filteredSeries = data.series.map((s: SeriesData) => ({
 			name: s.name,
 			data: yearIndices.map((i) => s.data[i])
 		}));
 
-		const total = filteredSeries.reduce((sum, s) => sum + s.data.reduce((a, b) => a + b, 0), 0);
+		const total = filteredSeries.reduce((sum: number, s: SeriesData) => sum + s.data.reduce((a: number, b: number) => a + b, 0), 0);
 
 		return {
 			years: filteredYears,

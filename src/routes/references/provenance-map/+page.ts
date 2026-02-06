@@ -1,7 +1,7 @@
 import { base } from '$app/paths';
 import type { PageLoad } from './$types.js';
 
-interface ProvenanceLocation {
+export interface ProvenanceLocation {
 	name: string;
 	lat: number;
 	lng: number;

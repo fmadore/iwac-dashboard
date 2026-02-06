@@ -104,17 +104,17 @@
 	const filteredNodes = $derived.by(() => {
 		if (!networkData) return [];
 		return networkData.nodes
-			.sort((a, b) => a.labelPriority - b.labelPriority || b.strength - a.strength)
+			.sort((a: CoauthorNetworkNode, b: CoauthorNetworkNode) => a.labelPriority - b.labelPriority || b.strength - a.strength)
 			.slice(0, maxNodes);
 	});
 
-	const filteredNodeIds = $derived(new Set(filteredNodes.map((n) => n.id)));
+	const filteredNodeIds = $derived(new Set(filteredNodes.map((n: CoauthorNetworkNode) => n.id)));
 
 	// Filter edges - both endpoints must be visible
 	const filteredEdges = $derived.by(() => {
 		if (!networkData) return [];
 		return networkData.edges.filter(
-			(e) =>
+			(e: CoauthorNetworkEdge) =>
 				e.weight >= minEdgeWeight && filteredNodeIds.has(e.source) && filteredNodeIds.has(e.target)
 		);
 	});
@@ -127,7 +127,7 @@
 
 		// Get ALL edges connected to selected node
 		const egoEdges = networkData.edges.filter(
-			(e) => e.source === selectedId || e.target === selectedId
+			(e: CoauthorNetworkEdge) => e.source === selectedId || e.target === selectedId
 		);
 
 		// Get all neighbor IDs
@@ -139,12 +139,12 @@
 		}
 
 		// Get neighbor nodes
-		const egoNodes = networkData.nodes.filter((n) => neighborIds.has(n.id));
+		const egoNodes = networkData.nodes.filter((n: CoauthorNetworkNode) => neighborIds.has(n.id));
 
 		// Filter edges to only include those where both endpoints are in egoNodes
-		const egoNodeIds = new Set(egoNodes.map((n) => n.id));
+		const egoNodeIds = new Set(egoNodes.map((n: CoauthorNetworkNode) => n.id));
 		const validEgoEdges = egoEdges.filter(
-			(e) => egoNodeIds.has(e.source) && egoNodeIds.has(e.target)
+			(e: CoauthorNetworkEdge) => egoNodeIds.has(e.source) && egoNodeIds.has(e.target)
 		);
 
 		return { nodes: egoNodes, edges: validEgoEdges };
@@ -167,7 +167,7 @@
 	// Sync URL -> state on load
 	$effect(() => {
 		if (networkData && urlEntityId && !selectedNode) {
-			const node = networkData.nodes.find((n) => n.id === urlEntityId);
+			const node = networkData.nodes.find((n: CoauthorNetworkNode) => n.id === urlEntityId);
 			if (node) {
 				selectedNode = node;
 				focusMode = urlFocusMode;

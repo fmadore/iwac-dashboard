@@ -4,7 +4,9 @@ export interface TreemapData {
 	name: string;
 	value?: number;
 	children?: TreemapData[];
-	[key: string]: any; // Allow additional properties
+	/** Internal: country name injected during enrichment for color lookup */
+	__countryName?: string;
+	[key: string]: unknown;
 }
 
 export type TreemapNode = HierarchyRectangularNode<TreemapData>;
@@ -55,7 +57,7 @@ export interface TreemapZoom {
 
 export interface TreemapConfig {
 	padding: TreemapPadding;
-	tile: any; // D3 tile function
+	tile: string | ((node: unknown, x0: number, y0: number, x1: number, y1: number) => void);
 	round: boolean;
 	colors: TreemapColors;
 	animation: TreemapAnimation;

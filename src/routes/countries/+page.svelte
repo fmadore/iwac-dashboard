@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { itemsStore } from '$lib/stores/itemsStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { Treemap as LayerChartTreemap } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { base } from '$app/paths';
 	import type { TreemapData, TreemapNode } from '$lib/types/index.js';
-	import { SvelteMap } from 'svelte/reactivity';
 	import { onMount } from 'svelte';
 
 	let selectedNode = $state<TreemapNode | null>(null);
@@ -35,20 +33,8 @@
 				);
 			}
 		} catch (error) {
-			console.warn(
-				'Failed to load pre-computed treemap data, falling back to client-side processing:',
-				error
-			);
+			console.warn('Failed to load pre-computed treemap data:', error);
 			loadingError = error instanceof Error ? error.message : 'Unknown error';
-
-			// Fallback to computing from itemsStore if pre-computed data not available
-			if (itemsStore.items && itemsStore.items.length > 0) {
-				const fallbackData = getTreemapData(itemsStore.items);
-				treemapData = fallbackData;
-				console.log('📊 Using fallback client-side treemap computation');
-			} else {
-				console.warn('No items available for fallback computation');
-			}
 		} finally {
 			isLoading = false;
 		}
@@ -58,55 +44,6 @@
 	onMount(() => {
 		void loadData();
 	});
-
-	function getTreemapData(items: any[]): TreemapData {
-		interface CountryData {
-			name: string;
-			value: number;
-			children: SvelteMap<string, { name: string; value: number }>;
-		}
-
-		const countryMap = new SvelteMap<string, CountryData>();
-
-		items.forEach((item) => {
-			if (!item.country) return;
-
-			if (!countryMap.has(item.country)) {
-				countryMap.set(item.country, {
-					name: item.country,
-					value: 0,
-					children: new SvelteMap()
-				});
-			}
-
-			const country = countryMap.get(item.country)!;
-			country.value++;
-
-			if (item.type) {
-				if (!country.children.has(item.type)) {
-					country.children.set(item.type, {
-						name: item.type,
-						value: 0
-					});
-				}
-				country.children.get(item.type)!.value++;
-			}
-		});
-
-		// Transform to hierarchical structure for Treemap
-		const root: TreemapData = {
-			name: 'Countries',
-			value: 0, // Will be calculated by LayerChart
-			children: Array.from(countryMap.values())
-				.map((country) => ({
-					...country,
-					children: Array.from(country.children.values())
-				}))
-				.sort((a, b) => (b.value || 0) - (a.value || 0))
-		};
-
-		return root;
-	}
 
 	function getTotalValue(): number {
 		if (!treemapData) return 1;

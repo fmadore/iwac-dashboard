@@ -28,7 +28,7 @@ export interface ChartDataPoint {
 	label: string;
 	value: number;
 	percentage?: number;
-	metadata?: Record<string, any>;
+	metadata?: Record<string, unknown>;
 }
 
 export interface FilterState {
@@ -43,24 +43,4 @@ export interface StatsData {
 	countries: number;
 	languages: number;
 	types: number;
-}
-
-export interface ChartConfig {
-	type: 'pie' | 'bar' | 'line' | 'doughnut';
-	data: any;
-	options?: any;
-}
-
-// Word cloud types
-export interface Word {
-	text: string;
-	size: number;
-	x?: number;
-	y?: number;
-	rotate?: number;
-	font?: string;
-	style?: string;
-	weight?: string;
-	color?: string;
-	padding?: number;
 }

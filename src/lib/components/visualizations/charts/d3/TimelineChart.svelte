@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Axis, BarChart, Spline, Tooltip as TooltipPrimitive } from 'layerchart';
+	import { Axis, BarChart, Spline, Tooltip as TooltipPrimitive, type ChartContextValue } from 'layerchart';
 	import { scaleBand } from 'd3-scale';
 	import { cubicInOut } from 'svelte/easing';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
@@ -172,7 +172,7 @@
 				/>
 			{/snippet}
 
-			{#snippet timelineTooltip({ context })}
+			{#snippet timelineTooltip({ context }: { context: ChartContextValue })}
 				<TooltipPrimitive.Root {context} variant="none">
 					{#snippet children({ data })}
 						<Tooltip

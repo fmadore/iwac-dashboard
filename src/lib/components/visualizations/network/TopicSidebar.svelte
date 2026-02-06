@@ -69,7 +69,7 @@
 					<div class="flex items-start justify-between gap-2">
 						<div class="min-w-0 flex-1">
 							<div class="flex items-center gap-1.5">
-								<Hash class="h-3.5 w-3.5 shrink-0 text-green-500" />
+								<Hash class="h-3.5 w-3.5 shrink-0 text-chart-3" />
 								<span class="truncate text-sm font-medium">
 									{topic.keywords[0] || topic.label}
 								</span>

@@ -8,7 +8,7 @@
 	import { MapLocationPopover, MapLocationSheet } from '$lib/components/visualizations/map/index.js';
 	import { BaseMap, CircleLayer, type CircleDataPoint, calculateBounds } from '$lib/components/visualizations/maplibre/index.js';
 	import { ExternalLink, MapPin } from '@lucide/svelte';
-	import type { ProvenanceMapData } from './+page.js';
+	import type { ProvenanceMapData, ProvenanceLocation } from './+page.js';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 
 	// Get preloaded data from +page.ts
@@ -57,7 +57,7 @@
 
 	// Transform locations to CircleDataPoints for MapLibre
 	const circleData = $derived<CircleDataPoint[]>(
-		mapData?.locations.map((location) => ({
+		mapData?.locations.map((location: ProvenanceLocation) => ({
 			id: location.name,
 			lat: location.lat,
 			lng: location.lng,
@@ -74,14 +74,14 @@
 	// Calculate bounds from locations
 	const bounds = $derived.by(() => {
 		if (!mapData?.locations?.length) return undefined;
-		const coords = mapData.locations.map(l => ({ lat: l.lat, lng: l.lng }));
+		const coords = mapData.locations.map((l: ProvenanceLocation) => ({ lat: l.lat, lng: l.lng }));
 		return calculateBounds(coords) ?? undefined;
 	});
 
 	// Handle hover from CircleLayer
 	function handleHover(item: CircleDataPoint | null, position: PopoverPosition | null) {
 		if (item && mapData) {
-			const location = mapData.locations.find(l => l.name === item.id);
+			const location = mapData.locations.find((l: ProvenanceLocation) => l.name === item.id);
 			if (location) {
 				hoveredLocation = toMapLocation(location);
 				popoverPosition = position;
@@ -95,7 +95,7 @@
 	// Handle click from CircleLayer
 	function handleClick(item: CircleDataPoint) {
 		if (mapData) {
-			const location = mapData.locations.find(l => l.name === item.id);
+			const location = mapData.locations.find((l: ProvenanceLocation) => l.name === item.id);
 			if (location) {
 				selectedLocation = toMapLocation(location);
 				hoveredLocation = null;

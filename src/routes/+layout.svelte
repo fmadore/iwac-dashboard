@@ -34,11 +34,6 @@
 		}
 	});
 
-	// Note: itemsStore is kept for legacy fallback support only
-	// All data is now loaded from pre-computed JSON files
-	// $effect(() => {
-	// 	itemsStore.loadItems();
-	// });
 </script>
 
 <SafeModeWatcher />

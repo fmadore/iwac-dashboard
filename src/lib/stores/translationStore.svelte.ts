@@ -164,6 +164,8 @@ export const translations = {
 		'words.characters': 'characters',
 		'words.occurrences': 'occurrences',
 		'words.year_range': '{0}-{1}',
+		'words.generating': 'Generating word cloud...',
+		'words.no_data': 'No data available for word cloud',
 		'scary.title': '"Scary" words analysis',
 		'scary.description': 'Track the usage of "scary" terms in the Islam West Africa Collection',
 		'scary.bar_race': 'Bar Chart Race',
@@ -746,6 +748,8 @@ export const translations = {
 		'words.characters': 'caractères',
 		'words.occurrences': 'occurrences',
 		'words.year_range': '{0}-{1}',
+		'words.generating': 'Génération du nuage de mots...',
+		'words.no_data': 'Aucune donnée disponible pour le nuage de mots',
 		'scary.title': 'Analyse des mots "inquiétants"',
 		'scary.description':
 			"Suivre l'utilisation des termes liés à la radicalisation dans la Collection Islam Afrique de l'Ouest",
