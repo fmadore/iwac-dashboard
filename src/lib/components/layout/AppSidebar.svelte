@@ -23,7 +23,8 @@
 		Hash,
 		Building2,
 		Users,
-		TreePine
+		TreePine,
+		Waypoints
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -44,6 +45,7 @@
 		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' },
 		{ href: `${base}/references/publishers`, icon: Building2, label: 'nav.publishers' },
 		{ href: `${base}/references/coauthor-network`, icon: Users, label: 'nav.coauthor_network' },
+		{ href: `${base}/references/subject-cooccurrence`, icon: Waypoints, label: 'nav.subject_cooccurrence' },
 		{ href: `${base}/references/provenance-map`, icon: MapPin, label: 'nav.provenance_map' }
 	];
 

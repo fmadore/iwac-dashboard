@@ -35,10 +35,11 @@ npm run test             # Run all tests
 
 ### Data Generation (Python)
 
+**Always use the project virtual environment** when running Python scripts:
+
 ```bash
-cd scripts
-pip install -r requirements.txt
-python generate_overview_stats.py    # Run individual generators
+powershell -Command "& '.venv\Scripts\python.exe' 'scripts/generate_overview_stats.py'"    # Run individual generators
+powershell -Command "& '.venv\Scripts\pip.exe' install -r 'scripts/requirements.txt'"       # Install dependencies
 ```
 
 ## Architecture
