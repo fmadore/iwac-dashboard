@@ -1,366 +1,206 @@
 {
-  "total_docs": 12236,
-  "unique_topics": 72,
+  "total_docs": 12234,
+  "unique_topics": 40,
   "topics": [
     {
-      "id": -1,
-      "label": "Outlier",
-      "count": 3249
-    },
-    {
-      "id": 1,
-      "label": "Hadj - Pelerin - Pelerinage - Organisation",
-      "count": 308
-    },
-    {
-      "id": 0,
-      "label": "Religieux Ensuite - Dialogue Religieux - Ivoire - Cote Ivoire",
-      "count": 305
-    },
-    {
-      "id": 48,
-      "label": "Senat - Position - Loi - Projet Loi",
-      "count": 299
-    },
-    {
-      "id": 2,
-      "label": "Ivoire - Cote Ivoire - Islamique - Cote",
-      "count": 270
-    },
-    {
-      "id": 9,
-      "label": "Prophete - Mouloud - Ramatoulaye - Naissance",
-      "count": 245
-    },
-    {
-      "id": 7,
-      "label": "Mosquee - Inaugurer - Vendredi - Inauguration",
-      "count": 235
-    },
-    {
-      "id": 18,
-      "label": "Nuit - Destin - Nuit Destin - Ramadan",
-      "count": 232
-    },
-    {
-      "id": 8,
-      "label": "Attaque - Terroriste - Force - Armee",
-      "count": 204
-    },
-    {
-      "id": 3,
-      "label": "Togolais - Togo - Eyadema - Dieu",
-      "count": 202
+      "id": 35,
+      "label": "association - jeune - activité - organiser - formation - permettre",
+      "count": 1014
     },
     {
       "id": 6,
-      "label": "Niger - Sahel - Republique - Cooperation",
-      "count": 195
-    },
-    {
-      "id": 4,
-      "label": "Togo - Priere - Allah - Lome",
-      "count": 194
-    },
-    {
-      "id": 46,
-      "label": "Peuple - Vouloir - Pays - President",
-      "count": 186
-    },
-    {
-      "id": 5,
-      "label": "Togo - Eyadema - Togolais - Delegation",
-      "count": 183
-    },
-    {
-      "id": 25,
-      "label": "Mesure - Mosquee - Lieu Culte - Lieu",
-      "count": 177
-    },
-    {
-      "id": 14,
-      "label": "Pelerin - Vol - Ivoirien - Hadj",
-      "count": 171
-    },
-    {
-      "id": 12,
-      "label": "Sucre - Don - Carton - Tonne",
-      "count": 169
-    },
-    {
-      "id": 16,
-      "label": "Jeune - Mois - Ramadan - Jeuner",
-      "count": 167
-    },
-    {
-      "id": 37,
-      "label": "Prophete - Nuit - Naissance - Maoulid",
-      "count": 167
-    },
-    {
-      "id": 19,
-      "label": "Pelerinage - Pelerin - Mecque - Arafat",
-      "count": 166
-    },
-    {
-      "id": 11,
-      "label": "Sacrifice - Mouton - Fete - Tabaski",
-      "count": 162
-    },
-    {
-      "id": 10,
-      "label": "Pelerin - Vol - Hadj - Aeroport",
-      "count": 158
-    },
-    {
-      "id": 45,
-      "label": "Cote - Cote Ivoire - Ivoire - Imam",
-      "count": 151
-    },
-    {
-      "id": 59,
-      "label": "Ong - Ahmadiyya - Islamique Ahmadiyya - Benin",
-      "count": 151
-    },
-    {
-      "id": 44,
-      "label": "El Hadj - Homme - Luire - Imam",
-      "count": 150
-    },
-    {
-      "id": 15,
-      "label": "Mouton - Prix - Marche - Betail",
-      "count": 147
-    },
-    {
-      "id": 21,
-      "label": "Concours - Coran - Memorisation - Saint Coran",
-      "count": 146
-    },
-    {
-      "id": 20,
-      "label": "Niger - Waqf - Finance - Projet",
-      "count": 139
-    },
-    {
-      "id": 58,
-      "label": "Talon - Patrice Talon - Patrice - Porto",
-      "count": 136
-    },
-    {
-      "id": 13,
-      "label": "Benin - Union - Union Islamique - Islamique Benin",
-      "count": 130
-    },
-    {
-      "id": 26,
-      "label": "Fete - Priere - Musulman - Tabaski",
-      "count": 126
-    },
-    {
-      "id": 43,
-      "label": "Benin - Developpement - Projet - Cooperation",
-      "count": 121
-    },
-    {
-      "id": 50,
-      "label": "Seminaire - Formation - Muezzin - Islam",
-      "count": 121
-    },
-    {
-      "id": 24,
-      "label": "Togo - Islam - Musulman Togo - Musulman",
-      "count": 117
-    },
-    {
-      "id": 33,
-      "label": "Niger - Paix - Fete - Mois",
-      "count": 116
-    },
-    {
-      "id": 27,
-      "label": "Don - Vivre - Geste - Riz",
-      "count": 114
+      "label": "prière - imam - fidèle - prier - hadj - communauté_musulman",
+      "count": 934
     },
     {
       "id": 38,
-      "label": "Femme - Femme Musulman - Feminin - Musulman",
-      "count": 112
+      "label": "pèlerin - hadj - pèlerinage - mecque - etat - organisation_hadj",
+      "count": 879
     },
     {
-      "id": 17,
-      "label": "Mosquee - Sunnite - Public - Vendredi",
-      "count": 110
+      "id": 2,
+      "label": "président - cérémonie - représentant - venir - islam - islamique",
+      "count": 731
     },
     {
-      "id": 67,
-      "label": "Cerfi - Colloque - Islamique - Theme",
-      "count": 110
-    },
-    {
-      "id": 40,
-      "label": "Agadez - Sultan - Gouverneur - Niger",
-      "count": 103
-    },
-    {
-      "id": 22,
-      "label": "Religion - Islam - Monde - Arabe",
-      "count": 100
-    },
-    {
-      "id": 23,
-      "label": "Libyen - Populaire - Arabe Libyen - Kadhafi",
-      "count": 100
-    },
-    {
-      "id": 62,
-      "label": "Place Idi - Idi - Fete - Fidele",
-      "count": 100
-    },
-    {
-      "id": 32,
-      "label": "Priere - Fidele - Place Nation - Musulman",
-      "count": 98
-    },
-    {
-      "id": 47,
-      "label": "Planification - Planification Familial - Familial - Religieux",
-      "count": 97
-    },
-    {
-      "id": 31,
-      "label": "Femme - Mariage - Homme - Voile",
-      "count": 91
-    },
-    {
-      "id": 30,
-      "label": "Place Idi - Idi - Priere - Fidele",
-      "count": 90
+      "id": 9,
+      "label": "imam - communauté_musulman - côte_ivoire - ivoirien - cosim - président",
+      "count": 664
     },
     {
       "id": 36,
-      "label": "Faib - Burkina - Faso - Federation",
-      "count": 89
+      "label": "venir - chose - temps - homme - prendre - trouver",
+      "count": 583
     },
     {
       "id": 29,
-      "label": "Sucre - Prix - Produit - Marche",
-      "count": 85
+      "label": "etat - politique - droit - question - ministre_intérieur - loi",
+      "count": 565
     },
     {
-      "id": 42,
-      "label": "Ahmadiyya - Islamique Ahmadiyya - Benin - Religion",
-      "count": 83
+      "id": 22,
+      "label": "dieu - homme - vie - foi - allah - prière",
+      "count": 545
     },
     {
-      "id": 55,
-      "label": "Mosquee - Plateau - Mosquee Plateau - Travail",
-      "count": 83
+      "id": 16,
+      "label": "jeûne - ramadan - mois - mois_ramadan - prière - allah",
+      "count": 526
     },
     {
-      "id": 28,
-      "label": "Medical - Campagne - Ahmadiyya - Patient",
-      "count": 81
+      "id": 3,
+      "label": "gbagbo - militaire - rdr - terrorisme - guerre - population",
+      "count": 524
     },
     {
-      "id": 35,
-      "label": "Conseil - Conseil Superieur - Superieur - Imam",
-      "count": 81
+      "id": 13,
+      "label": "islam - religion - religieux - islamique - jeune - société",
+      "count": 451
     },
     {
-      "id": 39,
-      "label": "Priere - Place Idi - Idi - Imam",
-      "count": 81
+      "id": 30,
+      "label": "togo - chef_etat - président - président_république - togolais - délégation",
+      "count": 394
     },
     {
-      "id": 51,
-      "label": "Jeune - Ramadan - Mois - Musulman",
-      "count": 80
+      "id": 19,
+      "label": "nuit - prophète - nuit_destin - islam - fidèle - occasion",
+      "count": 376
     },
     {
-      "id": 53,
-      "label": "Allah - Dieu - Homme - Foi",
-      "count": 80
+      "id": 12,
+      "label": "bénin - projet - développement - cotonou - fonds - financement",
+      "count": 374
     },
     {
-      "id": 63,
-      "label": "Coulibaly - Korhogo - Ivosep - Levee Corps",
-      "count": 75
+      "id": 11,
+      "label": "don - ong - offrir - geste - vivre - fondation",
+      "count": 360
     },
     {
-      "id": 61,
-      "label": "Jeune - Mois - Ramadan - Mois Ramadan",
-      "count": 73
+      "id": 18,
+      "label": "fête - tabaski - allah - fête_tabaski - sacrifice - dieu",
+      "count": 360
     },
     {
-      "id": 56,
-      "label": "Sana - Cmbf - Bureau - Congres",
-      "count": 71
+      "id": 10,
+      "label": "paix - religieux - chrétien - religion - dialogue - politique",
+      "count": 356
     },
     {
-      "id": 41,
-      "label": "Oci - Conference - Membre - Etat Membre",
-      "count": 70
+      "id": 4,
+      "label": "situation - permettre - problème - moyen - besoin - niveau",
+      "count": 290
     },
     {
-      "id": 54,
-      "label": "Enfant - Enfant Musulman - Journee Enfant - Journee Enfant Musulman",
-      "count": 67
+      "id": 21,
+      "label": "mouton - prix - marché - client - sacrifice - animal",
+      "count": 279
     },
     {
-      "id": 57,
-      "label": "Ahmadiyya - Islamique Ahmadiyya - Conference - Islamique",
-      "count": 65
+      "id": 8,
+      "label": "paix - président - réconciliation - occasion - nation - peuple",
+      "count": 226
+    },
+    {
+      "id": 1,
+      "label": "niger - sahel - développement - université - etat - domaine",
+      "count": 201
+    },
+    {
+      "id": 15,
+      "label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "count": 199
+    },
+    {
+      "id": 20,
+      "label": "vol - pèlerin - avion - départ - aéroport - heure",
+      "count": 173
+    },
+    {
+      "id": 0,
+      "label": "béninois - jeddah - fois - démarcheur - passer - heure",
+      "count": 148
+    },
+    {
+      "id": 27,
+      "label": "marabout - politique - ivoirien - côte_ivoire - homme - parti",
+      "count": 115
+    },
+    {
+      "id": 37,
+      "label": "date - fête - annoncer - lune - journée - calendrier",
+      "count": 110
+    },
+    {
+      "id": 32,
+      "label": "population - village - commune - région - santé - centre",
+      "count": 107
+    },
+    {
+      "id": 5,
+      "label": "femme - mariage - enfant - fille - homme - pratique",
+      "count": 101
+    },
+    {
+      "id": 14,
+      "label": "ministre - gouvernement - arabie_saoudite - air_afrique - mission - saoudien",
+      "count": 101
     },
     {
       "id": 34,
-      "label": "Mendicite - Mendiant - Enfant - Marabout",
-      "count": 58
+      "label": "peuple - visite - libyen - frère - délégation - libération",
+      "count": 100
     },
     {
-      "id": 64,
-      "label": "Faso - Arabie - Arabie Saoudite - Saoudite",
-      "count": 54
+      "id": 7,
+      "label": "école - élève - éducation - concours - formation - islamique",
+      "count": 98
     },
     {
-      "id": 66,
-      "label": "Ecole - Medersa - Enseignement - Arabe",
-      "count": 49
+      "id": 23,
+      "label": "afrique - africain - sénégalais - islamique - sénégal - arabe",
+      "count": 97
     },
     {
-      "id": 69,
-      "label": "Dialogue - Religieux - Colloque - Interreligieux",
-      "count": 49
+      "id": 39,
+      "label": "communauté_musulman_côte_ivoire - touré - korhogo - conseil - directeur - bamba",
+      "count": 85
     },
     {
-      "id": 70,
-      "label": "Mosquee - Imam - Yopougon - Quartier",
-      "count": 48
+      "id": 28,
+      "label": "burkina - burkina_faso - ouagadougou - burkinabè - ouédraogo - président",
+      "count": 39
     },
     {
-      "id": 52,
-      "label": "Groupe - Securite - Pouytenga - Terroriste",
-      "count": 45
+      "id": 26,
+      "label": "radio - groupe - média - presse - csi - émission",
+      "count": 36
     },
     {
-      "id": 49,
-      "label": "Radio - Bayane - Al Bayane - Al",
-      "count": 44
+      "id": 31,
+      "label": "enfant - mendicité - ville - parent - bobo_dioulasso - libanais",
+      "count": 35
     },
     {
-      "id": 60,
-      "label": "Heure Heure Heure - Heure Heure - Heure - Lunaire",
-      "count": 38
+      "id": 17,
+      "label": "côte_ivoire - ivoirien - abidjan - koné - bouaké - coulibaly",
+      "count": 22
     },
     {
-      "id": 68,
-      "label": "Presidium - Lune - Observation - Presidium Federation",
-      "count": 34
+      "id": 33,
+      "label": "maire - iman - député - mairie - communauté_musulman - président_union",
+      "count": 16
     },
     {
-      "id": 65,
-      "label": "Pelerin - Vague - Hadj - Lome",
-      "count": 33
+      "id": 24,
+      "label": "alassane_ouattara - côte_ivoire - cheikh - cheick - guide_religieux - communauté",
+      "count": 15
+    },
+    {
+      "id": 25,
+      "label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+      "count": 5
     }
   ],
   "ai_fields": [

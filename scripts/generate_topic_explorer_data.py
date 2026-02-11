@@ -44,26 +44,27 @@ def safe_str(x: Any) -> str:
 
 def clean_topic_label(label: str) -> str:
     """
-    Clean topic labels by:
-    1. Removing topic ID prefix (e.g., "91_" from "91_pouytenga_sécurité_faib_tenue")
-    2. Treating underscores as separators between tokens and joining tokens with " - "
-    3. Preserving internal spaces within tokens and normalizing whitespace
-    4. Capitalizing first letter of each word (keeps accents)
+    Clean topic labels for display.
+
+    LDA labels are already formatted as "Word1 - Word2 - Word3" and only
+    need whitespace normalisation.  Legacy BERTopic labels like
+    "91_pouytenga_sécurité_faib" are still handled for backwards
+    compatibility.
     """
     if not label:
         return label
-    
-    # Remove leading topic ID number and underscore (e.g., "91_" or "1_")
-    cleaned = re.sub(r'^\d+_', '', label.strip())
 
-    # Split on underscores to keep tokens (tokens may contain spaces already)
-    # Example: "jeûne musulman_ramadan musulman_muhammad_prophète muhammad"
-    #   -> ["jeûne musulman", "ramadan musulman", "muhammad", "prophète muhammad"]
+    stripped = label.strip()
+
+    # LDA labels: already in "Word - Word" format – normalise whitespace only
+    if " - " in stripped and not re.match(r'^\d+_', stripped):
+        return ' - '.join(part.strip() for part in stripped.split(' - ') if part.strip())
+
+    # Legacy BERTopic format: "91_pouytenga_sécurité_faib_tenue"
+    cleaned = re.sub(r'^\d+_', '', stripped)
     parts = [p.strip() for p in cleaned.split('_') if p and p.strip()]
 
-    # Normalize internal whitespace within each token and capitalize words
     def cap_words(s: str) -> str:
-        # Collapse multiple spaces then capitalize each word (preserve accents)
         normalized = ' '.join(s.split())
         return ' '.join(
             (w[0].upper() + w[1:].lower()) if len(w) > 1 else w.upper()
@@ -71,10 +72,7 @@ def clean_topic_label(label: str) -> str:
             if w
         )
 
-    capitalized_parts = [cap_words(p) for p in parts]
-
-    # Join tokens with a dash and spaces
-    return ' - '.join(capitalized_parts)
+    return ' - '.join(cap_words(p) for p in parts)
 
 
 def main():
@@ -105,6 +103,22 @@ def main():
     df = ds.to_pandas()
     if args.max_docs and len(df) > args.max_docs:
         df = df.head(args.max_docs)
+
+    # ── Map LDA columns to the generic names used downstream ──────────
+    lda_renames = {
+        "lda_topic_id": "topic_id",
+        "lda_topic_prob": "topic_prob",
+        "lda_topic_label": "topic_label",
+    }
+    present_lda = {k: v for k, v in lda_renames.items() if k in df.columns}
+    if present_lda:
+        # Drop old BERTopic columns to avoid duplicates after rename
+        old_cols = [v for v in present_lda.values() if v in df.columns]
+        if old_cols:
+            df = df.drop(columns=old_cols)
+            print(f"Dropped old columns: {old_cols}")
+        df = df.rename(columns=present_lda)
+        print(f"Mapped LDA columns: {present_lda}")
 
     # Expected columns (some may be missing depending on pipeline stage)
     maybe_cols = {
@@ -143,7 +157,7 @@ def main():
 
     # Drop rows without a topic_id
     if "topic_id" not in df_docs.columns:
-        raise SystemExit("The dataset does not include 'topic_id'. Run topic_modeling.py first.")
+        raise SystemExit("The dataset does not include 'topic_id' (or 'lda_topic_id'). Run the LDA topic modeling pipeline first.")
     df_docs = df_docs[df_docs["topic_id"].notnull()]
 
     # Summary aggregates

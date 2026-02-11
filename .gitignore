@@ -30,3 +30,4 @@ vite.config.ts.timestamp-*
 tmpclaude-*-cwd
 
 .venv
+scripts/__pycache__/
