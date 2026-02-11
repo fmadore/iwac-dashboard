@@ -1,6 +1,6 @@
 {
   "id": 15,
-  "label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+  "label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
   "count": 199,
   "avg_prob": 0.25106898882431,
   "counts_by_country": {
@@ -143,7 +143,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.5783442854881287,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-02",
       "date": null,
       "country": "Burkina Faso",
@@ -166,7 +166,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.5672461986541748,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1975-01-10",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -189,7 +189,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.513983428478241,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-08",
       "date": null,
       "country": "Burkina Faso",
@@ -212,7 +212,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.4957272708415985,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-02",
       "date": null,
       "country": "Burkina Faso",
@@ -235,7 +235,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.47424396872520447,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-03-06",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -258,7 +258,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.4418494403362274,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-09",
       "date": null,
       "country": "Burkina Faso",
@@ -281,7 +281,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.43208006024360657,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-14",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -304,7 +304,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.42862468957901,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-31",
       "date": null,
       "country": "Benin",
@@ -327,7 +327,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.40797334909439087,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1983-04-28",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -350,7 +350,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.40666407346725464,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-04-05",
       "date": null,
       "country": "Benin",
@@ -373,7 +373,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.40166404843330383,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1977-01-12",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -396,7 +396,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.39699697494506836,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-05",
       "date": null,
       "country": "Benin",
@@ -419,7 +419,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.39624640345573425,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2004-06-08",
       "date": null,
       "country": "Burkina Faso",
@@ -442,7 +442,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.39569857716560364,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1983-08-09",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -465,7 +465,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3946375250816345,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1979-06-07",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -488,7 +488,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.39407584071159363,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1972-05-20",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -511,7 +511,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3901109993457794,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-02",
       "date": null,
       "country": "Benin",
@@ -534,7 +534,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.38057538866996765,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-05",
       "date": null,
       "country": "Benin",
@@ -557,7 +557,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.37720465660095215,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-08",
       "date": null,
       "country": "Burkina Faso",
@@ -580,7 +580,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.36621907353401184,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2009-07-22",
       "date": null,
       "country": "Togo",
@@ -603,7 +603,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3657189607620239,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-04",
       "date": null,
       "country": "Burkina Faso",
@@ -626,7 +626,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3648007810115814,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2006-10-11",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -649,7 +649,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3622054159641266,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1978-02-08",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -672,7 +672,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3609168529510498,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1988-08-26",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -695,7 +695,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.360393226146698,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-06-20",
       "date": null,
       "country": "Burkina Faso",
@@ -718,7 +718,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3600137531757355,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1970-02-25",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -741,7 +741,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.35601580142974854,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-03",
       "date": null,
       "country": "Burkina Faso",
@@ -764,7 +764,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3539635241031647,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-04",
       "date": null,
       "country": "Burkina Faso",
@@ -787,7 +787,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.35378748178482056,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2004-05-06",
       "date": null,
       "country": "Burkina Faso",
@@ -810,7 +810,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3480222523212433,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-06",
       "date": null,
       "country": "Burkina Faso",
@@ -833,7 +833,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.34689903259277344,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-02",
       "date": null,
       "country": "Burkina Faso",
@@ -856,7 +856,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3448620140552521,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-07-28",
       "date": null,
       "country": "Benin",
@@ -879,7 +879,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.344407320022583,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-08-19",
       "date": null,
       "country": "Benin",
@@ -902,7 +902,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3439476788043976,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-08-17",
       "date": null,
       "country": "Benin",
@@ -925,7 +925,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3430856764316559,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-07-29",
       "date": null,
       "country": "Benin",
@@ -948,7 +948,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3375649154186249,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2006-05-29",
       "date": null,
       "country": "Burkina Faso",
@@ -971,7 +971,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3348454236984253,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-09-11",
       "date": null,
       "country": "Burkina Faso",
@@ -994,7 +994,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.33131545782089233,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-02",
       "date": null,
       "country": "Benin",
@@ -1017,7 +1017,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.32687145471572876,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-10-05",
       "date": null,
       "country": "Burkina Faso",
@@ -1040,7 +1040,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.32517823576927185,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1997-12-18",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1063,7 +1063,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3245394229888916,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-12",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1086,7 +1086,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.32347023487091064,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-13",
       "date": null,
       "country": "Burkina Faso",
@@ -1109,7 +1109,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3206494152545929,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-04-26",
       "date": null,
       "country": "Benin",
@@ -1132,7 +1132,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3202621638774872,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-09",
       "date": null,
       "country": "Benin",
@@ -1155,7 +1155,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3123376965522766,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-05-22",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1178,7 +1178,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3110254108905792,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-28",
       "date": null,
       "country": "Benin",
@@ -1201,7 +1201,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3103978633880615,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-09",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1224,7 +1224,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.3056620955467224,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-07-28",
       "date": null,
       "country": "Benin",
@@ -1247,7 +1247,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.30526188015937805,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2011-07-10",
       "date": null,
       "country": "Burkina Faso",
@@ -1270,7 +1270,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.30070799589157104,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1975-02-28",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1293,7 +1293,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.30045461654663086,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-02-06",
       "date": null,
       "country": "Burkina Faso",
@@ -1316,7 +1316,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2986365258693695,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-09-21",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1339,7 +1339,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2978533208370209,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1996-02-02",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1362,7 +1362,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.294216126203537,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-27",
       "date": null,
       "country": "Benin",
@@ -1385,7 +1385,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.29419881105422974,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-10-26",
       "date": null,
       "country": "Burkina Faso",
@@ -1408,7 +1408,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2920457124710083,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-05-17",
       "date": null,
       "country": "Burkina Faso",
@@ -1431,7 +1431,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2913183867931366,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-05-16",
       "date": null,
       "country": "Burkina Faso",
@@ -1454,7 +1454,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2911398112773895,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-10-23",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1477,7 +1477,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2833739221096039,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-07-28",
       "date": null,
       "country": "Benin",
@@ -1500,7 +1500,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2817924916744232,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2008-10-28",
       "date": null,
       "country": "Togo",
@@ -1523,7 +1523,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.28174975514411926,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-08-17",
       "date": null,
       "country": "Benin",
@@ -1546,7 +1546,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2808428108692169,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2005-09-10",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1569,7 +1569,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2799720764160156,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-02-04",
       "date": null,
       "country": "Burkina Faso",
@@ -1592,7 +1592,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.27945321798324585,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1999-06-25",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1615,7 +1615,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2788465917110443,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-29",
       "date": null,
       "country": "Benin",
@@ -1638,7 +1638,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.27293360233306885,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1976-08-25",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1661,7 +1661,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.27218255400657654,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2002-11-07",
       "date": null,
       "country": "Togo",
@@ -1684,7 +1684,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.27071288228034973,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2014-07-08",
       "date": null,
       "country": "Burkina Faso",
@@ -1707,7 +1707,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2673514783382416,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2022-03-28",
       "date": null,
       "country": "Togo",
@@ -1730,7 +1730,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2638413906097412,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-07-23",
       "date": null,
       "country": "Benin",
@@ -1753,7 +1753,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.25878027081489563,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2010-10-15",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1776,7 +1776,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.25740793347358704,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-05-22",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1799,7 +1799,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.25734880566596985,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2001-08-28",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -1822,7 +1822,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.25660160183906555,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-07-15",
       "date": null,
       "country": "Burkina Faso",
@@ -1845,7 +1845,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2564878761768341,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-12-29",
       "date": null,
       "country": "Burkina Faso",
@@ -1868,7 +1868,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.25521716475486755,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1980-04-16",
       "date": null,
       "country": "Burkina Faso",
@@ -1891,7 +1891,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2529038190841675,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-20",
       "date": null,
       "country": "Benin",
@@ -1914,7 +1914,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2528918385505676,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2015-04-21",
       "date": null,
       "country": "Togo",
@@ -1937,7 +1937,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.25181034207344055,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-19",
       "date": null,
       "country": "Benin",
@@ -1960,7 +1960,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2483123391866684,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-07-17",
       "date": null,
       "country": "Burkina Faso",
@@ -1983,7 +1983,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24724946916103363,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-09-17",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2006,7 +2006,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24646437168121338,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1987-05-25",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2029,7 +2029,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24612100422382355,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-07-27",
       "date": null,
       "country": "Benin",
@@ -2052,7 +2052,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2448541224002838,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1987-09-10",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2075,7 +2075,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24467086791992188,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-04-04",
       "date": null,
       "country": "Benin",
@@ -2098,7 +2098,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24297989904880524,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2008-11-12",
       "date": null,
       "country": "Togo",
@@ -2121,7 +2121,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2426764816045761,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-06-29",
       "date": null,
       "country": "Benin",
@@ -2144,7 +2144,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24262961745262146,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-19",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2167,7 +2167,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24250219762325287,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2008-11-20",
       "date": null,
       "country": "Togo",
@@ -2190,7 +2190,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2422705590724945,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1977-09-20",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2213,7 +2213,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.24151717126369476,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-03-03",
       "date": null,
       "country": "Togo",
@@ -2236,7 +2236,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23975536227226257,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1996-03-08",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2259,7 +2259,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23972274363040924,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2016-05-07",
       "date": null,
       "country": "Burkina Faso",
@@ -2282,7 +2282,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2395727038383484,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-05-28",
       "date": null,
       "country": "Burkina Faso",
@@ -2305,7 +2305,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2389315515756607,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2013-05-28",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2328,7 +2328,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23863887786865234,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2003-11-07",
       "date": null,
       "country": "Togo",
@@ -2351,7 +2351,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23863309621810913,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1987-05-14",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2374,7 +2374,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23855163156986237,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1993-08-13",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2397,7 +2397,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2372351884841919,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-04-18",
       "date": null,
       "country": "Benin",
@@ -2420,7 +2420,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23634225130081177,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2013-04-09",
       "date": null,
       "country": "Benin",
@@ -2443,7 +2443,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23595784604549408,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-08-20",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2466,7 +2466,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23539423942565918,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-19",
       "date": null,
       "country": "Benin",
@@ -2489,7 +2489,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23360279202461243,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2004-06-01",
       "date": null,
       "country": "Burkina Faso",
@@ -2512,7 +2512,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23340190947055817,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-19",
       "date": null,
       "country": "Benin",
@@ -2535,7 +2535,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23232543468475342,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1971-01-05",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2558,7 +2558,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23230040073394775,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-09-04",
       "date": null,
       "country": "Benin",
@@ -2581,7 +2581,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2320890873670578,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-07-18",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2604,7 +2604,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23202380537986755,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1975-08-02",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2627,7 +2627,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23195217549800873,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-19",
       "date": null,
       "country": "Burkina Faso",
@@ -2650,7 +2650,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23063629865646362,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-12-18",
       "date": null,
       "country": "Togo",
@@ -2673,7 +2673,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.23055849969387054,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-09-28",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2696,7 +2696,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.229207381606102,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1999-12-01",
       "date": null,
       "country": "Togo",
@@ -2719,7 +2719,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.22907349467277527,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2008-03-28",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2742,7 +2742,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.22750528156757355,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1995-10-03",
       "date": null,
       "country": "Togo",
@@ -2765,7 +2765,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.22749903798103333,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-15",
       "date": null,
       "country": "Benin",
@@ -2788,7 +2788,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.22699382901191711,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2003-10-06",
       "date": null,
       "country": "Togo",
@@ -2811,7 +2811,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2269919365644455,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-18",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2834,7 +2834,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2237667441368103,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-22",
       "date": null,
       "country": "Burkina Faso",
@@ -2857,7 +2857,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2201889455318451,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2015-08-17",
       "date": null,
       "country": "Benin",
@@ -2880,7 +2880,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.21914461255073547,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-12-04",
       "date": null,
       "country": "Togo",
@@ -2903,7 +2903,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.21752548217773438,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-05-22",
       "date": null,
       "country": "Burkina Faso",
@@ -2926,7 +2926,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.21735669672489166,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-07-31",
       "date": null,
       "country": "Burkina Faso",
@@ -2949,7 +2949,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2137708216905594,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2011-11-30",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2972,7 +2972,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.21344870328903198,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1972-06-20",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -2995,7 +2995,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.21181917190551758,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-08-17",
       "date": null,
       "country": "Benin",
@@ -3018,7 +3018,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2115810364484787,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1974-05-07",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3041,7 +3041,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.21148309111595154,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2009-11-30",
       "date": null,
       "country": "Togo",
@@ -3064,7 +3064,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.2093650996685028,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2011-11-24",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3087,7 +3087,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.208116814494133,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1976-08-07",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3110,7 +3110,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20491713285446167,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2009-04-06",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3133,7 +3133,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20376640558242798,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2004-07-08",
       "date": null,
       "country": "Togo",
@@ -3156,7 +3156,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20278625190258026,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-11-23",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3179,7 +3179,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20222054421901703,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-09-10",
       "date": null,
       "country": "Burkina Faso",
@@ -3202,7 +3202,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20193403959274292,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-09-23",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3225,7 +3225,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20185555517673492,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-11-03",
       "date": null,
       "country": "Benin",
@@ -3248,7 +3248,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.20129069685935974,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1993-02-23",
       "date": null,
       "country": "Burkina Faso",
@@ -3271,7 +3271,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19881239533424377,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-06-06",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3294,7 +3294,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19865329563617706,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-29",
       "date": null,
       "country": "Niger",
@@ -3317,7 +3317,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1967572420835495,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-06-24",
       "date": null,
       "country": "Benin",
@@ -3340,7 +3340,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19633132219314575,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-05-22",
       "date": null,
       "country": "Burkina Faso",
@@ -3363,7 +3363,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19306161999702454,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2002-10-22",
       "date": null,
       "country": "Togo",
@@ -3386,7 +3386,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19249984622001648,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2021-08-26",
       "date": null,
       "country": "Benin",
@@ -3409,7 +3409,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19159148633480072,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-06-10",
       "date": null,
       "country": "Burkina Faso",
@@ -3432,7 +3432,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.19110257923603058,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1999-05-04",
       "date": null,
       "country": "Burkina Faso",
@@ -3455,7 +3455,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.18937788903713226,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2008-03-10",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3478,7 +3478,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.18897290527820587,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-05-08",
       "date": null,
       "country": "Burkina Faso",
@@ -3501,7 +3501,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.188730388879776,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-06-27",
       "date": null,
       "country": "Benin",
@@ -3524,7 +3524,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1840227097272873,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2014-04-27",
       "date": null,
       "country": "Burkina Faso",
@@ -3547,7 +3547,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.18337705731391907,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2008-08-19",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3570,7 +3570,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1810719519853592,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1979-08-08",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3593,7 +3593,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.18012164533138275,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-03-03",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3616,7 +3616,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1800113469362259,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2009-04-16",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3639,7 +3639,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17933593690395355,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1979-04-24",
       "date": null,
       "country": "Burkina Faso",
@@ -3662,7 +3662,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17892494797706604,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-04-03",
       "date": null,
       "country": "Burkina Faso",
@@ -3685,7 +3685,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17618878185749054,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-03-04",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3708,7 +3708,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17581845819950104,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2015-11-23",
       "date": null,
       "country": "Togo",
@@ -3731,7 +3731,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1754894107580185,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-01-16",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3754,7 +3754,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17311391234397888,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-09-29",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3777,7 +3777,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17214208841323853,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1980-10-18",
       "date": null,
       "country": "Togo",
@@ -3800,7 +3800,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1720525324344635,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2004-01-23",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3823,7 +3823,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17164869606494904,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2006-07-25",
       "date": null,
       "country": "Togo",
@@ -3846,7 +3846,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.17110960185527802,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1983-04-02",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3869,7 +3869,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16991889476776123,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-08-22",
       "date": null,
       "country": "Burkina Faso",
@@ -3892,7 +3892,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16905465722084045,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2009-03-10",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3915,7 +3915,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16865450143814087,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-06-08",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3938,7 +3938,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1681043952703476,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2000-02-15",
       "date": null,
       "country": "Burkina Faso",
@@ -3961,7 +3961,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16799607872962952,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1999-09-04",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -3984,7 +3984,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1675863116979599,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-07-15",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4007,7 +4007,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16639496386051178,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-07-31",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4030,7 +4030,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1658903807401657,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-02-13",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4053,7 +4053,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1654113382101059,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-04-26",
       "date": null,
       "country": "Benin",
@@ -4076,7 +4076,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16517843306064606,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-09-23",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4099,7 +4099,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.165125772356987,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1996-07-01",
       "date": null,
       "country": "Burkina Faso",
@@ -4122,7 +4122,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16419482231140137,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1996-04-11",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4145,7 +4145,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16160698235034943,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1986-04-17",
       "date": null,
       "country": "Benin",
@@ -4168,7 +4168,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16065539419651031,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2019-09-05",
       "date": null,
       "country": "Burkina Faso",
@@ -4191,7 +4191,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.16020134091377258,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-26",
       "date": null,
       "country": "Benin",
@@ -4214,7 +4214,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1598828285932541,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1990-09-18",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4237,7 +4237,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1558717042207718,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1992-03-03",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4260,7 +4260,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.15492863953113556,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2024-04-08",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4283,7 +4283,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.15276207029819489,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1999-11-23",
       "date": null,
       "country": "Togo",
@@ -4306,7 +4306,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.15236130356788635,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2007-04-10",
       "date": null,
       "country": "Burkina Faso",
@@ -4329,7 +4329,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.15124483406543732,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1999-12-17",
       "date": null,
       "country": "Burkina Faso",
@@ -4352,7 +4352,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.14938192069530487,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-06-14",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4375,7 +4375,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.14733923971652985,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2005-09-10",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4398,7 +4398,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1379062831401825,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2005-08-10",
       "date": null,
       "country": "Togo",
@@ -4421,7 +4421,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.13734294474124908,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-03-21",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4444,7 +4444,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.13505345582962036,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1996-07-02",
       "date": null,
       "country": "Burkina Faso",
@@ -4467,7 +4467,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.13492561876773834,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1991-11-07",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4490,7 +4490,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1338435411453247,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1977-11-21",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4513,7 +4513,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.13377787172794342,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2012-08-14",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4536,7 +4536,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1285126954317093,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1998-05-25",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4559,7 +4559,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1276710331439972,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1987-05-09",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4582,7 +4582,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.12595973908901215,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-05",
       "date": null,
       "country": "Niger",
@@ -4605,7 +4605,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.12070252001285553,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-04-16",
       "date": null,
       "country": "Burkina Faso",
@@ -4628,7 +4628,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.11520413309335709,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1994-08-20",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4651,7 +4651,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.11380476504564285,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "1993-01-01",
       "date": null,
       "country": "Côte d'Ivoire",
@@ -4674,7 +4674,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.1108403131365776,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2020-03-19",
       "date": null,
       "country": "Burkina Faso",
@@ -4697,7 +4697,7 @@
     {
       "topic_id": 15.0,
       "topic_prob": 0.10197277367115021,
-      "topic_label": "mosquée - fidèle - prière - quartier - lieu_culte - fidèle_musulman",
+      "topic_label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
       "pub_date": "2017-03-06",
       "date": null,
       "country": "Côte d'Ivoire",

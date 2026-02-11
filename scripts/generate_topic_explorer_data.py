@@ -56,9 +56,12 @@ def clean_topic_label(label: str) -> str:
 
     stripped = label.strip()
 
-    # LDA labels: already in "Word - Word" format – normalise whitespace only
+    # LDA labels: already in "Word - Word" format
+    # Phrases joined by underscores (e.g. côte_ivoire, président_république)
+    # are converted to spaces for display.
     if " - " in stripped and not re.match(r'^\d+_', stripped):
-        return ' - '.join(part.strip() for part in stripped.split(' - ') if part.strip())
+        parts = [part.strip().replace('_', ' ') for part in stripped.split(' - ') if part.strip()]
+        return ' - '.join(parts)
 
     # Legacy BERTopic format: "91_pouytenga_sécurité_faib_tenue"
     cleaned = re.sub(r'^\d+_', '', stripped)
@@ -205,6 +208,9 @@ def main():
         keep_cols = [c for c in doc_fields if c in sub.columns]
         for _, row in sub.iterrows():
             d = {c: (None if pd.isna(row[c]) else row[c]) for c in keep_cols}
+            # Clean underscore-joined phrases in per-document topic labels
+            if d.get("topic_label"):
+                d["topic_label"] = d["topic_label"].replace('_', ' ')
             docs.append(d)
 
         topic_blob = {

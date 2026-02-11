@@ -1,6 +1,6 @@
 {
   "id": 25,
-  "label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+  "label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
   "count": 5,
   "avg_prob": 0.2270165979862213,
   "counts_by_country": {
@@ -26,7 +26,7 @@
     {
       "topic_id": 25.0,
       "topic_prob": 0.38530686497688293,
-      "topic_label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+      "topic_label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
       "pub_date": "2002-12-30",
       "date": null,
       "country": "Burkina Faso",
@@ -49,7 +49,7 @@
     {
       "topic_id": 25.0,
       "topic_prob": 0.21072930097579956,
-      "topic_label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+      "topic_label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
       "pub_date": "2024-05-20",
       "date": null,
       "country": "Burkina Faso",
@@ -72,7 +72,7 @@
     {
       "topic_id": 25.0,
       "topic_prob": 0.18187177181243896,
-      "topic_label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+      "topic_label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
       "pub_date": "2008-01-31",
       "date": null,
       "country": "Burkina Faso",
@@ -95,7 +95,7 @@
     {
       "topic_id": 25.0,
       "topic_prob": 0.18101970851421356,
-      "topic_label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+      "topic_label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
       "pub_date": "2023-11-20",
       "date": null,
       "country": "Togo",
@@ -118,7 +118,7 @@
     {
       "topic_id": 25.0,
       "topic_prob": 0.17615534365177155,
-      "topic_label": "campagne - opération - islamique_ahmadiyya - ahmadiyya - amir - distribution",
+      "topic_label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
       "pub_date": "2008-04-22",
       "date": null,
       "country": "Burkina Faso",

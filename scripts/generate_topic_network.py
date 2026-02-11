@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 import argparse
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 from statistics import fmean
 
@@ -80,11 +80,12 @@ def extract_keywords(label: str) -> List[str]:
     """Extract keywords from topic label.
 
     Topic labels are in format: "Keyword1 - Keyword2 - Keyword3 - ..."
+    Underscore-joined phrases (e.g. côte_ivoire) are converted to spaces.
     """
     if not label or label == 'Outlier':
         return []
 
-    keywords = [kw.strip() for kw in label.split(' - ') if kw.strip()]
+    keywords = [kw.strip().replace('_', ' ') for kw in label.split(' - ') if kw.strip()]
     return keywords[:5]  # Limit to first 5 keywords
 
 
@@ -241,7 +242,7 @@ def build_topic_network(args):
         'nodes': nodes,
         'edges': edges,
         'meta': {
-            'generatedAt': datetime.utcnow().isoformat() + 'Z',
+            'generatedAt': datetime.now(timezone.utc).isoformat(),
             'totalNodes': len(nodes),
             'totalTopics': topic_nodes_count,
             'totalArticles': article_nodes_count,
