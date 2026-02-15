@@ -1,12 +1,12 @@
 {
   "metadata": {
     "repository": "fmadore/islam-west-africa-collection",
-    "generated_at": "2026-02-08T03:01:57.467266",
+    "generated_at": "2026-02-15T03:01:56.279561",
     "script_version": "1.0"
   },
   "summary": {
     "total_items": 14723,
-    "total_words": 28140130,
+    "total_words": 28142934,
     "total_pages": 24045,
     "total_duration_minutes": 9315,
     "countries": 6,
@@ -63,9 +63,9 @@
   "by_dataset": {
     "articles": {
       "total_records": 12287,
-      "total_words": 8004340,
+      "total_words": 8007144,
       "total_pages": 7579,
-      "records_with_word_count": 12280,
+      "records_with_word_count": 12286,
       "records_with_page_count": 5917,
       "records_with_ocr": 12286
     },
