@@ -1,0 +1,156 @@
+{
+  "nodeTypes": {
+    "Person": {
+      "label": {
+        "en": "Person",
+        "fr": "Personne"
+      },
+      "color": "var(--chart-1)",
+      "description": {
+        "en": "Individual people (religious figures, politicians, intellectuals)",
+        "fr": "Individus (figures religieuses, politiciens, intellectuels)"
+      }
+    },
+    "Organization": {
+      "label": {
+        "en": "Organization",
+        "fr": "Organisation"
+      },
+      "color": "var(--chart-2)",
+      "description": {
+        "en": "Islamic associations, NGOs, movements, institutions",
+        "fr": "Associations islamiques, ONG, mouvements, institutions"
+      }
+    },
+    "Place": {
+      "label": {
+        "en": "Place",
+        "fr": "Lieu"
+      },
+      "color": "var(--chart-3)",
+      "description": {
+        "en": "Cities, regions, countries, mosques",
+        "fr": "Villes, régions, pays, mosquées"
+      }
+    },
+    "Event": {
+      "label": {
+        "en": "Event",
+        "fr": "Événement"
+      },
+      "color": "var(--chart-4)",
+      "description": {
+        "en": "Conferences, congresses, elections, festivals",
+        "fr": "Conférences, congrès, élections, festivals"
+      }
+    },
+    "Subject": {
+      "label": {
+        "en": "Subject",
+        "fr": "Sujet"
+      },
+      "color": "var(--chart-5)",
+      "description": {
+        "en": "Thematic topics and keywords",
+        "fr": "Sujets thématiques et mots-clés"
+      }
+    },
+    "Authority": {
+      "label": {
+        "en": "Authority Record",
+        "fr": "Notice d'autorité"
+      },
+      "color": "var(--muted)",
+      "description": {
+        "en": "Authority records and cross-references",
+        "fr": "Notices d'autorité et renvois"
+      }
+    }
+  },
+  "edgeTypes": {
+    "part_of": {
+      "label": {
+        "en": "Part of",
+        "fr": "Partie de"
+      },
+      "directed": true,
+      "layer": "explicit",
+      "description": {
+        "en": "Hierarchical membership or containment",
+        "fr": "Appartenance hiérarchique"
+      }
+    },
+    "has_part": {
+      "label": {
+        "en": "Has part",
+        "fr": "A une partie"
+      },
+      "directed": true,
+      "layer": "explicit",
+      "description": {
+        "en": "Inverse of part_of",
+        "fr": "Inverse de partie de"
+      }
+    },
+    "related_to": {
+      "label": {
+        "en": "Related to",
+        "fr": "Lié à"
+      },
+      "directed": false,
+      "layer": "explicit",
+      "description": {
+        "en": "General relationship between entities",
+        "fr": "Relation générale entre entités"
+      }
+    },
+    "succeeded_by": {
+      "label": {
+        "en": "Succeeded by",
+        "fr": "Remplacé par"
+      },
+      "directed": true,
+      "layer": "explicit",
+      "description": {
+        "en": "Temporal succession",
+        "fr": "Succession temporelle"
+      }
+    },
+    "located_in": {
+      "label": {
+        "en": "Located in",
+        "fr": "Situé à"
+      },
+      "directed": true,
+      "layer": "explicit",
+      "description": {
+        "en": "Entity is located in or associated with a place",
+        "fr": "Entité située ou associée à un lieu"
+      }
+    },
+    "co_occurs_with": {
+      "label": {
+        "en": "Co-occurs with",
+        "fr": "Co-occurrence avec"
+      },
+      "directed": false,
+      "layer": "inferred",
+      "description": {
+        "en": "Entities frequently mentioned together in articles",
+        "fr": "Entités fréquemment mentionnées ensemble dans les articles"
+      }
+    },
+    "co_authored_with": {
+      "label": {
+        "en": "Co-authored with",
+        "fr": "Co-auteur avec"
+      },
+      "directed": false,
+      "layer": "inferred",
+      "description": {
+        "en": "Authors who co-wrote academic references",
+        "fr": "Auteurs ayant co-écrit des références académiques"
+      }
+    }
+  }
+}

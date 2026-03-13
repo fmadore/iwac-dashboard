@@ -1,205 +1,155 @@
 {
   "total_docs": 12234,
-  "unique_topics": 40,
+  "unique_topics": 30,
   "topics": [
     {
-      "id": 35,
-      "label": "association - jeune - activité - organiser - formation - permettre",
-      "count": 1014
-    },
-    {
-      "id": 6,
-      "label": "prière - imam - fidèle - prier - hadj - communauté musulman",
-      "count": 934
-    },
-    {
-      "id": 38,
-      "label": "pèlerin - hadj - pèlerinage - mecque - etat - organisation hadj",
-      "count": 879
-    },
-    {
-      "id": 2,
-      "label": "président - cérémonie - représentant - venir - islam - islamique",
-      "count": 731
-    },
-    {
-      "id": 9,
-      "label": "imam - communauté musulman - côte ivoire - ivoirien - cosim - président",
-      "count": 664
-    },
-    {
-      "id": 36,
-      "label": "venir - chose - temps - homme - prendre - trouver",
-      "count": 583
-    },
-    {
-      "id": 29,
-      "label": "etat - politique - droit - question - ministre intérieur - loi",
-      "count": 565
-    },
-    {
-      "id": 22,
-      "label": "dieu - homme - vie - foi - allah - prière",
-      "count": 545
-    },
-    {
-      "id": 16,
-      "label": "jeûne - ramadan - mois - mois ramadan - prière - allah",
-      "count": 526
-    },
-    {
-      "id": 3,
-      "label": "gbagbo - militaire - rdr - terrorisme - guerre - population",
-      "count": 524
-    },
-    {
-      "id": 13,
-      "label": "islam - religion - religieux - islamique - jeune - société",
-      "count": 451
-    },
-    {
-      "id": 30,
-      "label": "togo - chef etat - président - président république - togolais - délégation",
-      "count": 394
-    },
-    {
-      "id": 19,
-      "label": "nuit - prophète - nuit destin - islam - fidèle - occasion",
-      "count": 376
-    },
-    {
-      "id": 12,
-      "label": "bénin - projet - développement - cotonou - fonds - financement",
-      "count": 374
-    },
-    {
-      "id": 11,
-      "label": "don - ong - offrir - geste - vivre - fondation",
-      "count": 360
-    },
-    {
-      "id": 18,
-      "label": "fête - tabaski - allah - fête tabaski - sacrifice - dieu",
-      "count": 360
+      "id": 28,
+      "label": "imam - mosquée - prière - communauté musulman - fidèle - hadj",
+      "count": 1660
     },
     {
       "id": 10,
-      "label": "paix - religieux - chrétien - religion - dialogue - politique",
-      "count": 356
+      "label": "politique - religieux - aucun - religion - etat - raison",
+      "count": 1153
     },
     {
-      "id": 4,
-      "label": "situation - permettre - problème - moyen - besoin - niveau",
-      "count": 290
-    },
-    {
-      "id": 21,
-      "label": "mouton - prix - marché - client - sacrifice - animal",
-      "count": 279
-    },
-    {
-      "id": 8,
-      "label": "paix - président - réconciliation - occasion - nation - peuple",
-      "count": 226
-    },
-    {
-      "id": 1,
-      "label": "niger - sahel - développement - université - etat - domaine",
-      "count": 201
-    },
-    {
-      "id": 15,
-      "label": "mosquée - fidèle - prière - quartier - lieu culte - fidèle musulman",
-      "count": 199
-    },
-    {
-      "id": 20,
-      "label": "vol - pèlerin - avion - départ - aéroport - heure",
-      "count": 173
-    },
-    {
-      "id": 0,
-      "label": "béninois - jeddah - fois - démarcheur - passer - heure",
-      "count": 148
-    },
-    {
-      "id": 27,
-      "label": "marabout - politique - ivoirien - côte ivoire - homme - parti",
-      "count": 115
-    },
-    {
-      "id": 37,
-      "label": "date - fête - annoncer - lune - journée - calendrier",
-      "count": 110
-    },
-    {
-      "id": 32,
-      "label": "population - village - commune - région - santé - centre",
-      "count": 107
-    },
-    {
-      "id": 5,
-      "label": "femme - mariage - enfant - fille - homme - pratique",
-      "count": 101
-    },
-    {
-      "id": 14,
-      "label": "ministre - gouvernement - arabie saoudite - air afrique - mission - saoudien",
-      "count": 101
-    },
-    {
-      "id": 34,
-      "label": "peuple - visite - libyen - frère - délégation - libération",
-      "count": 100
-    },
-    {
-      "id": 7,
-      "label": "école - élève - éducation - concours - formation - islamique",
-      "count": 98
+      "id": 2,
+      "label": "pèlerin - hadj - pèlerinage - mecque - organisation hadj - arabie saoudite",
+      "count": 1025
     },
     {
       "id": 23,
-      "label": "afrique - africain - sénégalais - islamique - sénégal - arabe",
-      "count": 97
+      "label": "paix - religion - communauté - religieux - message - islam",
+      "count": 882
     },
     {
-      "id": 39,
-      "label": "communauté musulman côte ivoire - touré - korhogo - conseil - directeur - bamba",
-      "count": 85
+      "id": 22,
+      "label": "don - population - ong - offrir - geste - action",
+      "count": 693
     },
     {
-      "id": 28,
-      "label": "burkina - burkina faso - ouagadougou - burkinabè - ouédraogo - président",
-      "count": 39
+      "id": 20,
+      "label": "cosim - ici - jeune - attendre - homme - rdr",
+      "count": 633
     },
     {
-      "id": 26,
-      "label": "radio - groupe - média - presse - csi - émission",
-      "count": 36
+      "id": 0,
+      "label": "etat - gouvernement - ministre - mesure - concerner - décision",
+      "count": 528
     },
     {
-      "id": 31,
-      "label": "enfant - mendicité - ville - parent - bobo dioulasso - libanais",
-      "count": 35
+      "id": 16,
+      "label": "président - politique - réconciliation - candidat - élection - crise",
+      "count": 524
     },
     {
-      "id": 17,
-      "label": "côte ivoire - ivoirien - abidjan - koné - bouaké - coulibaly",
-      "count": 22
+      "id": 7,
+      "label": "développement - économique - afrique - projet - islamique - travers",
+      "count": 510
     },
     {
-      "id": 33,
-      "label": "maire - iman - député - mairie - communauté musulman - président union",
-      "count": 16
-    },
-    {
-      "id": 24,
-      "label": "alassane ouattara - côte ivoire - cheikh - cheick - guide religieux - communauté",
-      "count": 15
+      "id": 21,
+      "label": "association - jeune - président - membre - congrès - jeunesse",
+      "count": 482
     },
     {
       "id": 25,
-      "label": "campagne - opération - islamique ahmadiyya - ahmadiyya - amir - distribution",
+      "label": "école - enfant - éducation - formation - élève - activité",
+      "count": 422
+    },
+    {
+      "id": 13,
+      "label": "fête - mouton - tabaski - sacrifice - prix - fête tabaski",
+      "count": 417
+    },
+    {
+      "id": 8,
+      "label": "jeûne - ramadan - prière - carême - jeûner - jeûne ramadan",
+      "count": 394
+    },
+    {
+      "id": 5,
+      "label": "ministre - président - délégation - visite - chef etat - ambassadeur",
+      "count": 327
+    },
+    {
+      "id": 14,
+      "label": "islamique - islam - séminaire - conférence - thème - conférencier",
+      "count": 318
+    },
+    {
+      "id": 12,
+      "label": "militaire - terrorisme - population - attaque - armée - terroriste",
+      "count": 313
+    },
+    {
+      "id": 19,
+      "label": "dieu - homme - prière - foi - vie - chrétien",
+      "count": 312
+    },
+    {
+      "id": 18,
+      "label": "projet - construction - réaliser - centre - service - réalisation",
+      "count": 311
+    },
+    {
+      "id": 6,
+      "label": "islam - allah - dieu - prophète - coran - vie",
+      "count": 293
+    },
+    {
+      "id": 27,
+      "label": "femme - enfant - mariage - fille - homme - radio",
+      "count": 291
+    },
+    {
+      "id": 11,
+      "label": "nuit - fête - nuit destin - célébrer - anniversaire - journée",
+      "count": 181
+    },
+    {
+      "id": 29,
+      "label": "université - arabe - étudiant - islamique - école - professeur",
+      "count": 139
+    },
+    {
+      "id": 17,
+      "label": "chef état - président - parti - hommage - défunt - famille",
+      "count": 137
+    },
+    {
+      "id": 3,
+      "label": "peuple - africain - libye - afrique - culture - indépendance",
+      "count": 83
+    },
+    {
+      "id": 4,
+      "label": "village - charlatan - cheik - population - hommage - groupe",
+      "count": 63
+    },
+    {
+      "id": 1,
+      "label": "pasteur - chrétien - église - religieux - catholique - évêque",
+      "count": 49
+    },
+    {
+      "id": 26,
+      "label": "islam - cheick - communauté musulman - religion - communauté - islamique",
+      "count": 46
+    },
+    {
+      "id": 15,
+      "label": "marabout - cheikh - maraboutage - page - consulter - maroc",
+      "count": 24
+    },
+    {
+      "id": 9,
+      "label": "enquête - affaire - victime - payer - admettre - zakat",
+      "count": 19
+    },
+    {
+      "id": 24,
+      "label": "député - koumassi - district - vih sida - gouverneur - sida",
       "count": 5
     }
   ],

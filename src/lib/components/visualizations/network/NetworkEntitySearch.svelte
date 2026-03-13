@@ -4,7 +4,7 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import type { GlobalNetworkNode, EntityType } from '$lib/types/network.js';
-	import { Search, X, Users, Building2, Calendar, Tag, MapPin, Hash, FileText } from '@lucide/svelte';
+	import { Search, X, Users, Building2, Calendar, Tag, MapPin, Hash, FileText, BookMarked } from '@lucide/svelte';
 
 	interface Props {
 		nodes: GlobalNetworkNode[];
@@ -31,7 +31,8 @@
 		location: MapPin,
 		topic: Hash,
 		article: FileText,
-		author: Users
+		author: Users,
+		authority: BookMarked
 	};
 
 	// Entity type colors
@@ -43,7 +44,8 @@
 		location: '#ec4899',
 		topic: '#22c55e',
 		article: '#3b82f6',
-		author: '#3b82f6'
+		author: '#3b82f6',
+		authority: '#78716c'
 	};
 
 	// Filter nodes based on search query

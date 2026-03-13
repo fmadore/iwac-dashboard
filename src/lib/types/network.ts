@@ -90,7 +90,7 @@ export interface SpatialNetworkData {
 }
 
 /** Entity types in the global network */
-export type EntityType = 'person' | 'organization' | 'event' | 'subject' | 'location' | 'topic' | 'article' | 'author';
+export type EntityType = 'person' | 'organization' | 'event' | 'subject' | 'location' | 'topic' | 'article' | 'author' | 'authority';
 
 /** Node structure for global network (multi-entity) */
 export interface GlobalNetworkNode {

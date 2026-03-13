@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import type { GlobalNetworkNode, GlobalNetworkEdge, NodeSizeBy, EntityType } from '$lib/types/network.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { Maximize2, Minimize2 } from '@lucide/svelte';
 
 	// Layout types
 	export type LayoutType = 'force' | 'circular' | 'radial';
@@ -21,6 +22,7 @@
 		entityTypeColors?: Record<EntityType, EntityTypeConfig>;
 		focusMode?: boolean;
 		layoutType?: LayoutType;
+		showFullscreenButton?: boolean;
 		onNodeClick?: (node: GlobalNetworkNode | null) => void;
 		onNodeHover?: (node: GlobalNetworkNode | null) => void;
 	}
@@ -33,6 +35,7 @@
 		entityTypeColors,
 		focusMode = false,
 		layoutType = 'force',
+		showFullscreenButton = true,
 		onNodeClick,
 		onNodeHover
 	}: Props = $props();
@@ -174,7 +177,8 @@
 		location: '#ec4899',
 		topic: '#22c55e',
 		article: '#3b82f6',
-		author: '#3b82f6'
+		author: '#3b82f6',
+		authority: '#78716c'
 	};
 
 	function getNodeColor(type: EntityType): string {
@@ -311,12 +315,15 @@
 				import('@sigma/edge-curve')
 			]);
 
-			const Graph = graphologyModule.default || graphologyModule;
+			const graphologyModule2 = graphologyModule as any;
+			const Graph = graphologyModule2.default || graphologyModule2;
 			const forceAtlas2 = forceAtlas2Module;
 			const { createNodeBorderProgram } = nodeBorderModule;
 			const EdgeCurveProgram = edgeCurveModule.default;
 
-			const graph = new (Graph as any)();
+			// Use MultiGraph to support multiple edges between same node pair (e.g. knowledge graph)
+			const GraphConstructor = graphologyModule2.MultiGraph || Graph;
+			const graph = new GraphConstructor();
 			graphInstance = graph;
 
 			// Build node lookup
@@ -357,22 +364,35 @@
 				});
 			}
 
+			// Edge type colors for knowledge graph (used when edges have typed data)
+			const edgeTypeColorMap: Record<string, string> = {
+				part_of: '#a855f7',
+				has_part: '#c084fc',
+				related_to: '#f59e0b',
+				succeeded_by: '#ef4444',
+				located_in: '#06b6d4',
+				co_occurs_with: isDark ? 'rgba(180, 180, 180, 0.35)' : 'rgba(120, 120, 120, 0.5)',
+				co_authored_with: '#10b981'
+			};
+
 			// Add edges with theme-aware colors and curvature
 			for (const edge of edges) {
 				if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
 					try {
+						// Use edge type color if available, otherwise default
+						const edgeTypeStr = (edge as any).type || '';
+						const typedColor = edgeTypeColorMap[edgeTypeStr];
+						const finalEdgeColor = typedColor || edgeColor;
+
 						graph.addEdge(edge.source, edge.target, {
 							weight: edge.weight,
-							size: 1 + edge.weightNorm * 4, // Slightly thicker edges
-							color: edgeColor,
-							// Label shows co-occurrence count (only visible when forceLabel is true)
-							label: edge.weight > 1 ? `${edge.weight}` : '',
-							// Curvature for edge-curve program (0 = straight, 0.25 = gentle curve)
+							size: 0.8 + edge.weightNorm * 3,
+							color: finalEdgeColor,
 							curvature: 0.2,
 							edgeData: edge
 						});
 					} catch {
-						// Edge may already exist (multigraph issue)
+						// Edge may already exist in non-multigraph mode
 					}
 				}
 			}
@@ -589,13 +609,8 @@
 				edgeProgramClasses: {
 					curve: EdgeCurveProgram
 				},
-				renderEdgeLabels: true,
+				renderEdgeLabels: false,
 				defaultEdgeColor: defaultEdgeColor,
-				// Edge label styling
-				edgeLabelFont: 'system-ui, -apple-system, sans-serif',
-				edgeLabelSize: 11,
-				edgeLabelWeight: '500',
-				edgeLabelColor: { color: foregroundColor },
 				// Custom hover effect with halo/glow
 				defaultDrawNodeHover: drawNodeHoverWithHalo,
 				// Label styling
@@ -973,27 +988,19 @@
 	<div bind:this={containerElement} class="h-full w-full rounded-lg bg-card border"></div>
 
 	<!-- Fullscreen button -->
-	<button
-		onclick={toggleFullscreen}
-		class="absolute top-2 right-2 z-40 flex h-[30px] w-[30px] items-center justify-center rounded-md border bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-		title={isFullscreen ? t('network.exit_fullscreen') : t('network.fullscreen')}
-	>
-		{#if isFullscreen}
-			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-				<polyline points="4 14 10 14 10 20"></polyline>
-				<polyline points="20 10 14 10 14 4"></polyline>
-				<line x1="14" y1="10" x2="21" y2="3"></line>
-				<line x1="3" y1="21" x2="10" y2="14"></line>
-			</svg>
-		{:else}
-			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-				<polyline points="15 3 21 3 21 9"></polyline>
-				<polyline points="9 21 3 21 3 15"></polyline>
-				<line x1="21" y1="3" x2="14" y2="10"></line>
-				<line x1="3" y1="21" x2="10" y2="14"></line>
-			</svg>
-		{/if}
-	</button>
+	{#if showFullscreenButton}
+		<button
+			onclick={toggleFullscreen}
+			class="absolute top-2 right-2 z-40 flex h-[30px] w-[30px] items-center justify-center rounded-md border bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+			title={isFullscreen ? t('network.exit_fullscreen') : t('network.fullscreen')}
+		>
+			{#if isFullscreen}
+				<Minimize2 class="h-4 w-4" />
+			{:else}
+				<Maximize2 class="h-4 w-4" />
+			{/if}
+		</button>
+	{/if}
 
 	{#if isLayoutRunning}
 		<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-background/80">

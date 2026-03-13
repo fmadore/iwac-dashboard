@@ -24,7 +24,9 @@
 		Building2,
 		Users,
 		TreePine,
-		Waypoints
+		Waypoints,
+		GitFork,
+		ChartScatter
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { t } from '$lib/stores/translationStore.svelte.js';
@@ -55,7 +57,8 @@
 		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' },
 		{ href: `${base}/cooccurrence`, icon: Grid3X3, label: 'nav.cooccurrence' },
 		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' },
-		{ href: `${base}/topic-network`, icon: Network, label: 'nav.topic_network' }
+		{ href: `${base}/topic-network`, icon: Network, label: 'nav.topic_network' },
+		{ href: `${base}/semantic-map`, icon: ChartScatter, label: 'nav.semantic_map' }
 	];
 
 	const spatialAnalysisItems = [
@@ -66,7 +69,8 @@
 
 	const networkAnalysisItems = [
 		{ href: `${base}/network`, icon: Share2, label: 'nav.network' },
-		{ href: `${base}/network-map`, icon: Network, label: 'nav.network_map' }
+		{ href: `${base}/network-map`, icon: Network, label: 'nav.network_map' },
+		{ href: `${base}/knowledge-graph`, icon: GitFork, label: 'nav.knowledge_graph' }
 	];
 </script>
 

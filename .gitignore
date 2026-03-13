@@ -31,3 +31,4 @@ tmpclaude-*-cwd
 
 .venv
 scripts/__pycache__/
+nul

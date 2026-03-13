@@ -75,7 +75,8 @@
 			location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
 			topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
 			article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText },
-			author: { label: 'coauthor.author', color: '#3b82f6', icon: Users }
+			author: { label: 'coauthor.author', color: '#3b82f6', icon: Users },
+			authority: { label: 'kg.type_authority', color: '#78716c', icon: Tag }
 		};
 
 	// Filter nodes by enabled types
@@ -149,7 +150,8 @@
 			location: 0,
 			topic: 0,
 			article: 0,
-			author: 0
+			author: 0,
+			authority: 0
 		};
 		for (const node of filteredNodes) {
 			counts[node.type]++;

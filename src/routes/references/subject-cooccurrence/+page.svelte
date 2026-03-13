@@ -89,7 +89,8 @@
 		subject: { label: 'subject_cooccurrence.subject', color: '#22c55e', icon: Tag },
 		location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
 		topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
-		article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText }
+		article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText },
+		authority: { label: 'kg.type_authority', color: '#78716c', icon: Tag }
 	};
 
 	// Filter nodes

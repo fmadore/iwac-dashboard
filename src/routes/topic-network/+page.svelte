@@ -63,7 +63,8 @@
 		event: { label: 'network.type_event', color: '#f97316', icon: FileText },
 		subject: { label: 'network.type_subject', color: '#22c55e', icon: FileText },
 		location: { label: 'network.type_location', color: '#ec4899', icon: FileText },
-		author: { label: 'coauthor.author', color: '#3b82f6', icon: FileText }
+		author: { label: 'coauthor.author', color: '#3b82f6', icon: FileText },
+		authority: { label: 'kg.type_authority', color: '#78716c', icon: FileText }
 	};
 
 	// Extract topics from network data
