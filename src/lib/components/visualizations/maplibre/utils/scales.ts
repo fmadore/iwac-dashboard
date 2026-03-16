@@ -107,10 +107,13 @@ export function darkenColor(hex: string, amount: number): string {
 	// Remove # if present
 	const color = hex.replace('#', '');
 
-	// Parse RGB
+	// Parse RGB — guard against non-hex input (e.g. oklch values)
 	const r = parseInt(color.substring(0, 2), 16);
 	const g = parseInt(color.substring(2, 4), 16);
 	const b = parseInt(color.substring(4, 6), 16);
+
+	// If parsing failed (NaN), return original or a safe fallback
+	if (isNaN(r) || isNaN(g) || isNaN(b)) return hex.startsWith('#') ? hex : '#666666';
 
 	// Darken
 	const newR = Math.round(r * (1 - amount));
