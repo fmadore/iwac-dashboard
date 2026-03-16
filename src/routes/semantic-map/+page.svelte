@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -125,26 +125,20 @@
 	// Data loading — two-phase: UI first, then typed arrays
 	// ═══════════════════════════════════════════════════
 
-	async function loadJsonData(url: string): Promise<SemanticMapRawData> {
-		const response = await fetch(url);
-		if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-		return response.json();
-	}
-
 	async function loadInitialData() {
 		try {
 			loading = true;
 			error = null;
 
 			// Load main data + country index in parallel
-			const [raw, idxResponse] = await Promise.all([
-				loadJsonData(`${base}/data/semantic-map.json`),
-				fetch(`${base}/data/semantic-map/index.json`).catch(() => null)
+			const [raw, idx] = await Promise.all([
+				fetchData<SemanticMapRawData>('semantic-map.json'),
+				fetchData<SemanticMapIndex>('semantic-map/index.json').catch(() => null)
 			]);
 
 			// Parse country index if available
-			if (idxResponse?.ok) {
-				countryIndex = await idxResponse.json();
+			if (idx) {
+				countryIndex = idx;
 			}
 
 			// Phase 1: show stats immediately
@@ -168,7 +162,7 @@
 			selectedPoint = null;
 			hoveredPoint = null;
 
-			const raw = await loadJsonData(`${base}/data/semantic-map/${slug}.json`);
+			const raw = await fetchData<SemanticMapRawData>(`semantic-map/${slug}.json`, { cache: false });
 
 			meta = raw.meta;
 			// Keep original country/topic lists for UI
@@ -188,7 +182,7 @@
 			selectedPoint = null;
 			hoveredPoint = null;
 
-			const raw = await loadJsonData(`${base}/data/semantic-map.json`);
+			const raw = await fetchData<SemanticMapRawData>('semantic-map.json');
 			meta = raw.meta;
 
 			await new Promise((r) => requestAnimationFrame(r));

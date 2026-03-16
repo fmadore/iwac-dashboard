@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { FALLBACK_COLORS } from '$lib/constants/theme.js';
 
 	interface BarChartRaceProps {
 		/**
@@ -154,21 +155,7 @@
 			}
 		}
 
-		const fallbackMap: Record<string, string> = {
-			'--chart-1': '#e8590c',
-			'--chart-2': '#2563eb',
-			'--chart-3': '#16a34a',
-			'--chart-4': '#f59e0b',
-			'--chart-5': '#dc2626',
-			'--foreground': '#09090b',
-			'--muted-foreground': '#71717a',
-			'--background': '#ffffff',
-			'--popover': '#ffffff',
-			'--popover-foreground': '#09090b',
-			'--border': '#e4e4e7'
-		};
-
-		return fallbackMap[variable] || value || '#666666';
+		return FALLBACK_COLORS[variable] || value || '#666666';
 	}
 
 	// Compute cumulative data if needed

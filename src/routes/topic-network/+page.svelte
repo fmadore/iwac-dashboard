@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -210,12 +210,7 @@
 			loading = true;
 			error = null;
 
-			const response = await fetch(`${base}/data/networks/topic-network.json`);
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-			}
-
-			networkData = await response.json();
+			networkData = await fetchData<TopicNetworkData>('networks/topic-network.json');
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load network data';
 			console.error('Failed to load topic network data:', e);

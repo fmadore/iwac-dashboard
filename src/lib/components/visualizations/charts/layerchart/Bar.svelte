@@ -5,6 +5,15 @@
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
 	import Tooltip, { type TooltipItem } from './Tooltip.svelte';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import {
+		calculateXAxisRotation,
+		calculateXAxisTicks,
+		calculateBottomPadding,
+		createLabelFormatter,
+		tooltipLabelFromPayload as sharedTooltipLabel,
+		tooltipItemsFromPayload as sharedTooltipItems,
+		type TooltipPayloadItem
+	} from '$lib/utils/chartUtils.js';
 
 	interface ChartDataItem {
 		category: string;
@@ -113,43 +122,28 @@
 		return chartWidth > 0 ? chartWidth / count : 0;
 	});
 
+	const effectiveXAxisLabelRotate = $derived.by(() => {
+		if (orientation !== 'vertical') return 0;
+		return calculateXAxisRotation(perItemWidth, xAxisLabelRotate);
+	});
+
 	// Auto-skip x-axis labels when there isn't enough horizontal space.
-	// For band scales, `ticks` as a number means "show every Nth label".
 	const xAxisTicks = $derived.by(() => {
 		if (orientation !== 'vertical') return undefined;
 		if (data.length <= 1) return 1;
 		if (xAxisLabelInterval !== 'auto') return Math.max(1, xAxisLabelInterval);
-
-		// Sidebar + content transitions can leave charts in a mid-width state where
-		// labels overlap. Be a bit more aggressive about skipping.
-		if (!perItemWidth) return 1;
-		const minLabelSpace = effectiveXAxisLabelRotate >= 45 ? 50 : 90;
-		return Math.max(1, Math.ceil(minLabelSpace / perItemWidth));
-	});
-
-	const effectiveXAxisLabelRotate = $derived.by(() => {
-		if (orientation !== 'vertical') return 0;
-		if (xAxisLabelRotate > 0) return xAxisLabelRotate;
-		// If labels are cramped (common when the sidebar is open), rotate by default.
-		if (perItemWidth <= 0) return 0;
-		if (perItemWidth < 55) return 90;
-		if (perItemWidth < 90) return 45;
-		return 0;
+		return calculateXAxisTicks(perItemWidth, effectiveXAxisLabelRotate, data.length);
 	});
 
 	// Determine if we need to truncate labels based on available space
 	const formatLabel = $derived.by(() => {
-		const itemCount = data.length;
-
 		if (orientation === 'horizontal' && yAxisLabelWidth) {
-			const maxChars = Math.max(4, Math.floor(yAxisLabelWidth / 7));
-			return (d: string) => (d.length > maxChars ? d.slice(0, maxChars - 1) + '…' : d);
+			return createLabelFormatter(Math.floor(yAxisLabelWidth / 7));
 		}
 		if (orientation === 'vertical') {
-			const fallbackMaxChars = itemCount > 10 ? 8 : itemCount > 6 ? 12 : 20;
-			const maxChars =
-				perItemWidth > 0 ? Math.max(4, Math.floor(perItemWidth / 7)) : fallbackMaxChars;
-			return (d: string) => (d.length > maxChars ? d.slice(0, maxChars - 1) + '…' : d);
+			const fallbackMaxChars = data.length > 10 ? 8 : data.length > 6 ? 12 : 20;
+			const maxChars = perItemWidth > 0 ? Math.floor(perItemWidth / 7) : fallbackMaxChars;
+			return createLabelFormatter(maxChars);
 		}
 		return (d: string) => d;
 	});
@@ -157,26 +151,20 @@
 	// Calculate optimal padding based on label rotation and data
 	const bottomPadding = $derived.by(() => {
 		if (orientation !== 'vertical') return 8;
-		if (effectiveXAxisLabelRotate >= 90) return 110;
-		if (effectiveXAxisLabelRotate > 0) return 80;
-		return data.length > 10 ? 60 : 40;
+		return calculateBottomPadding(effectiveXAxisLabelRotate, data.length);
 	});
 
-	function tooltipLabelFromPayload(payload: any[]): string {
-		const first = payload?.[0];
-		return first?.payload?.category ?? first?.payload?.name ?? first?.label ?? first?.name ?? '';
+	function tooltipLabelFromPayload(payload: TooltipPayloadItem[]): string {
+		return sharedTooltipLabel(payload, 'category');
 	}
 
-	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
-		return (payload ?? [])
-			.map((item: any) => {
-				const key = item?.key ?? item?.name;
-				const name = key === 'documents' ? t('chart.documents') : (item?.name ?? item?.key ?? '');
-				const value = item?.value;
-				const color = item?.payload?.color ?? item?.color;
-				return { key, name, value, color } satisfies TooltipItem;
-			})
-			.filter((i) => i.name && i.value !== undefined);
+	function tooltipItemsFromPayload(payload: TooltipPayloadItem[]): TooltipItem[] {
+		return sharedTooltipItems(payload).map((item) => ({
+			key: item.key,
+			name: item.key === 'documents' ? t('chart.documents') : item.name,
+			value: item.value,
+			color: item.color
+		}));
 	}
 </script>
 

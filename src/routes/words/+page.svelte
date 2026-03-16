@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { base } from '$app/paths';
+	import { fetchData, prefetchData } from '$lib/utils/dataFetcher.js';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
@@ -165,23 +165,18 @@
 			error = null;
 
 			// Load all data files
-			const [globalResponse, countryResponse, temporalResponse, metadataResponse] =
-				await Promise.all([
-					fetch(`${base}/data/wordcloud-global.json`),
-					fetch(`${base}/data/wordcloud-countries.json`),
-					fetch(`${base}/data/wordcloud-temporal.json`),
-					fetch(`${base}/data/wordcloud-metadata.json`)
+			const [globalResult, countryResult, temporalResult, metadataResult] =
+				await prefetchData<[WordCloudData, Record<string, WordCloudData>, Record<string, WordCloudData>, WordCloudMetadata]>([
+					'wordcloud-global.json',
+					'wordcloud-countries.json',
+					'wordcloud-temporal.json',
+					'wordcloud-metadata.json'
 				]);
 
-			if (!globalResponse.ok) throw new Error('Failed to load global wordcloud data');
-			if (!countryResponse.ok) throw new Error('Failed to load country wordcloud data');
-			if (!temporalResponse.ok) throw new Error('Failed to load temporal wordcloud data');
-			if (!metadataResponse.ok) throw new Error('Failed to load wordcloud metadata');
-
-			globalData = await globalResponse.json();
-			countryData = await countryResponse.json();
-			temporalData = await temporalResponse.json();
-			metadata = await metadataResponse.json();
+			globalData = globalResult;
+			countryData = countryResult;
+			temporalData = temporalResult;
+			metadata = metadataResult;
 
 			// Set default selections if not in URL
 			if (availableCountries.length > 0 && !urlSync.hasFilter('country')) {

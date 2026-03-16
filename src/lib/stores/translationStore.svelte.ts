@@ -663,7 +663,16 @@ export const translations = {
 		'map_popup.page_of': 'Page {0} of {1}',
 		'map_popup.previous': 'Previous',
 		'map_popup.next': 'Next',
-		'map_popup.untitled': 'Untitled'
+		'map_popup.untitled': 'Untitled',
+		// Accessibility
+		'a11y.toggle_theme': 'Toggle theme',
+		'a11y.toggle_sidebar': 'Toggle Sidebar',
+		'a11y.clear_selection': 'Clear selection',
+		'a11y.close_legend': 'Close legend',
+		'a11y.show_legend': 'Show legend',
+		'a11y.remove_filter': 'Remove filter',
+		'a11y.close': 'Close',
+		'a11y.sidebar': 'Sidebar'
 	},
 	fr: {
 		'chart.pie_distribution_aria': 'Diagramme circulaire montrant la distribution des données',
@@ -1332,7 +1341,16 @@ export const translations = {
 		'map_popup.page_of': 'Page {0} sur {1}',
 		'map_popup.previous': 'Précédent',
 		'map_popup.next': 'Suivant',
-		'map_popup.untitled': 'Sans titre'
+		'map_popup.untitled': 'Sans titre',
+		// Accessibility
+		'a11y.toggle_theme': 'Basculer le thème',
+		'a11y.toggle_sidebar': 'Basculer la barre latérale',
+		'a11y.clear_selection': 'Effacer la sélection',
+		'a11y.close_legend': 'Fermer la légende',
+		'a11y.show_legend': 'Afficher la légende',
+		'a11y.remove_filter': 'Supprimer le filtre',
+		'a11y.close': 'Fermer',
+		'a11y.sidebar': 'Barre latérale'
 	}
 } as const;
 

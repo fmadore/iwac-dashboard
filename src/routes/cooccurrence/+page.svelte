@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -105,32 +105,27 @@
 			loading = true;
 			error = null;
 
-			const [matrixGlobalRes, matrixCountryRes, wordsGlobalRes, wordsCountryRes, metadataRes] =
-				await Promise.all([
-					fetch(`${base}/data/cooccurrence/matrix-global.json`),
-					fetch(`${base}/data/cooccurrence/matrix-countries.json`),
-					fetch(`${base}/data/cooccurrence/words-global.json`),
-					fetch(`${base}/data/cooccurrence/words-countries.json`),
-					fetch(`${base}/data/cooccurrence/metadata.json`)
-				]);
+			// Load required data
+			const [matrixGlobalResult, metadataResult] = await Promise.all([
+				fetchData<CooccurrenceData>('cooccurrence/matrix-global.json'),
+				fetchData<MetadataType>('cooccurrence/metadata.json')
+			]);
 
-			if (!matrixGlobalRes.ok) throw new Error('Failed to load matrix data');
-			if (!metadataRes.ok) throw new Error('Failed to load metadata');
+			globalMatrixData = matrixGlobalResult;
+			metadata = metadataResult;
 
-			globalMatrixData = await matrixGlobalRes.json();
-			metadata = await metadataRes.json();
+			// Load optional data (may not exist for all configurations)
+			try {
+				countryMatrixData = await fetchData<Record<string, CooccurrenceData>>('cooccurrence/matrix-countries.json');
+			} catch { /* optional */ }
 
-			if (matrixCountryRes.ok) {
-				countryMatrixData = await matrixCountryRes.json();
-			}
+			try {
+				globalWordData = await fetchData<Record<string, TermWordData>>('cooccurrence/words-global.json');
+			} catch { /* optional */ }
 
-			if (wordsGlobalRes.ok) {
-				globalWordData = await wordsGlobalRes.json();
-			}
-
-			if (wordsCountryRes.ok) {
-				countryWordData = await wordsCountryRes.json();
-			}
+			try {
+				countryWordData = await fetchData<Record<string, Record<string, TermWordData>>>('cooccurrence/words-countries.json');
+			} catch { /* optional */ }
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Failed to load co-occurrence data';
 			console.error('Error loading co-occurrence data:', err);

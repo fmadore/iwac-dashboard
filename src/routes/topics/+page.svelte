@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -21,9 +22,7 @@
 		loading = true;
 		error = null;
 		try {
-			const response = await fetch(`${base}/data/topics/summary.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			summaryData = await response.json();
+			summaryData = await fetchData<TopicsSummaryData>('topics/summary.json');
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Unknown error';
 		} finally {

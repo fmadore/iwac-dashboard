@@ -4,6 +4,7 @@
 	import type { GlobalNetworkNode, GlobalNetworkEdge, NodeSizeBy, EntityType } from '$lib/types/network.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { Maximize2, Minimize2 } from '@lucide/svelte';
+	import { getEntityColorsHex, getEdgeColorsHex, resolveCSSColor } from '$lib/constants/theme.js';
 
 	// Layout types
 	export type LayoutType = 'force' | 'circular' | 'radial';
@@ -64,6 +65,11 @@
 	// Fullscreen state
 	let isFullscreen = $state(false);
 	let wrapperElement: HTMLDivElement | null = $state(null);
+
+	// Dark mode detection for canvas rendering (Sigma.js needs resolved colors)
+	function isDarkMode(): boolean {
+		return browser && document.documentElement.classList.contains('dark');
+	}
 
 	// Tooltip positioning with simple bounds checking
 	const TOOLTIP_OFFSET = 15;
@@ -168,21 +174,17 @@
 			.slice(0, limit);
 	}
 
-	// Default colors per entity type
-	const defaultColors: Record<EntityType, string> = {
-		person: '#3b82f6',
-		organization: '#8b5cf6',
-		event: '#f97316',
-		subject: '#22c55e',
-		location: '#ec4899',
-		topic: '#22c55e',
-		article: '#3b82f6',
-		author: '#3b82f6',
-		authority: '#78716c'
-	};
+	// Resolve entity colors from CSS variables (for Sigma.js canvas rendering)
+	let resolvedEntityColors = $state<Record<string, string>>({});
+
+	$effect(() => {
+		if (browser) {
+			resolvedEntityColors = getEntityColorsHex();
+		}
+	});
 
 	function getNodeColor(type: EntityType): string {
-		return entityTypeColors?.[type]?.color ?? defaultColors[type] ?? '#666666';
+		return entityTypeColors?.[type]?.color ?? resolvedEntityColors[type] ?? '#666666';
 	}
 
 	// Helper to lighten a color for border/halo effect
@@ -342,8 +344,8 @@
 			const hasMostlyCachedPositions = cachedCount > nodes.length * 0.5;
 
 			// Get theme colors BEFORE adding nodes/edges
-			const isDark = document.documentElement.classList.contains('dark');
-			const edgeColor = isDark ? 'rgba(200, 200, 200, 0.35)' : 'rgba(80, 80, 80, 0.4)';
+			const mutedFg = resolveCSSColor('--muted-foreground');
+			const edgeColor = hexToRgba(mutedFg, 0.4);
 
 			// Add nodes - use cached positions when available
 			for (const node of nodes) {
@@ -364,15 +366,16 @@
 				});
 			}
 
-			// Edge type colors for knowledge graph (used when edges have typed data)
+			// Edge type colors for knowledge graph — resolved from CSS variables
+			const resolvedEdgeColors = getEdgeColorsHex();
 			const edgeTypeColorMap: Record<string, string> = {
-				part_of: '#a855f7',
-				has_part: '#c084fc',
-				related_to: '#f59e0b',
-				succeeded_by: '#ef4444',
-				located_in: '#06b6d4',
-				co_occurs_with: isDark ? 'rgba(180, 180, 180, 0.35)' : 'rgba(120, 120, 120, 0.5)',
-				co_authored_with: '#10b981'
+				part_of: resolvedEdgeColors['part_of'],
+				has_part: resolvedEdgeColors['has_part'],
+				related_to: resolvedEdgeColors['related_to'],
+				succeeded_by: resolvedEdgeColors['succeeded_by'],
+				located_in: resolvedEdgeColors['located_in'],
+				co_occurs_with: hexToRgba(resolvedEdgeColors['co_occurs_with'], 0.4),
+				co_authored_with: resolvedEdgeColors['co_authored_with']
 			};
 
 			// Add edges with theme-aware colors and curvature
@@ -522,8 +525,9 @@
 			}
 
 			// Theme-aware label and edge colors
-			const foregroundColor = isDark ? '#fafafa' : '#0a0a0a';
-			const defaultEdgeColor = isDark ? 'rgba(180, 180, 180, 0.35)' : 'rgba(80, 80, 80, 0.4)';
+			const dark = isDarkMode();
+			const foregroundColor = dark ? '#fafafa' : '#0a0a0a';
+			const defaultEdgeColor = dark ? 'rgba(180, 180, 180, 0.35)' : 'rgba(80, 80, 80, 0.4)';
 
 			// Custom hover halo/glow effect function
 			const drawNodeHoverWithHalo = (
@@ -534,7 +538,7 @@
 				const { x, y, size, label, color } = data;
 
 				// Parse the node color for the glow
-				const glowColor = color || (isDark ? '#fbbf24' : '#f59e0b');
+				const glowColor = color || (dark ? '#fbbf24' : '#f59e0b');
 
 				// Draw multi-layer glow effect (outer to inner)
 				const glowLayers = [
@@ -566,7 +570,7 @@
 
 					// Draw label background
 					const padding = 4;
-					const bgColor = isDark ? 'rgba(10, 10, 10, 0.85)' : 'rgba(255, 255, 255, 0.9)';
+					const bgColor = dark ? 'rgba(10, 10, 10, 0.85)' : 'rgba(255, 255, 255, 0.9)';
 					context.fillStyle = bgColor;
 					context.beginPath();
 					context.roundRect(
@@ -670,7 +674,7 @@
 								...data,
 								size: data.size * 1.5,
 								borderSize: 0.25,
-								borderColor: isDark ? '#fbbf24' : '#f59e0b',
+								borderColor: isDarkMode() ? '#fbbf24' : '#f59e0b',
 								zIndex: 3,
 								forceLabel: true
 							};
@@ -685,7 +689,7 @@
 								...data,
 								size: data.size * 1.5,
 								borderSize: 0.25,
-								borderColor: isDark ? '#fbbf24' : '#f59e0b',
+								borderColor: isDarkMode() ? '#fbbf24' : '#f59e0b',
 								zIndex: 3,
 								forceLabel: true
 							};
@@ -719,7 +723,7 @@
 
 					// Hover effect on edges - show label
 					if (isConnectedToHovered) {
-						const hoverEdgeColor = isDark ? 'rgba(251, 191, 36, 0.7)' : 'rgba(245, 158, 11, 0.8)';
+						const hoverEdgeColor = isDarkMode() ? 'rgba(251, 191, 36, 0.7)' : 'rgba(245, 158, 11, 0.8)';
 						return { ...data, color: hoverEdgeColor, size: data.size * 2, forceLabel: true };
 					}
 
@@ -731,7 +735,7 @@
 					// In focus mode, show all edges prominently with labels
 					if (focusMode && selectedNodeId) {
 						if (isConnectedToSelected) {
-							const highlightColor = isDark ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
+							const highlightColor = isDarkMode() ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
 							return { ...data, color: highlightColor, size: data.size * 2.5, forceLabel: true };
 						}
 						return { ...data, forceLabel: true }; // Show labels for all edges in focus mode
@@ -740,7 +744,7 @@
 					// Normal mode: highlight edges to selected with labels, hide others
 					if (selectedNodeId) {
 						if (isConnectedToSelected) {
-							const highlightColor = isDark ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
+							const highlightColor = isDarkMode() ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
 							return { ...data, color: highlightColor, size: data.size * 2.5, forceLabel: true };
 						} else {
 							return { ...data, hidden: true };

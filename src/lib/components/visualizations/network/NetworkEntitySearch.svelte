@@ -35,17 +35,17 @@
 		authority: BookMarked
 	};
 
-	// Entity type colors
+	// Entity type colors — use CSS variables for theme consistency
 	const entityColors: Record<EntityType, string> = {
-		person: '#3b82f6',
-		organization: '#8b5cf6',
-		event: '#f97316',
-		subject: '#22c55e',
-		location: '#ec4899',
-		topic: '#22c55e',
-		article: '#3b82f6',
-		author: '#3b82f6',
-		authority: '#78716c'
+		person: 'var(--entity-person)',
+		organization: 'var(--entity-organization)',
+		event: 'var(--entity-event)',
+		subject: 'var(--entity-subject)',
+		location: 'var(--entity-location)',
+		topic: 'var(--entity-topic)',
+		article: 'var(--entity-article)',
+		author: 'var(--entity-author)',
+		authority: 'var(--entity-authority)'
 	};
 
 	// Filter nodes based on search query

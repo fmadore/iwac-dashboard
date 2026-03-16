@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
@@ -77,9 +77,7 @@
 
 	async function loadData() {
 		try {
-			const response = await fetch(`${base}/data/references/authors.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			const result: AuthorsResponse = await response.json();
+			const result = await fetchData<AuthorsResponse>('references/authors.json');
 			responseData = result;
 			data = result.authors || [];
 		} catch (e) {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import EntitiesTable from './entities-table.svelte';
 	import { Bar as LayerChartBar } from '$lib/components/visualizations/charts/layerchart/index.js';
@@ -51,10 +51,7 @@
 
 	async function loadChartData() {
 		try {
-			const response = await fetch(`${base}/data/index-types.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-			const payload = (await response.json()) as ApiChartData;
+			const payload = await fetchData<ApiChartData>('index-types.json');
 			const labels = payload.labels ?? [];
 			const values = payload.values ?? [];
 

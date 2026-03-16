@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -71,9 +71,7 @@
 
 	async function loadData() {
 		try {
-			const response = await fetch(`${base}/data/timeline-growth.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			globalData = await response.json();
+			globalData = await fetchData<TimelineData>('timeline-growth.json');
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load timeline data';
 		}
@@ -81,9 +79,7 @@
 
 	async function loadTypeFacets() {
 		try {
-			const response = await fetch(`${base}/data/timeline-types.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			typeFacets = await response.json();
+			typeFacets = await fetchData<TypeFacets>('timeline-types.json');
 		} catch (e) {
 			console.error('Failed to load type facets:', e);
 		}
@@ -91,9 +87,7 @@
 
 	async function loadCountryFacets() {
 		try {
-			const response = await fetch(`${base}/data/timeline-countries.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			countryFacets = await response.json();
+			countryFacets = await fetchData<CountryFacets>('timeline-countries.json');
 		} catch (e) {
 			console.error('Failed to load country facets:', e);
 		}
@@ -101,9 +95,7 @@
 
 	async function loadMetadata() {
 		try {
-			const response = await fetch(`${base}/data/timeline-metadata.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			metadata = await response.json();
+			metadata = await fetchData<MetadataResponse>('timeline-metadata.json');
 		} catch (e) {
 			console.error('Failed to load metadata:', e);
 		} finally {

@@ -282,7 +282,7 @@
 							type="button"
 							class="ml-1 rounded-full p-0.5 hover:bg-muted"
 							onclick={() => toggleType(type)}
-							aria-label="Remove filter"
+							aria-label={t('a11y.remove_filter')}
 						>
 							<XIcon class="size-3" />
 						</button>
@@ -295,7 +295,7 @@
 							type="button"
 							class="ml-1 rounded-full p-0.5 hover:bg-muted"
 							onclick={() => toggleCountry(country)}
-							aria-label="Remove filter"
+							aria-label={t('a11y.remove_filter')}
 						>
 							<XIcon class="size-3" />
 						</button>

@@ -41,6 +41,16 @@ jobs:
           python generate_references.py --output-dir ../static/data
           python generate_scary_terms.py --output-dir ../static/data
           python generate_topic_explorer_data.py --output-dir ../static/data/topics
+          python generate_cooccurrence.py --output-dir ../static/data
+          python generate_entity_spatial.py --output-dir ../static/data
+          python generate_keywords.py --output-dir ../static/data
+          python generate_knowledge_graph.py --output-dir ../static/data
+          python generate_references_subject_cooccurrence.py --output-dir ../static/data
+          python generate_semantic_map.py --output-dir ../static/data
+          python generate_sources.py --output-dir ../static/data
+          python generate_spatial_networks.py --output-dir ../static/data
+          python generate_topic_network.py --output-dir ../static/data
+          python generate_world_map.py --output-dir ../static/data
           cd ..
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -50,7 +60,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add static/data/*.json
+          git add static/data/*.json static/data/**/*.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

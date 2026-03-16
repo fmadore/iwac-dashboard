@@ -4,7 +4,7 @@
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
 	import { BaseMap, CircleLayer, type CircleDataPoint } from '$lib/components/visualizations/maplibre/index.js';
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 
 	// Types
@@ -64,11 +64,7 @@
 	// Load data
 	onMount(async () => {
 		try {
-			const response = await fetch(`${base}/data/sources.json`);
-			if (!response.ok) {
-				throw new Error(`Failed to load sources data: ${response.status}`);
-			}
-			data = await response.json();
+			data = await fetchData<SourcesData>('sources.json');
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load data';
 		} finally {

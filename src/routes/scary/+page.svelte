@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
@@ -183,23 +183,18 @@
 			error = null;
 
 			// Load all data files
-			const [temporalResponse, countryResponse, globalResponse, metadataResponse] =
+			const [temporalResult, countryResult, globalResult, metadataResult] =
 				await Promise.all([
-					fetch(`${base}/data/scary-terms-temporal.json`),
-					fetch(`${base}/data/scary-terms-countries.json`),
-					fetch(`${base}/data/scary-terms-global.json`),
-					fetch(`${base}/data/scary-terms-metadata.json`)
+					fetchData<Record<string, TermData>>('scary-terms-temporal.json'),
+					fetchData<Record<string, TermData>>('scary-terms-countries.json'),
+					fetchData<TermData>('scary-terms-global.json'),
+					fetchData<MetadataType>('scary-terms-metadata.json')
 				]);
 
-			if (!temporalResponse.ok) throw new Error('Failed to load temporal data');
-			if (!countryResponse.ok) throw new Error('Failed to load country data');
-			if (!globalResponse.ok) throw new Error('Failed to load global data');
-			if (!metadataResponse.ok) throw new Error('Failed to load metadata');
-
-			temporalData = await temporalResponse.json();
-			countryData = await countryResponse.json();
-			globalData = await globalResponse.json();
-			metadata = await metadataResponse.json();
+			temporalData = temporalResult;
+			countryData = countryResult;
+			globalData = globalResult;
+			metadata = metadataResult;
 
 			// Note: Don't auto-set country - let user choose
 			// Only set view mode if not already set (race is default anyway via $derived)

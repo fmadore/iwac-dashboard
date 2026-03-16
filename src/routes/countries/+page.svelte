@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { Treemap as LayerChartTreemap } from '$lib/components/visualizations/charts/layerchart/index.js';
-	import { base } from '$app/paths';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import type { TreemapData, TreemapNode } from '$lib/types/index.js';
 	import { onMount } from 'svelte';
 
@@ -22,16 +22,8 @@
 			isLoading = true;
 			loadingError = null;
 
-			const response = await fetch(`${base}/data/treemap-countries.json`);
-			if (response.ok) {
-				const jsonData = await response.json();
-				treemapData = jsonData;
-				console.log('✅ Loaded treemap data');
-			} else {
-				throw new Error(
-					`Failed to fetch treemap data: ${response.status} ${response.statusText}`
-				);
-			}
+			treemapData = await fetchData<TreemapData>('treemap-countries.json');
+			console.log('✅ Loaded treemap data');
 		} catch (error) {
 			console.warn('Failed to load pre-computed treemap data:', error);
 			loadingError = error instanceof Error ? error.message : 'Unknown error';

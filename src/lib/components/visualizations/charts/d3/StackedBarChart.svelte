@@ -11,6 +11,15 @@
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
 	import Tooltip, { type TooltipItem } from '../layerchart/Tooltip.svelte';
 	import { languageStore, t } from '$lib/stores/translationStore.svelte.js';
+	import {
+		calculateXAxisRotation,
+		calculateXAxisTicks,
+		calculateBottomPadding,
+		filterNonZeroPayload,
+		tooltipLabelFromPayload as sharedTooltipLabel,
+		tooltipItemsFromPayload as sharedTooltipItems,
+		type TooltipPayloadItem
+	} from '$lib/utils/chartUtils.js';
 
 	interface SeriesData {
 		name: string;
@@ -143,50 +152,22 @@
 		return containerWidth > 0 ? containerWidth / count : 0;
 	});
 
-	const effectiveXAxisLabelRotate = $derived.by(() => {
-		if (perItemWidth <= 0) return 0;
-		if (perItemWidth < 55) return 90;
-		if (perItemWidth < 90) return 45;
-		return 0;
-	});
+	const effectiveXAxisLabelRotate = $derived(calculateXAxisRotation(perItemWidth));
 
-	const xAxisTicks = $derived.by(() => {
-		if (years.length <= 1) return 1;
-		if (!perItemWidth) return 1;
-		const minLabelSpace = effectiveXAxisLabelRotate >= 45 ? 50 : 90;
-		return Math.max(1, Math.ceil(minLabelSpace / perItemWidth));
-	});
+	const xAxisTicks = $derived(
+		calculateXAxisTicks(perItemWidth, effectiveXAxisLabelRotate, years.length)
+	);
 
-	const bottomPadding = $derived.by(() => {
-		if (effectiveXAxisLabelRotate >= 90) return 110;
-		if (effectiveXAxisLabelRotate > 0) return 80;
-		return years.length > 15 ? 60 : 40;
-	});
+	const bottomPadding = $derived(
+		calculateBottomPadding(effectiveXAxisLabelRotate, years.length, 15)
+	);
 
-	function tooltipItemsWithValues(payload: any[]) {
-		return (payload ?? []).filter((item) => {
-			const raw = item?.value;
-			const value = typeof raw === 'number' ? raw : Number(raw);
-			return Number.isFinite(value) && value >= 1;
-		});
+	function tooltipLabelFromPayload(payload: TooltipPayloadItem[]): string {
+		return sharedTooltipLabel(payload, 'year');
 	}
 
-	function tooltipLabelFromPayload(payload: any[]): string {
-		const first = payload?.[0];
-		return first?.payload?.year ?? first?.label ?? first?.name ?? '';
-	}
-
-	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
-		return tooltipItemsWithValues(payload).map((item: any) => {
-			const key = item?.key ?? item?.name;
-			const config = key ? chartConfig[key] : undefined;
-			return {
-				key,
-				name: config?.label ?? item?.name ?? String(key ?? ''),
-				value: item?.value,
-				color: item?.color ?? config?.color
-			} satisfies TooltipItem;
-		});
+	function tooltipItemsFromPayload(payload: TooltipPayloadItem[]): TooltipItem[] {
+		return sharedTooltipItems(filterNonZeroPayload(payload), chartConfig);
 	}
 
 	// Filter series based on hidden state
