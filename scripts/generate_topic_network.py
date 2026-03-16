@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional
 from statistics import fmean
 
+from iwac_utils import save_json as _utils_save_json, generate_timestamp
+
 # ------------------ Configuration ------------------
 DEFAULT_ARTICLES_PER_TOPIC = 50
 MIN_TOPIC_PROB = 0.3
@@ -242,7 +244,7 @@ def build_topic_network(args):
         'nodes': nodes,
         'edges': edges,
         'meta': {
-            'generatedAt': datetime.now(timezone.utc).isoformat(),
+            'generatedAt': generate_timestamp(),
             'totalNodes': len(nodes),
             'totalTopics': topic_nodes_count,
             'totalArticles': article_nodes_count,
@@ -257,10 +259,7 @@ def build_topic_network(args):
 
     # Save output
     output_file = OUT_DIR / 'topic-network.json'
-    output_file.write_text(
-        json.dumps(output, ensure_ascii=False, indent=2),
-        encoding='utf-8'
-    )
+    _utils_save_json(output, output_file)
 
     print(f"\n[DONE] Topic network saved to {output_file}")
     print(f"   Average topic probability: {avg_prob:.2%}")

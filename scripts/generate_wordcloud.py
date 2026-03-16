@@ -21,6 +21,11 @@ except ImportError:
     print("pip install datasets pandas huggingface-hub pyarrow")
     exit(1)
 
+from iwac_utils import (
+    load_dataset_safe,
+    save_json as _utils_save_json,
+    generate_timestamp,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -74,41 +79,31 @@ class IWACWordcloudGenerator:
     def fetch_articles_data(self) -> None:
         """Fetch French articles from the IWAC dataset"""
         logger.info("Fetching French articles from IWAC dataset...")
-        
-        dataset_name = "fmadore/islam-west-africa-collection"
-        
-        try:
-            # Load only the articles subset
-            logger.info("Loading articles subset...")
-            dataset = load_dataset(dataset_name, "articles")
-            
-            # Convert to pandas DataFrame
-            df = dataset['train'].to_pandas()
-            logger.info(f"Loaded {len(df)} articles")
-            
-            # Filter for French language only
-            if 'language' in df.columns:
-                french_mask = df['language'] == 'Français'
-                self.articles_df = df[french_mask].copy()
-                logger.info(f"Filtered to {len(self.articles_df)} French articles")
-            else:
-                logger.warning("No 'language' column found, using all articles")
-                self.articles_df = df.copy()
-            
-            # Check required columns
-            required_columns = ['country', 'lemma_nostop', 'pub_date']
-            missing_columns = [col for col in required_columns if col not in self.articles_df.columns]
-            
-            if missing_columns:
-                logger.warning(f"Missing columns: {missing_columns}")
-                logger.info(f"Available columns: {list(self.articles_df.columns)}")
-            
-            # Clean and prepare data
-            self._clean_data()
-            
-        except Exception as e:
-            logger.error(f"Error loading articles data: {e}")
-            raise
+
+        df = load_dataset_safe("articles")
+        if df is None:
+            raise RuntimeError("Failed to load articles subset")
+        logger.info(f"Loaded {len(df)} articles")
+
+        # Filter for French language only
+        if 'language' in df.columns:
+            french_mask = df['language'] == 'Français'
+            self.articles_df = df[french_mask].copy()
+            logger.info(f"Filtered to {len(self.articles_df)} French articles")
+        else:
+            logger.warning("No 'language' column found, using all articles")
+            self.articles_df = df.copy()
+
+        # Check required columns
+        required_columns = ['country', 'lemma_nostop', 'pub_date']
+        missing_columns = [col for col in required_columns if col not in self.articles_df.columns]
+
+        if missing_columns:
+            logger.warning(f"Missing columns: {missing_columns}")
+            logger.info(f"Available columns: {list(self.articles_df.columns)}")
+
+        # Clean and prepare data
+        self._clean_data()
     
     def _clean_data(self) -> None:
         """Clean and prepare the data for analysis"""
@@ -272,27 +267,21 @@ class IWACWordcloudGenerator:
             # Generate global wordcloud
             global_data = self.generate_global_wordcloud_data()
             global_path = self.output_dir / 'wordcloud-global.json'
-            with open(global_path, 'w', encoding='utf-8') as f:
-                json.dump(global_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved global wordcloud data to {global_path}")
-            
+            _utils_save_json(global_data, global_path)
+
             # Generate country wordclouds
             country_data = self.generate_country_wordcloud_data()
             country_path = self.output_dir / 'wordcloud-countries.json'
-            with open(country_path, 'w', encoding='utf-8') as f:
-                json.dump(country_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved country wordcloud data to {country_path}")
-            
+            _utils_save_json(country_data, country_path)
+
             # Generate temporal wordclouds
             temporal_data = self.generate_temporal_wordcloud_data()
             temporal_path = self.output_dir / 'wordcloud-temporal.json'
-            with open(temporal_path, 'w', encoding='utf-8') as f:
-                json.dump(temporal_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved temporal wordcloud data to {temporal_path}")
-            
+            _utils_save_json(temporal_data, temporal_path)
+
             # Save metadata
             metadata = {
-                "generated_at": datetime.now().isoformat(),
+                "generated_at": generate_timestamp(),
                 "total_articles": len(self.articles_df),
                 "language_filter": "Français",
                 "min_word_length": self.min_word_length,
@@ -309,9 +298,7 @@ class IWACWordcloudGenerator:
             }
             
             metadata_path = self.output_dir / 'wordcloud-metadata.json'
-            with open(metadata_path, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved metadata to {metadata_path}")
+            _utils_save_json(metadata, metadata_path)
             
         except Exception as e:
             logger.error(f"Error generating wordcloud data: {e}")

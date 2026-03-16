@@ -6,7 +6,7 @@ declare module 'virtual:pwa-register' {
 		onNeedRefresh?: () => void;
 		onOfflineReady?: () => void;
 		onRegistered?: (registration: ServiceWorkerRegistration | undefined) => void;
-		onRegisterError?: (error: any) => void;
+		onRegisterError?: (error: unknown) => void;
 	}
 
 	export function registerSW(options?: RegisterSWOptions): (reloadPage?: boolean) => Promise<void>;
@@ -20,7 +20,7 @@ declare module 'virtual:pwa-register/svelte' {
 		onNeedRefresh?: () => void;
 		onOfflineReady?: () => void;
 		onRegistered?: (registration: ServiceWorkerRegistration | undefined) => void;
-		onRegisterError?: (error: any) => void;
+		onRegisterError?: (error: unknown) => void;
 	}
 
 	export function useRegisterSW(options?: RegisterSWOptions): {

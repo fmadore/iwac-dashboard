@@ -45,7 +45,7 @@
 
 	let containerElement: HTMLDivElement;
 	let svgElement: SVGSVGElement;
-	let d3: any;
+	let d3: typeof import('d3-selection') | undefined;
 	let colorScale: string[];
 	let isRendering = $state(false);
 	let words = $state<Word[]>([]);
@@ -94,6 +94,26 @@
 		};
 	});
 
+	// Type-safe access to the d3 global used by d3-cloud
+	interface D3CloudGlobal {
+		d3?: { layout?: { cloud?: (...args: unknown[]) => D3CloudLayout } };
+	}
+
+	interface D3CloudLayout {
+		size: (size: [number, number]) => D3CloudLayout;
+		words: (words: Word[]) => D3CloudLayout;
+		padding: (padding: number) => D3CloudLayout;
+		rotate: (fn: () => number) => D3CloudLayout;
+		font: (font: string) => D3CloudLayout;
+		fontSize: (fn: (d: Word) => number) => D3CloudLayout;
+		on: (event: string, fn: (words: Word[]) => void) => D3CloudLayout;
+		start: () => void;
+	}
+
+	function getD3CloudGlobal(): D3CloudGlobal {
+		return window as unknown as D3CloudGlobal;
+	}
+
 	async function loadD3Cloud() {
 		try {
 			// Try to import d3-cloud and use it to set up the global d3.layout.cloud
@@ -101,9 +121,10 @@
 
 			// Ensure global d3 object exists
 			if (typeof window !== 'undefined') {
-				(window as any).d3 = (window as any).d3 || {};
-				(window as any).d3.layout = (window as any).d3.layout || {};
-				(window as any).d3.layout.cloud = cloudModule.default || cloudModule;
+				const g = getD3CloudGlobal();
+				g.d3 = g.d3 || {};
+				g.d3.layout = g.d3.layout || {};
+				g.d3.layout.cloud = cloudModule.default || cloudModule;
 			}
 		} catch (error) {
 			console.error('Failed to load d3-cloud:', error);
@@ -122,8 +143,8 @@
 		});
 	}
 
-	function getColorScale(chromatic: any): string[] {
-		const schemes = {
+	function getColorScale(chromatic: typeof import('d3-scale-chromatic')): string[] {
+		const schemes: Record<string, readonly string[]> = {
 			category10: chromatic.schemeCategory10,
 			set3: chromatic.schemeSet3,
 			dark2: chromatic.schemeDark2,
@@ -134,7 +155,7 @@
 			set2: chromatic.schemeSet2,
 			tableau10: chromatic.schemeTableau10
 		};
-		return schemes[colorScheme] || schemes.category10;
+		return [...(schemes[colorScheme] || schemes.category10)];
 	}
 
 	function prepareWords(): Word[] {
@@ -164,7 +185,7 @@
 		const wordData = prepareWords();
 
 		// Check if d3.layout.cloud is available
-		const cloudLayout = (window as any).d3?.layout?.cloud;
+		const cloudLayout = getD3CloudGlobal().d3?.layout?.cloud;
 		if (!cloudLayout) {
 			console.error('d3.layout.cloud not available');
 			isRendering = false;
@@ -189,7 +210,10 @@
 	}
 
 	function drawWords(placedWords: Word[]) {
-		const svg = d3
+		if (!d3) return;
+		const d3Ref = d3;
+
+		const svg = d3Ref
 			.select(svgElement)
 			.attr('viewBox', `0 0 ${containerWidth} ${containerHeight}`)
 			.attr('preserveAspectRatio', 'xMidYMid meet')
@@ -206,17 +230,17 @@
 			.append('text')
 			.style('font-size', (d: Word) => `${d.size}px`)
 			.style('font-family', fontFamily)
-			.style('fill', (d: Word) => d.color)
+			.style('fill', (d: Word) => d.color ?? '')
 			.style('cursor', 'pointer')
 			.attr('text-anchor', 'middle')
 			.attr('transform', (d: Word) => `translate(${d.x || 0},${d.y || 0})rotate(${d.rotate || 0})`)
 			.text((d: Word) => d.text)
 			.on('mouseover', function (this: SVGTextElement, event: Event, d: Word) {
-				d3.select(this).style('opacity', 0.7);
+				d3Ref.select(this).style('opacity', 0.7);
 				if (hover) hover(d, event);
 			})
 			.on('mouseout', function (this: SVGTextElement) {
-				d3.select(this).style('opacity', 1);
+				d3Ref.select(this).style('opacity', 1);
 			})
 			.on('click', function (event: Event, d: Word) {
 				if (click) click(d, event);
@@ -224,12 +248,16 @@
 
 		// Add entrance animation
 		const textSelection = text.style('opacity', 0);
-		if (typeof (textSelection as any).transition === 'function') {
-			(textSelection as any)
+		// d3-transition augments Selection with .transition() when imported
+		const transitionable = textSelection as typeof textSelection & {
+			transition?: () => { duration: (ms: number) => { delay: (fn: (d: Word, i: number) => number) => { style: (name: string, value: string) => void } } };
+		};
+		if (typeof transitionable.transition === 'function') {
+			transitionable
 				.transition()
 				.duration(600)
-				.delay((d: Word, i: number) => i * 50)
-				.style('opacity', 1);
+				.delay((_d: Word, i: number) => i * 50)
+				.style('opacity', '1');
 		} else {
 			textSelection.style('opacity', 1);
 		}
@@ -249,7 +277,7 @@
 		const currentMaxRotation = maxRotation;
 		const currentFontFamily = fontFamily;
 
-		if (svgElement && d3 && currentData && colorScale && (window as any).d3?.layout?.cloud) {
+		if (svgElement && d3 && currentData && colorScale && getD3CloudGlobal().d3?.layout?.cloud) {
 			// Use untrack to prevent state updates within renderWordCloud from triggering this effect again
 			untrack(() => {
 				renderWordCloud();

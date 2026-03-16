@@ -18,6 +18,11 @@ except ImportError:
     print("pip install datasets pandas huggingface-hub pyarrow")
     exit(1)
 
+from iwac_utils import (
+    load_dataset_safe,
+    save_json as _utils_save_json,
+    generate_timestamp,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -48,31 +53,21 @@ class IWACTreemapGenerator:
     def fetch_dataset(self) -> None:
         """Fetch all subsets from the IWAC dataset (except index)"""
         logger.info("Fetching IWAC dataset from Hugging Face...")
-        
-        dataset_name = "fmadore/islam-west-africa-collection"
+
         all_data = []
-        
+
         for subset_name, doc_type in self.subset_to_type.items():
-            try:
-                logger.info(f"Loading subset: {subset_name}")
-                dataset = load_dataset(dataset_name, subset_name)
-                
-                # Convert to pandas DataFrame
-                df = dataset['train'].to_pandas()
-                
-                # Add document type and subset info
-                df['type'] = doc_type
-                df['subset'] = subset_name
-                
-                # Store raw data
-                all_data.append(df)
-                
-                logger.info(f"Loaded {len(df)} records from {subset_name}")
-                
-            except Exception as e:
-                logger.error(f"Error loading subset {subset_name}: {e}")
+            df = load_dataset_safe(subset_name)
+            if df is None:
+                logger.error(f"Error loading subset {subset_name}")
                 continue
-        
+
+            # Add document type and subset info
+            df['type'] = doc_type
+            df['subset'] = subset_name
+
+            all_data.append(df)
+
         if all_data:
             # Combine all dataframes
             self.combined_df = pd.concat(all_data, ignore_index=True)
@@ -166,17 +161,14 @@ class IWACTreemapGenerator:
         
         try:
             treemap_data = self.generate_treemap_data()
-            
+
             # Save treemap data
             treemap_path = self.output_dir / 'treemap-countries.json'
-            with open(treemap_path, 'w', encoding='utf-8') as f:
-                json.dump(treemap_data, f, ensure_ascii=False, indent=2)
-            
-            logger.info(f"Saved treemap data to {treemap_path}")
-            
+            _utils_save_json(treemap_data, treemap_path)
+
             # Save metadata
             metadata = {
-                "generated_at": datetime.now().isoformat(),
+                "generated_at": generate_timestamp(),
                 "total_records": len(self.combined_df),
                 "records_with_country": len(self.combined_df.dropna(subset=['country'])),
                 "subsets_processed": list(self.subset_to_type.keys()),
@@ -191,10 +183,7 @@ class IWACTreemapGenerator:
             }
             
             metadata_path = self.output_dir / 'treemap-metadata.json'
-            with open(metadata_path, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, ensure_ascii=False, indent=2)
-            
-            logger.info(f"Saved metadata to {metadata_path}")
+            _utils_save_json(metadata, metadata_path)
             
         except Exception as e:
             logger.error(f"Error generating treemap data: {e}")

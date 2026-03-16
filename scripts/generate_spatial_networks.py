@@ -27,6 +27,8 @@ from datetime import datetime
 from statistics import fmean
 from typing import Dict, List, Tuple, Optional
 
+from iwac_utils import save_json as _utils_save_json, generate_timestamp
+
 # ------------------ Configuration ------------------
 DEFAULT_WEIGHT_MIN = 2
 
@@ -239,7 +241,7 @@ def build_spatial_network(args):
         'edges': edges,
         'bounds': bounds,
         'meta': {
-            'generatedAt': datetime.utcnow().isoformat() + 'Z',
+            'generatedAt': generate_timestamp(),
             'totalNodes': len(nodes),
             'totalEdges': len(edges),
             'weightMin': args.weight_min,
@@ -253,10 +255,7 @@ def build_spatial_network(args):
     
     # Save output
     output_file = OUT_DIR / 'spatial.json'
-    output_file.write_text(
-        json.dumps(output, ensure_ascii=False, indent=2),
-        encoding='utf-8'
-    )
+    _utils_save_json(output, output_file)
     
     print(f"✅ Spatial network saved to {output_file}")
     print(f"📊 Statistics:")

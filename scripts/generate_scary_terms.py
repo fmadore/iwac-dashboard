@@ -21,6 +21,11 @@ except ImportError:
     print("pip install datasets pandas huggingface-hub pyarrow")
     exit(1)
 
+from iwac_utils import (
+    load_dataset_safe,
+    save_json as _utils_save_json,
+    generate_timestamp,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -56,26 +61,15 @@ class IWACScaryTermsGenerator:
     def fetch_articles_data(self) -> None:
         """Fetch articles from the IWAC dataset"""
         logger.info("Fetching articles from IWAC dataset...")
-        
-        dataset_name = "fmadore/islam-west-africa-collection"
-        
-        try:
-            # Load articles subset
-            logger.info("Loading articles subset...")
-            dataset = load_dataset(dataset_name, "articles")
-            
-            # Convert to pandas DataFrame
-            df = dataset['train'].to_pandas()
-            logger.info(f"Loaded {len(df)} articles")
-            
-            self.articles_df = df.copy()
-            
-            # Clean and prepare data
-            self._clean_data()
-            
-        except Exception as e:
-            logger.error(f"Error loading articles data: {e}")
-            raise
+
+        df = load_dataset_safe("articles")
+        if df is None:
+            raise RuntimeError("Failed to load articles subset")
+
+        self.articles_df = df.copy()
+
+        # Clean and prepare data
+        self._clean_data()
     
     def _clean_data(self) -> None:
         """Clean and prepare the data for analysis"""
@@ -226,28 +220,22 @@ class IWACScaryTermsGenerator:
             # Generate temporal data (for bar chart race)
             temporal_data = self.generate_temporal_data()
             temporal_path = self.output_dir / 'scary-terms-temporal.json'
-            with open(temporal_path, 'w', encoding='utf-8') as f:
-                json.dump(temporal_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved temporal data to {temporal_path}")
-            
+            _utils_save_json(temporal_data, temporal_path)
+
             # Generate country data
             country_data = self.generate_country_data()
             country_path = self.output_dir / 'scary-terms-countries.json'
-            with open(country_path, 'w', encoding='utf-8') as f:
-                json.dump(country_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved country data to {country_path}")
-            
+            _utils_save_json(country_data, country_path)
+
             # Generate global data
             global_data = self.generate_global_data()
             global_path = self.output_dir / 'scary-terms-global.json'
-            with open(global_path, 'w', encoding='utf-8') as f:
-                json.dump(global_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved global data to {global_path}")
-            
+            _utils_save_json(global_data, global_path)
+
             # Save metadata
             years = sorted([int(year) for year in temporal_data.keys()]) if temporal_data else []
             metadata = {
-                "generated_at": datetime.now().isoformat(),
+                "generated_at": generate_timestamp(),
                 "total_articles": len(self.articles_df),
                 "term_families": list(self.scary_terms.keys()),
                 "term_families_count": len(self.scary_terms),
@@ -265,9 +253,7 @@ class IWACScaryTermsGenerator:
             }
             
             metadata_path = self.output_dir / 'scary-terms-metadata.json'
-            with open(metadata_path, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved metadata to {metadata_path}")
+            _utils_save_json(metadata, metadata_path)
             
         except Exception as e:
             logger.error(f"Error generating scary terms data: {e}")

@@ -21,6 +21,7 @@
 		TopicNetworkTopicNode,
 		TopicNetworkArticleNode
 	} from '$lib/types/topicNetwork.js';
+	import type { GlobalNetworkNode } from '$lib/types/network.js';
 	import { isTopicNode, isArticleNode } from '$lib/types/topicNetwork.js';
 	import {
 		ZoomIn,
@@ -255,7 +256,7 @@
 		}
 	}
 
-	function handleNodeClick(node: any) {
+	function handleNodeClick(node: GlobalNetworkNode | null) {
 		if (!node) {
 			selectedNode = null;
 			urlSync.clearFilter('entity');

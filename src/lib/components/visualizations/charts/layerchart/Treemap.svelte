@@ -15,7 +15,7 @@
 	} from 'layerchart';
 	import { Treemap } from 'layerchart';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import type { TreemapData, TreemapNode, TreemapConfig } from '$lib/types/treemap.js';
+	import type { TreemapData, TreemapNode, TreemapConfig, TreemapTileMethod } from '$lib/types/treemap.js';
 	import ChartTooltip, { type TooltipItem } from './Tooltip.svelte';
 
 	// Props - compatible interface with CustomTreemap
@@ -28,7 +28,7 @@
 		/** Whether to render the internal breadcrumb UI. */
 		showBreadcrumb?: boolean;
 		/** Pass-through layout options (LayerChart Treemap props). */
-		tile?: any;
+		tile?: TreemapTileMethod;
 		maintainAspectRatio?: boolean;
 		paddingOuter?: number;
 		paddingInner?: number;
@@ -147,7 +147,7 @@
 	});
 
 	// Get node color based on country
-	function getNodeColor(node: any): string {
+	function getNodeColor(node: TreemapNode): string {
 		const data = node.data as TreemapData & { __countryName?: string };
 		const countryName = data.__countryName ?? data.name ?? '';
 		const cssVar = getCountryCssVar(countryName);
@@ -161,7 +161,7 @@
 		return value.toLocaleString();
 	}
 
-	function treemapTooltipItems(node: any): TooltipItem[] {
+	function treemapTooltipItems(node: TreemapNode): TooltipItem[] {
 		if (!node) return [];
 		const items: TooltipItem[] = [];
 		items.push({ name: t('chart.documents'), value: formatValue(node.value ?? 0) });
@@ -169,11 +169,11 @@
 	}
 
 	// Generate a unique key for a node based on its full ancestry path
-	function getNodeKey(node: any): string {
+	function getNodeKey(node: TreemapNode): string {
 		const path = node
 			.ancestors()
 			.reverse()
-			.map((n: any) => n.data.name)
+			.map((n: TreemapNode) => n.data.name)
 			.join('/');
 		return path;
 	}
@@ -238,13 +238,13 @@
 									>
 										{#snippet children({ nodes })}
 											{@const activeKey = activeDomain ? getNodeKey(activeDomain) : ''}
-											{@const visibleNodes = nodes.filter((n: any) => {
+											{@const visibleNodes = nodes.filter((n: TreemapNode) => {
 												if (!activeDomain) return false;
 												// Show all nodes except the root itself for nested visualization
 												if (!n.parent) return false;
 												// Check if this node is a descendant of the active domain
 												const ancestors = n.ancestors();
-												return ancestors.some((a: any) => getNodeKey(a) === activeKey);
+												return ancestors.some((a: TreemapNode) => getNodeKey(a as TreemapNode) === activeKey);
 											})}
 											{#each visibleNodes as node (getNodeKey(node))}
 												<Group
@@ -343,7 +343,7 @@
 					>
 						{#snippet children({ data })}
 							{#if data}
-								{@const node = data as any}
+								{@const node = data as TreemapNode}
 								<ChartTooltip
 									label={node.data?.name}
 									items={treemapTooltipItems(node)}

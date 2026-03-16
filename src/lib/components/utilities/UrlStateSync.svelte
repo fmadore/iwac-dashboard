@@ -54,7 +54,7 @@
 		const keys = urlManager.keys();
 		const toClear = keys.filter((k) => !allowed.has(k));
 		if (toClear.length) {
-			urlManager.clearMany(toClear as any);
+			urlManager.clearMany(toClear);
 		}
 	}
 

@@ -1365,11 +1365,11 @@ export const translations = {
 class LanguageStore {
 	current = $state<Language>('en');
 
-	t(key: string, params: any[] = []) {
+	t(key: string, params: (string | number)[] = []) {
 		// Access current language reactively
 		const translation =
 			translations[this.current]?.[key as keyof (typeof translations)[typeof this.current]] || key;
-		return params.reduce((str, param, i) => str.replace(`{${i}}`, param), translation);
+		return params.reduce<string>((str, param, i) => str.replace(`{${i}}`, String(param)), translation);
 	}
 
 	set(lang: Language) {
@@ -1380,4 +1380,4 @@ class LanguageStore {
 export const languageStore = new LanguageStore();
 
 // Export the t function directly from the store instance to maintain reactivity
-export const t = (key: string, params: any[] = []) => languageStore.t(key, params);
+export const t = (key: string, params: (string | number)[] = []) => languageStore.t(key, params);

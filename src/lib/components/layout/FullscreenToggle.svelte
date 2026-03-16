@@ -4,6 +4,25 @@
 	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { browser } from '$app/environment';
 
+	// Vendor-prefixed fullscreen API types
+	interface VendorDocument extends Document {
+		webkitFullscreenEnabled?: boolean;
+		mozFullScreenEnabled?: boolean;
+		msFullscreenEnabled?: boolean;
+		webkitFullscreenElement?: Element | null;
+		mozFullScreenElement?: Element | null;
+		msFullScreenElement?: Element | null;
+		webkitExitFullscreen?: () => Promise<void>;
+		mozCancelFullScreen?: () => Promise<void>;
+		msExitFullscreen?: () => Promise<void>;
+	}
+
+	interface VendorHTMLElement extends HTMLElement {
+		webkitRequestFullscreen?: () => Promise<void>;
+		mozRequestFullScreen?: () => Promise<void>;
+		msRequestFullscreen?: () => Promise<void>;
+	}
+
 	let isFullscreen = $state(false);
 
 	// Derive if Fullscreen API is supported
@@ -11,9 +30,9 @@
 		browser &&
 			!!(
 				document.fullscreenEnabled ||
-				(document as any).webkitFullscreenEnabled ||
-				(document as any).mozFullScreenEnabled ||
-				(document as any).msFullscreenEnabled
+				(document as VendorDocument).webkitFullscreenEnabled ||
+				(document as VendorDocument).mozFullScreenEnabled ||
+				(document as VendorDocument).msFullscreenEnabled
 			)
 	);
 
@@ -26,11 +45,12 @@
 		if (!browser) return;
 
 		const handleFullscreenChange = () => {
+			const doc = document as VendorDocument;
 			isFullscreen = !!(
-				document.fullscreenElement ||
-				(document as any).webkitFullscreenElement ||
-				(document as any).mozFullScreenElement ||
-				(document as any).msFullScreenElement
+				doc.fullscreenElement ||
+				doc.webkitFullscreenElement ||
+				doc.mozFullScreenElement ||
+				doc.msFullScreenElement
 			);
 		};
 
@@ -56,26 +76,27 @@
 		try {
 			if (!isFullscreen) {
 				// Request fullscreen on the document element
-				const elem = document.documentElement;
+				const elem = document.documentElement as VendorHTMLElement;
 				if (elem.requestFullscreen) {
 					await elem.requestFullscreen();
-				} else if ((elem as any).webkitRequestFullscreen) {
-					await (elem as any).webkitRequestFullscreen();
-				} else if ((elem as any).mozRequestFullScreen) {
-					await (elem as any).mozRequestFullScreen();
-				} else if ((elem as any).msRequestFullscreen) {
-					await (elem as any).msRequestFullscreen();
+				} else if (elem.webkitRequestFullscreen) {
+					await elem.webkitRequestFullscreen();
+				} else if (elem.mozRequestFullScreen) {
+					await elem.mozRequestFullScreen();
+				} else if (elem.msRequestFullscreen) {
+					await elem.msRequestFullscreen();
 				}
 			} else {
 				// Exit fullscreen
-				if (document.exitFullscreen) {
-					await document.exitFullscreen();
-				} else if ((document as any).webkitExitFullscreen) {
-					await (document as any).webkitExitFullscreen();
-				} else if ((document as any).mozCancelFullScreen) {
-					await (document as any).mozCancelFullScreen();
-				} else if ((document as any).msExitFullscreen) {
-					await (document as any).msExitFullscreen();
+				const doc = document as VendorDocument;
+				if (doc.exitFullscreen) {
+					await doc.exitFullscreen();
+				} else if (doc.webkitExitFullscreen) {
+					await doc.webkitExitFullscreen();
+				} else if (doc.mozCancelFullScreen) {
+					await doc.mozCancelFullScreen();
+				} else if (doc.msExitFullscreen) {
+					await doc.msExitFullscreen();
 				}
 			}
 		} catch (error) {

@@ -21,6 +21,8 @@ from typing import Any, Dict, List
 import pandas as pd
 from datasets import load_dataset
 
+from iwac_utils import save_json as _utils_save_json
+
 
 def month_key(date_str: str) -> str:
     if not date_str:
@@ -186,8 +188,7 @@ def main():
         "ai_fields": ai_fields,
     }
 
-    with open(out_dir / "summary.json", "w", encoding="utf-8") as f:
-        json.dump(summary, f, ensure_ascii=False, indent=2)
+    _utils_save_json(summary, out_dir / "summary.json")
     print(f"Wrote {out_dir / 'summary.json'}")
 
     # Per-topic files
@@ -225,8 +226,7 @@ def main():
         }
 
         path = out_dir / f"{tid}.json"
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(topic_blob, f, ensure_ascii=False, indent=2)
+        _utils_save_json(topic_blob, path)
         # print each file path briefly
         print(f"Wrote {path}")
 

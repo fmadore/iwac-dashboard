@@ -31,7 +31,15 @@
 	let containerElement: HTMLDivElement | null = $state(null);
 	let svgElement: SVGSVGElement | null = $state(null);
 	let tooltip: HTMLDivElement | null = $state(null);
-	let d3Module: any = null;
+	// Combined D3 module with methods from d3-selection, d3-scale, and d3-scale-chromatic
+	interface D3Module {
+		select: typeof import('d3-selection').select;
+		selectAll: typeof import('d3-selection').selectAll;
+		scaleLinear: typeof import('d3-scale').scaleLinear;
+		scaleSequential: typeof import('d3-scale').scaleSequential;
+		interpolateBlues: typeof import('d3-scale-chromatic').interpolateBlues;
+	}
+	let d3Module: D3Module | null = null;
 	const { width: containerWidth } = useResizeObserver(() => containerElement);
 
 	// Computed cell size based on container width

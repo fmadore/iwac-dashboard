@@ -33,6 +33,11 @@ from datasets import load_dataset
 from huggingface_hub import login
 import pandas as pd
 
+from iwac_utils import (
+    load_dataset_safe as _utils_load_dataset_safe,
+    save_json as _utils_save_json,
+)
+
 
 def configure_logging() -> None:
     """Configure le logging de base."""
@@ -82,31 +87,9 @@ def count_non_empty_rows(df: pd.DataFrame, column_name: str) -> int:
 def load_dataset_safe(repo_id: str, config_name: str, token: Optional[str] = None) -> Optional[pd.DataFrame]:
     """
     Charge un dataset de manière sécurisée avec gestion d'erreurs.
-    
-    Args:
-        repo_id: ID du repository Hugging Face
-        config_name: Nom de la configuration
-        token: Token d'authentification
-    
-    Returns:
-        DataFrame du dataset ou None en cas d'erreur
+    Delegates to iwac_utils.load_dataset_safe.
     """
-    logger = logging.getLogger(__name__)
-    
-    try:
-        logger.info(f"Chargement du dataset '{repo_id}', configuration '{config_name}'...")
-        ds = load_dataset(
-            repo_id, 
-            name=config_name, 
-            split="train", 
-            token=token
-        )
-        df = ds.to_pandas()
-        logger.info(f"Dataset '{config_name}' chargé: {len(df)} lignes")
-        return df
-    except Exception as e:
-        logger.warning(f"Impossible de charger le dataset '{config_name}': {e}")
-        return None
+    return _utils_load_dataset_safe(config_name, repo_id=repo_id, token=token)
 
 
 def parse_iso8601_duration_to_minutes(val: str) -> int:
@@ -485,20 +468,8 @@ def load_sources_stats(output_dir: Path) -> Dict[str, Any]:
 
 
 def save_json(data: Any, path: Path) -> None:
-    """Save data as JSON file."""
-    logger = logging.getLogger(__name__)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    try:
-        abs_path = path.resolve()
-        cwd = Path.cwd().resolve()
-        display = abs_path.relative_to(cwd)
-    except Exception:
-        display = path
-    
-    logger.info(f"Wrote {display}")
+    """Save data as JSON file. Delegates to iwac_utils.save_json."""
+    _utils_save_json(data, path)
 
 
 def main():

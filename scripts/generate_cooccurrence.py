@@ -32,6 +32,12 @@ except ImportError:
     print("pip install datasets pandas huggingface-hub pyarrow")
     exit(1)
 
+from iwac_utils import (
+    DATASET_ID,
+    load_dataset_safe,
+    save_json as _utils_save_json,
+    generate_timestamp,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -107,26 +113,15 @@ class IWACCooccurrenceGenerator:
     def fetch_articles_data(self) -> None:
         """Fetch articles from the IWAC dataset"""
         logger.info("Fetching articles from IWAC dataset...")
-        
-        dataset_name = "fmadore/islam-west-africa-collection"
-        
-        try:
-            # Load articles subset
-            logger.info("Loading articles subset...")
-            dataset = load_dataset(dataset_name, "articles")
-            
-            # Convert to pandas DataFrame
-            df = dataset['train'].to_pandas()
-            logger.info(f"Loaded {len(df)} articles")
-            
-            self.articles_df = df.copy()
-            
-            # Clean and prepare data
-            self._clean_data()
-            
-        except Exception as e:
-            logger.error(f"Error loading articles data: {e}")
-            raise
+
+        df = load_dataset_safe("articles")
+        if df is None:
+            raise RuntimeError("Failed to load articles subset")
+
+        self.articles_df = df.copy()
+
+        # Clean and prepare data
+        self._clean_data()
     
     def _clean_data(self) -> None:
         """Clean and prepare the data for analysis"""
@@ -482,41 +477,32 @@ class IWACCooccurrenceGenerator:
             # Generate global co-occurrence matrix (scary terms with each other)
             global_data = self.generate_global_cooccurrence()
             global_path = self.output_dir / 'matrix-global.json'
-            with open(global_path, 'w', encoding='utf-8') as f:
-                json.dump(global_data, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Saved global matrix data to {global_path}")
-            
+            _utils_save_json(global_data, global_path, minify=True)
+
             # Generate country co-occurrence matrices
             country_data = self.generate_country_cooccurrence()
             country_path = self.output_dir / 'matrix-countries.json'
-            with open(country_path, 'w', encoding='utf-8') as f:
-                json.dump(country_data, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Saved country matrix data to {country_path}")
-            
+            _utils_save_json(country_data, country_path, minify=True)
+
             # Generate word associations (global)
             word_associations = self.generate_word_associations()
             words_global_path = self.output_dir / 'words-global.json'
-            with open(words_global_path, 'w', encoding='utf-8') as f:
-                json.dump(word_associations, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Saved global word associations to {words_global_path}")
-            
+            _utils_save_json(word_associations, words_global_path, minify=True)
+
             # Also save individual term files for easier loading
             for term_family, term_data in word_associations.items():
                 term_path = self.output_dir / f'term-{term_family}.json'
-                with open(term_path, 'w', encoding='utf-8') as f:
-                    json.dump(term_data, f, ensure_ascii=False, separators=(',', ':'))
+                _utils_save_json(term_data, term_path, minify=True)
             logger.info(f"Saved {len(word_associations)} individual term files")
-            
+
             # Generate word associations by country
             country_word_data = self.generate_word_associations_by_country()
             words_countries_path = self.output_dir / 'words-countries.json'
-            with open(words_countries_path, 'w', encoding='utf-8') as f:
-                json.dump(country_word_data, f, ensure_ascii=False, separators=(',', ':'))
-            logger.info(f"Saved country word associations to {words_countries_path}")
-            
+            _utils_save_json(country_word_data, words_countries_path, minify=True)
+
             # Save metadata
             metadata = {
-                "generated_at": datetime.now().isoformat(),
+                "generated_at": generate_timestamp(),
                 "total_articles": len(self.articles_df),
                 "term_families": list(self.scary_terms.keys()),
                 "term_families_count": len(self.scary_terms),
@@ -535,9 +521,7 @@ class IWACCooccurrenceGenerator:
             }
             
             metadata_path = self.output_dir / 'metadata.json'
-            with open(metadata_path, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved metadata to {metadata_path}")
+            _utils_save_json(metadata, metadata_path)
             
             # Also copy to build/data/cooccurrence for production
             build_dir = self.output_dir.parent.parent / 'build' / 'data' / 'cooccurrence'

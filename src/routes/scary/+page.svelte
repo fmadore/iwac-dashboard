@@ -56,15 +56,22 @@
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
+	// ECharts instance interface for methods actually used
+	interface EChartsInstance {
+		setOption(option: Record<string, unknown>, notMerge?: boolean): void;
+		resize(): void;
+		dispose(): void;
+	}
+
 	// Chart state
-	let chartInstance: any = null;
+	let chartInstance: EChartsInstance | null = null;
 	let isPlaying = $state(false);
 	let currentYearIndex = $state(0);
 	let height = 600;
 
 	// Non-reactive references (bind:this doesn't need $state)
 	let chartContainer = $state<HTMLDivElement | null>(null);
-	let barChartRace = $state<any>(null);
+	let barChartRace = $state<{ play: () => void; pause: () => void; reset: () => void } | null>(null);
 
 	// Color management for consistent term colors
 	const termColorMap = new Map<string, string>();

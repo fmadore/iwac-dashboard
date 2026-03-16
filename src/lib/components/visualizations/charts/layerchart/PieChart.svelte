@@ -206,7 +206,7 @@
 		return `${((part / total) * 100).toFixed(1)}%`;
 	}
 
-	function tooltipItemsFromPayload(payload: any[]): TooltipItem[] {
+	function tooltipItemsFromPayload(payload: Array<{ payload?: Record<string, unknown>; value?: unknown; [key: string]: unknown }>): TooltipItem[] {
 		const first = payload?.[0];
 		const hovered = first?.payload ?? first;
 		const rawValue = hovered?.value ?? first?.value;
@@ -214,19 +214,20 @@
 		if (!Number.isFinite(value)) return [];
 
 		const percent = formatPercent(value, visibleTotalValue);
+		const hoveredColor = (hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color) as string | undefined;
 		const base: TooltipItem[] = showValues
 			? [
 					{
 						name: t('chart.documents'),
 						value: `${value.toLocaleString()} (${percent})`,
-						color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color
+						color: hoveredColor
 					}
 				]
 			: [
 					{
 						name: '',
 						value: percent,
-						color: hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color
+						color: hoveredColor
 					}
 				];
 

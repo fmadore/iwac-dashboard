@@ -5,6 +5,12 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { Maximize2, Minimize2 } from '@lucide/svelte';
 	import { getEntityColorsHex, getEdgeColorsHex, resolveCSSColor } from '$lib/constants/theme.js';
+	import type { Component } from 'svelte';
+	import type Sigma from 'sigma';
+	import type { AbstractGraph, Attributes } from 'graphology-types';
+	import type { ForceAtlas2SynchronousLayoutParameters } from 'graphology-layout-forceatlas2';
+
+	type GraphInstance = AbstractGraph;
 
 	// Layout types
 	export type LayoutType = 'force' | 'circular' | 'radial';
@@ -12,7 +18,7 @@
 	interface EntityTypeConfig {
 		label: string;
 		color: string;
-		icon: any;
+		icon: Component;
 	}
 
 	interface Props {
@@ -42,8 +48,8 @@
 	}: Props = $props();
 
 	let containerElement: HTMLDivElement | null = $state(null);
-	let sigmaInstance: any = $state(null);
-	let graphInstance: any = $state(null);
+	let sigmaInstance: Sigma | null = $state(null);
+	let graphInstance: GraphInstance | null = $state(null);
 	let isLayoutRunning = $state(false);
 	let layoutProgress = $state(0);
 	let isInitialized = $state(false);
@@ -317,15 +323,17 @@
 				import('@sigma/edge-curve')
 			]);
 
-			const graphologyModule2 = graphologyModule as any;
-			const Graph = graphologyModule2.default || graphologyModule2;
-			const forceAtlas2 = forceAtlas2Module;
+			type GraphConstructorType = new () => GraphInstance;
+			const GraphModule = graphologyModule as unknown as { default?: GraphConstructorType; MultiGraph?: GraphConstructorType };
+			const ResolvedGraphClass = GraphModule.default ?? (graphologyModule as unknown as GraphConstructorType);
+			// forceAtlas2Module.default holds the IForceAtlas2Layout with .assign()
+			const forceAtlas2 = (forceAtlas2Module as unknown as { default: { assign: (graph: GraphInstance, params: ForceAtlas2SynchronousLayoutParameters) => void } }).default;
 			const { createNodeBorderProgram } = nodeBorderModule;
 			const EdgeCurveProgram = edgeCurveModule.default;
 
 			// Use MultiGraph to support multiple edges between same node pair (e.g. knowledge graph)
-			const GraphConstructor = graphologyModule2.MultiGraph || Graph;
-			const graph = new GraphConstructor();
+			const GraphConstructor = GraphModule.MultiGraph ?? ResolvedGraphClass;
+			const graph: GraphInstance = new GraphConstructor();
 			graphInstance = graph;
 
 			// Build node lookup
@@ -383,7 +391,7 @@
 				if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
 					try {
 						// Use edge type color if available, otherwise default
-						const edgeTypeStr = (edge as any).type || '';
+						const edgeTypeStr = edge.type || '';
 						const typedColor = edgeTypeColorMap[edgeTypeStr];
 						const finalEdgeColor = typedColor || edgeColor;
 
@@ -411,8 +419,8 @@
 				const entityTypes = [...new Set(nodes.map(n => n.type))];
 				const nodesByType: Record<string, string[]> = {};
 
-				graph.forEachNode((nodeId: string, attrs: any) => {
-					const type = attrs.entityType || 'unknown';
+				graph.forEachNode((nodeId: string, attrs: Attributes) => {
+					const type = (attrs.entityType as string) || 'unknown';
 					if (!nodesByType[type]) nodesByType[type] = [];
 					nodesByType[type].push(nodeId);
 				});
@@ -485,7 +493,7 @@
 				const baseIterations = Math.min(80, Math.max(30, 120 - nodeCount));
 				const iterations = hasMostlyCachedPositions ? Math.min(10, baseIterations) : baseIterations;
 
-				(forceAtlas2 as any).assign(graph, {
+				const fa2Params: ForceAtlas2SynchronousLayoutParameters = {
 					iterations,
 					settings: {
 						gravity: 0.3,
@@ -498,13 +506,14 @@
 						linLogMode: true,
 						outboundAttractionDistribution: true
 					}
-				});
+				};
+				forceAtlas2.assign(graph, fa2Params);
 			}
 
 			// Cache the computed positions (for force layout)
 			if (layoutType === 'force') {
-				graph.forEachNode((nodeId: string, attrs: { x: number; y: number }) => {
-					positionCache.set(nodeId, { x: attrs.x, y: attrs.y });
+				graph.forEachNode((nodeId: string, attrs: Attributes) => {
+					positionCache.set(nodeId, { x: attrs.x as number, y: attrs.y as number });
 				});
 			}
 
@@ -533,7 +542,7 @@
 			const drawNodeHoverWithHalo = (
 				context: CanvasRenderingContext2D,
 				data: { x: number; y: number; size: number; label: string | null; color: string },
-				settings: any
+				settings: { labelSize?: number; labelWeight?: string; labelFont?: string }
 			) => {
 				const { x, y, size, label, color } = data;
 
@@ -778,7 +787,7 @@
 				tooltipVisible = true;
 
 				// Refresh to apply hover effects
-				sigmaInstance.refresh({ skipIndexation: true });
+				sigmaInstance?.refresh({ skipIndexation: true });
 			});
 
 			sigmaInstance.on('leaveNode', () => {
@@ -791,7 +800,7 @@
 				tooltipNode = null;
 
 				// Refresh to remove hover effects
-				sigmaInstance.refresh({ skipIndexation: true });
+				sigmaInstance?.refresh({ skipIndexation: true });
 			});
 
 			// Track mouse position for tooltip

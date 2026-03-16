@@ -139,7 +139,7 @@
 	type Datum = { year: string } & Record<string, number>;
 	const chartData = $derived.by(() => {
 		return years.map((year, yearIndex) => {
-			const row: Record<string, any> = { year: String(year) };
+			const row: Record<string, string | number> = { year: String(year) };
 			for (const [seriesIndex, def] of seriesDefs.entries()) {
 				row[def.key] = series[seriesIndex]?.data?.[yearIndex] ?? 0;
 			}

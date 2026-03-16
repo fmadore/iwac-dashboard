@@ -49,6 +49,25 @@
 	const ontology = $derived(pageData.ontology);
 	const kgStats = $derived(pageData.stats);
 
+	// Raw data types from JSON
+	interface RawKGNode {
+		id: string;
+		type: string;
+		label: string;
+		properties?: { frequency?: number; url?: string };
+		degree?: number;
+		strength?: number;
+		labelPriority?: number;
+	}
+
+	interface RawKGEdge {
+		source: string;
+		target: string;
+		type?: string;
+		weight?: number;
+		weightNorm?: number;
+	}
+
 	// KG node type → EntityType mapping
 	const typeMapping: Record<string, EntityType> = {
 		Person: 'person',
@@ -63,7 +82,7 @@
 	const allNodes = $derived.by<GlobalNetworkNode[]>(() => {
 		if (!rawGraph?.nodes) return [];
 		return rawGraph.nodes.map(
-			(n: any): GlobalNetworkNode => ({
+			(n: RawKGNode): GlobalNetworkNode => ({
 				id: n.id,
 				type: typeMapping[n.type] || ('subject' as EntityType),
 				label: n.label,
@@ -79,7 +98,7 @@
 	const allEdges = $derived.by<GlobalNetworkEdge[]>(() => {
 		if (!rawGraph?.edges) return [];
 		return rawGraph.edges.map(
-			(e: any): GlobalNetworkEdge => ({
+			(e: RawKGEdge): GlobalNetworkEdge => ({
 				source: e.source,
 				target: e.target,
 				type: e.type || 'unknown',

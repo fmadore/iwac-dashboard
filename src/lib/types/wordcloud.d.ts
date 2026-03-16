@@ -22,8 +22,8 @@ declare module 'wordcloud' {
 		drawOutOfBound?: boolean;
 		shrinkToFit?: boolean;
 		clearCanvas?: boolean;
-		hover?: (item: any, dimension: any, event: Event) => void;
-		click?: (item: any, dimension: any, event: Event) => void;
+		hover?: (item: [string, number] | null, dimension: { x: number; y: number; w: number; h: number } | null, event: Event) => void;
+		click?: (item: [string, number] | null, dimension: { x: number; y: number; w: number; h: number } | null, event: Event) => void;
 	}
 
 	function WordCloud(element: HTMLCanvasElement, options: WordCloudOptions): void;

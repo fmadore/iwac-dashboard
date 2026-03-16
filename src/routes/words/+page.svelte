@@ -341,9 +341,9 @@
 							{#if viewMode === 'global'}
 								{t('words.overall_frequencies')}
 							{:else if viewMode === 'country'}
-								{t('words.frequencies_for_country', [selectedCountry])}
+								{t('words.frequencies_for_country', [selectedCountry ?? ''])}
 							{:else if viewMode === 'temporal'}
-								{t('words.frequencies_for_year', [selectedYear])}
+								{t('words.frequencies_for_year', [selectedYear ?? ''])}
 							{/if}
 						</p>
 					</div>

@@ -38,41 +38,43 @@ except ImportError:
     print("pip install -r scripts/requirements.txt")
     raise
 
+from iwac_utils import (
+    DATASET_ID,
+    load_dataset_safe,
+    parse_pipe_separated as _utils_parse_pipe_separated,
+    normalize_country as _utils_normalize_country,
+    extract_year as _utils_extract_year,
+    parse_coordinates as _utils_parse_coordinates,
+    save_json as _utils_save_json,
+    find_column as _utils_find_column,
+)
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-DATASET_ID = "fmadore/islam-west-africa-collection"
 SUBSET = "references"
 
 
 def normalize_multivalue_field(value: Any, separator: str = "|") -> List[str]:
-    """Normalize a multivalue field separated by a delimiter."""
+    """Normalize a multivalue field separated by a delimiter.
+    Delegates to iwac_utils.parse_pipe_separated for pipe separator.
+    """
+    if separator == "|":
+        return _utils_parse_pipe_separated(value)
+    # For non-pipe separators, keep local logic
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return []
-    
     if isinstance(value, (list, tuple)):
-        items = [str(item).strip() for item in value if str(item).strip()]
-        return items
-    
+        return [str(item).strip() for item in value if str(item).strip()]
     value_str = str(value).strip()
     if not value_str:
         return []
-    
-    # Split by separator and clean up
-    items = [item.strip() for item in value_str.split(separator) if item.strip()]
-    return items
+    return [item.strip() for item in value_str.split(separator) if item.strip()]
 
 
 def normalize_country(value: Any) -> List[str]:
-    """Normalize country field (multivalue separated by |)."""
-    countries = normalize_multivalue_field(value, "|")
-
-    if not countries:
-        return ["Unknown"]
-
-    # Title case and deduplicate
-    countries = list(dict.fromkeys([c.title() for c in countries]))
-    return countries
+    """Normalize country field (multivalue separated by |). Delegates to iwac_utils."""
+    return _utils_normalize_country(value, return_list=True)
 
 
 def normalize_publishers(value: Any) -> List[str]:
@@ -126,22 +128,8 @@ def normalize_authors(value: Any) -> List[str]:
 
 
 def extract_year(value: Any) -> Optional[int]:
-    """Extract year from pub_date field (yyyy-mm-dd, yyyy-mm, or yyyy)."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return None
-    
-    value_str = str(value).strip()
-    if not value_str:
-        return None
-    
-    # Try to extract 4-digit year (1900-2100)
-    year_match = re.search(r'\b(19|20)\d{2}\b', value_str)
-    if year_match:
-        year = int(year_match.group(0))
-        if 1900 <= year <= 2100:
-            return year
-    
-    return None
+    """Extract year from pub_date field. Delegates to iwac_utils.extract_year."""
+    return _utils_extract_year(value, min_year=1900)
 
 
 def normalize_reference_type(value: Any) -> str:
@@ -159,29 +147,15 @@ def normalize_reference_type(value: Any) -> str:
 
 
 def load_references_data() -> pd.DataFrame:
-    """Load data from the references subset."""
-    logger.info(f"Loading references subset from {DATASET_ID}...")
-    try:
-        dset = load_dataset(DATASET_ID, SUBSET)
-        df: pd.DataFrame = dset["train"].to_pandas()
-        logger.info(f"Loaded {len(df)} records from references subset")
-        return df
-    except Exception as e:
-        logger.error(f"Failed to load references subset: {e}")
-        return pd.DataFrame()
+    """Load data from the references subset. Delegates to iwac_utils."""
+    df = load_dataset_safe(SUBSET)
+    return df if df is not None else pd.DataFrame()
 
 
 def load_index_data() -> pd.DataFrame:
-    """Load data from the index subset for author/publisher lookup."""
-    logger.info(f"Loading index subset from {DATASET_ID}...")
-    try:
-        dset = load_dataset(DATASET_ID, "index")
-        df: pd.DataFrame = dset["train"].to_pandas()
-        logger.info(f"Loaded {len(df)} records from index subset")
-        return df
-    except Exception as e:
-        logger.error(f"Failed to load index subset: {e}")
-        return pd.DataFrame()
+    """Load data from the index subset. Delegates to iwac_utils."""
+    df = load_dataset_safe("index")
+    return df if df is not None else pd.DataFrame()
 
 
 def build_name_to_id_lookup(index_df: pd.DataFrame) -> Dict[str, Dict[str, Any]]:
@@ -196,29 +170,10 @@ def build_name_to_id_lookup(index_df: pd.DataFrame) -> Dict[str, Dict[str, Any]]
     lookup: Dict[str, Dict[str, Any]] = {}
 
     # Find relevant columns
-    id_col = None
-    for col in ["o:id", "o_id", "id"]:
-        if col in index_df.columns:
-            id_col = col
-            break
-
-    title_col = None
-    for col in ["Titre", "title", "Title"]:
-        if col in index_df.columns:
-            title_col = col
-            break
-
-    alt_title_col = None
-    for col in ["Titre alternatif", "alternative_title"]:
-        if col in index_df.columns:
-            alt_title_col = col
-            break
-
-    type_col = None
-    for col in ["Type", "type"]:
-        if col in index_df.columns:
-            type_col = col
-            break
+    id_col = _utils_find_column(index_df, ["o:id", "o_id", "id"])
+    title_col = _utils_find_column(index_df, ["Titre", "title", "Title"])
+    alt_title_col = _utils_find_column(index_df, ["Titre alternatif", "alternative_title"])
+    type_col = _utils_find_column(index_df, ["Type", "type"])
 
     if not id_col or not title_col:
         logger.warning(f"Could not find required columns in index. Found: {list(index_df.columns)}")
@@ -294,31 +249,8 @@ def find_entity_id(name: str, lookup: Dict[str, Dict[str, Any]], entity_types: L
 
 
 def parse_coordinates(coord_str: str) -> Optional[Tuple[float, float]]:
-    """Parse coordinates from the Coordonnées field.
-
-    Expected formats: "lat, lng" or "lat,lng"
-    Returns (lat, lng) tuple or None if parsing fails.
-    """
-    if not coord_str or (isinstance(coord_str, float) and pd.isna(coord_str)):
-        return None
-
-    coord_str = str(coord_str).strip()
-    if not coord_str:
-        return None
-
-    # Try common formats: "lat, lng" or "lat,lng"
-    match = re.match(r'^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$', coord_str)
-    if match:
-        try:
-            lat = float(match.group(1))
-            lng = float(match.group(2))
-            # Validate ranges
-            if -90 <= lat <= 90 and -180 <= lng <= 180:
-                return (lat, lng)
-        except ValueError:
-            pass
-
-    return None
+    """Parse coordinates from the Coordonnées field. Delegates to iwac_utils."""
+    return _utils_parse_coordinates(coord_str)
 
 
 def build_coord_lookup(index_df: pd.DataFrame) -> Dict[str, Dict[str, Any]]:
@@ -332,29 +264,10 @@ def build_coord_lookup(index_df: pd.DataFrame) -> Dict[str, Dict[str, Any]]:
     lookup: Dict[str, Dict[str, Any]] = {}
 
     # Find relevant columns
-    title_col = None
-    for col in ["Titre", "title", "Title"]:
-        if col in index_df.columns:
-            title_col = col
-            break
-
-    coord_col = None
-    for col in ["Coordonnées", "coordinates", "coordonnees"]:
-        if col in index_df.columns:
-            coord_col = col
-            break
-
-    id_col = None
-    for col in ["o:id", "o_id", "id"]:
-        if col in index_df.columns:
-            id_col = col
-            break
-
-    type_col = None
-    for col in ["Type", "type"]:
-        if col in index_df.columns:
-            type_col = col
-            break
+    title_col = _utils_find_column(index_df, ["Titre", "title", "Title"])
+    coord_col = _utils_find_column(index_df, ["Coordonnées", "coordinates", "coordonnees"])
+    id_col = _utils_find_column(index_df, ["o:id", "o_id", "id"])
+    type_col = _utils_find_column(index_df, ["Type", "type"])
 
     if not title_col or not coord_col:
         logger.warning(f"Could not find required columns. Found: {list(index_df.columns)}")
@@ -1235,24 +1148,8 @@ def generate_metadata(records: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def save_json(data: Any, path: Path, minify: bool = True) -> None:
-    """Save data as JSON file. Minified by default for faster loading."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        if minify:
-            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
-        else:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    try:
-        abs_path = path.resolve()
-        cwd = Path.cwd().resolve()
-        display = abs_path.relative_to(cwd)
-    except Exception:
-        display = path
-    
-    # Log file size for monitoring
-    size_kb = path.stat().st_size / 1024
-    logger.info(f"Wrote {display} ({size_kb:.1f} KB)")
+    """Save data as JSON file. Delegates to iwac_utils.save_json."""
+    _utils_save_json(data, path, minify=minify)
 
 
 def copy_to_build_dir(output_dir: Path) -> None:

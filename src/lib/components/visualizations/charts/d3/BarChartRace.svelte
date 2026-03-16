@@ -2,13 +2,24 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { FALLBACK_COLORS } from '$lib/constants/theme.js';
+	// ECharts instance interface for methods actually used
+	interface EChartsInstance {
+		setOption(option: Record<string, unknown>, notMerge?: boolean): void;
+		resize(): void;
+		dispose(): void;
+	}
+
+	interface BarChartRacePeriodData {
+		data: [string, number][];
+		year?: number;
+	}
 
 	interface BarChartRaceProps {
 		/**
 		 * Data structure: { [key: string]: { data: [string, number][], year?: number, ... } }
 		 * Each key represents a time period or category
 		 */
-		data: Record<string, { data: [string, number][]; year?: number; [key: string]: any }>;
+		data: Record<string, BarChartRacePeriodData>;
 
 		/**
 		 * Array of time period keys in order (e.g., years)
@@ -117,7 +128,7 @@
 
 	// Component state
 	let chartContainer: HTMLDivElement;
-	let chartInstance: any = null;
+	let chartInstance: EChartsInstance | null = null;
 	let isPlaying = $state(false);
 	let playInterval: number | null = null;
 	let themeClass = $state('');
@@ -159,16 +170,10 @@
 	}
 
 	// Compute cumulative data if needed
-	function getCumulativeData(): Record<
-		string,
-		{ data: [string, number][]; year?: number; [key: string]: any }
-	> {
+	function getCumulativeData(): Record<string, BarChartRacePeriodData> {
 		if (!cumulative) return data;
 
-		const cumulativeData: Record<
-			string,
-			{ data: [string, number][]; year?: number; [key: string]: any }
-		> = {};
+		const cumulativeData: Record<string, BarChartRacePeriodData> = {};
 		const termTotals: Map<string, number> = new Map();
 
 		// Initialize with allTerms if provided
@@ -402,7 +407,7 @@
 						show: showLabels,
 						position: 'right',
 						color: foregroundColor,
-						formatter: (params: any) => {
+						formatter: (params: { value: number }) => {
 							return params.value > 0 ? params.value : '';
 						}
 					},

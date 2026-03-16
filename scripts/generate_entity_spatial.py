@@ -34,11 +34,17 @@ except ImportError:
     print("pip install datasets pandas huggingface-hub pyarrow")
     exit(1)
 
+from iwac_utils import (
+    DATASET_ID,
+    normalize_location_name,
+    parse_pipe_separated as _utils_parse_pipe_separated,
+    save_json as _utils_save_json,
+    generate_timestamp,
+)
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-DATASET_ID = "fmadore/islam-west-africa-collection"
 
 # Entity types to include (French labels from dataset)
 INCLUDED_ENTITY_TYPES = {
@@ -58,24 +64,16 @@ TYPE_LABELS = {
 
 
 def normalize_name(name: str) -> str:
-    """Normalize a name for matching."""
+    """Normalize a name for matching. Extends iwac_utils.normalize_location_name with whitespace collapsing."""
     if not name:
         return ""
-    name = unicodedata.normalize('NFC', str(name).strip().lower())
-    name = ' '.join(name.split())
-    return name
+    normalized = normalize_location_name(name)
+    return ' '.join(normalized.split())
 
 
 def parse_pipe_separated(value: Any) -> List[str]:
-    """Parse a pipe-separated string into a list of values."""
-    if not value or pd.isna(value):
-        return []
-    if isinstance(value, (list, tuple)):
-        return [str(v).strip() for v in value if v and str(v).strip()]
-    s = str(value).strip()
-    if not s:
-        return []
-    return [part.strip() for part in s.split('|') if part.strip()]
+    """Parse a pipe-separated string into a list of values. Delegates to iwac_utils."""
+    return _utils_parse_pipe_separated(value)
 
 
 class EntitySpatialGenerator:
@@ -449,7 +447,7 @@ class EntitySpatialGenerator:
                 'totalEntities': len(self.entity_by_id),
                 'entitiesWithLocations': entities_with_locations,
                 'entityTypes': list(INCLUDED_ENTITY_TYPES),
-                'generatedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+                'generatedAt': generate_timestamp(),
                 'dataSource': DATASET_ID
             }
         }

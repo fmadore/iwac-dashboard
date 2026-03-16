@@ -32,21 +32,23 @@ except ImportError:
     print("pip install -r scripts/requirements.txt")
     raise
 
+from iwac_utils import (
+    DATASET_ID,
+    load_dataset_safe,
+    find_column,
+    save_json as _utils_save_json,
+)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
-DATASET_ID = "fmadore/islam-west-africa-collection"
 INDEX_SUBSET = "index"
 EXCLUDED_TYPE_FOR_BARCHART = "Notices d'autorité"  # Do not collect for bar chart
 
 
 def _first_existing(df: "pd.DataFrame", candidates: Iterable[str]) -> Optional[str]:
-    for c in candidates:
-        if c in df.columns:
-            return c
-    return None
+    """Find first existing column. Delegates to iwac_utils.find_column."""
+    return find_column(df, list(candidates))
 
 
 def _to_date_str(value: Any) -> Optional[str]:
@@ -93,9 +95,10 @@ def _normalize_countries(value: Any) -> str:
 
 
 def load_index_dataframe() -> "pd.DataFrame":
-    logger.info(f"Loading dataset {DATASET_ID} subset '{INDEX_SUBSET}' ...")
-    dset = load_dataset(DATASET_ID, INDEX_SUBSET)
-    df: pd.DataFrame = dset["train"].to_pandas()
+    """Load the index subset. Delegates to iwac_utils.load_dataset_safe."""
+    df = load_dataset_safe(INDEX_SUBSET)
+    if df is None:
+        raise RuntimeError(f"Failed to load dataset subset '{INDEX_SUBSET}'")
     logger.info(f"Loaded {len(df)} index rows with columns: {list(df.columns)}")
     return df
 
@@ -217,16 +220,8 @@ def extract_entities_rows(df: "pd.DataFrame", include_authority: bool = True) ->
 
 
 def save_json(obj: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
-    try:
-        abs_path = path.resolve()
-        cwd = Path.cwd().resolve()
-        display = abs_path.relative_to(cwd)
-    except Exception:
-        display = path
-    logger.info(f"Wrote {display}")
+    """Save data as JSON file. Delegates to iwac_utils.save_json."""
+    _utils_save_json(obj, path)
 
 
 def process(output_dir: Path, include_authority_in_table: bool) -> Tuple[Path, Path]:

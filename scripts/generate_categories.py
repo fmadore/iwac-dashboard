@@ -41,10 +41,18 @@ except ImportError:
     print("pip install -r scripts/requirements.txt")
     raise
 
+from iwac_utils import (
+    DATASET_ID,
+    normalize_country,
+    extract_year,
+    load_dataset_safe,
+    find_column as _utils_find_column,
+    save_json as _utils_save_json,
+)
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-DATASET_ID = "fmadore/islam-west-africa-collection"
 SUBSETS = ["articles", "audiovisual", "documents", "publications", "references"]
 
 # Mapping from subset names to document type labels (English / French)
@@ -58,70 +66,19 @@ SUBSET_TO_TYPE = {
 
 
 def _normalize_country(value: Any) -> List[str]:
-    """Normalize country values to list of countries."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return ["Unknown"]
-    
-    if isinstance(value, (list, tuple)):
-        countries = [str(c).strip().title() for c in value if str(c).strip()]
-        return countries if countries else ["Unknown"]
-    
-    country_str = str(value).strip()
-    if not country_str:
-        return ["Unknown"]
-    
-    # Handle multiple countries separated by common delimiters
-    for sep in [";", ",", "|", "/"]:
-        if sep in country_str:
-            countries = [c.strip().title() for c in country_str.split(sep) if c.strip()]
-            return countries if countries else ["Unknown"]
-    
-    return [country_str.title()]
+    """Normalize country values to list of countries. Delegates to iwac_utils.normalize_country."""
+    return normalize_country(value, return_list=True)
 
 
 def _extract_year(value: Any) -> Optional[int]:
-    """Extract year from various date formats."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return None
-    
-    try:
-        # If it's already a string that looks like a year
-        if isinstance(value, str):
-            value = value.strip()
-            if not value:
-                return None
-            # Try to extract 4-digit year
-            import re
-            year_match = re.search(r'\b(19|20)\d{2}\b', value)
-            if year_match:
-                year = int(year_match.group(0))
-                if 1900 <= year <= 2100:
-                    return year
-        
-        # Try pandas datetime parsing
-        dt = pd.to_datetime(value, errors="coerce")
-        if pd.notna(dt):
-            year = dt.year
-            if 1900 <= year <= 2100:
-                return year
-            
-    except Exception:
-        pass
-    
-    return None
+    """Extract year from various date formats. Delegates to iwac_utils.extract_year."""
+    return extract_year(value, min_year=1900)
 
 
 def load_subset_data(subset: str) -> pd.DataFrame:
-    """Load data from a specific subset."""
-    logger.info(f"Loading subset '{subset}'...")
-    try:
-        dset = load_dataset(DATASET_ID, subset)
-        df: pd.DataFrame = dset["train"].to_pandas()
-        logger.info(f"Loaded {len(df)} records from '{subset}'")
-        return df
-    except Exception as e:
-        logger.error(f"Failed to load subset '{subset}': {e}")
-        return pd.DataFrame()
+    """Load data from a specific subset. Delegates to iwac_utils.load_dataset_safe."""
+    df = load_dataset_safe(subset)
+    return df if df is not None else pd.DataFrame()
 
 
 def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, Any]]:
@@ -129,16 +86,9 @@ def process_subset_data(df: pd.DataFrame, subset_name: str) -> List[Dict[str, An
     if df.empty:
         return []
     
-    # Try to find relevant columns with various naming patterns
-    def find_column(candidates: List[str]) -> Optional[str]:
-        for c in candidates:
-            if c in df.columns:
-                return c
-        return None
-    
-    country_col = find_column(["country", "Country", "countries", "Countries", "pays", "Pays"])
-    date_col = find_column(["date", "Date", "created", "published", "pub_date", "year", "Year", "année"])
-    type_col = find_column(["type", "Type", "document_type", "DocumentType"])
+    country_col = _utils_find_column(df, ["country", "Country", "countries", "Countries", "pays", "Pays"])
+    date_col = _utils_find_column(df, ["date", "Date", "created", "published", "pub_date", "year", "Year", "année"])
+    type_col = _utils_find_column(df, ["type", "Type", "document_type", "DocumentType"])
     
     # Get document type labels (defaults)
     type_labels = SUBSET_TO_TYPE.get(subset_name, {"en": subset_name.title(), "fr": subset_name.title()})
@@ -338,24 +288,8 @@ def generate_metadata(all_records: List[Dict[str, Any]], country_data: Dict[str,
 
 
 def save_json(data: Any, path: Path, minify: bool = True) -> None:
-    """Save data as JSON file. Minified by default for faster loading."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        if minify:
-            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
-        else:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-    
-    try:
-        abs_path = path.resolve()
-        cwd = Path.cwd().resolve()
-        display = abs_path.relative_to(cwd)
-    except Exception:
-        display = path
-    
-    # Log file size for monitoring
-    size_kb = path.stat().st_size / 1024
-    logger.info(f"Wrote {display} ({size_kb:.1f} KB)")
+    """Save data as JSON file. Delegates to iwac_utils.save_json."""
+    _utils_save_json(data, path, minify=minify)
 
 
 def copy_to_build_dir(output_dir: Path) -> None:
