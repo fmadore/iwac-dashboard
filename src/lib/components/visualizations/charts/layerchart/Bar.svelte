@@ -14,6 +14,7 @@
 		tooltipItemsFromPayload as sharedTooltipItems,
 		type TooltipPayloadItem
 	} from '$lib/utils/chartUtils.js';
+	import { useResizeObserver } from '$lib/hooks/index.js';
 
 	interface ChartDataItem {
 		category: string;
@@ -44,20 +45,7 @@
 	}: Props = $props();
 
 	let containerEl = $state<HTMLElement | null>(null);
-	let containerWidth = $state(0);
-
-	$effect(() => {
-		if (!containerEl) return;
-
-		const update = () => {
-			containerWidth = containerEl?.clientWidth ?? 0;
-		};
-
-		update();
-		const ro = new ResizeObserver(update);
-		ro.observe(containerEl);
-		return () => ro.disconnect();
-	});
+	const { width: containerWidth } = useResizeObserver(() => containerEl);
 
 	// Color mapping based on original English keys (language-independent)
 	const categoryColorMap: Record<string, string> = {

@@ -2,6 +2,7 @@
 	import { onMount, untrack } from 'svelte';
 	import { browser } from '$app/environment';
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { useResizeObserver } from '$lib/hooks/index.js';
 
 	interface Props {
 		data?: [string, number][];
@@ -48,9 +49,9 @@
 	let colorScale: string[];
 	let isRendering = $state(false);
 	let words = $state<Word[]>([]);
-	let containerWidth = $state(800);
-	let containerHeight = $state(400);
-	let resizeObserver: ResizeObserver | null = null;
+	const containerSize = useResizeObserver(() => containerElement);
+	const containerWidth = $derived(containerSize.width || 800);
+	const containerHeight = $derived(containerSize.height || 400);
 
 	onMount(() => {
 		if (!browser) {
@@ -78,27 +79,6 @@
 
 				if (!active) return;
 
-				// Set up ResizeObserver to detect container size changes
-				if (containerElement) {
-					resizeObserver = new ResizeObserver((entries) => {
-						for (const entry of entries) {
-							const { width, height } = entry.contentRect;
-							if (width > 0 && height > 0) {
-								containerWidth = width;
-								containerHeight = height;
-							}
-						}
-					});
-					resizeObserver.observe(containerElement);
-
-					// Get initial size
-					const rect = containerElement.getBoundingClientRect();
-					if (rect.width > 0) {
-						containerWidth = rect.width;
-						containerHeight = rect.width / aspectRatio;
-					}
-				}
-
 				// Initial render
 				renderWordCloud();
 			} catch (error) {
@@ -111,10 +91,6 @@
 		// Cleanup on unmount
 		return () => {
 			active = false;
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-				resizeObserver = null;
-			}
 		};
 	});
 

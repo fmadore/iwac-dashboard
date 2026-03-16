@@ -2,6 +2,7 @@
 	import { onMount, untrack } from 'svelte';
 	import { browser } from '$app/environment';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { useResizeObserver } from '$lib/hooks/index.js';
 
 	interface CooccurrenceData {
 		terms: string[];
@@ -31,8 +32,7 @@
 	let svgElement: SVGSVGElement | null = $state(null);
 	let tooltip: HTMLDivElement | null = $state(null);
 	let d3Module: any = null;
-	let containerWidth = $state(800);
-	let resizeObserver: ResizeObserver | null = null;
+	const { width: containerWidth } = useResizeObserver(() => containerElement);
 
 	// Computed cell size based on container width
 	const effectiveCellSize = $derived.by(() => {
@@ -176,25 +176,6 @@
 
 		let active = true;
 
-		// Set up ResizeObserver
-		if (containerElement) {
-			resizeObserver = new ResizeObserver((entries) => {
-				for (const entry of entries) {
-					const { width } = entry.contentRect;
-					if (width > 0) {
-						containerWidth = width;
-					}
-				}
-			});
-			resizeObserver.observe(containerElement);
-
-			// Get initial size
-			const rect = containerElement.getBoundingClientRect();
-			if (rect.width > 0) {
-				containerWidth = rect.width;
-			}
-		}
-
 		const initialize = async () => {
 			try {
 				// Import D3 modules
@@ -225,10 +206,6 @@
 
 		return () => {
 			active = false;
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-				resizeObserver = null;
-			}
 		};
 	});
 

@@ -5,6 +5,7 @@
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
 	import Tooltip, { type TooltipItem } from '../layerchart/Tooltip.svelte';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { useResizeObserver } from '$lib/hooks/index.js';
 
 	interface Props {
 		months?: string[];
@@ -74,20 +75,7 @@
 
 	// Chart container and width tracking
 	let containerEl = $state<HTMLElement | null>(null);
-	let containerWidth = $state(0);
-
-	$effect(() => {
-		if (!containerEl) return;
-
-		const update = () => {
-			containerWidth = containerEl?.clientWidth ?? 0;
-		};
-
-		update();
-		const ro = new ResizeObserver(update);
-		ro.observe(containerEl);
-		return () => ro.disconnect();
-	});
+	const { width: containerWidth } = useResizeObserver(() => containerEl);
 
 	// Calculate x-axis tick interval based on available space
 	const perItemWidth = $derived.by(() => {

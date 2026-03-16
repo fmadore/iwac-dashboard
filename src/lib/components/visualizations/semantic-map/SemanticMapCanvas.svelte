@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { useResizeObserver } from '$lib/hooks/index.js';
 
 	interface Props {
 		positions: Float32Array;
@@ -23,8 +24,9 @@
 
 	let canvas: HTMLCanvasElement | undefined = $state();
 	let container: HTMLDivElement | undefined = $state();
-	let width = $state(800);
-	let height = $state(600);
+	const size = useResizeObserver(() => container);
+	let width = $derived(size.width || 800);
+	let height = $derived(size.height || 600);
 
 	let scale = $state(1);
 	let offsetX = $state(0);
@@ -367,18 +369,7 @@
 		scheduleDraw();
 	});
 
-	// Resize observer
-	$effect(() => {
-		if (!container) return;
-		const observer = new ResizeObserver((entries) => {
-			for (const entry of entries) {
-				width = entry.contentRect.width;
-				height = entry.contentRect.height;
-			}
-		});
-		observer.observe(container);
-		return () => observer.disconnect();
-	});
+	// Size is tracked reactively via useResizeObserver above
 
 	// ═══════════════════════════════════════════════════
 	// Hit testing (spatial grid on Float32Array)

@@ -102,7 +102,7 @@
 				<div class="flex items-center gap-2">
 					<Slider
 						type="multiple"
-						value={sliderValue}
+						bind:value={sliderValue}
 						onValueChange={handleYearSliderChange}
 						min={yearRange.min}
 						max={yearRange.max}
