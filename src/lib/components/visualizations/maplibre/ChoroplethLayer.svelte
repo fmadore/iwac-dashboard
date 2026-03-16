@@ -4,6 +4,7 @@
 	import { MAP_CONTEXT_KEY, type MapContext } from './BaseMap.svelte';
 	import { createChoroplethScale } from './utils/scales.js';
 	import { getThemeColors, createThemeObserver, getCssVarAsHex } from './utils/theme.js';
+	import { FALLBACK_COLORS } from '$lib/constants/theme.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import type { ChoroplethData } from './types.js';
 
@@ -68,12 +69,12 @@
 	function getFeatureColor(countryName: string): string {
 		const value = data[countryName];
 		if (value === undefined || value === 0 || !Number.isFinite(value)) {
-			return getCssVarAsHex('--muted', '#e5e7eb');
+			return getCssVarAsHex('--muted', FALLBACK_COLORS['--muted']);
 		}
 		const color = colorScale(value);
 		// Safeguard against invalid colors (NaN in interpolation)
 		if (!color || color.includes('NaN')) {
-			return getCssVarAsHex('--muted', '#e5e7eb');
+			return getCssVarAsHex('--muted', FALLBACK_COLORS['--muted']);
 		}
 		return color;
 	}

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { Loader2 } from '@lucide/svelte';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
@@ -111,9 +111,7 @@
 		try {
 			countryLoading = true;
 			const filename = country.toLowerCase().replace(/\s+/g, '-');
-			const response = await fetch(`${base}/data/categories/${filename}.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			countryData = await response.json();
+			countryData = await fetchData<CategoryData>(`categories/${filename}.json`, { cache: false });
 		} catch (e) {
 			console.error(`Error loading country data for ${country}:`, e);
 			countryData = null;

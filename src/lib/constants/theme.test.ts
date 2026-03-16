@@ -9,7 +9,8 @@ import {
 	FALLBACK_COLORS,
 	resolveCSSColor,
 	getEntityColorsHex,
-	getEdgeColorsHex
+	getEdgeColorsHex,
+	rgbStringToHex
 } from './theme.js';
 
 // ── ENTITY_COLOR_VARS ────────────────────────────────────────────────
@@ -195,5 +196,67 @@ describe('getEdgeColorsHex', () => {
 		for (const [type, variable] of Object.entries(EDGE_COLOR_VARS)) {
 			expect(colors[type]).toBe(FALLBACK_COLORS[variable]);
 		}
+	});
+});
+
+// ── rgbStringToHex (regression tests for #NaN color bug) ────────────
+
+describe('rgbStringToHex', () => {
+	const hexPattern = /^#[0-9a-fA-F]{6}$/;
+
+	it('converts comma-separated rgb() to hex', () => {
+		expect(rgbStringToHex('rgb(255, 128, 0)')).toBe('#ff8000');
+	});
+
+	it('converts rgba() to hex (ignoring alpha)', () => {
+		expect(rgbStringToHex('rgba(0, 0, 0, 0.5)')).toBe('#000000');
+	});
+
+	it('converts space-separated rgb() to hex (modern syntax)', () => {
+		expect(rgbStringToHex('rgb(38 100 235)')).toBe('#2664eb');
+	});
+
+	it('converts color(srgb ...) to hex', () => {
+		const result = rgbStringToHex('color(srgb 0.14902 0.39216 0.92157)');
+		expect(result).toMatch(hexPattern);
+		// Should be approximately #2664eb (rounding depends on Math.round)
+		expect(result).toBe('#2664eb');
+	});
+
+	it('returns #666666 for unparseable input', () => {
+		expect(rgbStringToHex('oklch(0.55 0.18 250)')).toBe('#666666');
+		expect(rgbStringToHex('invalid')).toBe('#666666');
+		expect(rgbStringToHex('')).toBe('#666666');
+	});
+
+	it('never returns a hex value containing NaN', () => {
+		// Regression test: #NaN090e was produced by parseInt(NaN, 10)
+		const testInputs = [
+			'rgb(255, 128, 0)',
+			'rgba(0, 0, 0, 1)',
+			'rgb(38 100 235)',
+			'color(srgb 0.5 0.3 0.1)',
+			'oklch(0.55 0.18 250)',
+			'hsl(210, 50%, 50%)',
+			'invalid-color',
+			'',
+		];
+		for (const input of testInputs) {
+			const result = rgbStringToHex(input);
+			expect(result, `rgbStringToHex('${input}') should not contain NaN`).not.toContain('NaN');
+			expect(result).toMatch(hexPattern);
+		}
+	});
+
+	it('handles rgb with extra whitespace', () => {
+		expect(rgbStringToHex('rgb(  255 ,  128 ,  0  )')).toBe('#ff8000');
+	});
+
+	it('handles rgb(0, 0, 0) (black)', () => {
+		expect(rgbStringToHex('rgb(0, 0, 0)')).toBe('#000000');
+	});
+
+	it('handles rgb(255, 255, 255) (white)', () => {
+		expect(rgbStringToHex('rgb(255, 255, 255)')).toBe('#ffffff');
 	});
 });

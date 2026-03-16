@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { formatDate } from '$lib/utils/formatDate.js';
 	import { entitySpatialStore } from '$lib/stores/entitySpatialStore.svelte.js';
 	import {
 		Sheet,
@@ -11,28 +12,16 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-
-	// Pagination state
-	const ITEMS_PER_PAGE = 20;
-	let currentPage = $state(1);
+	import { PaginationControls } from '$lib/components/ui/pagination-controls/index.js';
+	import { usePagination } from '$lib/hooks/usePagination.svelte.js';
 
 	// Derived state from store
 	const selectedLocation = $derived(entitySpatialStore.selectedLocation);
 	const currentEntity = $derived(entitySpatialStore.currentEntity);
 	const articles = $derived(entitySpatialStore.currentLocationArticles);
 
-	// Pagination derived values
-	const totalPages = $derived(Math.ceil(articles.length / ITEMS_PER_PAGE));
-	const paginatedArticles = $derived(
-		articles.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-	);
-
-	// Reset page when location changes
-	$effect(() => {
-		if (selectedLocation) {
-			currentPage = 1;
-		}
-	});
+	// Pagination
+	const pagination = usePagination(() => articles);
 
 	// Force reactivity on language change
 	const lang = $derived(languageStore.current);
@@ -46,25 +35,6 @@
 	function handleOpenChange(open: boolean) {
 		if (!open) {
 			entitySpatialStore.setSelectedLocation(null);
-		}
-	}
-
-	function goToPage(page: number) {
-		currentPage = Math.max(1, Math.min(page, totalPages));
-	}
-
-	function formatDate(dateStr: string): string {
-		if (!dateStr) return '';
-		// Format YYYY-MM-DD to locale string
-		try {
-			const date = new Date(dateStr);
-			return date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
-				year: 'numeric',
-				month: 'short',
-				day: 'numeric'
-			});
-		} catch {
-			return dateStr;
 		}
 	}
 
@@ -123,26 +93,10 @@
 					</span>
 				</div>
 
-				<!-- Pagination info -->
-				{#if totalPages > 1}
-					<div class="mb-3 flex items-center justify-between text-xs text-muted-foreground">
-						<span>
-							{t('entity_spatial.showing_range', [
-								((currentPage - 1) * ITEMS_PER_PAGE + 1).toString(),
-								Math.min(currentPage * ITEMS_PER_PAGE, articles.length).toString(),
-								articles.length.toString()
-							])}
-						</span>
-						<span>
-							{t('entity_spatial.page_of', [currentPage.toString(), totalPages.toString()])}
-						</span>
-					</div>
-				{/if}
-
 				<!-- Articles list -->
 				<ScrollArea class="h-[calc(100vh-280px)]">
 					<div class="space-y-3 pr-4">
-						{#each paginatedArticles as article (article.id)}
+						{#each pagination.paginatedItems as article (article.id)}
 							<div
 								class="rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent/50"
 							>
@@ -174,7 +128,7 @@
 												<line x1="8" y1="2" x2="8" y2="6" />
 												<line x1="3" y1="10" x2="21" y2="10" />
 											</svg>
-											{formatDate(article.date)}
+											{formatDate(article.date, lang)}
 										</span>
 									{/if}
 									{#if article.newspaper}
@@ -253,113 +207,13 @@
 				</ScrollArea>
 
 				<!-- Pagination controls -->
-				{#if totalPages > 1}
-					<div class="mt-4 flex items-center justify-between border-t border-border pt-4">
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={currentPage === 1}
-							onclick={() => goToPage(currentPage - 1)}
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="mr-1"
-							>
-								<polyline points="15 18 9 12 15 6"></polyline>
-							</svg>
-							{t('entity_spatial.previous')}
-						</Button>
-
-						<div class="flex items-center gap-1">
-							{#if totalPages <= 7}
-								{#each Array(totalPages) as _, i}
-									<Button
-										variant={currentPage === i + 1 ? 'default' : 'outline'}
-										size="sm"
-										class="h-8 w-8 p-0"
-										onclick={() => goToPage(i + 1)}
-									>
-										{i + 1}
-									</Button>
-								{/each}
-							{:else}
-								<!-- First page -->
-								<Button
-									variant={currentPage === 1 ? 'default' : 'outline'}
-									size="sm"
-									class="h-8 w-8 p-0"
-									onclick={() => goToPage(1)}
-								>
-									1
-								</Button>
-
-								{#if currentPage > 3}
-									<span class="px-1 text-muted-foreground">...</span>
-								{/if}
-
-								<!-- Pages around current -->
-								{#each Array(Math.min(3, totalPages - 2)) as _, i}
-									{@const page = Math.max(2, Math.min(currentPage - 1, totalPages - 3)) + i}
-									{#if page > 1 && page < totalPages}
-										<Button
-											variant={currentPage === page ? 'default' : 'outline'}
-											size="sm"
-											class="h-8 w-8 p-0"
-											onclick={() => goToPage(page)}
-										>
-											{page}
-										</Button>
-									{/if}
-								{/each}
-
-								{#if currentPage < totalPages - 2}
-									<span class="px-1 text-muted-foreground">...</span>
-								{/if}
-
-								<!-- Last page -->
-								<Button
-									variant={currentPage === totalPages ? 'default' : 'outline'}
-									size="sm"
-									class="h-8 w-8 p-0"
-									onclick={() => goToPage(totalPages)}
-								>
-									{totalPages}
-								</Button>
-							{/if}
-						</div>
-
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={currentPage === totalPages}
-							onclick={() => goToPage(currentPage + 1)}
-						>
-							{t('entity_spatial.next')}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="ml-1"
-							>
-								<polyline points="9 18 15 12 9 6"></polyline>
-							</svg>
-						</Button>
-					</div>
-				{/if}
+				<PaginationControls
+					currentPage={pagination.currentPage}
+					totalPages={pagination.totalPages}
+					totalItems={articles.length}
+					itemsPerPage={pagination.itemsPerPage}
+					onPageChange={pagination.goToPage}
+				/>
 			{/if}
 		</div>
 	</SheetContent>

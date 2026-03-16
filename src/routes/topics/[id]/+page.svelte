@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { base } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
@@ -75,9 +76,7 @@
 		loading = true;
 		error = null;
 		try {
-			const response = await fetch(`${base}/data/topics/${id}.json`);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			topicData = await response.json();
+			topicData = await fetchData<TopicDetailData>(`topics/${id}.json`, { cache: false });
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Unknown error';
 		} finally {
