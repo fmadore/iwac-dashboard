@@ -21,6 +21,15 @@
 		icon: Component;
 	}
 
+	/** Data passed when an edge is focused */
+	export interface EdgeFocusData {
+		edge: GlobalNetworkEdge;
+		sourceNode: GlobalNetworkNode;
+		targetNode: GlobalNetworkNode;
+		/** Nodes connected to either endpoint (shared neighborhood) */
+		sharedNeighbors: GlobalNetworkNode[];
+	}
+
 	interface Props {
 		nodes: GlobalNetworkNode[];
 		edges: GlobalNetworkEdge[];
@@ -32,6 +41,7 @@
 		showFullscreenButton?: boolean;
 		onNodeClick?: (node: GlobalNetworkNode | null) => void;
 		onNodeHover?: (node: GlobalNetworkNode | null) => void;
+		onEdgeFocus?: (data: EdgeFocusData | null) => void;
 	}
 
 	let {
@@ -44,7 +54,8 @@
 		layoutType = 'force',
 		showFullscreenButton = true,
 		onNodeClick,
-		onNodeHover
+		onNodeHover,
+		onEdgeFocus
 	}: Props = $props();
 
 	let containerElement: HTMLDivElement | null = $state(null);
@@ -60,6 +71,10 @@
 
 	// Track hovered node for visual feedback
 	let hoveredNodeId = $state<string | null>(null);
+
+	// Edge focus state — when an edge is clicked, we zoom into its neighborhood
+	let focusedEdgeId = $state<string | null>(null);
+	let focusedEdgeEndpoints = $state<{ source: string; target: string } | null>(null);
 
 	// Tooltip state
 	let tooltipVisible = $state(false);
@@ -228,9 +243,9 @@
 			if (value > maxValue) maxValue = value;
 		}
 
-		// Normalize to 5-24 range (slightly larger for better visibility with borders)
+		// Normalize to 6-30 range (wider range for more size contrast)
 		for (const id in sizes) {
-			sizes[id] = 5 + (sizes[id] / maxValue) * 19;
+			sizes[id] = 6 + (sizes[id] / maxValue) * 24;
 		}
 
 		return sizes;
@@ -353,7 +368,7 @@
 
 			// Get theme colors BEFORE adding nodes/edges
 			const mutedFg = resolveCSSColor('--muted-foreground');
-			const edgeColor = hexToRgba(mutedFg, 0.4);
+			const edgeColor = hexToRgba(mutedFg, 0.55);
 
 			// Add nodes - use cached positions when available
 			for (const node of nodes) {
@@ -365,9 +380,10 @@
 					y: cached?.y ?? Math.random() * 100,
 					size: nodeSizes[node.id] || 8,
 					color: nodeColor,
-					// Border attributes for @sigma/node-border
+					// Border attributes for @sigma/node-border (multi-ring: halo + border + fill)
+					haloColor: hexToRgba(nodeColor, 0.15),
 					borderColor: lightenColor(nodeColor, 30),
-					borderSize: 0.15, // Relative to node size (15%)
+					borderSize: 0.16, // Relative to node size
 					// Don't use 'type' as Sigma reserves it for rendering programs
 					entityType: node.type,
 					nodeData: node
@@ -397,7 +413,7 @@
 
 						graph.addEdge(edge.source, edge.target, {
 							weight: edge.weight,
-							size: 0.8 + edge.weightNorm * 3,
+							size: 0.6 + edge.weightNorm * 5,
 							color: finalEdgeColor,
 							curvature: 0.2,
 							edgeData: edge
@@ -496,13 +512,13 @@
 				const fa2Params: ForceAtlas2SynchronousLayoutParameters = {
 					iterations,
 					settings: {
-						gravity: 0.3,
-						scalingRatio: nodeCount > 100 ? 80 : 40,
+						gravity: 0.15,
+						scalingRatio: nodeCount > 100 ? 120 : 60,
 						strongGravityMode: false,
 						slowDown: hasMostlyCachedPositions ? 15 : 3,
 						barnesHutOptimize: nodeCount > 30,
 						barnesHutTheta: 0.6,
-						edgeWeightInfluence: 0.5,
+						edgeWeightInfluence: 0.7,
 						linLogMode: true,
 						outboundAttractionDistribution: true
 					}
@@ -533,41 +549,36 @@
 				return;
 			}
 
-			// Theme-aware label and edge colors
+			// Theme-aware colors resolved from CSS variables
+			const foregroundColor = resolveCSSColor('--foreground');
+			const primaryColor = resolveCSSColor('--primary');
 			const dark = isDarkMode();
-			const foregroundColor = dark ? '#fafafa' : '#0a0a0a';
-			const defaultEdgeColor = dark ? 'rgba(180, 180, 180, 0.35)' : 'rgba(80, 80, 80, 0.4)';
+			const defaultEdgeColor = hexToRgba(resolveCSSColor('--muted-foreground'), dark ? 0.35 : 0.4);
 
-			// Custom hover halo/glow effect function
+			// Custom hover halo/glow effect with smooth radial gradient
 			const drawNodeHoverWithHalo = (
 				context: CanvasRenderingContext2D,
 				data: { x: number; y: number; size: number; label: string | null; color: string },
 				settings: { labelSize?: number; labelWeight?: string; labelFont?: string }
 			) => {
 				const { x, y, size, label, color } = data;
+				const glowColor = color || primaryColor;
 
-				// Parse the node color for the glow
-				const glowColor = color || (dark ? '#fbbf24' : '#f59e0b');
-
-				// Draw multi-layer glow effect (outer to inner)
-				const glowLayers = [
-					{ radius: size + 12, opacity: 0.08 },
-					{ radius: size + 8, opacity: 0.12 },
-					{ radius: size + 5, opacity: 0.18 },
-					{ radius: size + 3, opacity: 0.25 }
-				];
-
-				for (const layer of glowLayers) {
-					context.beginPath();
-					context.arc(x, y, layer.radius, 0, Math.PI * 2);
-					context.fillStyle = hexToRgba(glowColor, layer.opacity);
-					context.fill();
-				}
+				// Smooth radial gradient glow (replaces discrete layers)
+				const glowRadius = size + 14;
+				const gradient = context.createRadialGradient(x, y, size * 0.8, x, y, glowRadius);
+				gradient.addColorStop(0, hexToRgba(glowColor, 0.3));
+				gradient.addColorStop(0.5, hexToRgba(glowColor, 0.12));
+				gradient.addColorStop(1, hexToRgba(glowColor, 0));
+				context.beginPath();
+				context.arc(x, y, glowRadius, 0, Math.PI * 2);
+				context.fillStyle = gradient;
+				context.fill();
 
 				// Draw the label with background for better readability
 				if (label) {
-					const fontSize = settings.labelSize || 13;
-					const fontWeight = settings.labelWeight || '600';
+					const fontSize = (settings.labelSize || 13) + 2; // Larger font on hover
+					const fontWeight = settings.labelWeight || '700';
 					const fontFamily = settings.labelFont || 'system-ui, -apple-system, sans-serif';
 
 					context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
@@ -575,24 +586,46 @@
 
 					// Label position (above the node)
 					const labelX = x;
-					const labelY = y - size - 8;
+					const labelY = y - size - 10;
 
-					// Draw label background
-					const padding = 4;
-					const bgColor = dark ? 'rgba(10, 10, 10, 0.85)' : 'rgba(255, 255, 255, 0.9)';
-					context.fillStyle = bgColor;
+					// Draw label shadow for depth
+					context.shadowColor = 'rgba(0, 0, 0, 0.15)';
+					context.shadowBlur = 4;
+					context.shadowOffsetY = 1;
+
+					// Draw label background pill
+					const padding = 5;
+					const pillBg = dark ? 'rgba(10, 10, 10, 0.88)' : 'rgba(255, 255, 255, 0.92)';
+					context.fillStyle = pillBg;
 					context.beginPath();
 					context.roundRect(
 						labelX - textWidth / 2 - padding,
 						labelY - fontSize / 2 - padding,
 						textWidth + padding * 2,
 						fontSize + padding * 2,
-						4
+						5
 					);
 					context.fill();
 
-					// Draw label border
-					context.strokeStyle = hexToRgba(glowColor, 0.5);
+					// Draw entity color accent on left edge of pill
+					context.fillStyle = hexToRgba(glowColor, 0.8);
+					context.beginPath();
+					context.roundRect(
+						labelX - textWidth / 2 - padding,
+						labelY - fontSize / 2 - padding,
+						3,
+						fontSize + padding * 2,
+						[5, 0, 0, 5]
+					);
+					context.fill();
+
+					// Reset shadow before text
+					context.shadowColor = 'transparent';
+					context.shadowBlur = 0;
+					context.shadowOffsetY = 0;
+
+					// Draw label border with entity color
+					context.strokeStyle = hexToRgba(glowColor, 0.4);
 					context.lineWidth = 1;
 					context.stroke();
 
@@ -604,10 +637,11 @@
 				}
 			};
 
-			// Create custom node program with borders
+			// Create custom node program with multi-ring border (halo + border + fill)
 			const NodeBorderProgramCustom = createNodeBorderProgram({
 				borders: [
-					{ size: { value: 0.15, mode: 'relative' }, color: { attribute: 'borderColor' } },
+					{ size: { value: 0.04, mode: 'relative' }, color: { attribute: 'haloColor' } },
+					{ size: { value: 0.12, mode: 'relative' }, color: { attribute: 'borderColor' } },
 					{ size: { fill: true }, color: { attribute: 'color' } }
 				]
 			});
@@ -622,8 +656,10 @@
 				edgeProgramClasses: {
 					curve: EdgeCurveProgram
 				},
+				enableEdgeEvents: true,
 				renderEdgeLabels: false,
 				defaultEdgeColor: defaultEdgeColor,
+				stagePadding: 30,
 				// Custom hover effect with halo/glow
 				defaultDrawNodeHover: drawNodeHoverWithHalo,
 				// Label styling
@@ -631,14 +667,50 @@
 				labelFont: 'system-ui, -apple-system, sans-serif',
 				labelSize: 13,
 				labelWeight: '600',
-				labelRenderedSizeThreshold: 6,
+				labelRenderedSizeThreshold: 4,
 				// Enable z-index for proper layering
 				zIndex: true,
-				// Improved label rendering
-				labelDensity: 0.12,
+				// Improved label rendering — show more labels
+				labelDensity: 0.25,
 				labelGridCellSize: 100,
-				// Node reducer for selection and hover effects
+				// Node reducer for selection, hover, and edge focus effects
 				nodeReducer: (node, data) => {
+					// Edge focus mode — highlight endpoints and shared neighbors
+					if (focusedEdgeEndpoints) {
+						const isEndpoint = node === focusedEdgeEndpoints.source || node === focusedEdgeEndpoints.target;
+						const isSharedNeighbor = !isEndpoint && (
+							graph.hasEdge(node, focusedEdgeEndpoints.source) ||
+							graph.hasEdge(node, focusedEdgeEndpoints.target)
+						);
+
+						if (isEndpoint) {
+							return {
+								...data,
+								size: data.size * 1.4,
+								borderSize: 0.25,
+								borderColor: primaryColor,
+								zIndex: 3,
+								forceLabel: true
+							};
+						}
+						if (isSharedNeighbor) {
+							return {
+								...data,
+								size: data.size * 1.05,
+								zIndex: 2,
+								forceLabel: true
+							};
+						}
+						return {
+							...data,
+							color: hexToRgba(data.color, 0.15),
+							borderColor: hexToRgba(data.borderColor || data.color, 0.1),
+							haloColor: hexToRgba(data.color, 0.03),
+							size: data.size * 0.7,
+							zIndex: 0
+						};
+					}
+
 					const isSelected = node === selectedNodeId;
 					const isHovered = node === hoveredNodeId;
 					const isNeighbor = selectedNodeId && graph.hasEdge(node, selectedNodeId);
@@ -670,8 +742,9 @@
 					if (hoveredNodeId && !selectedNodeId && !isHovered && !isHoveredNeighbor) {
 						return {
 							...data,
-							color: hexToRgba(data.color, 0.3),
-							borderColor: hexToRgba(data.borderColor || data.color, 0.2),
+							color: hexToRgba(data.color, 0.35),
+							borderColor: hexToRgba(data.borderColor || data.color, 0.25),
+							haloColor: hexToRgba(data.color, 0.05),
 							zIndex: 0
 						};
 					}
@@ -683,7 +756,7 @@
 								...data,
 								size: data.size * 1.5,
 								borderSize: 0.25,
-								borderColor: isDarkMode() ? '#fbbf24' : '#f59e0b',
+								borderColor: primaryColor,
 								zIndex: 3,
 								forceLabel: true
 							};
@@ -698,7 +771,7 @@
 								...data,
 								size: data.size * 1.5,
 								borderSize: 0.25,
-								borderColor: isDarkMode() ? '#fbbf24' : '#f59e0b',
+								borderColor: primaryColor,
 								zIndex: 3,
 								forceLabel: true
 							};
@@ -712,9 +785,10 @@
 						} else {
 							return {
 								...data,
-								color: hexToRgba(data.color, 0.25),
-								borderColor: hexToRgba(data.borderColor || data.color, 0.15),
-								size: data.size * 0.75,
+								color: hexToRgba(data.color, 0.35),
+								borderColor: hexToRgba(data.borderColor || data.color, 0.2),
+								haloColor: hexToRgba(data.color, 0.05),
+								size: data.size * 0.85,
 								zIndex: 0
 							};
 						}
@@ -722,9 +796,37 @@
 
 					return data;
 				},
-				// Edge reducer for selection and hover effects
+				// Edge reducer for selection, hover, and edge focus effects
 				edgeReducer: (edge, data) => {
 					const [source, target] = graph.extremities(edge);
+
+					// Edge focus mode — highlight the focused edge and connected edges
+					if (focusedEdgeEndpoints) {
+						const isFocusedEdge = edge === focusedEdgeId;
+						const touchesEndpoint =
+							source === focusedEdgeEndpoints.source || source === focusedEdgeEndpoints.target ||
+							target === focusedEdgeEndpoints.source || target === focusedEdgeEndpoints.target;
+
+						if (isFocusedEdge) {
+							return {
+								...data,
+								color: hexToRgba(primaryColor, 0.9),
+								size: data.size * 3,
+								forceLabel: true,
+								zIndex: 3
+							};
+						}
+						if (touchesEndpoint) {
+							return {
+								...data,
+								color: hexToRgba(data.color || primaryColor, 0.5),
+								size: data.size * 1.2,
+								zIndex: 1
+							};
+						}
+						return { ...data, hidden: true };
+					}
+
 					const isConnectedToHovered = hoveredNodeId && !selectedNodeId &&
 						(source === hoveredNodeId || target === hoveredNodeId);
 					const isConnectedToSelected = selectedNodeId &&
@@ -732,7 +834,7 @@
 
 					// Hover effect on edges - show label
 					if (isConnectedToHovered) {
-						const hoverEdgeColor = isDarkMode() ? 'rgba(251, 191, 36, 0.7)' : 'rgba(245, 158, 11, 0.8)';
+						const hoverEdgeColor = hexToRgba(primaryColor, 0.75);
 						return { ...data, color: hoverEdgeColor, size: data.size * 2, forceLabel: true };
 					}
 
@@ -744,7 +846,7 @@
 					// In focus mode, show all edges prominently with labels
 					if (focusMode && selectedNodeId) {
 						if (isConnectedToSelected) {
-							const highlightColor = isDarkMode() ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
+							const highlightColor = hexToRgba(primaryColor, 0.85);
 							return { ...data, color: highlightColor, size: data.size * 2.5, forceLabel: true };
 						}
 						return { ...data, forceLabel: true }; // Show labels for all edges in focus mode
@@ -753,7 +855,7 @@
 					// Normal mode: highlight edges to selected with labels, hide others
 					if (selectedNodeId) {
 						if (isConnectedToSelected) {
-							const highlightColor = isDarkMode() ? 'rgba(251, 191, 36, 0.85)' : 'rgba(245, 158, 11, 0.9)';
+							const highlightColor = hexToRgba(primaryColor, 0.85);
 							return { ...data, color: highlightColor, size: data.size * 2.5, forceLabel: true };
 						} else {
 							return { ...data, hidden: true };
@@ -767,12 +869,21 @@
 
 			// Event handlers
 			sigmaInstance.on('clickNode', ({ node }: { node: string }) => {
+				// Clear edge focus when clicking a node
+				clearEdgeFocus();
 				const nodeData = graph.getNodeAttribute(node, 'nodeData') as GlobalNetworkNode;
 				onNodeClick?.(nodeData);
 			});
 
 			sigmaInstance.on('clickStage', () => {
+				// Clear edge focus when clicking the stage
+				clearEdgeFocus();
 				onNodeClick?.(null);
+			});
+
+			// Edge click — zoom into the edge neighborhood
+			sigmaInstance.on('clickEdge', ({ edge }: { edge: string }) => {
+				handleEdgeClick(edge);
 			});
 
 			sigmaInstance.on('enterNode', ({ node }: { node: string }) => {
@@ -831,17 +942,90 @@
 				const nodeColor = getNodeColor(node.type);
 				graphInstance.setNodeAttribute(node.id, 'size', nodeSizes[node.id] || 8);
 				graphInstance.setNodeAttribute(node.id, 'color', nodeColor);
+				graphInstance.setNodeAttribute(node.id, 'haloColor', hexToRgba(nodeColor, 0.15));
 				graphInstance.setNodeAttribute(node.id, 'borderColor', lightenColor(nodeColor, 30));
 			}
 		}
 		sigmaInstance.refresh();
 	}
 
-	// Re-render when selection, focus mode, or hover changes
+	// --- Edge focus logic ---
+
+	function handleEdgeClick(edgeKey: string) {
+		if (!graphInstance || !sigmaInstance) return;
+
+		const graph = graphInstance;
+		const source = graph.source(edgeKey);
+		const target = graph.target(edgeKey);
+		const edgeData = graph.getEdgeAttribute(edgeKey, 'edgeData') as GlobalNetworkEdge | undefined;
+		if (!source || !target || !edgeData) return;
+
+		// Set focus state
+		focusedEdgeId = edgeKey;
+		focusedEdgeEndpoints = { source, target };
+
+		// Build EdgeFocusData for the callback
+		const nodeMap = new Map(nodes.map(n => [n.id, n]));
+		const sourceNode = nodeMap.get(source);
+		const targetNode = nodeMap.get(target);
+		if (!sourceNode || !targetNode) return;
+
+		// Find shared neighbors (connected to either endpoint)
+		const sourceNeighbors = new Set(graph.neighbors(source));
+		const targetNeighbors = new Set(graph.neighbors(target));
+		const sharedNeighbors: GlobalNetworkNode[] = [];
+		for (const nId of sourceNeighbors) {
+			if (nId !== target && targetNeighbors.has(nId)) {
+				const n = nodeMap.get(nId);
+				if (n) sharedNeighbors.push(n);
+			}
+		}
+
+		onEdgeFocus?.({ edge: edgeData, sourceNode, targetNode, sharedNeighbors });
+
+		// Refresh reducers first so dimming is visible during animation
+		sigmaInstance.refresh({ skipIndexation: true });
+
+		// Animate camera to the midpoint of the two endpoints
+		const sourcePos = sigmaInstance.getNodeDisplayData(source);
+		const targetPos = sigmaInstance.getNodeDisplayData(target);
+		if (sourcePos && targetPos) {
+			const midX = (sourcePos.x + targetPos.x) / 2;
+			const midY = (sourcePos.y + targetPos.y) / 2;
+
+			// Zoom ratio based on distance between endpoints
+			const dx = sourcePos.x - targetPos.x;
+			const dy = sourcePos.y - targetPos.y;
+			const dist = Math.sqrt(dx * dx + dy * dy);
+			const ratio = Math.min(0.5, Math.max(0.08, dist * 2.5));
+
+			sigmaInstance.getCamera().animate(
+				{ x: midX, y: midY, ratio },
+				{ duration: 500, easing: 'quadraticInOut' }
+			);
+		}
+	}
+
+	function clearEdgeFocus() {
+		if (!focusedEdgeId) return;
+		focusedEdgeId = null;
+		focusedEdgeEndpoints = null;
+		onEdgeFocus?.(null);
+		sigmaInstance?.refresh({ skipIndexation: true });
+	}
+
+	/** Public: clear the current edge focus (called by parent components) */
+	export function clearFocusedEdge() {
+		clearEdgeFocus();
+		sigmaInstance?.getCamera()?.animatedReset({ duration: 400 });
+	}
+
+	// Re-render when selection, focus mode, hover, or edge focus changes
 	$effect(() => {
 		const _ = selectedNodeId;
 		const __ = focusMode;
 		const ___ = hoveredNodeId;
+		const ____ = focusedEdgeId;
 		if (sigmaInstance && graphInstance) {
 			sigmaInstance.refresh({ skipIndexation: true });
 		}

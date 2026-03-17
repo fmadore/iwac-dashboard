@@ -8,7 +8,7 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph, NetworkEntitySearch, type LayoutType } from '$lib/components/visualizations/network/index.js';
+	import { NetworkGraph, NetworkEntitySearch, EdgeFocusOverlay, type LayoutType, type EdgeFocusData } from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import type {
@@ -52,6 +52,7 @@
 	let autoFocusOnSelect = $state(true); // Auto-zoom to selection
 	let focusMode = $state(false); // When true, show ego network only
 	let layoutType = $state<LayoutType>('force'); // Layout algorithm
+	let edgeFocusData = $state<EdgeFocusData | null>(null); // Edge focus overlay data
 
 	// Entity type filters - all enabled by default
 	let enabledTypes = $state<Set<EntityType>>(
@@ -216,6 +217,7 @@
 	function handleNodeClick(node: GlobalNetworkNode | null) {
 		selectedNode = node;
 		focusMode = false; // Exit focus mode when clicking a new node or stage
+		edgeFocusData = null; // Clear edge focus when clicking a node or stage
 
 		// Update URL
 		if (node) {
@@ -284,6 +286,15 @@
 
 	function handleResetCamera() {
 		graphComponent?.resetCamera();
+	}
+
+	function handleEdgeFocus(data: EdgeFocusData | null) {
+		edgeFocusData = data;
+	}
+
+	function handleCloseEdgeFocus() {
+		edgeFocusData = null;
+		graphComponent?.clearFocusedEdge();
 	}
 
 	function handleNodeSizeChange(value: string | undefined) {
@@ -487,6 +498,7 @@
 					entityTypeColors={entityTypeConfig}
 					{focusMode}
 					onNodeClick={handleNodeClick}
+					onEdgeFocus={handleEdgeFocus}
 				/>
 
 				<!-- Graph Controls Toolbar (top-right, next to fullscreen) -->
@@ -580,6 +592,15 @@
 						{/if}
 					</div>
 				</div>
+
+				<!-- Edge Focus Overlay -->
+				{#if edgeFocusData}
+					<EdgeFocusOverlay
+						data={edgeFocusData}
+						entityTypeColors={entityTypeConfig}
+						onClose={handleCloseEdgeFocus}
+					/>
+				{/if}
 
 			</div>
 		</Card.Root>
