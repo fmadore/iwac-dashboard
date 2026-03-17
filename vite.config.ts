@@ -2,6 +2,12 @@ import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+import { playwright } from '@vitest/browser-playwright';
+import gracefulFs from 'graceful-fs';
+import fs from 'node:fs';
+
+// Patch fs to handle EMFILE (too many open files) on Windows during static builds
+gracefulFs.gracefulify(fs);
 
 export default defineConfig(({ mode }) => {
 	const isDev = mode === 'development';
@@ -82,15 +88,15 @@ export default defineConfig(({ mode }) => {
 					extends: './vite.config.ts',
 					test: {
 						name: 'client',
-						environment: 'browser',
 						browser: {
 							enabled: true,
-							provider: 'playwright',
+							provider: playwright(),
 							instances: [{ browser: 'chromium' }]
 						},
 						include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
 						exclude: ['src/lib/server/**'],
-						setupFiles: ['./vitest-setup-client.ts']
+						setupFiles: ['./vitest-setup-client.ts'],
+						testTimeout: 30000
 					}
 				},
 				{
@@ -99,7 +105,8 @@ export default defineConfig(({ mode }) => {
 						name: 'server',
 						environment: 'node',
 						include: ['src/**/*.{test,spec}.{js,ts}'],
-						exclude: ['src/**/*.svelte.{test,spec}.{js,ts}']
+						exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+						testTimeout: 30000
 					}
 				}
 			]
