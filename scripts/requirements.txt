@@ -3,4 +3,6 @@ pandas
 huggingface-hub
 pyarrow
 hf_xet
+numpy
 shapely
+umap-learn
