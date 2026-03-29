@@ -44,8 +44,10 @@ ENT_DIR = DATA_DIR / 'entities'
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Build spatial network with GPS coordinates")
-    parser.add_argument("--weight-min", type=int, default=DEFAULT_WEIGHT_MIN, 
+    parser.add_argument("--weight-min", type=int, default=DEFAULT_WEIGHT_MIN,
                        help="Minimum edge weight to keep")
+    parser.add_argument("--output-dir", type=str, default=None,
+                       help="Base output directory (default: static/data)")
     return parser.parse_args()
 
 def load_articles() -> List[Dict]:
@@ -70,7 +72,13 @@ def load_locations() -> List[Dict]:
 
 def build_spatial_network(args):
     """Build the spatial network using existing coordinate data."""
-    
+    global OUT_DIR, DATA_DIR, ENT_DIR
+    if args.output_dir:
+        DATA_DIR = Path(args.output_dir)
+        OUT_DIR = DATA_DIR / 'networks'
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        ENT_DIR = DATA_DIR / 'entities'
+
     print("🚀 Building spatial network...")
     
     # Load data

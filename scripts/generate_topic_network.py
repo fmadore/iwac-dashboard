@@ -54,6 +54,10 @@ def parse_args():
         default=MIN_TOPIC_PROB,
         help=f"Minimum topic probability to include (default: {MIN_TOPIC_PROB})"
     )
+    parser.add_argument(
+        "--output-dir", type=str, default=None,
+        help="Base output directory (default: static/data)"
+    )
     return parser.parse_args()
 
 
@@ -93,6 +97,12 @@ def extract_keywords(label: str) -> List[str]:
 
 def build_topic_network(args):
     """Build the topic-article network."""
+    global OUT_DIR, TOPICS_DIR
+    if args.output_dir:
+        base = Path(args.output_dir)
+        TOPICS_DIR = base / 'topics'
+        OUT_DIR = base / 'networks'
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     print("Building topic network...")
 
