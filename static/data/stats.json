@@ -1,0 +1,296 @@
+{
+  "generatedAt": "2026-04-05T03:11:29.329784Z",
+  "summary": {
+    "totalNodes": 4521,
+    "totalEdges": 26241,
+    "explicitEdges": 6838,
+    "inferredEdges": 19403
+  },
+  "nodesByType": {
+    "Person": 2738,
+    "Place": 632,
+    "Organization": 408,
+    "Authority": 302,
+    "Event": 241,
+    "Subject": 200
+  },
+  "edgesByType": {
+    "co_occurs_with": 19302,
+    "part_of": 3205,
+    "located_in": 3174,
+    "has_part": 265,
+    "related_to": 181,
+    "co_authored_with": 101,
+    "succeeded_by": 13
+  },
+  "edgeWeightStats": {
+    "related_to": {
+      "count": 181,
+      "minWeight": 1.0,
+      "maxWeight": 1.0,
+      "avgWeight": 1.0
+    },
+    "part_of": {
+      "count": 3205,
+      "minWeight": 1.0,
+      "maxWeight": 1.0,
+      "avgWeight": 1.0
+    },
+    "has_part": {
+      "count": 265,
+      "minWeight": 1.0,
+      "maxWeight": 1.0,
+      "avgWeight": 1.0
+    },
+    "succeeded_by": {
+      "count": 13,
+      "minWeight": 1.0,
+      "maxWeight": 1.0,
+      "avgWeight": 1.0
+    },
+    "located_in": {
+      "count": 3174,
+      "minWeight": 1.0,
+      "maxWeight": 1.0,
+      "avgWeight": 1.0
+    },
+    "co_occurs_with": {
+      "count": 19302,
+      "minWeight": 3,
+      "maxWeight": 796,
+      "avgWeight": 11.98
+    },
+    "co_authored_with": {
+      "count": 101,
+      "minWeight": 1,
+      "maxWeight": 4,
+      "avgWeight": 1.19
+    }
+  },
+  "degreeDistribution": {
+    "min": 1,
+    "max": 1311,
+    "mean": 11.61,
+    "connectedNodes": 4521,
+    "isolatedNodes": 0
+  },
+  "nameMatching": {
+    "totalAttempts": 82272,
+    "successes": 79068,
+    "failures": 3204,
+    "matchRate": 96.1,
+    "topUnmatched": [
+      {
+        "name": "Le Matinal",
+        "count": 84
+      },
+      {
+        "name": "Pèlerinage (hadj)",
+        "count": 81
+      },
+      {
+        "name": "Burkina 24",
+        "count": 43
+      },
+      {
+        "name": "FDS (Forces de Défense et de Sécurité)",
+        "count": 38
+      },
+      {
+        "name": "Transition 2014-2015",
+        "count": 36
+      },
+      {
+        "name": "Législatives (2019)",
+        "count": 33
+      },
+      {
+        "name": "Sidwaya",
+        "count": 27
+      },
+      {
+        "name": "Notre Voie",
+        "count": 23
+      },
+      {
+        "name": "Grande mosquée CMBF",
+        "count": 22
+      },
+      {
+        "name": "La Nouvelle Marche",
+        "count": 21
+      },
+      {
+        "name": "OCI (Organisation de la Coopération Islamique)",
+        "count": 21
+      },
+      {
+        "name": "CMBF (Crises internes)",
+        "count": 21
+      },
+      {
+        "name": "Coup d'État (2015)",
+        "count": 20
+      },
+      {
+        "name": "Piété",
+        "count": 20
+      },
+      {
+        "name": "Eau",
+        "count": 18
+      },
+      {
+        "name": "BR (Bloc Républicain)",
+        "count": 17
+      },
+      {
+        "name": "Révolution",
+        "count": 16
+      },
+      {
+        "name": "Présidentielle (2021)",
+        "count": 16
+      },
+      {
+        "name": "Présidentielle (2020)",
+        "count": 15
+      },
+      {
+        "name": "UIA (Union des Imams et guides spirituels de l'Atlantique)",
+        "count": 15
+      },
+      {
+        "name": "ILACI (Institut de la Langue Arabe et de la Culture Islamique)",
+        "count": 15
+      },
+      {
+        "name": "Yacoubou Malèhossou (1950- )",
+        "count": 15
+      },
+      {
+        "name": "Banouto",
+        "count": 13
+      },
+      {
+        "name": "Construction de mosquée",
+        "count": 13
+      },
+      {
+        "name": "Média",
+        "count": 12
+      },
+      {
+        "name": "Destruction mosquée de Pazanni (2020)",
+        "count": 11
+      },
+      {
+        "name": "Plume Libre",
+        "count": 11
+      },
+      {
+        "name": "L'Evénement",
+        "count": 10
+      },
+      {
+        "name": "Nicéphore Soglo (1934- )",
+        "count": 10
+      },
+      {
+        "name": "Genre",
+        "count": 9
+      },
+      {
+        "name": "Crise postélectorale 2019",
+        "count": 9
+      },
+      {
+        "name": "Alassane Bala Sakandé (1969- )",
+        "count": 9
+      },
+      {
+        "name": "Abdoul-Hamid Sègoun Tidjani Dourodjaye (?-2005)",
+        "count": 9
+      },
+      {
+        "name": "La Nation",
+        "count": 8
+      },
+      {
+        "name": "LeFaso.net",
+        "count": 8
+      },
+      {
+        "name": "Carrefour africain",
+        "count": 8
+      },
+      {
+        "name": "Grande mosquée de Zangouettin (Grande Mosquée Sunnite de Ouagadougou)",
+        "count": 8
+      },
+      {
+        "name": "CJMB (Coordination des Jeunes Musulmans du Burkina)",
+        "count": 8
+      },
+      {
+        "name": "Banque Mondiale",
+        "count": 8
+      },
+      {
+        "name": "Romain Vilon Guézo",
+        "count": 8
+      },
+      {
+        "name": "Matéri",
+        "count": 8
+      },
+      {
+        "name": "Issa Osséni",
+        "count": 8
+      },
+      {
+        "name": "L'Observateur Paalga",
+        "count": 7
+      },
+      {
+        "name": "24 Heures au Bénin",
+        "count": 7
+      },
+      {
+        "name": "Togo-Presse",
+        "count": 7
+      },
+      {
+        "name": "Namsiguia",
+        "count": 7
+      },
+      {
+        "name": "Oumarou Dicko",
+        "count": 7
+      },
+      {
+        "name": "Yirgou",
+        "count": 7
+      },
+      {
+        "name": "Affrontements intercommunautaires Yirgou (2019)",
+        "count": 7
+      },
+      {
+        "name": "Livre vert",
+        "count": 7
+      }
+    ]
+  },
+  "explicitEdgeBreakdown": {
+    "related_to": 181,
+    "part_of": 3205,
+    "has_part": 265,
+    "succeeded_by": 13,
+    "located_in": 3174
+  },
+  "inferredEdgeBreakdown": {
+    "co_occurs_with": 19302,
+    "co_authored_with": 101
+  }
+}

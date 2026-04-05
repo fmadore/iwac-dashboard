@@ -3,162 +3,162 @@
   "unique_topics": 30,
   "topics": [
     {
-      "id": 28,
-      "label": "imam - mosquée - prière - communauté musulman - fidèle - hadj",
-      "count": 1660
-    },
-    {
-      "id": 10,
-      "label": "politique - religieux - aucun - religion - etat - raison",
-      "count": 1153
-    },
-    {
-      "id": 2,
-      "label": "pèlerin - hadj - pèlerinage - mecque - organisation hadj - arabie saoudite",
-      "count": 1025
-    },
-    {
-      "id": 23,
-      "label": "paix - religion - communauté - religieux - message - islam",
-      "count": 882
-    },
-    {
-      "id": 22,
-      "label": "don - population - ong - offrir - geste - action",
-      "count": 693
-    },
-    {
-      "id": 20,
-      "label": "cosim - ici - jeune - attendre - homme - rdr",
-      "count": 633
-    },
-    {
-      "id": 0,
-      "label": "etat - gouvernement - ministre - mesure - concerner - décision",
-      "count": 528
-    },
-    {
-      "id": 16,
-      "label": "président - politique - réconciliation - candidat - élection - crise",
-      "count": 524
+      "id": 12,
+      "label": "imam - mosquée - communauté musulman - prière - fidèle - hadj",
+      "count": 1989
     },
     {
       "id": 7,
-      "label": "développement - économique - afrique - projet - islamique - travers",
-      "count": 510
-    },
-    {
-      "id": 21,
-      "label": "association - jeune - président - membre - congrès - jeunesse",
-      "count": 482
-    },
-    {
-      "id": 25,
-      "label": "école - enfant - éducation - formation - élève - activité",
-      "count": 422
-    },
-    {
-      "id": 13,
-      "label": "fête - mouton - tabaski - sacrifice - prix - fête tabaski",
-      "count": 417
-    },
-    {
-      "id": 8,
-      "label": "jeûne - ramadan - prière - carême - jeûner - jeûne ramadan",
-      "count": 394
-    },
-    {
-      "id": 5,
-      "label": "ministre - président - délégation - visite - chef etat - ambassadeur",
-      "count": 327
-    },
-    {
-      "id": 14,
-      "label": "islamique - islam - séminaire - conférence - thème - conférencier",
-      "count": 318
-    },
-    {
-      "id": 12,
-      "label": "militaire - terrorisme - population - attaque - armée - terroriste",
-      "count": 313
-    },
-    {
-      "id": 19,
-      "label": "dieu - homme - prière - foi - vie - chrétien",
-      "count": 312
-    },
-    {
-      "id": 18,
-      "label": "projet - construction - réaliser - centre - service - réalisation",
-      "count": 311
-    },
-    {
-      "id": 6,
-      "label": "islam - allah - dieu - prophète - coran - vie",
-      "count": 293
-    },
-    {
-      "id": 27,
-      "label": "femme - enfant - mariage - fille - homme - radio",
-      "count": 291
-    },
-    {
-      "id": 11,
-      "label": "nuit - fête - nuit destin - célébrer - anniversaire - journée",
-      "count": 181
-    },
-    {
-      "id": 29,
-      "label": "université - arabe - étudiant - islamique - école - professeur",
-      "count": 139
-    },
-    {
-      "id": 17,
-      "label": "chef état - président - parti - hommage - défunt - famille",
-      "count": 137
-    },
-    {
-      "id": 3,
-      "label": "peuple - africain - libye - afrique - culture - indépendance",
-      "count": 83
-    },
-    {
-      "id": 4,
-      "label": "village - charlatan - cheik - population - hommage - groupe",
-      "count": 63
+      "label": "religieux - politique - etat - question - communauté - religion",
+      "count": 1251
     },
     {
       "id": 1,
-      "label": "pasteur - chrétien - église - religieux - catholique - évêque",
-      "count": 49
+      "label": "pèlerin - hadj - etat - pèlerinage - organisation hadj - organisation",
+      "count": 993
     },
     {
-      "id": 26,
-      "label": "islam - cheick - communauté musulman - religion - communauté - islamique",
-      "count": 46
+      "id": 6,
+      "label": "association - cosim - islam - islamique - président - organisation",
+      "count": 874
     },
     {
-      "id": 15,
-      "label": "marabout - cheikh - maraboutage - page - consulter - maroc",
-      "count": 24
+      "id": 25,
+      "label": "fête - prière - tabaski - sacrifice - dieu - fidèle",
+      "count": 690
     },
     {
-      "id": 9,
-      "label": "enquête - affaire - victime - payer - admettre - zakat",
-      "count": 19
+      "id": 21,
+      "label": "chef etat - président - président république - ministre - délégation - visite",
+      "count": 622
+    },
+    {
+      "id": 18,
+      "label": "projet - développement - population - programme - réaliser - financement",
+      "count": 528
+    },
+    {
+      "id": 0,
+      "label": "ministre - gouvernement - etat - affaire - commission - concerner",
+      "count": 490
+    },
+    {
+      "id": 29,
+      "label": "paix - peuple - nation - vie - dieu - ensemble",
+      "count": 415
+    },
+    {
+      "id": 2,
+      "label": "nuit - allah - prophète - dieu - islam - nuit destin",
+      "count": 389
+    },
+    {
+      "id": 23,
+      "label": "président - victime - crise - aucun - responsable - décider",
+      "count": 387
+    },
+    {
+      "id": 16,
+      "label": "homme - mort - attendre - maison - enfant - sou",
+      "count": 367
     },
     {
       "id": 24,
-      "label": "député - koumassi - district - vih sida - gouverneur - sida",
-      "count": 5
+      "label": "jeûne - ramadan - prière - jeûner - carême - jeûne ramadan",
+      "count": 350
+    },
+    {
+      "id": 5,
+      "label": "don - offrir - geste - ong - vivre - solidarité",
+      "count": 343
+    },
+    {
+      "id": 9,
+      "label": "terrorisme - population - militaire - sahel - terroriste - radio",
+      "count": 335
+    },
+    {
+      "id": 26,
+      "label": "dieu - homme - islam - foi - religion - coran",
+      "count": 317
+    },
+    {
+      "id": 4,
+      "label": "femme - enfant - mariage - homme - pratique - fille",
+      "count": 256
+    },
+    {
+      "id": 22,
+      "label": "école - enfant - éducation - formation - islamique - élève",
+      "count": 226
+    },
+    {
+      "id": 20,
+      "label": "politique - président - parti - candidat - élection - gbagbo",
+      "count": 224
+    },
+    {
+      "id": 14,
+      "label": "prix - marché - mouton - client - commerçant - vendre",
+      "count": 185
+    },
+    {
+      "id": 8,
+      "label": "cheikh - concours - édition - candidat - santé - imams",
+      "count": 178
+    },
+    {
+      "id": 27,
+      "label": "pèlerin - mecque - pèlerinage - hadj - médine - jeddah",
+      "count": 162
+    },
+    {
+      "id": 15,
+      "label": "mendicité - zakat - mendiant - association - sokodé - aide",
+      "count": 150
+    },
+    {
+      "id": 28,
+      "label": "jamais - aucun - raison - homme - propos - état",
+      "count": 138
+    },
+    {
+      "id": 17,
+      "label": "islam - religion - chrétien - histoire - communauté - catholique",
+      "count": 127
+    },
+    {
+      "id": 3,
+      "label": "afrique - africain - islamique - coopération - arabe - conférence",
+      "count": 99
+    },
+    {
+      "id": 13,
+      "label": "ouédraogo - population - village - commune - man - maire",
+      "count": 82
+    },
+    {
+      "id": 10,
+      "label": "marabout - jeune - étudiant - page - maraboutage - jeunesse",
+      "count": 51
+    },
+    {
+      "id": 11,
+      "label": "coulibaly - amadou - ali - directeur - union islamique - issa",
+      "count": 10
+    },
+    {
+      "id": 19,
+      "label": "fofana - bamba - odienné - article - mosquée riviera - culte",
+      "count": 6
     }
   ],
   "ai_fields": [
     "gemini_centralite_islam_musulmans",
     "gemini_centralite_justification",
-    "gemini_subjectivite_score",
-    "gemini_subjectivite_justification",
     "gemini_polarite",
-    "gemini_polarite_justification"
+    "gemini_polarite_justification",
+    "gemini_subjectivite_score",
+    "gemini_subjectivite_justification"
   ]
 }
