@@ -1,0 +1,115 @@
+version: 2
+updates:
+  # npm dependencies
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 10
+    labels:
+      - 'dependencies'
+      - 'npm'
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+      include: 'scope'
+    groups:
+      svelte:
+        patterns:
+          - 'svelte'
+          - 'svelte-*'
+          - '@sveltejs/*'
+          - 'eslint-plugin-svelte'
+          - 'prettier-plugin-svelte'
+          - 'vitest-browser-svelte'
+      tailwind:
+        patterns:
+          - 'tailwindcss'
+          - 'tailwindcss-*'
+          - '@tailwindcss/*'
+          - 'tailwind-merge'
+          - 'tailwind-variants'
+          - 'tw-animate-css'
+          - 'prettier-plugin-tailwindcss'
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - 'eslint-*'
+          - 'typescript-eslint'
+          - '@types/eslint'
+      typescript:
+        patterns:
+          - 'typescript'
+          - '@types/*'
+      vite:
+        patterns:
+          - 'vite'
+          - '@vite-pwa/*'
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+      playwright:
+        patterns:
+          - 'playwright'
+          - '@playwright/*'
+      d3:
+        patterns:
+          - 'd3-*'
+          - '@types/d3-*'
+      echarts:
+        patterns:
+          - 'echarts'
+          - 'echarts-*'
+      sigma-graph:
+        patterns:
+          - 'sigma'
+          - '@sigma/*'
+          - 'graphology'
+          - 'graphology-*'
+      minor-and-patch:
+        update-types:
+          - 'minor'
+          - 'patch'
+
+  # GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Berlin'
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'chore(ci)'
+      include: 'scope'
+    groups:
+      actions:
+        patterns:
+          - '*'
+
+  # Python dependencies (data generation scripts)
+  - package-ecosystem: 'pip'
+    directory: '/scripts'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Berlin'
+    labels:
+      - 'dependencies'
+      - 'python'
+    commit-message:
+      prefix: 'chore(deps-py)'
+      include: 'scope'
+    groups:
+      python:
+        patterns:
+          - '*'
