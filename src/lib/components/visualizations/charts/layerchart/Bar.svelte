@@ -12,6 +12,7 @@
 		createLabelFormatter,
 		tooltipLabelFromPayload as sharedTooltipLabel,
 		tooltipItemsFromPayload as sharedTooltipItems,
+		tooltipStateToPayload,
 		type TooltipPayloadItem
 	} from '$lib/utils/chartUtils.js';
 	import { useResizeObserver } from '$lib/hooks/index.js';
@@ -204,9 +205,10 @@
 					{#snippet tooltip({ context })}
 						<TooltipPrimitive.Root {context} variant="none">
 							{#snippet children()}
+								{@const payload = tooltipStateToPayload(context.tooltip)}
 								<Tooltip
-									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
-									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+									label={tooltipLabelFromPayload(payload)}
+									items={tooltipItemsFromPayload(payload)}
 								/>
 							{/snippet}
 						</TooltipPrimitive.Root>
@@ -251,9 +253,10 @@
 					{#snippet tooltip({ context })}
 						<TooltipPrimitive.Root {context} variant="none">
 							{#snippet children()}
+								{@const payload = tooltipStateToPayload(context.tooltip)}
 								<Tooltip
-									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
-									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+									label={tooltipLabelFromPayload(payload)}
+									items={tooltipItemsFromPayload(payload)}
 								/>
 							{/snippet}
 						</TooltipPrimitive.Root>

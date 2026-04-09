@@ -100,15 +100,13 @@ export function tooltipLabelFromPayload(
 	}
 
 	// Common fallback paths
-	return (
-		String(
-			first.payload?.category ??
-				first.payload?.year ??
-				first.payload?.name ??
-				first.label ??
-				first.name ??
-				''
-		)
+	return String(
+		first.payload?.category ??
+			first.payload?.year ??
+			first.payload?.name ??
+			first.label ??
+			first.name ??
+			''
 	);
 }
 
@@ -135,6 +133,48 @@ export function tooltipItemsFromPayload(
 			};
 		})
 		.filter((i): i is ParsedTooltipItem => i !== null);
+}
+
+/**
+ * LayerChart v2 tooltip series item (subset of the `TooltipSeries` type exported
+ * by layerchart — keeps this util decoupled from internal types).
+ */
+export interface LayerChartTooltipSeries {
+	key: string;
+	label: string;
+	value: unknown;
+	color?: string;
+}
+
+/**
+ * LayerChart v2 tooltip state shape. Replaces the old `.payload` array with
+ * a shared `.data` row and a `.series` array.
+ */
+export interface LayerChartTooltipState {
+	data?: Record<string, unknown> | null;
+	series?: LayerChartTooltipSeries[];
+}
+
+/**
+ * Convert the LayerChart v2 `TooltipState` ({ data, series }) to the legacy
+ * `TooltipPayloadItem[]` shape that the other tooltip helpers in this file expect.
+ * This lets callers keep using `tooltipLabelFromPayload` / `tooltipItemsFromPayload`
+ * without re-authoring their tooltip templates.
+ */
+export function tooltipStateToPayload(
+	tooltip: LayerChartTooltipState | undefined | null
+): TooltipPayloadItem[] {
+	if (!tooltip) return [];
+	const data = tooltip.data ?? undefined;
+	const series = tooltip.series ?? [];
+	return series.map((s) => ({
+		key: s.key,
+		name: s.label,
+		label: s.label,
+		value: s.value as number | string,
+		color: s.color,
+		payload: data
+	}));
 }
 
 /**

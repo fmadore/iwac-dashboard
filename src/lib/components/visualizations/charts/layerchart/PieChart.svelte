@@ -4,6 +4,7 @@
 	import { PieChart, Tooltip as TooltipPrimitive } from 'layerchart';
 	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 	import Tooltip, { type TooltipItem } from './Tooltip.svelte';
+	import { tooltipStateToPayload } from '$lib/utils/chartUtils.js';
 
 	interface PieDataItem {
 		label: string;
@@ -206,7 +207,13 @@
 		return `${((part / total) * 100).toFixed(1)}%`;
 	}
 
-	function tooltipItemsFromPayload(payload: Array<{ payload?: Record<string, unknown>; value?: unknown; [key: string]: unknown }>): TooltipItem[] {
+	type PieTooltipPayloadItem = {
+		payload?: Record<string, unknown> | undefined;
+		value?: unknown;
+		[key: string]: unknown;
+	};
+
+	function tooltipItemsFromPayload(payload: PieTooltipPayloadItem[]): TooltipItem[] {
 		const first = payload?.[0];
 		const hovered = first?.payload ?? first;
 		const rawValue = hovered?.value ?? first?.value;
@@ -214,7 +221,9 @@
 		if (!Number.isFinite(value)) return [];
 
 		const percent = formatPercent(value, visibleTotalValue);
-		const hoveredColor = (hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color) as string | undefined;
+		const hoveredColor = (hovered?.cssColorVar ?? hovered?.configColor ?? hovered?.color) as
+			| string
+			| undefined;
 		const base: TooltipItem[] = showValues
 			? [
 					{
@@ -269,13 +278,15 @@
 						{#snippet tooltip({ context })}
 							<TooltipPrimitive.Root {context} variant="none">
 								{#snippet children()}
+									{@const payload = tooltipStateToPayload(
+										context.tooltip
+									) as PieTooltipPayloadItem[]}
+									{@const data = context.tooltip?.data as Record<string, unknown> | undefined}
 									<Tooltip
-										label={context.tooltip?.payload?.[0]?.payload?.label ??
-											context.tooltip?.payload?.[0]?.label ??
-											context.tooltip?.payload?.[0]?.payload?.name ??
-											context.tooltip?.payload?.[0]?.name ??
-											''}
-										items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+										label={String(
+											data?.label ?? data?.name ?? payload[0]?.label ?? payload[0]?.name ?? ''
+										)}
+										items={tooltipItemsFromPayload(payload)}
 										indicator="dot"
 									/>
 								{/snippet}

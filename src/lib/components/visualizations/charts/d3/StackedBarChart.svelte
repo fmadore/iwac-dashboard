@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { scaleBand } from 'd3-scale';
-	import {
-		BarChart,
-		Highlight,
-		Tooltip as TooltipPrimitive,
-		type ChartContextValue
-	} from 'layerchart';
+	import { BarChart, Highlight, Tooltip as TooltipPrimitive, type ChartState } from 'layerchart';
 	import { cubicInOut } from 'svelte/easing';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
@@ -18,6 +13,7 @@
 		filterNonZeroPayload,
 		tooltipLabelFromPayload as sharedTooltipLabel,
 		tooltipItemsFromPayload as sharedTooltipItems,
+		tooltipStateToPayload,
 		type TooltipPayloadItem
 	} from '$lib/utils/chartUtils.js';
 
@@ -46,7 +42,7 @@
 		animate = true
 	}: Props = $props();
 	let containerWidth = $state(0);
-	let context = $state<ChartContextValue>();
+	let context = $state<ChartState>();
 	let mounted = $state(false);
 
 	$effect(() => {
@@ -249,9 +245,10 @@
 					{#snippet tooltip({ context })}
 						<TooltipPrimitive.Root {context} variant="none">
 							{#snippet children()}
+								{@const payload = tooltipStateToPayload(context.tooltip)}
 								<Tooltip
-									label={tooltipLabelFromPayload(context.tooltip?.payload ?? [])}
-									items={tooltipItemsFromPayload(context.tooltip?.payload ?? [])}
+									label={tooltipLabelFromPayload(payload)}
+									items={tooltipItemsFromPayload(payload)}
 								/>
 							{/snippet}
 						</TooltipPrimitive.Root>

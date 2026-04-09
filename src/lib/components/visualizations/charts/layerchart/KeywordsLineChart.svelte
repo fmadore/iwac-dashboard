@@ -91,80 +91,84 @@
 	});
 </script>
 
-<div class="flex h-full w-full flex-col" style="height: {height}px;" role="img" aria-label={t('keywords.chart_aria')}>
-		{#if chartData.length > 0 && series.length > 0}
-			<div class="flex-1 min-h-0">
-				<Chart
-					data={chartData}
-					x="year"
-					xScale={xScale}
-					yScale={yScale}
-					yDomain={[0, maxCount]}
-					yNice
-					padding={{ left: 50, right: 20, top: 10, bottom: 50 }}
-					tooltip={{ mode: 'bisect-x' }}
-				>
-					<Svg>
-						<Axis
-							placement="left"
-							grid={{ class: 'stroke-muted/50' }}
-							rule={false}
-							tickLabelProps={{ class: 'fill-muted-foreground text-xs' }}
+<div
+	class="flex h-full w-full flex-col"
+	style="height: {height}px;"
+	role="img"
+	aria-label={t('keywords.chart_aria')}
+>
+	{#if chartData.length > 0 && series.length > 0}
+		<div class="min-h-0 flex-1">
+			<Chart
+				data={chartData}
+				x="year"
+				{xScale}
+				{yScale}
+				yDomain={[0, maxCount]}
+				yNice
+				padding={{ left: 50, right: 20, top: 10, bottom: 50 }}
+				tooltipContext={{ mode: 'bisect-x' }}
+			>
+				<Svg>
+					<Axis
+						placement="left"
+						grid={{ class: 'stroke-muted/50' }}
+						rule={false}
+						tickLabelProps={{ class: 'fill-muted-foreground text-xs' }}
+					/>
+					<Axis
+						placement="bottom"
+						rule={false}
+						ticks={xTickValues}
+						tickLabelProps={{
+							class: 'fill-muted-foreground text-xs',
+							rotate: chartData.length > 30 ? 45 : 0,
+							textAnchor: chartData.length > 30 ? 'start' : 'middle',
+							dy: chartData.length > 30 ? '0.5em' : '0.25em'
+						}}
+					/>
+
+					{#each series as s, idx (s.keyword)}
+						<Spline
+							data={chartData}
+							x="year"
+							y={s.keyword}
+							stroke={chartColors[idx % chartColors.length]}
+							strokeWidth={2}
 						/>
-						<Axis
-							placement="bottom"
-							rule={false}
-							ticks={xTickValues}
-							tickLabelProps={{
-								class: 'fill-muted-foreground text-xs',
-								rotate: chartData.length > 30 ? 45 : 0,
-								textAnchor: chartData.length > 30 ? 'start' : 'middle',
-								dy: chartData.length > 30 ? '0.5em' : '0.25em'
-							}}
-						/>
+					{/each}
 
-						{#each series as s, idx (s.keyword)}
-							<Spline
-								data={chartData}
-								x="year"
-								y={s.keyword}
-								stroke={chartColors[idx % chartColors.length]}
-								strokeWidth={2}
-							/>
-						{/each}
+					<Highlight
+						points={{ r: 5, class: 'fill-primary stroke-background stroke-2' }}
+						lines={{ class: 'stroke-muted-foreground/50' }}
+					/>
+				</Svg>
 
-						<Highlight points={{ r: 5, class: 'fill-primary stroke-background stroke-2' }} lines={{ class: 'stroke-muted-foreground/50' }} />
-					</Svg>
+				<TooltipPrimitive.Root variant="none">
+					{#snippet children({ data })}
+						{#if data}
+							<Tooltip label={String(data.year)} items={buildTooltipItems(data)} indicator="dot" />
+						{/if}
+					{/snippet}
+				</TooltipPrimitive.Root>
+			</Chart>
+		</div>
 
-					<TooltipPrimitive.Root variant="none">
-						{#snippet children({ data })}
-							{#if data}
-								<Tooltip
-									label={String(data.year)}
-									items={buildTooltipItems(data)}
-									indicator="dot"
-								/>
-							{/if}
-						{/snippet}
-					</TooltipPrimitive.Root>
-				</Chart>
-			</div>
-
-			<!-- Legend -->
-			<div class="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 px-4 text-xs">
-				{#each series as s, idx (s.keyword)}
-					<div class="flex items-center gap-1.5">
-						<div
-							class="h-0.5 w-3 rounded"
-							style="background-color: {chartColors[idx % chartColors.length]};"
-						></div>
-						<span class="text-muted-foreground">{s.keyword}</span>
-					</div>
-				{/each}
-			</div>
-		{:else}
-			<div class="flex h-full items-center justify-center">
-				<p class="text-muted-foreground">{t('chart.no_data')}</p>
-			</div>
-		{/if}
-	</div>
+		<!-- Legend -->
+		<div class="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 px-4 text-xs">
+			{#each series as s, idx (s.keyword)}
+				<div class="flex items-center gap-1.5">
+					<div
+						class="h-0.5 w-3 rounded"
+						style="background-color: {chartColors[idx % chartColors.length]};"
+					></div>
+					<span class="text-muted-foreground">{s.keyword}</span>
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<div class="flex h-full items-center justify-center">
+			<p class="text-muted-foreground">{t('chart.no_data')}</p>
+		</div>
+	{/if}
+</div>
