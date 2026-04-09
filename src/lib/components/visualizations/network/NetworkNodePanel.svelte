@@ -41,13 +41,15 @@
 </script>
 
 {#if node}
-	<Card.Root class="absolute right-4 top-4 z-10 w-80 max-h-[calc(100%-2rem)] flex flex-col shadow-lg">
+	<Card.Root
+		class="absolute top-4 right-4 z-10 flex max-h-[calc(100%-2rem)] w-80 flex-col shadow-lg"
+	>
 		<Card.Header class="shrink-0 pb-2">
 			<div class="flex items-start justify-between gap-2">
-				<div class="flex-1 min-w-0">
-					<Card.Title class="text-lg leading-tight truncate">{node.label}</Card.Title>
+				<div class="min-w-0 flex-1">
+					<Card.Title class="truncate text-lg leading-tight">{node.label}</Card.Title>
 					{#if node.country}
-						<Card.Description class="flex items-center gap-1 mt-1">
+						<Card.Description class="mt-1 flex items-center gap-1">
 							<MapPin class="h-3 w-3" />
 							{node.country}
 							{#if node.region}
@@ -64,16 +66,16 @@
 
 		<Card.Content class="flex-1 overflow-hidden pt-0">
 			<!-- Stats -->
-			<div class="grid grid-cols-3 gap-2 mb-4">
-				<div class="text-center p-2 bg-muted rounded-md">
+			<div class="mb-4 grid grid-cols-3 gap-2">
+				<div class="rounded-md bg-muted p-2 text-center">
 					<div class="text-lg font-bold">{node.count}</div>
 					<div class="text-xs text-muted-foreground">{t('network.articles')}</div>
 				</div>
-				<div class="text-center p-2 bg-muted rounded-md">
+				<div class="rounded-md bg-muted p-2 text-center">
 					<div class="text-lg font-bold">{node.degree}</div>
 					<div class="text-xs text-muted-foreground">{t('network.connections')}</div>
 				</div>
-				<div class="text-center p-2 bg-muted rounded-md">
+				<div class="rounded-md bg-muted p-2 text-center">
 					<div class="text-lg font-bold">{node.strength}</div>
 					<div class="text-xs text-muted-foreground">{t('network.strength')}</div>
 				</div>
@@ -82,7 +84,7 @@
 			<!-- Connections List -->
 			{#if connections.length > 0}
 				<div class="space-y-2">
-					<h4 class="text-sm font-medium flex items-center gap-1">
+					<h4 class="flex items-center gap-1 text-sm font-medium">
 						<Link2 class="h-4 w-4" />
 						{t('network.connected_locations')} ({connections.length})
 					</h4>
@@ -91,19 +93,19 @@
 							{#each connections as connection (connection.node?.id)}
 								{#if connection.node}
 									<button
-										class="w-full flex items-center justify-between p-2 text-left rounded-md hover:bg-muted transition-colors"
+										class="flex w-full items-center justify-between rounded-md p-2 text-left transition-colors hover:bg-muted"
 										onclick={() => onSelectNode(connection.node!)}
 									>
-										<div class="flex-1 min-w-0">
-											<div class="text-sm font-medium truncate">{connection.node.label}</div>
+										<div class="min-w-0 flex-1">
+											<div class="truncate text-sm font-medium">{connection.node.label}</div>
 											{#if connection.node.country}
-												<div class="text-xs text-muted-foreground truncate">
+												<div class="truncate text-xs text-muted-foreground">
 													{connection.node.country}
 												</div>
 											{/if}
 										</div>
 										<Badge variant="secondary" class="ml-2 shrink-0">
-											<FileText class="h-3 w-3 mr-1" />
+											<FileText class="mr-1 h-3 w-3" />
 											{connection.weight}
 										</Badge>
 									</button>
@@ -113,7 +115,7 @@
 					</ScrollArea>
 				</div>
 			{:else}
-				<p class="text-sm text-muted-foreground text-center py-4">
+				<p class="py-4 text-center text-sm text-muted-foreground">
 					{t('network.no_connections')}
 				</p>
 			{/if}

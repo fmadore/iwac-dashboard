@@ -190,7 +190,8 @@ export const translations = {
 		'scary.global_chart_title': 'Overall "Scary" Terms Distribution',
 		'scary.global_chart_description': 'Total occurrences of "scary" terms across all articles',
 		'scary.term_definitions': 'Term Families & Variants',
-		'scary.term_definitions_desc': 'Each term family includes multiple spelling variants and related forms',
+		'scary.term_definitions_desc':
+			'Each term family includes multiple spelling variants and related forms',
 		'scary.view_mode': 'View',
 		'scary.top_term': 'Top term',
 		'scary.previous': 'Previous year',
@@ -199,7 +200,8 @@ export const translations = {
 		'cooccurrence.title': 'Co-occurrence Matrix',
 		'cooccurrence.description': 'Visualize how "scary" terms appear together in articles',
 		'cooccurrence.how_it_works': 'How it works',
-		'cooccurrence.explanation': 'Terms are considered co-occurring when they both appear anywhere in the same article. Darker cells indicate more articles where both terms appear.',
+		'cooccurrence.explanation':
+			'Terms are considered co-occurring when they both appear anywhere in the same article. Darker cells indicate more articles where both terms appear.',
 		'cooccurrence.global': 'All Countries',
 		'cooccurrence.order_by': 'Order by',
 		'cooccurrence.order_name': 'Name',
@@ -211,7 +213,8 @@ export const translations = {
 		'cooccurrence.max_cooccurrence': 'Max Co-occurrence',
 		'cooccurrence.articles_analyzed': 'Articles Analyzed',
 		'cooccurrence.matrix_title': 'Co-occurrence Matrix Visualization',
-		'cooccurrence.matrix_description': 'Terms are considered co-occurring when they appear in the same article',
+		'cooccurrence.matrix_description':
+			'Terms are considered co-occurring when they appear in the same article',
 		'cooccurrence.download_svg': 'Download SVG',
 		'cooccurrence.term_count': 'Term count',
 		'cooccurrence.cooccurrences': 'Co-occurrences',
@@ -223,7 +226,8 @@ export const translations = {
 		'cooccurrence.select_term': 'Select a term',
 		'cooccurrence.words_title': 'Words Associated with',
 		'cooccurrence.words_description': 'Words that frequently appear near this term',
-		'cooccurrence.word_associations_explanation': 'This view shows words that appear within {0} words of each scary term in the articles. Common words (stopwords) are filtered out.',
+		'cooccurrence.word_associations_explanation':
+			'This view shows words that appear within {0} words of each scary term in the articles. Common words (stopwords) are filtered out.',
 		'cooccurrence.total_word_occurrences': 'Total Word Occurrences',
 		'cooccurrence.articles_with_term': 'Articles with Term',
 		'cooccurrence.unique_words_found': 'Unique Words',
@@ -232,7 +236,8 @@ export const translations = {
 		'cooccurrence.count': 'Count',
 		// Topics
 		'topics.title': 'Topic Modeling',
-		'topics.description': 'Explore topics discovered through machine learning analysis of the collection',
+		'topics.description':
+			'Explore topics discovered through machine learning analysis of the collection',
 		'topics.total_documents': 'Documents Analyzed',
 		'topics.total_documents_desc': 'Documents processed by the model',
 		'topics.unique_topics': 'Unique Topics',
@@ -300,7 +305,8 @@ export const translations = {
 		// Network Analysis
 		'nav.network_analysis': 'Network Analysis',
 		'worldmap.title': 'World Map',
-		'worldmap.description': 'Explore newspaper articles by geographic location. Switch between bubble and choropleth views.',
+		'worldmap.description':
+			'Explore newspaper articles by geographic location. Switch between bubble and choropleth views.',
 		'worldmap.bubbles': 'Bubbles',
 		'worldmap.choropleth': 'Choropleth',
 		'worldmap.article_count': 'Article Count',
@@ -323,12 +329,14 @@ export const translations = {
 		// Sources
 		'nav.sources': 'Sources',
 		'sources.title': 'Sources',
-		'sources.description': 'Explore newspapers and publications in the collection by geographic origin',
+		'sources.description':
+			'Explore newspapers and publications in the collection by geographic origin',
 		'sources.total_sources': 'Total Sources',
 		'sources.items_with_sources': 'Items with Sources',
 		'sources.sources_with_coordinates': 'Mapped Sources',
 		'sources.map_title': 'Source Locations',
-		'sources.map_description': 'Geographic distribution of newspapers and publications with available coordinates',
+		'sources.map_description':
+			'Geographic distribution of newspapers and publications with available coordinates',
 		'sources.top_sources': 'Top Sources',
 		'sources.items': 'Items',
 		'sources.has_coordinates': 'Mapped',
@@ -336,7 +344,8 @@ export const translations = {
 		'nav.network': 'Network Graph',
 		'nav.network_map': 'Network Map',
 		'network.title': 'Network Graph',
-		'network.description': 'Explore co-occurrence relationships between entities (people, organizations, events, topics, locations) mentioned together in articles.',
+		'network.description':
+			'Explore co-occurrence relationships between entities (people, organizations, events, topics, locations) mentioned together in articles.',
 		'network.total_locations': 'Total Locations',
 		'network.total_entities': 'Total Entities',
 		'network.visible_nodes': 'Visible Nodes',
@@ -378,8 +387,10 @@ export const translations = {
 		'network.nodes': 'Nodes',
 		'network.edges': 'Edges',
 		'network.tip': 'Tip',
-		'network.instructions': 'Click on a node to see its connections. Use the controls to adjust the visualization.',
-		'network.run_script_hint': 'Run the generate_spatial_networks.py script to generate network data.',
+		'network.instructions':
+			'Click on a node to see its connections. Use the controls to adjust the visualization.',
+		'network.run_script_hint':
+			'Run the generate_spatial_networks.py script to generate network data.',
 		'network.search_entity': 'Search entities...',
 		'network.top_entities': 'Top entities',
 		'network.showing_first_100': 'Showing first 100 results',
@@ -403,7 +414,8 @@ export const translations = {
 		// Knowledge Graph
 		'nav.knowledge_graph': 'Knowledge Graph',
 		'kg.title': 'Knowledge Graph',
-		'kg.description': 'Explore typed relationships between entities in the IWAC collection: hierarchical membership, geographic associations, co-occurrence, and more.',
+		'kg.description':
+			'Explore typed relationships between entities in the IWAC collection: hierarchical membership, geographic associations, co-occurrence, and more.',
 		'kg.total_entities': 'Total Entities',
 		'kg.explicit_edges': 'Explicit Edges',
 		'kg.inferred_edges': 'Inferred Edges',
@@ -420,24 +432,33 @@ export const translations = {
 		'kg.edge_located_in': 'Located in',
 		'kg.edge_co_occurs': 'Co-occurs with',
 		'kg.edge_co_authored': 'Co-authored with',
-		'kg.instructions': 'Click on a node to see its ego network with typed relationships. Toggle edge layers to focus on explicit (curated) or inferred (co-occurrence) connections.',
-		'kg.run_script_hint': 'Run the generate_knowledge_graph.py script to generate the knowledge graph data.',
-		'kg.nodes_help': 'Nodes represent entities from the IWAC index: people (scholars, politicians, activists), organizations (Islamic associations, political parties), places, events, subjects (thematic topics), and authority records.',
-		'kg.explicit_help': 'Curated from Omeka S metadata. These relationships are explicitly documented: organizational membership (part of), geographic associations (located in), thematic links (related to), and succession relations.',
-		'kg.inferred_help': 'Computed from article content. Two entities are linked when they appear together in the same newspaper articles. The weight reflects how frequently they co-occur.',
+		'kg.instructions':
+			'Click on a node to see its ego network with typed relationships. Toggle edge layers to focus on explicit (curated) or inferred (co-occurrence) connections.',
+		'kg.run_script_hint':
+			'Run the generate_knowledge_graph.py script to generate the knowledge graph data.',
+		'kg.nodes_help':
+			'Nodes represent entities from the IWAC index: people (scholars, politicians, activists), organizations (Islamic associations, political parties), places, events, subjects (thematic topics), and authority records.',
+		'kg.explicit_help':
+			'Curated from Omeka S metadata. These relationships are explicitly documented: organizational membership (part of), geographic associations (located in), thematic links (related to), and succession relations.',
+		'kg.inferred_help':
+			'Computed from article content. Two entities are linked when they appear together in the same newspaper articles. The weight reflects how frequently they co-occur.',
 		'common.more': 'more',
 		// Network Map
 		'network_map.title': 'Network Map',
-		'network_map.description': 'Explore location relationships on a geographic map. Edges show co-occurrence connections between places.',
-		'network_map.instructions': 'Click on a location marker to focus on its connections. Use map controls to navigate.',
+		'network_map.description':
+			'Explore location relationships on a geographic map. Edges show co-occurrence connections between places.',
+		'network_map.instructions':
+			'Click on a location marker to focus on its connections. Use map controls to navigate.',
 		// Newspaper Coverage
 		'nav.newspaper_coverage': 'Newspaper Coverage',
 		'coverage.title': 'Newspaper Coverage',
-		'coverage.description': 'Explore the temporal coverage of newspapers in the collection, showing publication periods and gaps',
+		'coverage.description':
+			'Explore the temporal coverage of newspapers in the collection, showing publication periods and gaps',
 		'coverage.total_newspapers': 'Total Newspapers',
 		'coverage.year_range': 'Year Range',
 		'coverage.chart_title': 'Publication Periods',
-		'coverage.chart_description': 'Horizontal bars show the years each newspaper is represented in the collection. Gaps indicate periods with no articles.',
+		'coverage.chart_description':
+			'Horizontal bars show the years each newspaper is represented in the collection. Gaps indicate periods with no articles.',
 		'coverage.chart_aria': 'Duration chart showing newspaper publication periods',
 		'coverage.period': 'Period',
 		'coverage.articles': 'Articles',
@@ -455,7 +476,8 @@ export const translations = {
 		'entity_spatial.locations': 'locations',
 		'entity_spatial.showing_first_100': 'Showing first 100 of {0} results',
 		'entity_spatial.map_title': 'Geographic Distribution: {0}',
-		'entity_spatial.map_description': 'Click on a location marker to see the list of articles mentioning this entity at that location.',
+		'entity_spatial.map_description':
+			'Click on a location marker to see the list of articles mentioning this entity at that location.',
 		'entity_spatial.no_locations': 'No location data for this entity',
 		'entity_spatial.location_panel_description': 'Articles mentioning {0} in {1}',
 		'entity_spatial.article_singular': 'article',
@@ -471,7 +493,8 @@ export const translations = {
 		// Keywords Explorer
 		'nav.keywords': 'Keywords Explorer',
 		'keywords.title': 'Keywords Explorer',
-		'keywords.description': 'Explore the prevalence of Dublin Core Subject and Spatial Coverage fields over time',
+		'keywords.description':
+			'Explore the prevalence of Dublin Core Subject and Spatial Coverage fields over time',
 		'keywords.subjects': 'Subjects',
 		'keywords.spatial': 'Spatial Coverage',
 		'keywords.total_keywords': 'Total Keywords',
@@ -527,7 +550,8 @@ export const translations = {
 		// Topic Network
 		'nav.topic_network': 'Topic Network',
 		'topic_network.title': 'Topic Network',
-		'topic_network.description': 'Explore topic-article relationships as a network where topics are central nodes connected to their assigned articles.',
+		'topic_network.description':
+			'Explore topic-article relationships as a network where topics are central nodes connected to their assigned articles.',
 		'topic_network.topics': 'Topics',
 		'topic_network.articles': 'Articles',
 		'topic_network.keywords': 'Keywords',
@@ -548,11 +572,13 @@ export const translations = {
 		'topic_network.pub_date': 'Published',
 		'topic_network.probability': 'Probability',
 		'topic_network.close': 'Close',
-		'topic_network.run_script_hint': 'Run the generate_topic_network.py script to generate network data.',
+		'topic_network.run_script_hint':
+			'Run the generate_topic_network.py script to generate network data.',
 		// Semantic Article Map
 		'nav.semantic_map': 'Semantic Map',
 		'semantic_map.title': 'Semantic Article Map',
-		'semantic_map.description': 'Explore articles projected into 2D space using UMAP on OCR text embeddings. Articles with similar content appear close together.',
+		'semantic_map.description':
+			'Explore articles projected into 2D space using UMAP on OCR text embeddings. Articles with similar content appear close together.',
 		'semantic_map.total_articles': 'Articles',
 		'semantic_map.countries': 'Countries',
 		'semantic_map.topics': 'Topics',
@@ -579,7 +605,8 @@ export const translations = {
 		'semantic_map.polarity_not_applicable': 'Not applicable',
 		'semantic_map.unknown': 'Unknown',
 		'semantic_map.view_in_iwac': 'View in IWAC',
-		'semantic_map.instructions': 'Scroll to zoom, drag to pan. Hover over points to see article details. Click a point to pin its details. Use the legend to highlight groups.',
+		'semantic_map.instructions':
+			'Scroll to zoom, drag to pan. Hover over points to see article details. Click a point to pin its details. Use the legend to highlight groups.',
 		'semantic_map.run_script_hint': 'Run the generate_semantic_map.py script to generate the data.',
 		'semantic_map.canvas_aria': 'Scatter plot of articles projected by semantic similarity',
 		'semantic_map.filter_country': 'Country',
@@ -602,7 +629,8 @@ export const translations = {
 		// Co-author Network
 		'nav.coauthor_network': 'Co-author Network',
 		'coauthor.title': 'Co-author Network',
-		'coauthor.description': 'Explore collaboration relationships between authors who have co-authored publications together',
+		'coauthor.description':
+			'Explore collaboration relationships between authors who have co-authored publications together',
 		'coauthor.total_authors': 'Total Authors',
 		'coauthor.total_collaborations': 'Collaboration Pairs',
 		'coauthor.visible_authors': 'Visible Authors',
@@ -617,12 +645,15 @@ export const translations = {
 		'coauthor.publications': 'Publications',
 		'coauthor.coauthors': 'Co-authors',
 		'coauthor.joint_pubs': 'Joint Pubs',
-		'coauthor.instructions': 'Click on an author node to see their collaboration statistics. Use the controls to filter the network by minimum co-authorships.',
-		'coauthor.run_script_hint': 'Run the generate_references.py script to generate co-author network data.',
+		'coauthor.instructions':
+			'Click on an author node to see their collaboration statistics. Use the controls to filter the network by minimum co-authorships.',
+		'coauthor.run_script_hint':
+			'Run the generate_references.py script to generate co-author network data.',
 		// Subject Co-occurrence Network
 		'nav.subject_cooccurrence': 'Subject Co-occurrence',
 		'subject_cooccurrence.title': 'Subject Co-occurrence Network',
-		'subject_cooccurrence.description': 'Explore relationships between subjects that appear together in bibliographic references',
+		'subject_cooccurrence.description':
+			'Explore relationships between subjects that appear together in bibliographic references',
 		'subject_cooccurrence.total_topics': 'Total Topics',
 		'subject_cooccurrence.total_pairs': 'Co-occurrence Pairs',
 		'subject_cooccurrence.visible_topics': 'Visible Topics',
@@ -637,8 +668,10 @@ export const translations = {
 		'subject_cooccurrence.references': 'References',
 		'subject_cooccurrence.connected': 'Connected',
 		'subject_cooccurrence.cooccurrences': 'Co-occurrences',
-		'subject_cooccurrence.instructions': 'Click on a subject node to see its co-occurrence statistics. Use the controls to filter the network by minimum co-occurrences.',
-		'subject_cooccurrence.run_script_hint': 'Run the generate_references_subject_cooccurrence.py script to generate subject co-occurrence data.',
+		'subject_cooccurrence.instructions':
+			'Click on a subject node to see its co-occurrence statistics. Use the controls to filter the network by minimum co-occurrences.',
+		'subject_cooccurrence.run_script_hint':
+			'Run the generate_references_subject_cooccurrence.py script to generate subject co-occurrence data.',
 		// Provenance Map
 		'nav.provenance_map': 'Provenance Map',
 		'provenance.title': 'Provenance Map',
@@ -650,12 +683,14 @@ export const translations = {
 		'treemap.total_references': 'Total References',
 		'treemap.countries': 'Countries',
 		'treemap.document_types': 'Document Types',
-		'provenance.description': 'Geographic distribution of bibliographic references by place of origin or publication',
+		'provenance.description':
+			'Geographic distribution of bibliographic references by place of origin or publication',
 		'provenance.total_locations': 'Total Locations',
 		'provenance.total_publications': 'Total Publications',
 		'provenance.top_location': 'Top Location',
 		'provenance.map_title': 'Geographic Distribution',
-		'provenance.map_description': 'Click on a marker to see publications from that location. Marker size indicates publication count.',
+		'provenance.map_description':
+			'Click on a marker to see publications from that location. Marker size indicates publication count.',
 		'provenance.legend_size': 'Marker size = publication count',
 		'provenance.top_locations': 'Top Locations',
 		'provenance.top_locations_description': 'Locations with the most publications',
@@ -663,7 +698,8 @@ export const translations = {
 		'provenance.publications': 'Publications',
 		'provenance.year_range': 'Year Range',
 		'provenance.top_type': 'Top Type',
-		'provenance.run_script_hint': 'Run the generate_references.py script to generate provenance map data.',
+		'provenance.run_script_hint':
+			'Run the generate_references.py script to generate provenance map data.',
 		// Map Popup (reusable)
 		'map_popup.publications': 'publications',
 		'map_popup.articles': 'articles',
@@ -878,16 +914,19 @@ export const translations = {
 		'scary.global_chart_description':
 			'Occurrences totales des termes "inquiétants" dans tous les articles',
 		'scary.term_definitions': 'Familles de termes et variantes',
-		'scary.term_definitions_desc': 'Chaque famille de termes inclut plusieurs variantes orthographiques et formes associées',
+		'scary.term_definitions_desc':
+			'Chaque famille de termes inclut plusieurs variantes orthographiques et formes associées',
 		'scary.view_mode': 'Affichage',
 		'scary.top_term': 'Terme principal',
 		'scary.previous': 'Année précédente',
 		'scary.next': 'Année suivante',
 		// Co-occurrence Matrix
 		'cooccurrence.title': 'Matrice de cooccurrence',
-		'cooccurrence.description': 'Visualisez comment les termes "inquiétants" apparaissent ensemble dans les articles',
+		'cooccurrence.description':
+			'Visualisez comment les termes "inquiétants" apparaissent ensemble dans les articles',
 		'cooccurrence.how_it_works': 'Comment ça fonctionne',
-		'cooccurrence.explanation': 'Les termes sont considérés comme cooccurrents lorsqu\'ils apparaissent tous les deux dans le même article. Les cellules plus foncées indiquent plus d\'articles où les deux termes apparaissent.',
+		'cooccurrence.explanation':
+			"Les termes sont considérés comme cooccurrents lorsqu'ils apparaissent tous les deux dans le même article. Les cellules plus foncées indiquent plus d'articles où les deux termes apparaissent.",
 		'cooccurrence.global': 'Tous les pays',
 		'cooccurrence.order_by': 'Trier par',
 		'cooccurrence.order_name': 'Nom',
@@ -899,9 +938,10 @@ export const translations = {
 		'cooccurrence.max_cooccurrence': 'Cooccurrence max',
 		'cooccurrence.articles_analyzed': 'Articles analysés',
 		'cooccurrence.matrix_title': 'Visualisation de la matrice de cooccurrence',
-		'cooccurrence.matrix_description': 'Les termes sont considérés comme cooccurrents lorsqu\'ils apparaissent dans le même article',
+		'cooccurrence.matrix_description':
+			"Les termes sont considérés comme cooccurrents lorsqu'ils apparaissent dans le même article",
 		'cooccurrence.download_svg': 'Télécharger SVG',
-		'cooccurrence.term_count': 'Nombre d\'occurrences',
+		'cooccurrence.term_count': "Nombre d'occurrences",
 		'cooccurrence.cooccurrences': 'Cooccurrences',
 		'cooccurrence.low': 'Faible',
 		'cooccurrence.high': 'Élevé',
@@ -911,7 +951,8 @@ export const translations = {
 		'cooccurrence.select_term': 'Sélectionner un terme',
 		'cooccurrence.words_title': 'Mots associés à',
 		'cooccurrence.words_description': 'Mots qui apparaissent fréquemment près de ce terme',
-		'cooccurrence.word_associations_explanation': 'Cette vue montre les mots qui apparaissent à moins de {0} mots de chaque terme "inquiétant" dans les articles. Les mots courants (stopwords) sont filtrés.',
+		'cooccurrence.word_associations_explanation':
+			'Cette vue montre les mots qui apparaissent à moins de {0} mots de chaque terme "inquiétant" dans les articles. Les mots courants (stopwords) sont filtrés.',
 		'cooccurrence.total_word_occurrences': 'Occurrences de mots totales',
 		'cooccurrence.articles_with_term': 'Articles avec ce terme',
 		'cooccurrence.unique_words_found': 'Mots uniques',
@@ -928,7 +969,7 @@ export const translations = {
 		'topics.coverage': 'Couverture thématique',
 		'topics.coverage_desc': 'Documents assignés à un sujet',
 		'topics.avg_probability': 'Confiance moy.',
-		'topics.avg_probability_desc': 'Confiance moyenne de l\'assignation',
+		'topics.avg_probability_desc': "Confiance moyenne de l'assignation",
 		'topics.all_topics': 'Tous les sujets',
 		'topics.top_topics': 'Sujets principaux',
 		'topics.topic_overview': 'Aperçu du sujet',
@@ -941,13 +982,13 @@ export const translations = {
 		'topics.top_documents': 'Documents principaux',
 		'topics.country_distribution': 'Répartition par pays',
 		'topics.temporal_distribution': 'Répartition temporelle',
-		'topics.view_article': 'Voir l\'article',
+		'topics.view_article': "Voir l'article",
 		'topics.confidence': 'Confiance',
 		'topics.outliers': 'Outliers',
 		'topics.outliers_desc': 'Documents non assignés à un sujet',
 		'topics.showing_topics': 'Affichage de {0} sur {1} sujets',
 		'topics.ai_analysis': 'Analyse IA',
-		'topics.centrality': 'Centralité à l\'islam',
+		'topics.centrality': "Centralité à l'islam",
 		'topics.subjectivity': 'Subjectivité',
 		'topics.polarity': 'Polarité',
 		'topics.date': 'Date',
@@ -988,7 +1029,8 @@ export const translations = {
 		// Network Analysis
 		'nav.network_analysis': 'Analyse de réseau',
 		'worldmap.title': 'Carte du monde',
-		'worldmap.description': 'Explorez les articles de journaux par localisation géographique. Basculez entre les vues bulles et choroplèthe.',
+		'worldmap.description':
+			'Explorez les articles de journaux par localisation géographique. Basculez entre les vues bulles et choroplèthe.',
 		'worldmap.bubbles': 'Bulles',
 		'worldmap.choropleth': 'Choroplèthe',
 		'worldmap.article_count': "Nombre d'articles",
@@ -1005,18 +1047,20 @@ export const translations = {
 		'worldmap.countries_covered': 'Pays couverts',
 		'worldmap.filter.all_countries': 'Tous les pays',
 		'worldmap.filter.source_country': 'Pays source',
-		'worldmap.filter.year_range': 'Plage d\'années',
+		'worldmap.filter.year_range': "Plage d'années",
 		'worldmap.filter.reset': 'Réinitialiser les filtres',
 		'worldmap.filter.filtered_articles': '{0} articles (filtrés)',
 		// Sources
 		'nav.sources': 'Sources',
 		'sources.title': 'Sources',
-		'sources.description': 'Explorez les journaux et publications de la collection par origine géographique',
+		'sources.description':
+			'Explorez les journaux et publications de la collection par origine géographique',
 		'sources.total_sources': 'Sources totales',
 		'sources.items_with_sources': 'Éléments avec sources',
 		'sources.sources_with_coordinates': 'Sources cartographiées',
 		'sources.map_title': 'Localisation des sources',
-		'sources.map_description': 'Distribution géographique des journaux et publications avec coordonnées disponibles',
+		'sources.map_description':
+			'Distribution géographique des journaux et publications avec coordonnées disponibles',
 		'sources.top_sources': 'Principales sources',
 		'sources.items': 'Éléments',
 		'sources.has_coordinates': 'Cartographié',
@@ -1024,7 +1068,8 @@ export const translations = {
 		'nav.network': 'Graphe réseau',
 		'nav.network_map': 'Carte réseau',
 		'network.title': 'Graphe réseau',
-		'network.description': 'Explorez les relations de co-occurrence entre entités (personnes, organisations, événements, sujets, lieux) mentionnées ensemble dans les articles.',
+		'network.description':
+			'Explorez les relations de co-occurrence entre entités (personnes, organisations, événements, sujets, lieux) mentionnées ensemble dans les articles.',
 		'network.total_locations': 'Lieux totaux',
 		'network.total_entities': 'Entités totales',
 		'network.visible_nodes': 'Nœuds visibles',
@@ -1038,13 +1083,13 @@ export const translations = {
 		'network.map_view': 'Carte',
 		'network.node_size': 'Taille des nœuds',
 		'network.max_nodes': 'Entités max.',
-		'network.entity_types': 'Types d\'entités',
+		'network.entity_types': "Types d'entités",
 		'network.type_person': 'Personnes',
 		'network.type_organization': 'Organisations',
 		'network.type_event': 'Événements',
 		'network.type_subject': 'Sujets',
 		'network.type_location': 'Lieux',
-		'network.size_by_count': 'Par nombre d\'articles',
+		'network.size_by_count': "Par nombre d'articles",
 		'network.size_by_degree': 'Par connexions',
 		'network.size_by_strength': 'Par force de connexion',
 		'network.min_edge_weight': 'Co-occurrences min.',
@@ -1059,15 +1104,17 @@ export const translations = {
 		'network.connected_locations': 'Lieux connectés',
 		'network.no_connections': 'Aucune connexion',
 		'network.legend': 'Légende',
-		'network.legend_size_count': 'Taille = nombre d\'articles',
+		'network.legend_size_count': "Taille = nombre d'articles",
 		'network.legend_size_degree': 'Taille = connexions',
 		'network.legend_size_strength': 'Taille = force de connexion',
 		'network.legend_edge_weight': 'Épaisseur = co-occurrences',
 		'network.nodes': 'Nœuds',
 		'network.edges': 'Arêtes',
 		'network.tip': 'Astuce',
-		'network.instructions': 'Cliquez sur un nœud pour voir ses connexions. Utilisez les contrôles pour ajuster la visualisation.',
-		'network.run_script_hint': 'Exécutez le script generate_spatial_networks.py pour générer les données réseau.',
+		'network.instructions':
+			'Cliquez sur un nœud pour voir ses connexions. Utilisez les contrôles pour ajuster la visualisation.',
+		'network.run_script_hint':
+			'Exécutez le script generate_spatial_networks.py pour générer les données réseau.',
 		'network.search_entity': 'Rechercher des entités...',
 		'network.top_entities': 'Entités principales',
 		'network.showing_first_100': 'Affichage des 100 premiers résultats',
@@ -1082,21 +1129,22 @@ export const translations = {
 		'network.layout_radial': 'Radiale',
 		'network.fullscreen': 'Plein écran',
 		'network.exit_fullscreen': 'Quitter le plein écran',
-		'network.edge_focus': 'Focus sur l\'arête',
+		'network.edge_focus': "Focus sur l'arête",
 		'network.weight': 'Poids',
 		'network.shared_articles': '{0} articles partagés',
 		'network.shared_neighbors': '{0} voisins partagés',
 		'network.more': 'de plus',
-		'network.edge_focus_hint': 'Cliquez n\'importe où pour quitter le focus',
+		'network.edge_focus_hint': "Cliquez n'importe où pour quitter le focus",
 		// Knowledge Graph
 		'nav.knowledge_graph': 'Graphe de connaissances',
 		'kg.title': 'Graphe de connaissances',
-		'kg.description': 'Explorez les relations typées entre les entités de la collection IWAC : appartenance hiérarchique, associations géographiques, co-occurrence, et plus.',
+		'kg.description':
+			'Explorez les relations typées entre les entités de la collection IWAC : appartenance hiérarchique, associations géographiques, co-occurrence, et plus.',
 		'kg.total_entities': 'Entités totales',
 		'kg.explicit_edges': 'Liens explicites',
 		'kg.inferred_edges': 'Liens inférés',
 		'kg.match_rate': 'Taux de correspondance',
-		'kg.type_authority': 'Notices d\'autorité',
+		'kg.type_authority': "Notices d'autorité",
 		'kg.edge_layers': 'Couches de liens',
 		'kg.layer_explicit': 'Explicites (curés)',
 		'kg.layer_inferred': 'Inférés (co-occurrence)',
@@ -1108,42 +1156,54 @@ export const translations = {
 		'kg.edge_located_in': 'Situé à',
 		'kg.edge_co_occurs': 'Co-occurrence',
 		'kg.edge_co_authored': 'Co-auteur',
-		'kg.instructions': 'Cliquez sur un nœud pour voir son réseau ego avec les relations typées. Basculez les couches pour vous concentrer sur les liens explicites (curés) ou inférés (co-occurrence).',
-		'kg.run_script_hint': 'Exécutez le script generate_knowledge_graph.py pour générer les données du graphe de connaissances.',
-		'kg.nodes_help': 'Les nœuds représentent les entités de l\'index IWAC : personnes (chercheurs, politiciens, activistes), organisations (associations islamiques, partis politiques), lieux, événements, sujets (thèmes), et notices d\'autorité.',
-		'kg.explicit_help': 'Issues des métadonnées Omeka S. Ces relations sont explicitement documentées : appartenance organisationnelle (partie de), associations géographiques (situé à), liens thématiques (lié à) et relations de succession.',
-		'kg.inferred_help': 'Calculées à partir du contenu des articles. Deux entités sont liées lorsqu\'elles apparaissent ensemble dans les mêmes articles de presse. Le poids reflète la fréquence de leur co-occurrence.',
+		'kg.instructions':
+			'Cliquez sur un nœud pour voir son réseau ego avec les relations typées. Basculez les couches pour vous concentrer sur les liens explicites (curés) ou inférés (co-occurrence).',
+		'kg.run_script_hint':
+			'Exécutez le script generate_knowledge_graph.py pour générer les données du graphe de connaissances.',
+		'kg.nodes_help':
+			"Les nœuds représentent les entités de l'index IWAC : personnes (chercheurs, politiciens, activistes), organisations (associations islamiques, partis politiques), lieux, événements, sujets (thèmes), et notices d'autorité.",
+		'kg.explicit_help':
+			'Issues des métadonnées Omeka S. Ces relations sont explicitement documentées : appartenance organisationnelle (partie de), associations géographiques (situé à), liens thématiques (lié à) et relations de succession.',
+		'kg.inferred_help':
+			"Calculées à partir du contenu des articles. Deux entités sont liées lorsqu'elles apparaissent ensemble dans les mêmes articles de presse. Le poids reflète la fréquence de leur co-occurrence.",
 		'common.more': 'de plus',
 		// Network Map
 		'network_map.title': 'Carte réseau',
-		'network_map.description': 'Explorez les relations entre lieux sur une carte géographique. Les arêtes montrent les connexions de co-occurrence entre les lieux.',
-		'network_map.instructions': 'Cliquez sur un marqueur de lieu pour vous concentrer sur ses connexions. Utilisez les contrôles de carte pour naviguer.',
+		'network_map.description':
+			'Explorez les relations entre lieux sur une carte géographique. Les arêtes montrent les connexions de co-occurrence entre les lieux.',
+		'network_map.instructions':
+			'Cliquez sur un marqueur de lieu pour vous concentrer sur ses connexions. Utilisez les contrôles de carte pour naviguer.',
 		// Newspaper Coverage
 		'nav.newspaper_coverage': 'Couverture des journaux',
 		'coverage.title': 'Couverture des journaux',
-		'coverage.description': 'Explorez la couverture temporelle des journaux de la collection, montrant les périodes de publication et les lacunes',
+		'coverage.description':
+			'Explorez la couverture temporelle des journaux de la collection, montrant les périodes de publication et les lacunes',
 		'coverage.total_newspapers': 'Total des journaux',
 		'coverage.year_range': 'Période couverte',
 		'coverage.chart_title': 'Périodes de publication',
-		'coverage.chart_description': 'Les barres horizontales indiquent les années où chaque journal est représenté dans la collection. Les lacunes indiquent les périodes sans articles.',
+		'coverage.chart_description':
+			'Les barres horizontales indiquent les années où chaque journal est représenté dans la collection. Les lacunes indiquent les périodes sans articles.',
 		'coverage.chart_aria': 'Graphique de durée montrant les périodes de publication des journaux',
 		'coverage.period': 'Période',
 		'coverage.articles': 'Articles',
 		// Entity Spatial
 		'nav.entity_spatial': 'Empreinte des entités',
 		'entity_spatial.title': 'Empreinte Géographique des Entités',
-		'entity_spatial.description': "Explorez où les entités de l'index apparaissent en Afrique de l'Ouest",
+		'entity_spatial.description':
+			"Explorez où les entités de l'index apparaissent en Afrique de l'Ouest",
 		'entity_spatial.select_category': 'Sélectionner une Catégorie',
 		'entity_spatial.select_entity': 'Sélectionner une Entité',
 		'entity_spatial.search_entity': 'Rechercher une entité...',
-		'entity_spatial.no_entity_selected': 'Sélectionnez une entité pour voir son empreinte géographique',
+		'entity_spatial.no_entity_selected':
+			'Sélectionnez une entité pour voir son empreinte géographique',
 		'entity_spatial.articles_count': 'Articles',
 		'entity_spatial.countries_count': 'Pays',
 		'entity_spatial.time_period': 'Période',
 		'entity_spatial.locations': 'localisations',
 		'entity_spatial.showing_first_100': 'Affichage des 100 premiers sur {0} résultats',
 		'entity_spatial.map_title': 'Distribution Géographique: {0}',
-		'entity_spatial.map_description': 'Cliquez sur un marqueur de localisation pour voir la liste des articles mentionnant cette entité à cet endroit.',
+		'entity_spatial.map_description':
+			'Cliquez sur un marqueur de localisation pour voir la liste des articles mentionnant cette entité à cet endroit.',
 		'entity_spatial.no_locations': 'Aucune donnée de localisation pour cette entité',
 		'entity_spatial.location_panel_description': 'Articles mentionnant {0} à {1}',
 		'entity_spatial.article_singular': 'article',
@@ -1159,7 +1219,8 @@ export const translations = {
 		// Keywords Explorer
 		'nav.keywords': 'Explorateur de mots-clés',
 		'keywords.title': 'Explorateur de mots-clés',
-		'keywords.description': 'Explorez la prévalence des champs Dublin Core Subject et Spatial Coverage au fil du temps',
+		'keywords.description':
+			'Explorez la prévalence des champs Dublin Core Subject et Spatial Coverage au fil du temps',
 		'keywords.subjects': 'Sujets',
 		'keywords.spatial': 'Couverture spatiale',
 		'keywords.total_keywords': 'Total des mots-clés',
@@ -1181,7 +1242,7 @@ export const translations = {
 		'keywords.number_to_show': 'Nombre à afficher',
 		'keywords.keywords': 'mots-clés',
 		'keywords.select_keywords': 'Sélectionner des mots-clés',
-		'keywords.select_up_to': 'Sélectionner jusqu\'à {0} mots-clés',
+		'keywords.select_up_to': "Sélectionner jusqu'à {0} mots-clés",
 		'keywords.search_keywords': 'Rechercher des mots-clés...',
 		'keywords.select_keywords_prompt': 'Sélectionnez des mots-clés à comparer',
 		'keywords.top_n_over_time': 'Top {0} mots-clés au fil du temps',
@@ -1203,9 +1264,12 @@ export const translations = {
 		'keywords.total_articles': 'Total des articles',
 		'keywords.countries_count': 'Pays',
 		'keywords.newspapers_count': 'Journaux',
-		'keywords.chart_aria': 'Graphique linéaire montrant la prévalence des mots-clés au fil du temps',
-		'keywords.no_data_for_country': 'Aucune donnée disponible pour les mots-clés sélectionnés dans {0}',
-		'keywords.no_data_for_newspaper': 'Aucune donnée disponible pour les mots-clés sélectionnés dans {0}',
+		'keywords.chart_aria':
+			'Graphique linéaire montrant la prévalence des mots-clés au fil du temps',
+		'keywords.no_data_for_country':
+			'Aucune donnée disponible pour les mots-clés sélectionnés dans {0}',
+		'keywords.no_data_for_newspaper':
+			'Aucune donnée disponible pour les mots-clés sélectionnés dans {0}',
 		'keywords.try_different_filters': 'Essayez de sélectionner différents filtres ou mots-clés',
 		'keywords.clear_filters': 'Effacer les filtres',
 		'keywords.showing_range': 'Affichage de {0}-{1} sur {2} mots-clés',
@@ -1215,7 +1279,8 @@ export const translations = {
 		// Topic Network
 		'nav.topic_network': 'Réseau de Topics',
 		'topic_network.title': 'Réseau de Topics',
-		'topic_network.description': 'Explorez les relations entre topics et articles sous forme de réseau où les topics sont des nœuds centraux connectés à leurs articles assignés.',
+		'topic_network.description':
+			'Explorez les relations entre topics et articles sous forme de réseau où les topics sont des nœuds centraux connectés à leurs articles assignés.',
 		'topic_network.topics': 'Topics',
 		'topic_network.articles': 'Articles',
 		'topic_network.keywords': 'Mots-clés',
@@ -1223,24 +1288,26 @@ export const translations = {
 		'topic_network.all_topics': 'Tous les topics',
 		'topic_network.link_threshold': 'Seuil de liaison',
 		'topic_network.topic_probability': 'Probabilité du topic',
-		'topic_network.view_article': 'Voir l\'article',
+		'topic_network.view_article': "Voir l'article",
 		'topic_network.article_count': '{0} articles',
 		'topic_network.no_selection': 'Cliquez sur un article pour voir les détails',
 		'topic_network.avg_probability': 'Prob. moyenne',
 		'topic_network.connections': 'Connexions',
 		'topic_network.search_topics': 'Rechercher des topics...',
 		'topic_network.topic_details': 'Détails du topic',
-		'topic_network.article_details': 'Détails de l\'article',
+		'topic_network.article_details': "Détails de l'article",
 		'topic_network.country': 'Pays',
 		'topic_network.newspaper': 'Journal',
 		'topic_network.pub_date': 'Publié',
 		'topic_network.probability': 'Probabilité',
 		'topic_network.close': 'Fermer',
-		'topic_network.run_script_hint': 'Exécutez le script generate_topic_network.py pour générer les données du réseau.',
+		'topic_network.run_script_hint':
+			'Exécutez le script generate_topic_network.py pour générer les données du réseau.',
 		// Semantic Article Map
 		'nav.semantic_map': 'Carte sémantique',
 		'semantic_map.title': 'Carte sémantique des articles',
-		'semantic_map.description': 'Explorez les articles projetés en 2D par UMAP à partir des embeddings du texte OCR. Les articles au contenu similaire apparaissent proches.',
+		'semantic_map.description':
+			'Explorez les articles projetés en 2D par UMAP à partir des embeddings du texte OCR. Les articles au contenu similaire apparaissent proches.',
 		'semantic_map.total_articles': 'Articles',
 		'semantic_map.countries': 'Pays',
 		'semantic_map.topics': 'Topics',
@@ -1267,8 +1334,10 @@ export const translations = {
 		'semantic_map.polarity_not_applicable': 'Non applicable',
 		'semantic_map.unknown': 'Inconnu',
 		'semantic_map.view_in_iwac': 'Voir dans IWAC',
-		'semantic_map.instructions': 'Faites défiler pour zoomer, glissez pour naviguer. Survolez les points pour voir les détails. Cliquez pour épingler les détails. Utilisez la légende pour mettre en surbrillance.',
-		'semantic_map.run_script_hint': 'Exécutez le script generate_semantic_map.py pour générer les données.',
+		'semantic_map.instructions':
+			'Faites défiler pour zoomer, glissez pour naviguer. Survolez les points pour voir les détails. Cliquez pour épingler les détails. Utilisez la légende pour mettre en surbrillance.',
+		'semantic_map.run_script_hint':
+			'Exécutez le script generate_semantic_map.py pour générer les données.',
 		'semantic_map.canvas_aria': 'Nuage de points des articles projetés par similarité sémantique',
 		'semantic_map.filter_country': 'Pays',
 		'semantic_map.all_countries': 'Tous les pays',
@@ -1276,7 +1345,8 @@ export const translations = {
 		// Publishers
 		'nav.publishers': 'Éditeurs',
 		'publishers.title': 'Éditeurs',
-		'publishers.description': 'Principaux éditeurs par nombre de publications dans les références bibliographiques',
+		'publishers.description':
+			'Principaux éditeurs par nombre de publications dans les références bibliographiques',
 		'publishers.total_publishers': 'Total des éditeurs',
 		'publishers.total_publications': 'Total des publications',
 		'publishers.avg_per_publisher': 'Moy. par éditeur',
@@ -1286,11 +1356,13 @@ export const translations = {
 		'publishers.top_type': 'Type le plus courant',
 		'publishers.table_title': 'Éditeurs par nombre de publications',
 		'publishers.table_description': 'Rechercher et explorer les éditeurs',
-		'publishers.run_script_hint': 'Cette visualisation nécessite la génération de données. Veuillez exécuter:',
+		'publishers.run_script_hint':
+			'Cette visualisation nécessite la génération de données. Veuillez exécuter:',
 		// Co-author Network
 		'nav.coauthor_network': 'Réseau de co-auteurs',
 		'coauthor.title': 'Réseau de co-auteurs',
-		'coauthor.description': 'Explorez les relations de collaboration entre auteurs ayant co-signé des publications ensemble',
+		'coauthor.description':
+			'Explorez les relations de collaboration entre auteurs ayant co-signé des publications ensemble',
 		'coauthor.total_authors': 'Total des auteurs',
 		'coauthor.total_collaborations': 'Paires de collaboration',
 		'coauthor.visible_authors': 'Auteurs visibles',
@@ -1305,12 +1377,15 @@ export const translations = {
 		'coauthor.publications': 'Publications',
 		'coauthor.coauthors': 'Co-auteurs',
 		'coauthor.joint_pubs': 'Pubs conjointes',
-		'coauthor.instructions': 'Cliquez sur un nœud d\'auteur pour voir ses statistiques de collaboration. Utilisez les contrôles pour filtrer le réseau par nombre minimum de co-signatures.',
-		'coauthor.run_script_hint': 'Exécutez le script generate_references.py pour générer les données du réseau de co-auteurs.',
+		'coauthor.instructions':
+			"Cliquez sur un nœud d'auteur pour voir ses statistiques de collaboration. Utilisez les contrôles pour filtrer le réseau par nombre minimum de co-signatures.",
+		'coauthor.run_script_hint':
+			'Exécutez le script generate_references.py pour générer les données du réseau de co-auteurs.',
 		// Subject Co-occurrence Network
 		'nav.subject_cooccurrence': 'Co-occurrence des sujets',
 		'subject_cooccurrence.title': 'Réseau de co-occurrence des sujets',
-		'subject_cooccurrence.description': 'Explorez les relations entre les sujets qui apparaissent ensemble dans les références bibliographiques',
+		'subject_cooccurrence.description':
+			'Explorez les relations entre les sujets qui apparaissent ensemble dans les références bibliographiques',
 		'subject_cooccurrence.total_topics': 'Total des sujets',
 		'subject_cooccurrence.total_pairs': 'Paires de co-occurrence',
 		'subject_cooccurrence.visible_topics': 'Sujets visibles',
@@ -1325,8 +1400,10 @@ export const translations = {
 		'subject_cooccurrence.references': 'Références',
 		'subject_cooccurrence.connected': 'Connectés',
 		'subject_cooccurrence.cooccurrences': 'Co-occurrences',
-		'subject_cooccurrence.instructions': 'Cliquez sur un nœud de sujet pour voir ses statistiques de co-occurrence. Utilisez les contrôles pour filtrer le réseau par nombre minimum de co-occurrences.',
-		'subject_cooccurrence.run_script_hint': 'Exécutez le script generate_references_subject_cooccurrence.py pour générer les données de co-occurrence des sujets.',
+		'subject_cooccurrence.instructions':
+			'Cliquez sur un nœud de sujet pour voir ses statistiques de co-occurrence. Utilisez les contrôles pour filtrer le réseau par nombre minimum de co-occurrences.',
+		'subject_cooccurrence.run_script_hint':
+			'Exécutez le script generate_references_subject_cooccurrence.py pour générer les données de co-occurrence des sujets.',
 		// Provenance Map
 		'nav.provenance_map': 'Carte des provenances',
 		'provenance.title': 'Carte des provenances',
@@ -1338,12 +1415,14 @@ export const translations = {
 		'treemap.total_references': 'Références totales',
 		'treemap.countries': 'Pays',
 		'treemap.document_types': 'Types de documents',
-		'provenance.description': 'Distribution géographique des références bibliographiques par lieu d\'origine ou de publication',
+		'provenance.description':
+			"Distribution géographique des références bibliographiques par lieu d'origine ou de publication",
 		'provenance.total_locations': 'Total des lieux',
 		'provenance.total_publications': 'Total des publications',
 		'provenance.top_location': 'Lieu principal',
 		'provenance.map_title': 'Distribution géographique',
-		'provenance.map_description': 'Cliquez sur un marqueur pour voir les publications de ce lieu. La taille du marqueur indique le nombre de publications.',
+		'provenance.map_description':
+			'Cliquez sur un marqueur pour voir les publications de ce lieu. La taille du marqueur indique le nombre de publications.',
 		'provenance.legend_size': 'Taille du marqueur = nombre de publications',
 		'provenance.top_locations': 'Lieux principaux',
 		'provenance.top_locations_description': 'Lieux avec le plus de publications',
@@ -1351,7 +1430,8 @@ export const translations = {
 		'provenance.publications': 'Publications',
 		'provenance.year_range': 'Période',
 		'provenance.top_type': 'Type principal',
-		'provenance.run_script_hint': 'Exécutez le script generate_references.py pour générer les données de la carte des provenances.',
+		'provenance.run_script_hint':
+			'Exécutez le script generate_references.py pour générer les données de la carte des provenances.',
 		// Map Popup (reusable)
 		'map_popup.publications': 'publications',
 		'map_popup.articles': 'articles',
@@ -1381,7 +1461,10 @@ class LanguageStore {
 		// Access current language reactively
 		const translation =
 			translations[this.current]?.[key as keyof (typeof translations)[typeof this.current]] || key;
-		return params.reduce<string>((str, param, i) => str.replace(`{${i}}`, String(param)), translation);
+		return params.reduce<string>(
+			(str, param, i) => str.replace(`{${i}}`, String(param)),
+			translation
+		);
 	}
 
 	set(lang: Language) {

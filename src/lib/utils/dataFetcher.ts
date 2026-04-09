@@ -37,12 +37,13 @@ interface FetchDataOptions {
  * @param options - Fetch options
  * @returns Parsed JSON data
  */
-export async function fetchData<T>(
-	path: string,
-	options: FetchDataOptions = {}
-): Promise<T> {
-	const { cache = true, cacheTTL = DEFAULT_CACHE_TTL, fetchOptions = {}, parseJson = true } =
-		options;
+export async function fetchData<T>(path: string, options: FetchDataOptions = {}): Promise<T> {
+	const {
+		cache = true,
+		cacheTTL = DEFAULT_CACHE_TTL,
+		fetchOptions = {},
+		parseJson = true
+	} = options;
 
 	const url = `${base}/data/${path}`;
 
@@ -84,9 +85,7 @@ export async function fetchData<T>(
  * @param paths - Array of paths relative to /data/
  * @returns Array of fetched data
  */
-export async function prefetchData<T extends unknown[]>(
-	paths: string[]
-): Promise<T> {
+export async function prefetchData<T extends unknown[]>(paths: string[]): Promise<T> {
 	const results = await Promise.all(paths.map((path) => fetchData(path)));
 	return results as T;
 }

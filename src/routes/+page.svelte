@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { overviewStore } from '$lib/stores/overviewStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';

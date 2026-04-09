@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 // Mock SvelteKit modules before importing the module under test
 vi.mock('$app/environment', () => ({ browser: false }));
@@ -239,7 +239,7 @@ describe('rgbStringToHex', () => {
 			'oklch(0.55 0.18 250)',
 			'hsl(210, 50%, 50%)',
 			'invalid-color',
-			'',
+			''
 		];
 		for (const input of testInputs) {
 			const result = rgbStringToHex(input);

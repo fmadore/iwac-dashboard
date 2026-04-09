@@ -1,12 +1,19 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
-	import { MapLocationPopover, MapLocationSheet } from '$lib/components/visualizations/map/index.js';
-	import { BaseMap, CircleLayer, type CircleDataPoint, calculateBounds } from '$lib/components/visualizations/maplibre/index.js';
+	import {
+		MapLocationPopover,
+		MapLocationSheet
+	} from '$lib/components/visualizations/map/index.js';
+	import {
+		BaseMap,
+		CircleLayer,
+		type CircleDataPoint,
+		calculateBounds
+	} from '$lib/components/visualizations/maplibre/index.js';
 	import { ExternalLink, MapPin } from '@lucide/svelte';
 	import type { ProvenanceMapData, ProvenanceLocation } from './+page.js';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
@@ -41,11 +48,12 @@
 			lat: location.lat,
 			lng: location.lng,
 			count: location.count,
-			yearRange: location.earliestYear && location.latestYear
-				? { start: location.earliestYear, end: location.latestYear }
-				: undefined,
+			yearRange:
+				location.earliestYear && location.latestYear
+					? { start: location.earliestYear, end: location.latestYear }
+					: undefined,
 			externalUrl: location.o_id ? getItemUrl(location.o_id) : undefined,
-			items: location.publications.map(pub => ({
+			items: location.publications.map((pub) => ({
 				id: pub.pub_id,
 				title: pub.title,
 				type: pub.type,
@@ -161,7 +169,7 @@
 			</Card.Header>
 			<Card.Content class="p-0">
 				<div class="relative h-[600px]">
-					<BaseMap height="600px" bounds={bounds} zoom={5}>
+					<BaseMap height="600px" {bounds} zoom={5}>
 						{#if circleData.length > 0}
 							<CircleLayer
 								data={circleData}
@@ -188,16 +196,16 @@
 			<Card.Content class="py-4">
 				<div class="flex flex-wrap items-center gap-6 text-sm">
 					<div class="flex items-center gap-2">
-						<div class="h-4 w-4 rounded-full bg-orange-500/60 border-2 border-orange-700"></div>
+						<div class="h-4 w-4 rounded-full border-2 border-orange-700 bg-orange-500/60"></div>
 						<span class="text-muted-foreground">{t('provenance.legend_size')}</span>
 					</div>
 					<div class="flex items-center gap-4">
 						<div class="flex items-center gap-1">
-							<div class="h-3 w-3 rounded-full bg-orange-500/60 border border-orange-700"></div>
+							<div class="h-3 w-3 rounded-full border border-orange-700 bg-orange-500/60"></div>
 							<span class="text-xs text-muted-foreground">1</span>
 						</div>
 						<div class="flex items-center gap-1">
-							<div class="h-6 w-6 rounded-full bg-orange-500/60 border-2 border-orange-700"></div>
+							<div class="h-6 w-6 rounded-full border-2 border-orange-700 bg-orange-500/60"></div>
 							<span class="text-xs text-muted-foreground">{mapData.meta.maxCount}</span>
 						</div>
 					</div>
@@ -224,10 +232,13 @@
 						</thead>
 						<tbody>
 							{#each mapData.locations.slice(0, 20) as location (location.name)}
-								{@const topType = Object.entries(location.types).sort((a, b) => (b[1] as number) - (a[1] as number))[0]}
+								{@const topType = Object.entries(location.types).sort(
+									(a, b) => (b[1] as number) - (a[1] as number)
+								)[0]}
 								<tr class="border-b border-border/50 hover:bg-muted/50">
 									<td class="py-2">
 										{#if location.o_id}
+											<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 											<a
 												href={getItemUrl(location.o_id)}
 												target="_blank"
@@ -237,6 +248,7 @@
 												{location.name}
 												<ExternalLink class="h-3 w-3" />
 											</a>
+											<!-- eslint-enable svelte/no-navigation-without-resolve -->
 										{:else}
 											{location.name}
 										{/if}
@@ -269,8 +281,4 @@
 </div>
 
 <!-- Sheet for location details (at page level to avoid clipping) -->
-<MapLocationSheet
-	location={selectedLocation}
-	onClose={handleSheetClose}
-	itemLabel="publications"
-/>
+<MapLocationSheet location={selectedLocation} onClose={handleSheetClose} itemLabel="publications" />

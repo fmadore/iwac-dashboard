@@ -689,7 +689,8 @@ describe('urlManager (browser = true)', () => {
 	describe('complex URL initialization', () => {
 		it('reads multiple params from a complex URL', async () => {
 			globalThis.location = {
-				search: '?lang=en&theme=light&country=Benin&type=article&yearMin=2000&yearMax=2024&search=mosque',
+				search:
+					'?lang=en&theme=light&country=Benin&type=article&yearMin=2000&yearMax=2024&search=mosque',
 				href: 'http://localhost:3000/?lang=en&theme=light&country=Benin&type=article&yearMin=2000&yearMax=2024&search=mosque',
 				origin: 'http://localhost:3000',
 				pathname: '/'

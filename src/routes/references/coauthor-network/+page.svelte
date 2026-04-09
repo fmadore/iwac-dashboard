@@ -7,10 +7,18 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph, NetworkEntitySearch } from '$lib/components/visualizations/network/index.js';
+	import {
+		NetworkGraph,
+		NetworkEntitySearch
+	} from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
-	import type { NodeSizeBy, GlobalNetworkNode, GlobalNetworkEdge, EntityType } from '$lib/types/network.js';
+	import type {
+		NodeSizeBy,
+		GlobalNetworkNode,
+		GlobalNetworkEdge,
+		EntityType
+	} from '$lib/types/network.js';
 	import {
 		ZoomIn,
 		ZoomOut,
@@ -89,23 +97,27 @@
 	const urlFocusMode = $derived(urlSync.filters.focus === 'true');
 
 	// Entity type config (need all types for NetworkGraph compatibility)
-	const entityTypeConfig: Record<EntityType, { label: string; color: string; icon: typeof Users }> = {
-		author: { label: 'coauthor.author', color: '#3b82f6', icon: Users },
-		person: { label: 'network.type_person', color: '#3b82f6', icon: Users },
-		organization: { label: 'network.type_organization', color: '#8b5cf6', icon: Building2 },
-		event: { label: 'network.type_event', color: '#f97316', icon: Calendar },
-		subject: { label: 'network.type_subject', color: '#22c55e', icon: Tag },
-		location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
-		topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
-		article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText },
-		authority: { label: 'kg.type_authority', color: '#78716c', icon: Tag }
-	};
+	const entityTypeConfig: Record<EntityType, { label: string; color: string; icon: typeof Users }> =
+		{
+			author: { label: 'coauthor.author', color: '#3b82f6', icon: Users },
+			person: { label: 'network.type_person', color: '#3b82f6', icon: Users },
+			organization: { label: 'network.type_organization', color: '#8b5cf6', icon: Building2 },
+			event: { label: 'network.type_event', color: '#f97316', icon: Calendar },
+			subject: { label: 'network.type_subject', color: '#22c55e', icon: Tag },
+			location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
+			topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
+			article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText },
+			authority: { label: 'kg.type_authority', color: '#78716c', icon: Tag }
+		};
 
 	// Filter nodes
 	const filteredNodes = $derived.by(() => {
 		if (!networkData) return [];
 		return networkData.nodes
-			.sort((a: CoauthorNetworkNode, b: CoauthorNetworkNode) => a.labelPriority - b.labelPriority || b.strength - a.strength)
+			.sort(
+				(a: CoauthorNetworkNode, b: CoauthorNetworkNode) =>
+					a.labelPriority - b.labelPriority || b.strength - a.strength
+			)
 			.slice(0, maxNodes);
 	});
 
@@ -132,7 +144,8 @@
 		);
 
 		// Get all neighbor IDs
-		const neighborIds = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const neighborIds = new Set<string>(); // Local procedural Set; not reactive state.
 		neighborIds.add(selectedId);
 		for (const edge of egoEdges) {
 			neighborIds.add(edge.source);
@@ -318,13 +331,8 @@
 							/>
 						</div>
 						{#if selectedNode}
-							<Button
-								variant="outline"
-								size="sm"
-								onclick={handleFocusSelected}
-								class="shrink-0"
-							>
-								<Focus class="h-4 w-4 mr-2" />
+							<Button variant="outline" size="sm" onclick={handleFocusSelected} class="shrink-0">
+								<Focus class="mr-2 h-4 w-4" />
 								{t('network.focus_selection')}
 							</Button>
 						{/if}
@@ -363,7 +371,7 @@
 						<div class="flex items-center gap-2">
 							<Label class="text-sm font-medium whitespace-nowrap">{t('network.node_size')}:</Label>
 							<Select.Root type="single" value={nodeSizeBy} onValueChange={handleNodeSizeChange}>
-								<Select.Trigger class="flex-1 min-w-0">
+								<Select.Trigger class="min-w-0 flex-1">
 									{t(nodeSizeOptions.find((o) => o.value === nodeSizeBy)?.label || '')}
 								</Select.Trigger>
 								<Select.Content>
@@ -376,7 +384,9 @@
 
 						<!-- Max Authors Filter -->
 						<div class="flex items-center gap-2">
-							<Label class="text-sm font-medium whitespace-nowrap">{t('coauthor.max_authors')}:</Label>
+							<Label class="text-sm font-medium whitespace-nowrap"
+								>{t('coauthor.max_authors')}:</Label
+							>
 							<div class="flex flex-1 items-center gap-2">
 								<Slider
 									type="single"
@@ -393,7 +403,9 @@
 
 						<!-- Min Co-authorships Filter -->
 						<div class="flex items-center gap-2">
-							<Label class="text-sm font-medium whitespace-nowrap">{t('coauthor.min_coauthorships')}:</Label>
+							<Label class="text-sm font-medium whitespace-nowrap"
+								>{t('coauthor.min_coauthorships')}:</Label
+							>
 							<div class="flex flex-1 items-center gap-2">
 								<Slider
 									type="single"
@@ -446,7 +458,7 @@
 				<!-- Legend -->
 				<div
 					class="absolute left-4 z-10 flex flex-col gap-2 rounded-lg border bg-card/95 p-3 text-sm shadow-sm backdrop-blur-sm
-					       {selectedNode ? 'hidden sm:flex sm:bottom-4' : 'bottom-4'}"
+					       {selectedNode ? 'hidden sm:bottom-4 sm:flex' : 'bottom-4'}"
 				>
 					<div class="font-medium">{t('network.legend')}</div>
 					<div class="flex items-center gap-2">
@@ -465,9 +477,9 @@
 				<!-- Selected Node Panel -->
 				{#if selectedNode}
 					<div
-						class="absolute z-20 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm
-						       bottom-4 left-4 right-4 p-3
-						       sm:bottom-auto sm:top-4 sm:right-4 sm:left-auto sm:w-64 sm:p-4
+						class="absolute right-4 bottom-4 left-4 z-20 rounded-lg border
+						       bg-card/95 p-3 shadow-lg backdrop-blur-sm
+						       sm:top-4 sm:right-4 sm:bottom-auto sm:left-auto sm:w-64 sm:p-4
 						       lg:w-72"
 					>
 						<div class="flex items-start justify-between gap-2">
@@ -476,7 +488,7 @@
 									<span style="color: #3b82f6">
 										<Users class="h-4 w-4 shrink-0" />
 									</span>
-									<h3 class="truncate font-semibold text-sm sm:text-base">{selectedNode.label}</h3>
+									<h3 class="truncate text-sm font-semibold sm:text-base">{selectedNode.label}</h3>
 								</div>
 								<Badge variant="outline" class="mt-1 text-xs">
 									{t('coauthor.author')}
@@ -484,6 +496,7 @@
 							</div>
 							<div class="flex items-center gap-1">
 								{#if selectedNode.o_id}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 									<a
 										href={getItemUrl(selectedNode.o_id)}
 										target="_blank"
@@ -493,6 +506,7 @@
 									>
 										<ExternalLink class="h-4 w-4" />
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/if}
 								<Button
 									variant={focusMode ? 'default' : 'ghost'}
@@ -508,18 +522,24 @@
 								</Button>
 							</div>
 						</div>
-						<div class="mt-3 grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+						<div class="mt-3 grid grid-cols-3 gap-1.5 text-center sm:gap-2">
 							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.count}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('coauthor.publications')}</div>
+								<div class="text-base font-bold sm:text-lg">{selectedNode.count}</div>
+								<div class="text-[10px] text-muted-foreground sm:text-xs">
+									{t('coauthor.publications')}
+								</div>
 							</div>
 							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.degree}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('coauthor.coauthors')}</div>
+								<div class="text-base font-bold sm:text-lg">{selectedNode.degree}</div>
+								<div class="text-[10px] text-muted-foreground sm:text-xs">
+									{t('coauthor.coauthors')}
+								</div>
 							</div>
 							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.strength}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('coauthor.joint_pubs')}</div>
+								<div class="text-base font-bold sm:text-lg">{selectedNode.strength}</div>
+								<div class="text-[10px] text-muted-foreground sm:text-xs">
+									{t('coauthor.joint_pubs')}
+								</div>
 							</div>
 						</div>
 					</div>

@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '$lib/components/ui/card/index.js';
+	import {
+		Card,
+		CardContent,
+		CardHeader,
+		CardTitle,
+		CardDescription
+	} from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
@@ -10,7 +16,7 @@
 	import { useFilters } from '$lib/hooks/index.js';
 	import { KeywordsLineChart } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
-	import { Search, Check, Plus } from '@lucide/svelte';
+	import { Search, Check } from '@lucide/svelte';
 
 	// Props from page load
 	let { data } = $props();
@@ -34,8 +40,14 @@
 		years: number[];
 		top_keywords: string[];
 		global_series: Record<string, KeywordSeriesData>;
-		by_country: Record<string, { top_keywords: string[]; series: Record<string, KeywordSeriesData>; total_keywords: number }>;
-		by_newspaper: Record<string, { top_keywords: string[]; series: Record<string, KeywordSeriesData>; total_keywords: number }>;
+		by_country: Record<
+			string,
+			{ top_keywords: string[]; series: Record<string, KeywordSeriesData>; total_keywords: number }
+		>;
+		by_newspaper: Record<
+			string,
+			{ top_keywords: string[]; series: Record<string, KeywordSeriesData>; total_keywords: number }
+		>;
 		all_keywords: Array<{ keyword: string; total: number; articles: number }>;
 		stats: {
 			total_keywords: number;
@@ -69,7 +81,9 @@
 	const viewMode = $derived((filters.get('view') as 'top' | 'compare') || 'top');
 
 	// Facet type: 'global', 'country', or 'newspaper'
-	const facetType = $derived((filters.get('facet') as 'global' | 'country' | 'newspaper') || 'global');
+	const facetType = $derived(
+		(filters.get('facet') as 'global' | 'country' | 'newspaper') || 'global'
+	);
 
 	// Selected country/newspaper for faceted view
 	const selectedCountry = $derived(filters.get('country'));
@@ -89,7 +103,7 @@
 	}
 
 	// Selected keywords for comparison mode (stored as comma-separated IDs in URL)
-	const selectedKeywordIds = $derived(filters.get('keywords') as string || '');
+	const selectedKeywordIds = $derived((filters.get('keywords') as string) || '');
 	const selectedKeywords = $derived.by(() => {
 		if (!selectedKeywordIds) return [];
 		return selectedKeywordIds
@@ -102,7 +116,9 @@
 	let searchQuery = $state('');
 
 	// Table columns for DataTable component
-	const tableColumns = $derived.by<ColumnDef<{ keyword: string; total: number; articles: number }>[]>(() => [
+	const tableColumns = $derived.by<
+		ColumnDef<{ keyword: string; total: number; articles: number }>[]
+	>(() => [
 		{
 			key: 'keyword',
 			label: t('keywords.keyword'),
@@ -130,7 +146,11 @@
 		if (facetType === 'country' && selectedCountry && currentData.by_country[selectedCountry]) {
 			return currentData.by_country[selectedCountry].top_keywords;
 		}
-		if (facetType === 'newspaper' && selectedNewspaper && currentData.by_newspaper[selectedNewspaper]) {
+		if (
+			facetType === 'newspaper' &&
+			selectedNewspaper &&
+			currentData.by_newspaper[selectedNewspaper]
+		) {
 			return currentData.by_newspaper[selectedNewspaper].top_keywords;
 		}
 		return currentData.top_keywords;
@@ -141,7 +161,11 @@
 		if (facetType === 'country' && selectedCountry && currentData.by_country[selectedCountry]) {
 			return currentData.by_country[selectedCountry].series;
 		}
-		if (facetType === 'newspaper' && selectedNewspaper && currentData.by_newspaper[selectedNewspaper]) {
+		if (
+			facetType === 'newspaper' &&
+			selectedNewspaper &&
+			currentData.by_newspaper[selectedNewspaper]
+		) {
 			return currentData.by_newspaper[selectedNewspaper].series;
 		}
 		return currentData.global_series;
@@ -149,9 +173,10 @@
 
 	// Build chart series based on view mode
 	const chartSeries = $derived.by(() => {
-		const keywords = viewMode === 'top'
-			? availableKeywords.slice(0, topN)
-			: selectedKeywords.filter((kw) => currentSeries[kw]);
+		const keywords =
+			viewMode === 'top'
+				? availableKeywords.slice(0, topN)
+				: selectedKeywords.filter((kw) => currentSeries[kw]);
 
 		const chartColors = [
 			'var(--chart-1)',
@@ -226,7 +251,8 @@
 	}
 
 	function toggleKeyword(keyword: string) {
-		const current = new Set(selectedKeywords);
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const current = new Set(selectedKeywords); // Local procedural Set; not reactive state.
 		if (current.has(keyword)) {
 			current.delete(keyword);
 		} else if (current.size < 10) {
@@ -262,7 +288,7 @@
 
 	// Chart title
 	const chartTitle = $derived.by(() => {
-		const lang = languageStore.current;
+		const _lang = languageStore.current;
 		if (viewMode === 'top') {
 			return t('keywords.top_n_over_time', [topN]);
 		}
@@ -327,7 +353,9 @@
 		</Card>
 		<Card>
 			<CardContent class="pt-6">
-				<div class="text-sm font-medium text-muted-foreground">{t('keywords.total_occurrences')}</div>
+				<div class="text-sm font-medium text-muted-foreground">
+					{t('keywords.total_occurrences')}
+				</div>
 				<div class="text-2xl font-bold">{currentData.stats.total_occurrences.toLocaleString()}</div>
 			</CardContent>
 		</Card>
@@ -345,7 +373,9 @@
 		</Card>
 		<Card>
 			<CardContent class="pt-6">
-				<div class="text-sm font-medium text-muted-foreground">{t('keywords.articles_analyzed')}</div>
+				<div class="text-sm font-medium text-muted-foreground">
+					{t('keywords.articles_analyzed')}
+				</div>
 				<div class="text-2xl font-bold">{metadata.total_articles.toLocaleString()}</div>
 			</CardContent>
 		</Card>
@@ -369,13 +399,13 @@
 				<!-- Facet Selection -->
 				<div class="space-y-2">
 					<Label>{t('keywords.facet_by')}</Label>
-					<Select.Root
-						type="single"
-						value={facetType}
-						onValueChange={handleFacetChange}
-					>
+					<Select.Root type="single" value={facetType} onValueChange={handleFacetChange}>
 						<Select.Trigger class="w-full">
-							{facetType === 'global' ? t('keywords.global') : facetType === 'country' ? t('keywords.by_country') : t('keywords.by_newspaper')}
+							{facetType === 'global'
+								? t('keywords.global')
+								: facetType === 'country'
+									? t('keywords.by_country')
+									: t('keywords.by_newspaper')}
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Item value="global">{t('keywords.global')}</Select.Item>
@@ -438,7 +468,7 @@
 						<Button
 							variant={viewMode === 'top' ? 'default' : 'outline'}
 							size="sm"
-							class="flex-1 min-w-0"
+							class="min-w-0 flex-1"
 							title={t('keywords.top_frequent')}
 							onclick={() => handleViewModeChange('top')}
 						>
@@ -447,7 +477,7 @@
 						<Button
 							variant={viewMode === 'compare' ? 'default' : 'outline'}
 							size="sm"
-							class="flex-1 min-w-0"
+							class="min-w-0 flex-1"
 							title={t('keywords.compare')}
 							onclick={() => handleViewModeChange('compare')}
 						>
@@ -460,13 +490,10 @@
 				{#if viewMode === 'top'}
 					<div class="space-y-2">
 						<Label>{t('keywords.number_to_show')}</Label>
-						<Select.Root
-							type="single"
-							value={String(topN)}
-							onValueChange={handleTopNChange}
-						>
+						<Select.Root type="single" value={String(topN)} onValueChange={handleTopNChange}>
 							<Select.Trigger class="w-full">
-								{topN} {t('keywords.keywords')}
+								{topN}
+								{t('keywords.keywords')}
 							</Select.Trigger>
 							<Select.Content>
 								<Select.Item value="3">3 {t('keywords.keywords')}</Select.Item>
@@ -494,7 +521,7 @@
 
 						<!-- Search -->
 						<div class="relative">
-							<Search class="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+							<Search class="absolute top-2.5 left-2 h-4 w-4 text-muted-foreground" />
 							<Input
 								type="search"
 								placeholder={t('keywords.search_keywords')}
@@ -524,10 +551,17 @@
 								<button
 									type="button"
 									class="flex w-full cursor-pointer items-center gap-2 rounded p-1 text-left hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-									disabled={!selectedKeywords.includes(item.keyword) && selectedKeywords.length >= 10}
+									disabled={!selectedKeywords.includes(item.keyword) &&
+										selectedKeywords.length >= 10}
 									onclick={() => toggleKeyword(item.keyword)}
 								>
-									<span class="flex h-4 w-4 items-center justify-center rounded border border-primary {selectedKeywords.includes(item.keyword) ? 'bg-primary text-primary-foreground' : ''}">
+									<span
+										class="flex h-4 w-4 items-center justify-center rounded border border-primary {selectedKeywords.includes(
+											item.keyword
+										)
+											? 'bg-primary text-primary-foreground'
+											: ''}"
+									>
 										{#if selectedKeywords.includes(item.keyword)}
 											<Check class="h-3 w-3" />
 										{/if}
@@ -578,7 +612,10 @@
 	<Card>
 		<CardHeader>
 			<CardTitle>{t('keywords.all_keywords_table')}</CardTitle>
-			<CardDescription>{currentData.all_keywords.length.toLocaleString()} {t('keywords.keywords')}</CardDescription>
+			<CardDescription
+				>{currentData.all_keywords.length.toLocaleString()}
+				{t('keywords.keywords')}</CardDescription
+			>
 		</CardHeader>
 		<CardContent>
 			<DataTable
@@ -624,12 +661,24 @@
 		<CardContent>
 			<div class="grid gap-4 text-sm md:grid-cols-2">
 				<div>
-					<p><span class="font-medium">{t('keywords.generated_at')}:</span> {new Date(metadata.generated_at).toLocaleDateString()}</p>
-					<p><span class="font-medium">{t('keywords.total_articles')}:</span> {metadata.total_articles.toLocaleString()}</p>
+					<p>
+						<span class="font-medium">{t('keywords.generated_at')}:</span>
+						{new Date(metadata.generated_at).toLocaleDateString()}
+					</p>
+					<p>
+						<span class="font-medium">{t('keywords.total_articles')}:</span>
+						{metadata.total_articles.toLocaleString()}
+					</p>
 				</div>
 				<div>
-					<p><span class="font-medium">{t('keywords.countries_count')}:</span> {metadata.countries.length}</p>
-					<p><span class="font-medium">{t('keywords.newspapers_count')}:</span> {metadata.newspapers.length}</p>
+					<p>
+						<span class="font-medium">{t('keywords.countries_count')}:</span>
+						{metadata.countries.length}
+					</p>
+					<p>
+						<span class="font-medium">{t('keywords.newspapers_count')}:</span>
+						{metadata.newspapers.length}
+					</p>
 				</div>
 			</div>
 		</CardContent>

@@ -45,7 +45,7 @@
 	<div class="shrink-0 border-b p-3">
 		<h3 class="mb-2 text-sm font-semibold">{t('topic_network.topics')}</h3>
 		<div class="relative">
-			<Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+			<Search class="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
 			<Input
 				type="search"
 				placeholder={t('topic_network.search_topics')}

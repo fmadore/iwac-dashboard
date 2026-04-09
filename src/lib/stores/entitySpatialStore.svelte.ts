@@ -9,6 +9,7 @@
  */
 
 import { base } from '$app/paths';
+import { SvelteMap } from 'svelte/reactivity';
 import type {
 	EntityType,
 	EntitySummary,
@@ -36,7 +37,7 @@ class EntitySpatialStore {
 	currentEntityDetail = $state<EntityDetail | null>(null);
 
 	// Cache of loaded entity details to avoid re-fetching
-	entityCache = $state<Map<string, EntityDetail>>(new Map());
+	entityCache = new SvelteMap<string, EntityDetail>();
 
 	// Derived: entities in current category
 	get entitiesInCategory(): EntitySummary[] {
@@ -163,9 +164,7 @@ class EntitySpatialStore {
 			this.currentEntityDetail = detail;
 
 			// Add to cache
-			const newCache = new Map(this.entityCache);
-			newCache.set(cacheKey, detail);
-			this.entityCache = newCache;
+			this.entityCache.set(cacheKey, detail);
 		} catch (error) {
 			console.error(`Error loading entity ${entityId}:`, error);
 			this.currentEntityDetail = null;
@@ -181,7 +180,7 @@ class EntitySpatialStore {
 		this.searchQuery = '';
 		this.indexData = null;
 		this.currentEntityDetail = null;
-		this.entityCache = new Map();
+		this.entityCache.clear();
 		this.isLoading = true;
 		this.isLoadingDetails = false;
 		this.error = null;

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SvelteSet } from 'svelte/reactivity';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -46,7 +47,6 @@
 
 	// Raw KG data
 	const rawGraph = $derived(pageData.graph);
-	const ontology = $derived(pageData.ontology);
 	const kgStats = $derived(pageData.stats);
 
 	// Raw data types from JSON
@@ -235,16 +235,15 @@
 			return true;
 		});
 
-		const neighborIds = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const neighborIds = new Set<string>(); // Local procedural Set; not reactive state.
 		neighborIds.add(selectedId);
 		for (const edge of egoEdges) {
 			neighborIds.add(edge.source);
 			neighborIds.add(edge.target);
 		}
 
-		const egoNodes = allNodes.filter(
-			(n) => neighborIds.has(n.id) && enabledNodeTypes.has(n.type)
-		);
+		const egoNodes = allNodes.filter((n) => neighborIds.has(n.id) && enabledNodeTypes.has(n.type));
 		const egoNodeIds = new Set(egoNodes.map((n) => n.id));
 		const validEgoEdges = egoEdges.filter(
 			(e) => egoNodeIds.has(e.source) && egoNodeIds.has(e.target)
@@ -254,12 +253,8 @@
 	});
 
 	// Display data
-	const displayNodes = $derived(
-		focusMode && egoNetworkData ? egoNetworkData.nodes : filteredNodes
-	);
-	const displayEdges = $derived(
-		focusMode && egoNetworkData ? egoNetworkData.edges : filteredEdges
-	);
+	const displayNodes = $derived(focusMode && egoNetworkData ? egoNetworkData.nodes : filteredNodes);
+	const displayEdges = $derived(focusMode && egoNetworkData ? egoNetworkData.edges : filteredEdges);
 
 	// Stats
 	const nodeCountsByType = $derived.by(() => {
@@ -275,13 +270,6 @@
 		for (const edge of displayEdges) counts[edge.type]++;
 		return counts;
 	});
-
-	// Node size options
-	const nodeSizeOptions: { value: NodeSizeBy; label: string }[] = [
-		{ value: 'count', label: 'network.size_by_count' },
-		{ value: 'degree', label: 'network.size_by_degree' },
-		{ value: 'strength', label: 'network.size_by_strength' }
-	];
 
 	const layoutOptions: { value: LayoutType; label: string; icon: typeof Network }[] = [
 		{ value: 'force', label: 'network.layout_force', icon: Waypoints },
@@ -370,7 +358,7 @@
 	}
 
 	function toggleEntityType(type: EntityType) {
-		const newSet = new Set(enabledNodeTypes);
+		const newSet = new SvelteSet(enabledNodeTypes);
 		if (newSet.has(type)) {
 			if (newSet.size > 1) newSet.delete(type);
 		} else {
@@ -380,7 +368,7 @@
 	}
 
 	function toggleEdgeType(type: string) {
-		const newSet = new Set(enabledEdgeTypes);
+		const newSet = new SvelteSet(enabledEdgeTypes);
 		if (newSet.has(type)) {
 			if (newSet.size > 1) newSet.delete(type);
 		} else {
@@ -397,10 +385,6 @@
 	function toggleInferredLayer() {
 		if (showInferred && !showExplicit) return;
 		showInferred = !showInferred;
-	}
-
-	function handleNodeSizeChange(value: string | undefined) {
-		if (value) nodeSizeBy = value as NodeSizeBy;
 	}
 
 	function handleLayoutChange(value: string | undefined) {
@@ -421,9 +405,24 @@
 		</div>
 		{#if kgStats}
 			<div class="flex gap-4 text-sm text-muted-foreground">
-				<span><strong class="text-foreground">{(kgStats.summary?.totalNodes ?? 0).toLocaleString()}</strong> {t('kg.total_entities').toLowerCase()}</span>
-				<span><strong class="text-foreground">{(kgStats.summary?.explicitEdges ?? 0).toLocaleString()}</strong> {t('kg.explicit_edges').toLowerCase()}</span>
-				<span><strong class="text-foreground">{(kgStats.summary?.inferredEdges ?? 0).toLocaleString()}</strong> {t('kg.inferred_edges').toLowerCase()}</span>
+				<span
+					><strong class="text-foreground"
+						>{(kgStats.summary?.totalNodes ?? 0).toLocaleString()}</strong
+					>
+					{t('kg.total_entities').toLowerCase()}</span
+				>
+				<span
+					><strong class="text-foreground"
+						>{(kgStats.summary?.explicitEdges ?? 0).toLocaleString()}</strong
+					>
+					{t('kg.explicit_edges').toLowerCase()}</span
+				>
+				<span
+					><strong class="text-foreground"
+						>{(kgStats.summary?.inferredEdges ?? 0).toLocaleString()}</strong
+					>
+					{t('kg.inferred_edges').toLowerCase()}</span
+				>
 			</div>
 		{/if}
 	</div>
@@ -443,10 +442,14 @@
 				<div class="flex flex-wrap items-start gap-x-6 gap-y-2">
 					<div class="space-y-1">
 						<div class="flex items-center gap-1.5">
-							<Label class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('network.entity_types')}</Label>
+							<Label class="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+								>{t('network.entity_types')}</Label
+							>
 							<span class="group relative">
-								<Info class="h-3 w-3 text-muted-foreground/50 cursor-help" />
-								<span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 w-72 -translate-x-1/2 rounded-md border bg-popover px-3 py-2 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+								<Info class="h-3 w-3 cursor-help text-muted-foreground/50" />
+								<span
+									class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 w-72 -translate-x-1/2 rounded-md border bg-popover px-3 py-2 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100"
+								>
 									{t('kg.nodes_help')}
 								</span>
 							</span>
@@ -478,10 +481,14 @@
 					<!-- Edge layers -->
 					<div class="space-y-1">
 						<div class="flex items-center gap-1.5">
-							<Label class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('kg.edge_layers')}</Label>
+							<Label class="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+								>{t('kg.edge_layers')}</Label
+							>
 							<span class="group relative">
-								<Info class="h-3 w-3 text-muted-foreground/50 cursor-help" />
-								<span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 w-72 -translate-x-1/2 rounded-md border bg-popover px-3 py-2 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+								<Info class="h-3 w-3 cursor-help text-muted-foreground/50" />
+								<span
+									class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 w-72 -translate-x-1/2 rounded-md border bg-popover px-3 py-2 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100"
+								>
 									{t('kg.explicit_help')}
 								</span>
 							</span>
@@ -518,14 +525,15 @@
 
 					<!-- Edge type toggles -->
 					<div class="space-y-1">
-						<Label class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('kg.edge_types')}</Label>
+						<Label class="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+							>{t('kg.edge_types')}</Label
+						>
 						<div class="flex flex-wrap items-center gap-1">
 							{#each edgeTypes as type (type)}
 								{@const config = edgeTypeConfig[type]}
 								{@const isEnabled = enabledEdgeTypes.has(type)}
 								{@const count = edgeCountsByType[type] || 0}
-								{@const layerActive =
-									config.layer === 'explicit' ? showExplicit : showInferred}
+								{@const layerActive = config.layer === 'explicit' ? showExplicit : showInferred}
 								<button
 									class="flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[11px] transition-all"
 									class:opacity-20={!layerActive}
@@ -561,7 +569,9 @@
 					</div>
 
 					<div class="flex items-center gap-2">
-						<Label class="whitespace-nowrap text-xs text-muted-foreground">{t('network.max_nodes')}:</Label>
+						<Label class="text-xs whitespace-nowrap text-muted-foreground"
+							>{t('network.max_nodes')}:</Label
+						>
 						<Slider
 							type="single"
 							value={maxNodes}
@@ -575,7 +585,9 @@
 					</div>
 
 					<div class="flex items-center gap-2">
-						<Label class="whitespace-nowrap text-xs text-muted-foreground">{t('network.min_edge_weight')}:</Label>
+						<Label class="text-xs whitespace-nowrap text-muted-foreground"
+							>{t('network.min_edge_weight')}:</Label
+						>
 						<Slider
 							type="single"
 							value={minEdgeWeight}
@@ -589,7 +601,9 @@
 					</div>
 
 					<div class="flex items-center gap-2">
-						<Label class="whitespace-nowrap text-xs text-muted-foreground">{t('network.layout')}:</Label>
+						<Label class="text-xs whitespace-nowrap text-muted-foreground"
+							>{t('network.layout')}:</Label
+						>
 						<Select.Root type="single" value={layoutType} onValueChange={handleLayoutChange}>
 							<Select.Trigger class="h-7 w-36 text-xs">
 								{@const current = layoutOptions.find((o) => o.value === layoutType)}
@@ -633,7 +647,7 @@
 				/>
 
 				<!-- Zoom Toolbar (top-right) -->
-				<div class="absolute right-2 top-2 z-40 flex items-center gap-1">
+				<div class="absolute top-2 right-2 z-40 flex items-center gap-1">
 					<Button
 						variant="outline"
 						size="icon"
@@ -667,13 +681,9 @@
 						<Button
 							variant={focusMode ? 'default' : 'outline'}
 							size="icon"
-							class="h-[30px] w-[30px] {focusMode
-								? ''
-								: 'bg-background/80 backdrop-blur-sm'}"
+							class="h-[30px] w-[30px] {focusMode ? '' : 'bg-background/80 backdrop-blur-sm'}"
 							onclick={focusMode ? handleExitFocusMode : handleFocusSelected}
-							title={focusMode
-								? t('network.exit_focus')
-								: t('network.focus_selection')}
+							title={focusMode ? t('network.exit_focus') : t('network.focus_selection')}
 						>
 							<Focus class="h-4 w-4" />
 						</Button>
@@ -691,7 +701,7 @@
 
 				<!-- Focus mode badge -->
 				{#if focusMode && selectedNode}
-					<div class="absolute bottom-4 right-4 z-10">
+					<div class="absolute right-4 bottom-4 z-10">
 						<Badge variant="secondary" class="text-xs">
 							<Focus class="mr-1 h-3 w-3" />
 							{t('network.focus_mode')}
@@ -709,17 +719,16 @@
 							{@const config = entityTypeConfig[type]}
 							{@const Icon = config.icon}
 							<div class="flex items-center gap-1.5">
-								<div
-									class="h-2 w-2 rounded-full"
-									style:background-color={config.color}
-								></div>
+								<div class="h-2 w-2 rounded-full" style:background-color={config.color}></div>
 								<span style:color={config.color}><Icon class="h-3 w-3" /></span>
 								<span class="text-muted-foreground">{t(config.label)}</span>
 							</div>
 						{/if}
 					{/each}
 					<div class="border-t pt-1 text-[10px] text-muted-foreground">
-						{displayNodes.length} {t('network.nodes').toLowerCase()} &bull; {displayEdges.length} {t('network.edges').toLowerCase()}
+						{displayNodes.length}
+						{t('network.nodes').toLowerCase()} &bull; {displayEdges.length}
+						{t('network.edges').toLowerCase()}
 					</div>
 				</div>
 
@@ -728,12 +737,12 @@
 					{@const nodeConfig = entityTypeConfig[selectedNode.type]}
 					{@const NodeIcon = nodeConfig?.icon || Tag}
 					<div
-						class="absolute bottom-4 left-4 right-4 z-20 max-h-[calc(100%-60px)] overflow-y-auto rounded-xl border bg-card/95 shadow-lg backdrop-blur-sm sm:bottom-auto sm:left-auto sm:right-4 sm:top-12 sm:w-80"
+						class="absolute right-4 bottom-4 left-4 z-20 max-h-[calc(100%-60px)] overflow-y-auto rounded-xl border bg-card/95 shadow-lg backdrop-blur-sm sm:top-12 sm:right-4 sm:bottom-auto sm:left-auto sm:w-80"
 					>
 						<!-- Panel Header -->
 						<div class="sticky top-0 z-10 border-b bg-card/95 p-3 backdrop-blur-sm">
 							<div class="flex items-start justify-between gap-2">
-								<div class="flex items-center gap-2 min-w-0">
+								<div class="flex min-w-0 items-center gap-2">
 									<div
 										class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
 										style:background-color="{nodeConfig?.color || '#888'}20"
@@ -783,8 +792,8 @@
 						<div class="p-3">
 							<EgoNetworkPanel
 								{selectedNode}
-								allNodes={allNodes}
-								allEdges={allEdges}
+								{allNodes}
+								{allEdges}
 								entityTypeColors={entityTypeConfig}
 								{edgeTypeColors}
 								onNodeClick={handleEgoNodeClick}

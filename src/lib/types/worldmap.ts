@@ -44,7 +44,7 @@ export interface WorldMapFilterData {
 		min: number | null;
 		max: number | null;
 	};
-	/** 
+	/**
 	 * Counts by source country and year
 	 * Structure: { sourceCountry: { year: count } }
 	 * Year "0" represents articles without a date

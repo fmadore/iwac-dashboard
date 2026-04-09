@@ -154,37 +154,27 @@ describe('tooltipLabelFromPayload', () => {
 	});
 
 	it('extracts category from payload', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ payload: { category: 'Books' } }
-		];
+		const payload: TooltipPayloadItem[] = [{ payload: { category: 'Books' } }];
 		expect(tooltipLabelFromPayload(payload)).toBe('Books');
 	});
 
 	it('extracts year from payload when no category', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ payload: { year: 2024 } }
-		];
+		const payload: TooltipPayloadItem[] = [{ payload: { year: 2024 } }];
 		expect(tooltipLabelFromPayload(payload)).toBe('2024');
 	});
 
 	it('extracts name from payload when no category or year', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ payload: { name: 'Test Item' } }
-		];
+		const payload: TooltipPayloadItem[] = [{ payload: { name: 'Test Item' } }];
 		expect(tooltipLabelFromPayload(payload)).toBe('Test Item');
 	});
 
 	it('falls back to item.label', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ label: 'FallbackLabel' }
-		];
+		const payload: TooltipPayloadItem[] = [{ label: 'FallbackLabel' }];
 		expect(tooltipLabelFromPayload(payload)).toBe('FallbackLabel');
 	});
 
 	it('falls back to item.name', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ name: 'ItemName' }
-		];
+		const payload: TooltipPayloadItem[] = [{ name: 'ItemName' }];
 		expect(tooltipLabelFromPayload(payload)).toBe('ItemName');
 	});
 
@@ -196,9 +186,7 @@ describe('tooltipLabelFromPayload', () => {
 	});
 
 	it('falls back to normal chain when labelField not found in payload', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ payload: { category: 'FallbackCategory' } }
-		];
+		const payload: TooltipPayloadItem[] = [{ payload: { category: 'FallbackCategory' } }];
 		expect(tooltipLabelFromPayload(payload, 'nonExistent')).toBe('FallbackCategory');
 	});
 
@@ -227,9 +215,7 @@ describe('tooltipItemsFromPayload', () => {
 	});
 
 	it('maps items with name and value', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ key: 'a', name: 'Alpha', value: 10, color: '#f00' }
-		];
+		const payload: TooltipPayloadItem[] = [{ key: 'a', name: 'Alpha', value: 10, color: '#f00' }];
 		const result = tooltipItemsFromPayload(payload);
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
@@ -241,9 +227,7 @@ describe('tooltipItemsFromPayload', () => {
 	});
 
 	it('uses config label and color when provided', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ key: 'series1', name: 'series1', value: 42 }
-		];
+		const payload: TooltipPayloadItem[] = [{ key: 'series1', name: 'series1', value: 42 }];
 		const config = {
 			series1: { label: 'Series One', color: '#00f' }
 		};
@@ -254,35 +238,27 @@ describe('tooltipItemsFromPayload', () => {
 	});
 
 	it('filters out items without a name', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ key: '', value: 10 }
-		];
+		const payload: TooltipPayloadItem[] = [{ key: '', value: 10 }];
 		const result = tooltipItemsFromPayload(payload);
 		// key is '' and name defaults to String('') which is '', filtered out because !name
 		expect(result).toHaveLength(0);
 	});
 
 	it('filters out items with undefined value', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ key: 'a', name: 'Alpha', value: undefined }
-		];
+		const payload: TooltipPayloadItem[] = [{ key: 'a', name: 'Alpha', value: undefined }];
 		const result = tooltipItemsFromPayload(payload);
 		expect(result).toHaveLength(0);
 	});
 
 	it('keeps items with zero value (0 !== undefined)', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ key: 'a', name: 'Alpha', value: 0 }
-		];
+		const payload: TooltipPayloadItem[] = [{ key: 'a', name: 'Alpha', value: 0 }];
 		const result = tooltipItemsFromPayload(payload);
 		expect(result).toHaveLength(1);
 		expect(result[0].value).toBe(0);
 	});
 
 	it('keeps items with string value', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ key: 'a', name: 'Alpha', value: 'text' }
-		];
+		const payload: TooltipPayloadItem[] = [{ key: 'a', name: 'Alpha', value: 'text' }];
 		const result = tooltipItemsFromPayload(payload);
 		expect(result).toHaveLength(1);
 		expect(result[0].value).toBe('text');
@@ -359,17 +335,13 @@ describe('filterNonZeroPayload', () => {
 	});
 
 	it('handles string values that are numeric', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ name: 'a', value: '10' as unknown as number }
-		];
+		const payload: TooltipPayloadItem[] = [{ name: 'a', value: '10' as unknown as number }];
 		// '10' → Number('10') = 10, isFinite(10) && 10 >= 1 → true
 		expect(filterNonZeroPayload(payload)).toHaveLength(1);
 	});
 
 	it('filters out non-numeric string values', () => {
-		const payload: TooltipPayloadItem[] = [
-			{ name: 'a', value: 'abc' as unknown as number }
-		];
+		const payload: TooltipPayloadItem[] = [{ name: 'a', value: 'abc' as unknown as number }];
 		// 'abc' → Number('abc') = NaN → filtered out
 		expect(filterNonZeroPayload(payload)).toHaveLength(0);
 	});

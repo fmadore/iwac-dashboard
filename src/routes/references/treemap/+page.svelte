@@ -8,13 +8,15 @@
 	// Get preloaded data from +page.ts
 	let { data: pageData } = $props<{
 		data: {
-			treemapData: (TreemapData & {
-				meta: {
-					totalCountries: number;
-					totalReferences: number;
-					generatedAt: string;
-				};
-			}) | null;
+			treemapData:
+				| (TreemapData & {
+						meta: {
+							totalCountries: number;
+							totalReferences: number;
+							generatedAt: string;
+						};
+				  })
+				| null;
 			error: string | null;
 		};
 	}>();
@@ -30,7 +32,8 @@
 		if (!treemapData) return null;
 
 		// Count unique document types across all countries
-		const types = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const types = new Set<string>(); // Local procedural Set; not reactive state.
 		for (const country of treemapData.children ?? []) {
 			for (const docType of country.children ?? []) {
 				types.add(docType.name);

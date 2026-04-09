@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import * as Card from '$lib/components/ui/card/index.js';
 	import StatsCard from './StatsCard.svelte';
 	import type { OverviewSummary } from '$lib/stores/overviewStore.svelte.js';
 

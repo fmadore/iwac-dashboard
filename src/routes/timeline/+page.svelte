@@ -61,7 +61,7 @@
 	let globalData = $state<TimelineData | null>(null);
 	let typeFacets = $state<TypeFacets | null>(null);
 	let countryFacets = $state<CountryFacets | null>(null);
-	let metadata = $state<MetadataResponse | null>(null);
+	let _metadata = $state<MetadataResponse | null>(null);
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
@@ -95,7 +95,7 @@
 
 	async function loadMetadata() {
 		try {
-			metadata = await fetchData<MetadataResponse>('timeline-metadata.json');
+			_metadata = await fetchData<MetadataResponse>('timeline-metadata.json');
 		} catch (e) {
 			console.error('Failed to load metadata:', e);
 		} finally {

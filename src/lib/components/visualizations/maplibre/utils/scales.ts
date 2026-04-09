@@ -1,4 +1,4 @@
-import { scaleSqrt, scaleLinear, scaleLog, scaleQuantile } from 'd3-scale';
+import { scaleSqrt, scaleLinear, scaleQuantile } from 'd3-scale';
 
 /**
  * Create a radius scale for bubble markers

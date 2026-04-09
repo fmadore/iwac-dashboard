@@ -7,10 +7,18 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph, NetworkEntitySearch } from '$lib/components/visualizations/network/index.js';
+	import {
+		NetworkGraph,
+		NetworkEntitySearch
+	} from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
-	import type { NodeSizeBy, GlobalNetworkNode, GlobalNetworkEdge, EntityType } from '$lib/types/network.js';
+	import type {
+		NodeSizeBy,
+		GlobalNetworkNode,
+		GlobalNetworkEdge,
+		EntityType
+	} from '$lib/types/network.js';
 	import {
 		ZoomIn,
 		ZoomOut,
@@ -81,23 +89,27 @@
 	const urlFocusMode = $derived(urlSync.filters.focus === 'true');
 
 	// Entity type config
-	const entityTypeConfig: Record<EntityType, { label: string; color: string; icon: typeof Users }> = {
-		author: { label: 'coauthor.author', color: '#3b82f6', icon: Users },
-		person: { label: 'network.type_person', color: '#3b82f6', icon: Users },
-		organization: { label: 'network.type_organization', color: '#8b5cf6', icon: Building2 },
-		event: { label: 'network.type_event', color: '#f97316', icon: Calendar },
-		subject: { label: 'subject_cooccurrence.subject', color: '#22c55e', icon: Tag },
-		location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
-		topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
-		article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText },
-		authority: { label: 'kg.type_authority', color: '#78716c', icon: Tag }
-	};
+	const entityTypeConfig: Record<EntityType, { label: string; color: string; icon: typeof Users }> =
+		{
+			author: { label: 'coauthor.author', color: '#3b82f6', icon: Users },
+			person: { label: 'network.type_person', color: '#3b82f6', icon: Users },
+			organization: { label: 'network.type_organization', color: '#8b5cf6', icon: Building2 },
+			event: { label: 'network.type_event', color: '#f97316', icon: Calendar },
+			subject: { label: 'subject_cooccurrence.subject', color: '#22c55e', icon: Tag },
+			location: { label: 'network.type_location', color: '#ec4899', icon: MapPin },
+			topic: { label: 'topic_network.topics', color: '#22c55e', icon: Hash },
+			article: { label: 'topic_network.articles', color: '#3b82f6', icon: FileText },
+			authority: { label: 'kg.type_authority', color: '#78716c', icon: Tag }
+		};
 
 	// Filter nodes
 	const filteredNodes = $derived.by(() => {
 		if (!networkData) return [];
 		return networkData.nodes
-			.sort((a: SubjectNetworkNode, b: SubjectNetworkNode) => a.labelPriority - b.labelPriority || b.strength - a.strength)
+			.sort(
+				(a: SubjectNetworkNode, b: SubjectNetworkNode) =>
+					a.labelPriority - b.labelPriority || b.strength - a.strength
+			)
 			.slice(0, maxNodes);
 	});
 
@@ -122,7 +134,8 @@
 			(e: SubjectNetworkEdge) => e.source === selectedId || e.target === selectedId
 		);
 
-		const neighborIds = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const neighborIds = new Set<string>(); // Local procedural Set; not reactive state.
 		neighborIds.add(selectedId);
 		for (const edge of egoEdges) {
 			neighborIds.add(edge.source);
@@ -260,7 +273,9 @@
 <div class="container mx-auto space-y-6 py-6">
 	<!-- Page Header -->
 	<div class="space-y-2">
-		<h1 class="text-3xl font-bold tracking-tight text-foreground">{t('subject_cooccurrence.title')}</h1>
+		<h1 class="text-3xl font-bold tracking-tight text-foreground">
+			{t('subject_cooccurrence.title')}
+		</h1>
 		<p class="text-muted-foreground">{t('subject_cooccurrence.description')}</p>
 	</div>
 
@@ -286,8 +301,14 @@
 	{:else if networkData}
 		<!-- Stats Cards -->
 		<div class="grid gap-4 md:grid-cols-4">
-			<StatsCard title={t('subject_cooccurrence.total_topics')} value={networkData.meta.totalNodes} />
-			<StatsCard title={t('subject_cooccurrence.total_pairs')} value={networkData.meta.totalEdges} />
+			<StatsCard
+				title={t('subject_cooccurrence.total_topics')}
+				value={networkData.meta.totalNodes}
+			/>
+			<StatsCard
+				title={t('subject_cooccurrence.total_pairs')}
+				value={networkData.meta.totalEdges}
+			/>
 			<StatsCard title={t('subject_cooccurrence.visible_topics')} value={displayNodes.length} />
 			<StatsCard title={t('subject_cooccurrence.visible_connections')} value={filteredEdgeCount} />
 		</div>
@@ -306,13 +327,8 @@
 							/>
 						</div>
 						{#if selectedNode}
-							<Button
-								variant="outline"
-								size="sm"
-								onclick={handleFocusSelected}
-								class="shrink-0"
-							>
-								<Focus class="h-4 w-4 mr-2" />
+							<Button variant="outline" size="sm" onclick={handleFocusSelected} class="shrink-0">
+								<Focus class="mr-2 h-4 w-4" />
 								{t('network.focus_selection')}
 							</Button>
 						{/if}
@@ -351,7 +367,7 @@
 						<div class="flex items-center gap-2">
 							<Label class="text-sm font-medium whitespace-nowrap">{t('network.node_size')}:</Label>
 							<Select.Root type="single" value={nodeSizeBy} onValueChange={handleNodeSizeChange}>
-								<Select.Trigger class="flex-1 min-w-0">
+								<Select.Trigger class="min-w-0 flex-1">
 									{t(nodeSizeOptions.find((o) => o.value === nodeSizeBy)?.label || '')}
 								</Select.Trigger>
 								<Select.Content>
@@ -364,7 +380,9 @@
 
 						<!-- Max Topics Filter -->
 						<div class="flex items-center gap-2">
-							<Label class="text-sm font-medium whitespace-nowrap">{t('subject_cooccurrence.max_topics')}:</Label>
+							<Label class="text-sm font-medium whitespace-nowrap"
+								>{t('subject_cooccurrence.max_topics')}:</Label
+							>
 							<div class="flex flex-1 items-center gap-2">
 								<Slider
 									type="single"
@@ -381,7 +399,9 @@
 
 						<!-- Min Co-occurrences Filter -->
 						<div class="flex items-center gap-2">
-							<Label class="text-sm font-medium whitespace-nowrap">{t('subject_cooccurrence.min_cooccurrences')}:</Label>
+							<Label class="text-sm font-medium whitespace-nowrap"
+								>{t('subject_cooccurrence.min_cooccurrences')}:</Label
+							>
 							<div class="flex flex-1 items-center gap-2">
 								<Slider
 									type="single"
@@ -434,7 +454,7 @@
 				<!-- Legend -->
 				<div
 					class="absolute left-4 z-10 flex flex-col gap-2 rounded-lg border bg-card/95 p-3 text-sm shadow-sm backdrop-blur-sm
-					       {selectedNode ? 'hidden sm:flex sm:bottom-4' : 'bottom-4'}"
+					       {selectedNode ? 'hidden sm:bottom-4 sm:flex' : 'bottom-4'}"
 				>
 					<div class="font-medium">{t('network.legend')}</div>
 					<div class="flex items-center gap-2">
@@ -453,9 +473,9 @@
 				<!-- Selected Node Panel -->
 				{#if selectedNode}
 					<div
-						class="absolute z-20 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm
-						       bottom-4 left-4 right-4 p-3
-						       sm:bottom-auto sm:top-4 sm:right-4 sm:left-auto sm:w-64 sm:p-4
+						class="absolute right-4 bottom-4 left-4 z-20 rounded-lg border
+						       bg-card/95 p-3 shadow-lg backdrop-blur-sm
+						       sm:top-4 sm:right-4 sm:bottom-auto sm:left-auto sm:w-64 sm:p-4
 						       lg:w-72"
 					>
 						<div class="flex items-start justify-between gap-2">
@@ -464,7 +484,7 @@
 									<span style="color: #22c55e">
 										<Tag class="h-4 w-4 shrink-0" />
 									</span>
-									<h3 class="truncate font-semibold text-sm sm:text-base">{selectedNode.label}</h3>
+									<h3 class="truncate text-sm font-semibold sm:text-base">{selectedNode.label}</h3>
 								</div>
 								<Badge variant="outline" class="mt-1 text-xs">
 									{t('subject_cooccurrence.subject')}
@@ -485,18 +505,24 @@
 								</Button>
 							</div>
 						</div>
-						<div class="mt-3 grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+						<div class="mt-3 grid grid-cols-3 gap-1.5 text-center sm:gap-2">
 							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.count}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('subject_cooccurrence.references')}</div>
+								<div class="text-base font-bold sm:text-lg">{selectedNode.count}</div>
+								<div class="text-[10px] text-muted-foreground sm:text-xs">
+									{t('subject_cooccurrence.references')}
+								</div>
 							</div>
 							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.degree}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('subject_cooccurrence.connected')}</div>
+								<div class="text-base font-bold sm:text-lg">{selectedNode.degree}</div>
+								<div class="text-[10px] text-muted-foreground sm:text-xs">
+									{t('subject_cooccurrence.connected')}
+								</div>
 							</div>
 							<div class="rounded bg-muted p-1.5 sm:p-2">
-								<div class="text-base sm:text-lg font-bold">{selectedNode.strength}</div>
-								<div class="text-[10px] sm:text-xs text-muted-foreground">{t('subject_cooccurrence.cooccurrences')}</div>
+								<div class="text-base font-bold sm:text-lg">{selectedNode.strength}</div>
+								<div class="text-[10px] text-muted-foreground sm:text-xs">
+									{t('subject_cooccurrence.cooccurrences')}
+								</div>
 							</div>
 						</div>
 					</div>

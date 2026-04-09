@@ -1,5 +1,9 @@
 // Network visualization components
-export { default as NetworkGraph, type LayoutType, type EdgeFocusData } from './NetworkGraph.svelte';
+export {
+	default as NetworkGraph,
+	type LayoutType,
+	type EdgeFocusData
+} from './NetworkGraph.svelte';
 export { default as NetworkControls } from './NetworkControls.svelte';
 export { default as NetworkNodePanel } from './NetworkNodePanel.svelte';
 export { default as NetworkLegend } from './NetworkLegend.svelte';

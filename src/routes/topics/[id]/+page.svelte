@@ -12,14 +12,7 @@
 		PieChart as LayerChartPieChart
 	} from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { DataTable, type ColumnDef } from '$lib/components/ui/data-table/index.js';
-	import {
-		ArrowLeft,
-		FileText,
-		Calendar,
-		Globe2,
-		Percent,
-		AlertCircle
-	} from '@lucide/svelte';
+	import { ArrowLeft, FileText, Globe2, Percent, AlertCircle } from '@lucide/svelte';
 	import type { TopicDetailData, TopicDocument } from '$lib/types/topics.js';
 
 	// Get topic ID from params
@@ -138,7 +131,6 @@
 		if (lower.includes('neutre') || lower.includes('neutral')) return 'polarity-neutral';
 		return '';
 	}
-
 
 	// Process country distribution for pie chart
 	const countryChartData = $derived.by(() => {
@@ -310,7 +302,8 @@
 			<Card.Header>
 				<Card.Title>{t('topics.top_documents')}</Card.Title>
 				<Card.Description>
-					{topicData.docs.length.toLocaleString()} {t('stats.documents')}
+					{topicData.docs.length.toLocaleString()}
+					{t('stats.documents')}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
@@ -328,6 +321,7 @@
 							{@const itemUrl = getItemUrl(row)}
 							<div class="font-medium break-words whitespace-normal">
 								{#if itemUrl}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 									<a
 										href={itemUrl}
 										target="_blank"
@@ -336,6 +330,7 @@
 									>
 										{row.title || row.ocr_title || 'Untitled'}
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{:else}
 									<span class="line-clamp-2">{row.title || row.ocr_title || 'Untitled'}</span>
 								{/if}

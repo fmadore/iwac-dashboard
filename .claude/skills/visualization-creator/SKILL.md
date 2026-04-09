@@ -20,11 +20,13 @@ This skill guides you through creating new visualizations for the IWAC Dashboard
 ### Step 1: Understand Data Requirements
 
 **First, invoke the `iwac-dataset` skill** to understand:
+
 - Which subset(s) you need (articles, publications, documents, audiovisual, index, references)
 - Available fields and their types
 - Common query patterns for filtering
 
 Ask the user:
+
 - What data should this visualization display?
 - What filtering/interaction is needed?
 - Should it be bilingual (always yes for user-facing text)?
@@ -38,6 +40,7 @@ ls scripts/generate_*.py
 ```
 
 Common existing scripts:
+
 - `generate_overview_stats.py` - Summary statistics
 - `generate_index_entities.py` - Entity data
 - `generate_treemap.py` - Country/hierarchical data
@@ -89,6 +92,7 @@ if __name__ == "__main__":
 ```
 
 **Key patterns:**
+
 - Output to `static/data/` (and optionally `build/data/`)
 - Use UTF-8 encoding with `ensure_ascii=False` for French text
 - Pre-compute aggregations - no heavy processing in frontend
@@ -99,6 +103,7 @@ if __name__ == "__main__":
 Before creating new components, check for reusable ones:
 
 **LayerChart components** (`src/lib/components/visualizations/charts/layerchart/`):
+
 - `Bar.svelte` - Bar charts
 - `PieChart.svelte` - Pie/donut charts
 - `Treemap.svelte` - Hierarchical treemaps
@@ -106,6 +111,7 @@ Before creating new components, check for reusable ones:
 - `Tooltip.svelte` - Reusable tooltip
 
 **D3 components** (`src/lib/components/visualizations/charts/d3/`):
+
 - `TimelineChart.svelte` - Timeline visualizations
 - `StackedBarChart.svelte` - Stacked bar charts
 - `CooccurrenceMatrix.svelte` - Matrix visualizations
@@ -113,18 +119,21 @@ Before creating new components, check for reusable ones:
 - `WordAssociations.svelte` - Word association graphs
 
 **Map components** (`src/lib/components/visualizations/world-map/`):
+
 - `WorldMapVisualization.svelte` - Main map container with controls
 - `Map.svelte` - Leaflet map wrapper
 - `ChoroplethLayer.svelte` - Choropleth coloring layer
 - Uses `mapDataStore` for state management (viewMode, filters, selected location)
 
 **Network components** (`src/lib/components/visualizations/network/`):
+
 - `NetworkGraph.svelte` - Sigma.js graph renderer
 - `NetworkControls.svelte` - Graph interaction controls
 - `NetworkNodePanel.svelte` - Node detail panel
 - Uses Graphology for graph data structure and ForceAtlas2 for layout
 
 **Other visualizations**:
+
 - `Wordcloud.svelte` - D3 word clouds
 
 ### Step 5: Create New Visualization Component
@@ -132,6 +141,7 @@ Before creating new components, check for reusable ones:
 If a new component is needed, follow these patterns:
 
 #### File Location
+
 ```
 src/lib/components/visualizations/charts/layerchart/NewChart.svelte  # LayerChart-based
 src/lib/components/visualizations/charts/d3/NewChart.svelte          # D3-based
@@ -142,41 +152,41 @@ src/lib/components/visualizations/NewVisualization.svelte            # Standalon
 
 ```svelte
 <script lang="ts">
-    import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-    import { Chart, Svg, Bar, Axis, Tooltip } from 'layerchart';
-    import { scaleBand, scaleLinear } from 'd3-scale';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { Chart, Svg, Bar, Axis, Tooltip } from 'layerchart';
+	import { scaleBand, scaleLinear } from 'd3-scale';
 
-    interface DataItem {
-        label: string;
-        value: number;
-    }
+	interface DataItem {
+		label: string;
+		value: number;
+	}
 
-    let { data = [] }: { data: DataItem[] } = $props();
+	let { data = [] }: { data: DataItem[] } = $props();
 
-    // Reactive to language changes
-    const chartTitle = $derived(t('chart.new_chart_title'));
+	// Reactive to language changes
+	const chartTitle = $derived(t('chart.new_chart_title'));
 
-    // Scales
-    const xScale = $derived(scaleBand().domain(data.map(d => d.label)).padding(0.1));
-    const yScale = $derived(scaleLinear().domain([0, Math.max(...data.map(d => d.value))]));
+	// Scales
+	const xScale = $derived(
+		scaleBand()
+			.domain(data.map((d) => d.label))
+			.padding(0.1)
+	);
+	const yScale = $derived(scaleLinear().domain([0, Math.max(...data.map((d) => d.value))]));
 </script>
 
 <div class="h-[400px] w-full">
-    <Chart {data} {xScale} {yScale} padding={{ left: 40, bottom: 40, top: 20, right: 20 }}>
-        <Svg>
-            <Axis placement="left" />
-            <Axis placement="bottom" />
-            <Bar
-                x="label"
-                y="value"
-                class="fill-[var(--chart-1)]"
-            />
-        </Svg>
-        <Tooltip.Root let:data>
-            <Tooltip.Header>{data.label}</Tooltip.Header>
-            <Tooltip.Item label={t('chart.value')} value={data.value} />
-        </Tooltip.Root>
-    </Chart>
+	<Chart {data} {xScale} {yScale} padding={{ left: 40, bottom: 40, top: 20, right: 20 }}>
+		<Svg>
+			<Axis placement="left" />
+			<Axis placement="bottom" />
+			<Bar x="label" y="value" class="fill-[var(--chart-1)]" />
+		</Svg>
+		<Tooltip.Root let:data>
+			<Tooltip.Header>{data.label}</Tooltip.Header>
+			<Tooltip.Item label={t('chart.value')} value={data.value} />
+		</Tooltip.Root>
+	</Chart>
 </div>
 ```
 
@@ -184,29 +194,29 @@ src/lib/components/visualizations/NewVisualization.svelte            # Standalon
 
 ```svelte
 <script lang="ts">
-    import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-    import * as d3 from 'd3-selection';
-    import { scaleLinear, scaleBand } from 'd3-scale';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import * as d3 from 'd3-selection';
+	import { scaleLinear, scaleBand } from 'd3-scale';
 
-    let { data = [] }: { data: unknown[] } = $props();
+	let { data = [] }: { data: unknown[] } = $props();
 
-    let container: HTMLDivElement;
+	let container: HTMLDivElement;
 
-    // Re-render on language change
-    const lang = $derived(languageStore.current);
+	// Re-render on language change
+	const lang = $derived(languageStore.current);
 
-    $effect(() => {
-        if (container && data.length > 0) {
-            // Access lang to create dependency
-            const _ = lang;
-            renderChart();
-        }
-    });
+	$effect(() => {
+		if (container && data.length > 0) {
+			// Access lang to create dependency
+			const _ = lang;
+			renderChart();
+		}
+	});
 
-    function renderChart() {
-        // D3 rendering logic using CSS variables
-        // Use: var(--chart-1), var(--foreground), var(--muted-foreground), etc.
-    }
+	function renderChart() {
+		// D3 rendering logic using CSS variables
+		// Use: var(--chart-1), var(--foreground), var(--muted-foreground), etc.
+	}
 </script>
 
 <div bind:this={container} class="h-[400px] w-full"></div>
@@ -218,36 +228,29 @@ For geographic visualizations, use Leaflet with the existing map components:
 
 ```svelte
 <script lang="ts">
-    import { t } from '$lib/stores/translationStore.svelte.js';
-    import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
-    import { Map, ChoroplethLayer } from '$lib/components/visualizations/world-map/index.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
+	import { Map, ChoroplethLayer } from '$lib/components/visualizations/world-map/index.js';
 
-    let { locations = [] }: { locations: GeoLocation[] } = $props();
+	let { locations = [] }: { locations: GeoLocation[] } = $props();
 
-    interface GeoLocation {
-        lat: number;
-        lng: number;
-        country: string;
-        value: number;
-    }
+	interface GeoLocation {
+		lat: number;
+		lng: number;
+		country: string;
+		value: number;
+	}
 </script>
 
 <div class="h-[500px] w-full">
-    <Map
-        center={[12, 0]}
-        zoom={4}
-        locations={locations}
-    >
-        <ChoroplethLayer
-            data={locations}
-            valueField="value"
-            colorScale="blues"
-        />
-    </Map>
+	<Map center={[12, 0]} zoom={4} {locations}>
+		<ChoroplethLayer data={locations} valueField="value" colorScale="blues" />
+	</Map>
 </div>
 ```
 
 **Map data store** (`mapDataStore.svelte.ts`):
+
 - `viewMode`: 'bubbles' | 'choropleth'
 - `selectedLocation`: Currently selected location
 - `filters`: sourceCountry, yearRange
@@ -259,80 +262,77 @@ For network/graph visualizations, use Sigma.js with Graphology:
 
 ```svelte
 <script lang="ts">
-    import { t } from '$lib/stores/translationStore.svelte.js';
-    import Graph from 'graphology';
-    import Sigma from 'sigma';
-    import forceAtlas2 from 'graphology-layout-forceatlas2';
+	import { t } from '$lib/stores/translationStore.svelte.js';
+	import Graph from 'graphology';
+	import Sigma from 'sigma';
+	import forceAtlas2 from 'graphology-layout-forceatlas2';
 
-    let { nodes = [], edges = [] }: { nodes: NetworkNode[], edges: NetworkEdge[] } = $props();
+	let { nodes = [], edges = [] }: { nodes: NetworkNode[]; edges: NetworkEdge[] } = $props();
 
-    let container: HTMLDivElement;
-    let sigma: Sigma | null = null;
+	let container: HTMLDivElement;
+	let sigma: Sigma | null = null;
 
-    interface NetworkNode {
-        id: string;
-        label: string;
-        size: number;
-        color?: string;
-    }
+	interface NetworkNode {
+		id: string;
+		label: string;
+		size: number;
+		color?: string;
+	}
 
-    interface NetworkEdge {
-        source: string;
-        target: string;
-        weight: number;
-    }
+	interface NetworkEdge {
+		source: string;
+		target: string;
+		weight: number;
+	}
 
-    $effect(() => {
-        if (container && nodes.length > 0) {
-            initGraph();
-        }
-        return () => {
-            sigma?.kill();
-        };
-    });
+	$effect(() => {
+		if (container && nodes.length > 0) {
+			initGraph();
+		}
+		return () => {
+			sigma?.kill();
+		};
+	});
 
-    function initGraph() {
-        const graph = new Graph();
+	function initGraph() {
+		const graph = new Graph();
 
-        // Add nodes
-        nodes.forEach(node => {
-            graph.addNode(node.id, {
-                label: node.label,
-                size: node.size,
-                color: node.color || 'var(--chart-1)',
-                x: Math.random(),
-                y: Math.random()
-            });
-        });
+		// Add nodes
+		nodes.forEach((node) => {
+			graph.addNode(node.id, {
+				label: node.label,
+				size: node.size,
+				color: node.color || 'var(--chart-1)',
+				x: Math.random(),
+				y: Math.random()
+			});
+		});
 
-        // Add edges
-        edges.forEach(edge => {
-            graph.addEdge(edge.source, edge.target, { weight: edge.weight });
-        });
+		// Add edges
+		edges.forEach((edge) => {
+			graph.addEdge(edge.source, edge.target, { weight: edge.weight });
+		});
 
-        // Apply ForceAtlas2 layout
-        forceAtlas2.assign(graph, { iterations: 100 });
+		// Apply ForceAtlas2 layout
+		forceAtlas2.assign(graph, { iterations: 100 });
 
-        // Render with Sigma
-        sigma = new Sigma(graph, container, {
-            renderLabels: true,
-            labelColor: { color: 'var(--foreground)' }
-        });
-    }
+		// Render with Sigma
+		sigma = new Sigma(graph, container, {
+			renderLabels: true,
+			labelColor: { color: 'var(--foreground)' }
+		});
+	}
 </script>
 
 <div bind:this={container} class="h-[600px] w-full"></div>
 ```
 
 **Network data format** (from `generate_network.py`):
+
 ```json
 {
-    "nodes": [
-        { "id": "node1", "label": "Entity Name", "size": 10, "type": "person" }
-    ],
-    "edges": [
-        { "source": "node1", "target": "node2", "weight": 5 }
-    ]
+	"nodes": [{ "id": "node1", "label": "Entity Name", "size": 10, "type": "person" }],
+	"edges": [{ "source": "node1", "target": "node2", "weight": 5 }]
 }
 ```
 
@@ -353,14 +353,15 @@ For network/graph visualizations, use Sigma.js with Graphology:
 ```
 
 **Available chart colors:**
+
 - `--chart-1` through `--chart-5` - Primary chart palette
 - `--country-color-*` - Country-specific colors (burkina-faso, benin, cote-divoire, niger, togo, nigeria)
 
 **Use shadcn-svelte for UI elements:**
+
 ```svelte
-import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
-import { Button } from '$lib/components/ui/button/index.js';
-import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+import {(Card, CardContent, CardHeader, CardTitle)} from '$lib/components/ui/card/index.js'; import {Button}
+from '$lib/components/ui/button/index.js'; import {Skeleton} from '$lib/components/ui/skeleton/index.js';
 ```
 
 ### Step 7: Internationalization
@@ -369,17 +370,17 @@ import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 
 ```svelte
 <script>
-    import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
-    // For reactive updates when language changes
-    const title = $derived(t('chart.my_chart_title'));
+	// For reactive updates when language changes
+	const title = $derived(t('chart.my_chart_title'));
 </script>
 
-<h2>{t('chart.title')}</h2>
-<p>{t('chart.description', [someValue])}</p>  <!-- with parameters -->
+<h2>{t('chart.title')}</h2><p>{t('chart.description', [someValue])}</p> <!-- with parameters -->
 ```
 
 **Add new translation keys to `src/lib/stores/translationStore.svelte.ts`:**
+
 ```typescript
 // In the translations object, add to both 'en' and 'fr' sections:
 'chart.new_key': 'English text',
@@ -391,6 +392,7 @@ import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 If the visualization needs its own page:
 
 **`src/routes/[page-name]/+page.ts`:**
+
 ```typescript
 import type { PageLoad } from './$types';
 import { base } from '$app/paths';
@@ -398,37 +400,38 @@ import { base } from '$app/paths';
 export const prerender = true;
 
 export const load: PageLoad = async ({ fetch }) => {
-    const response = await fetch(`${base}/data/[filename].json`);
-    if (!response.ok) {
-        throw new Error(`Failed to load data: ${response.status}`);
-    }
-    const data = await response.json();
-    return { data };
+	const response = await fetch(`${base}/data/[filename].json`);
+	if (!response.ok) {
+		throw new Error(`Failed to load data: ${response.status}`);
+	}
+	const data = await response.json();
+	return { data };
 };
 ```
 
 **`src/routes/[page-name]/+page.svelte`:**
+
 ```svelte
 <script lang="ts">
-    import { t } from '$lib/stores/translationStore.svelte.js';
-    import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
-    import { NewVisualization } from '$lib/components/visualizations/index.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
+	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
+	import { NewVisualization } from '$lib/components/visualizations/index.js';
 
-    let { data: pageData } = $props();
-    const chartData = $derived(pageData.data);
+	let { data: pageData } = $props();
+	const chartData = $derived(pageData.data);
 </script>
 
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">{t('pages.new_page_title')}</h1>
+	<h1 class="mb-4 text-2xl font-bold">{t('pages.new_page_title')}</h1>
 
-    <Card>
-        <CardHeader>
-            <CardTitle>{t('chart.new_chart_title')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-            <NewVisualization data={chartData} />
-        </CardContent>
-    </Card>
+	<Card>
+		<CardHeader>
+			<CardTitle>{t('chart.new_chart_title')}</CardTitle>
+		</CardHeader>
+		<CardContent>
+			<NewVisualization data={chartData} />
+		</CardContent>
+	</Card>
 </div>
 ```
 
@@ -462,31 +465,34 @@ Before completing, verify:
 ## Common Patterns
 
 ### Loading State
+
 ```svelte
 {#if loading}
-    <Skeleton class="h-[400px] w-full" />
+	<Skeleton class="h-[400px] w-full" />
 {:else if error}
-    <div class="text-destructive">{error}</div>
+	<div class="text-destructive">{error}</div>
 {:else}
-    <MyChart {data} />
+	<MyChart {data} />
 {/if}
 ```
 
 ### Responsive Container
+
 ```svelte
-<div class="h-[300px] sm:h-[400px] lg:h-[500px] w-full">
-    <Chart ... />
+<div class="h-[300px] w-full sm:h-[400px] lg:h-[500px]">
+	<Chart ... />
 </div>
 ```
 
 ### Country Colors
+
 ```typescript
 const countryColors: Record<string, string> = {
-    'Burkina Faso': 'var(--country-color-burkina-faso)',
-    'Benin': 'var(--country-color-benin)',
-    'Cote d\'Ivoire': 'var(--country-color-cote-divoire)',
-    'Niger': 'var(--country-color-niger)',
-    'Togo': 'var(--country-color-togo)',
-    'Nigeria': 'var(--country-color-nigeria)',
+	'Burkina Faso': 'var(--country-color-burkina-faso)',
+	Benin: 'var(--country-color-benin)',
+	"Cote d'Ivoire": 'var(--country-color-cote-divoire)',
+	Niger: 'var(--country-color-niger)',
+	Togo: 'var(--country-color-togo)',
+	Nigeria: 'var(--country-color-nigeria)'
 };
 ```

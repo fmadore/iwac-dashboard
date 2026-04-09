@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -9,7 +9,7 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { Bar as LayerChartBar } from '$lib/components/visualizations/charts/layerchart/index.js';
 	import { Search, ArrowRight, FileText, BrainCircuit, Target, AlertCircle } from '@lucide/svelte';
-	import type { TopicsSummaryData, TopicSummary } from '$lib/types/topics.js';
+	import type { TopicsSummaryData } from '$lib/types/topics.js';
 
 	// State
 	let summaryData = $state<TopicsSummaryData | null>(null);
@@ -237,7 +237,7 @@
 					<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 						{#each filteredTopics as topic (topic.id)}
 							<a
-								href="{base}/topics/{topic.id}"
+								href={resolve(`/topics/${topic.id}`)}
 								class="group flex items-start justify-between rounded-lg border bg-card p-4 transition-colors hover:bg-accent"
 							>
 								<div class="min-w-0 flex-1">

@@ -18,20 +18,11 @@
 	import type {
 		TopicNetworkData,
 		TopicNetworkNode,
-		TopicNetworkTopicNode,
-		TopicNetworkArticleNode
+		TopicNetworkTopicNode
 	} from '$lib/types/topicNetwork.js';
 	import type { GlobalNetworkNode } from '$lib/types/network.js';
 	import { isTopicNode, isArticleNode } from '$lib/types/topicNetwork.js';
-	import {
-		ZoomIn,
-		ZoomOut,
-		Maximize2,
-		Hash,
-		FileText,
-		Focus,
-		X
-	} from '@lucide/svelte';
+	import { ZoomIn, ZoomOut, Maximize2, Hash, FileText, Focus, X } from '@lucide/svelte';
 
 	// URL sync
 	const urlSync = useUrlSync();
@@ -123,7 +114,8 @@
 			(e) => e.source === selectedId || e.target === selectedId
 		);
 
-		const neighborIds = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const neighborIds = new Set<string>(); // Local procedural Set; not reactive state.
 		neighborIds.add(selectedId);
 		for (const edge of egoEdges) {
 			neighborIds.add(edge.source);
@@ -146,30 +138,6 @@
 	// Stats
 	const topicCount = $derived(displayNodes.filter(isTopicNode).length);
 	const articleCount = $derived(displayNodes.filter(isArticleNode).length);
-
-	// Node size calculation - topics larger based on count, articles smaller
-	const nodeSizes = $derived.by(() => {
-		const sizes: Record<string, number> = {};
-		let maxTopicCount = 1;
-
-		for (const node of displayNodes) {
-			if (isTopicNode(node) && node.count > maxTopicCount) {
-				maxTopicCount = node.count;
-			}
-		}
-
-		for (const node of displayNodes) {
-			if (isTopicNode(node)) {
-				// Topics: larger nodes (15-30)
-				sizes[node.id] = 15 + (node.count / maxTopicCount) * 15;
-			} else {
-				// Articles: smaller fixed size
-				sizes[node.id] = 6;
-			}
-		}
-
-		return sizes;
-	});
 
 	// Convert to GlobalNetworkNode format for NetworkGraph compatibility
 	const graphNodes = $derived.by(() => {
@@ -353,7 +321,7 @@
 				<div class="flex flex-col gap-4 sm:flex-row sm:items-center">
 					<!-- Topic Filter -->
 					<div class="flex items-center gap-2">
-						<Label class="whitespace-nowrap text-sm font-medium"
+						<Label class="text-sm font-medium whitespace-nowrap"
 							>{t('topic_network.filter_by_topic')}:</Label
 						>
 						<Select.Root
@@ -376,7 +344,7 @@
 
 					<!-- Probability Threshold -->
 					<div class="flex items-center gap-2">
-						<Label class="whitespace-nowrap text-sm font-medium"
+						<Label class="text-sm font-medium whitespace-nowrap"
 							>{t('topic_network.link_threshold')}:</Label
 						>
 						<div class="flex flex-1 items-center gap-2">
@@ -405,7 +373,12 @@
 
 					<!-- Zoom Controls -->
 					<div class="flex items-center gap-1 sm:ml-auto">
-						<Button variant="outline" size="icon" onclick={handleZoomIn} title={t('network.zoom_in')}>
+						<Button
+							variant="outline"
+							size="icon"
+							onclick={handleZoomIn}
+							title={t('network.zoom_in')}
+						>
 							<ZoomIn class="h-4 w-4" />
 						</Button>
 						<Button
@@ -456,7 +429,7 @@
 
 					<!-- Focus Mode Indicator -->
 					{#if focusMode && selectedNode}
-						<div class="absolute left-4 top-4 z-20">
+						<div class="absolute top-4 left-4 z-20">
 							<Badge variant="secondary" class="flex items-center gap-2 px-3 py-1.5">
 								<Focus class="h-3.5 w-3.5" />
 								<span>{t('network.focus_mode')}</span>
@@ -499,7 +472,7 @@
 					<!-- Topic Detail Panel (when a topic node is selected) -->
 					{#if selectedNode && isTopicNode(selectedNode)}
 						<div
-							class="absolute right-4 top-4 z-20 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm lg:w-80"
+							class="absolute top-4 right-4 z-20 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm lg:w-80"
 						>
 							<div class="mb-3 flex items-start justify-between gap-2">
 								<div class="min-w-0 flex-1">
@@ -508,7 +481,12 @@
 										<h3 class="font-semibold">{t('topic_network.topic_details')}</h3>
 									</div>
 								</div>
-								<Button variant="ghost" size="sm" class="h-7 w-7 shrink-0 p-0" onclick={handleClosePanel}>
+								<Button
+									variant="ghost"
+									size="sm"
+									class="h-7 w-7 shrink-0 p-0"
+									onclick={handleClosePanel}
+								>
 									<X class="h-4 w-4" />
 								</Button>
 							</div>
@@ -518,7 +496,7 @@
 
 								{#if selectedNode.keywords.length > 0}
 									<div class="flex flex-wrap gap-1">
-										{#each selectedNode.keywords as keyword}
+										{#each selectedNode.keywords as keyword (keyword)}
 											<Badge variant="secondary" class="text-xs">{keyword}</Badge>
 										{/each}
 									</div>

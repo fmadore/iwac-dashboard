@@ -14,7 +14,7 @@
 	const currentEntity = $derived(entitySpatialStore.currentEntity);
 
 	// Force reactivity on language change
-	const lang = $derived(languageStore.current);
+	const _lang = $derived(languageStore.current);
 
 	// Get display value for input
 	const displayValue = $derived.by(() => {
@@ -83,7 +83,7 @@
 		{#if currentEntity}
 			<button
 				type="button"
-				class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+				class="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
 				onclick={clearSelection}
 				aria-label="Clear selection"
 			>
@@ -113,7 +113,7 @@
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
-				class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+				class="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground"
 			>
 				<circle cx="11" cy="11" r="8"></circle>
 				<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -124,7 +124,7 @@
 	<!-- Dropdown list -->
 	{#if isOpen && !currentEntity}
 		<div
-			class="entity-picker-dropdown absolute top-full left-0 right-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-lg"
+			class="entity-picker-dropdown absolute top-full right-0 left-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-lg"
 		>
 			<ScrollArea class="h-[280px]">
 				{#if filteredEntities.length === 0}

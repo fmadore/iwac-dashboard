@@ -20,10 +20,11 @@
 		};
 	}
 
-	let { data: pageData }: Props = $props();
+	let { data }: Props = $props();
+	const pageData = $derived(data);
 
 	// Force reactivity on language change
-	const lang = $derived(languageStore.current);
+	const _lang = $derived(languageStore.current);
 
 	// Derived state from store
 	const isLoading = $derived(entitySpatialStore.isLoading);

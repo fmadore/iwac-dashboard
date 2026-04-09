@@ -1,18 +1,8 @@
 <script lang="ts">
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-	import { browser } from '$app/environment';
-	import type { GlobalNetworkNode, GlobalNetworkEdge, EntityType } from '$lib/types/network.js';
+	import type { GlobalNetworkNode, GlobalNetworkEdge } from '$lib/types/network.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
-	import {
-		Users,
-		Building2,
-		Calendar,
-		Tag,
-		MapPin,
-		BookMarked,
-		ArrowRight,
-		ExternalLink
-	} from '@lucide/svelte';
+	import { Users, Building2, Calendar, Tag, MapPin, BookMarked } from '@lucide/svelte';
 
 	interface EntityTypeConfig {
 		label: string;
@@ -29,18 +19,39 @@
 		onNodeClick?: (node: GlobalNetworkNode) => void;
 	}
 
-	let {
-		selectedNode,
-		allNodes,
-		allEdges,
-		entityTypeColors,
-		edgeTypeColors,
-		onNodeClick
-	}: Props = $props();
+	let { selectedNode, allNodes, allEdges, entityTypeColors, edgeTypeColors, onNodeClick }: Props =
+		$props();
 
-	let svgContainer: SVGSVGElement | null = $state(null);
-	let containerDiv: HTMLDivElement | null = $state(null);
-	const lang = $derived(languageStore.current);
+	// Container width for SVG layout (bound from the wrapping div)
+	let containerWidth = $state(0);
+	const svgHeight = 350;
+	// Force reactivity on language change (used by t() in markup)
+	const _lang = $derived(languageStore.current);
+
+	const DIRECTED_EDGE_TYPES = new Set(['part_of', 'has_part', 'located_in', 'succeeded_by']);
+
+	type RenderEdge = {
+		key: string;
+		x1: number;
+		y1: number;
+		x2: number;
+		y2: number;
+		color: string;
+		strokeWidth: number;
+		isDirected: boolean;
+		arrowPoints?: string;
+	};
+
+	type RenderNode = {
+		id: string;
+		x: number;
+		y: number;
+		size: number;
+		color: string;
+		label: string;
+		showLabel: boolean;
+		node: GlobalNetworkNode;
+	};
 
 	// Edge type labels for display
 	const edgeTypeLabels: Record<string, string> = {
@@ -61,7 +72,8 @@
 		const egoEdges = allEdges.filter((e) => e.source === id || e.target === id);
 
 		// Get neighbor IDs
-		const neighborIds = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const neighborIds = new Set<string>(); // Local procedural Set; not reactive state.
 		neighborIds.add(id);
 		for (const edge of egoEdges) {
 			neighborIds.add(edge.source);
@@ -78,7 +90,8 @@
 		const sortedEdges = [...egoEdges].sort((a, b) => b.weight - a.weight);
 
 		// Group connections by edge type
-		const byType = new Map<string, Array<{ node: GlobalNetworkNode; edge: GlobalNetworkEdge }>>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const byType = new Map<string, Array<{ node: GlobalNetworkNode; edge: GlobalNetworkEdge }>>(); // Local procedural Map; not reactive state.
 		for (const edge of sortedEdges) {
 			const neighborId = edge.source === id ? edge.target : edge.source;
 			const neighborNode = nodeMap.get(neighborId);
@@ -92,190 +105,132 @@
 		return { nodes: egoNodes, edges: sortedEdges, byType };
 	});
 
-	// Draw the D3 ego network
-	$effect(() => {
-		if (!browser || !svgContainer || !containerDiv || !egoData) return;
-		const _ = lang; // reactive dependency
+	// Compute the SVG layout reactively. Renders via Svelte template instead of
+	// imperative DOM mutation so the runtime stays in sync.
+	type EgoLayout = {
+		width: number;
+		centerX: number;
+		centerY: number;
+		centerColor: string;
+		centerLabel: string;
+		edges: RenderEdge[];
+		nodes: RenderNode[];
+	};
 
-		drawEgoNetwork();
-	});
+	const layout = $derived.by<EgoLayout | null>(() => {
+		const width = containerWidth;
+		if (width <= 0) return null;
 
-	function drawEgoNetwork() {
-		if (!svgContainer || !containerDiv) return;
-
-		const width = containerDiv.clientWidth;
-		const height = 350;
 		const centerX = width / 2;
-		const centerY = height / 2;
-
-		// Clear previous
-		while (svgContainer.firstChild) {
-			svgContainer.removeChild(svgContainer.firstChild);
-		}
-		svgContainer.setAttribute('viewBox', `0 0 ${width} ${height}`);
-		svgContainer.setAttribute('width', String(width));
-		svgContainer.setAttribute('height', String(height));
+		const centerY = svgHeight / 2;
 
 		const neighbors = egoData.nodes.filter((n) => n.id !== selectedNode.id);
-		if (neighbors.length === 0) return;
+		if (neighbors.length === 0) {
+			return {
+				width,
+				centerX,
+				centerY,
+				centerColor: entityTypeColors[selectedNode.type]?.color || '#888',
+				centerLabel:
+					selectedNode.label.length > 25
+						? selectedNode.label.slice(0, 23) + '...'
+						: selectedNode.label,
+				edges: [],
+				nodes: []
+			};
+		}
 
-		// Limit visible neighbors for readability
 		const maxNeighbors = Math.min(neighbors.length, 30);
 		const visibleNeighbors = neighbors
 			.sort((a, b) => b.strength - a.strength)
 			.slice(0, maxNeighbors);
 		const visibleIds = new Set([selectedNode.id, ...visibleNeighbors.map((n) => n.id)]);
 
-		// Position neighbors in a circle around center
-		const radius = Math.min(width, height) * 0.36;
+		const radius = Math.min(width, svgHeight) * 0.36;
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const nodePositions = new Map<string, { x: number; y: number }>();
 		nodePositions.set(selectedNode.id, { x: centerX, y: centerY });
-
-		visibleNeighbors.forEach((node, i) => {
+		visibleNeighbors.forEach((n, i) => {
 			const angle = (2 * Math.PI * i) / visibleNeighbors.length - Math.PI / 2;
-			nodePositions.set(node.id, {
+			nodePositions.set(n.id, {
 				x: centerX + radius * Math.cos(angle),
 				y: centerY + radius * Math.sin(angle)
 			});
 		});
 
-		// SVG namespace
-		const ns = 'http://www.w3.org/2000/svg';
-
-		// Draw edges
 		const visibleEdges = egoData.edges.filter(
 			(e) => visibleIds.has(e.source) && visibleIds.has(e.target)
 		);
-
 		const maxWeight = Math.max(...visibleEdges.map((e) => e.weight), 1);
 
+		const edges: RenderEdge[] = [];
 		for (const edge of visibleEdges) {
 			const from = nodePositions.get(edge.source);
 			const to = nodePositions.get(edge.target);
 			if (!from || !to) continue;
 
-			const line = document.createElementNS(ns, 'line');
-			line.setAttribute('x1', String(from.x));
-			line.setAttribute('y1', String(from.y));
-			line.setAttribute('x2', String(to.x));
-			line.setAttribute('y2', String(to.y));
-
-			const edgeColor = edgeTypeColors[edge.type] || 'var(--muted-foreground)';
+			const color = edgeTypeColors[edge.type] || 'var(--muted-foreground)';
 			const strokeWidth = 1 + (edge.weight / maxWeight) * 3;
+			const isDirected = DIRECTED_EDGE_TYPES.has(edge.type);
 
-			line.setAttribute('stroke', edgeColor);
-			line.setAttribute('stroke-width', String(strokeWidth));
-			line.setAttribute('stroke-opacity', '0.5');
-			svgContainer.appendChild(line);
-
-			// Directed edge arrow for directed types
-			const directedTypes = ['part_of', 'has_part', 'located_in', 'succeeded_by'];
-			if (directedTypes.includes(edge.type)) {
+			let arrowPoints: string | undefined;
+			if (isDirected) {
 				const dx = to.x - from.x;
 				const dy = to.y - from.y;
 				const len = Math.sqrt(dx * dx + dy * dy);
 				if (len > 0) {
 					const arrowSize = 6;
 					const nodeRadius = 8;
-					// Position arrow at edge of target node
 					const mx = to.x - (dx / len) * (nodeRadius + 2);
 					const my = to.y - (dy / len) * (nodeRadius + 2);
 					const ux = dx / len;
 					const uy = dy / len;
 					const px = -uy;
 					const py = ux;
-
-					const arrow = document.createElementNS(ns, 'polygon');
-					const points = [
+					arrowPoints = [
 						`${mx},${my}`,
 						`${mx - ux * arrowSize + px * arrowSize * 0.5},${my - uy * arrowSize + py * arrowSize * 0.5}`,
 						`${mx - ux * arrowSize - px * arrowSize * 0.5},${my - uy * arrowSize - py * arrowSize * 0.5}`
 					].join(' ');
-					arrow.setAttribute('points', points);
-					arrow.setAttribute('fill', edgeColor);
-					arrow.setAttribute('opacity', '0.6');
-					svgContainer.appendChild(arrow);
 				}
 			}
+
+			edges.push({
+				key: `${edge.source}-${edge.target}-${edge.type}`,
+				x1: from.x,
+				y1: from.y,
+				x2: to.x,
+				y2: to.y,
+				color,
+				strokeWidth,
+				isDirected,
+				arrowPoints
+			});
 		}
 
-		// Draw neighbor nodes
-		for (const node of visibleNeighbors) {
-			const pos = nodePositions.get(node.id);
-			if (!pos) continue;
+		const labelThreshold = visibleNeighbors[4]?.strength ?? 0;
+		const renderNodes: RenderNode[] = visibleNeighbors.map((node) => {
+			const pos = nodePositions.get(node.id)!;
+			const color = entityTypeColors[node.type]?.color || '#888';
+			const size = 5 + Math.min(node.strength / 10, 8);
+			const showLabel = visibleNeighbors.length <= 15 || node.strength >= labelThreshold;
+			const label = node.label.length > 20 ? node.label.slice(0, 18) + '...' : node.label;
+			return { id: node.id, x: pos.x, y: pos.y, size, color, label, showLabel, node };
+		});
 
-			const config = entityTypeColors[node.type];
-			const nodeColor = config?.color || '#888';
-			const nodeSize = 5 + Math.min(node.strength / 10, 8);
-
-			// Node circle
-			const circle = document.createElementNS(ns, 'circle');
-			circle.setAttribute('cx', String(pos.x));
-			circle.setAttribute('cy', String(pos.y));
-			circle.setAttribute('r', String(nodeSize));
-			circle.setAttribute('fill', nodeColor);
-			circle.setAttribute('stroke', 'var(--background)');
-			circle.setAttribute('stroke-width', '1.5');
-			circle.setAttribute('class', 'cursor-pointer');
-			circle.style.transition = 'r 0.15s';
-
-			circle.addEventListener('mouseenter', () => {
-				circle.setAttribute('r', String(nodeSize + 3));
-				circle.setAttribute('stroke-width', '2.5');
-			});
-			circle.addEventListener('mouseleave', () => {
-				circle.setAttribute('r', String(nodeSize));
-				circle.setAttribute('stroke-width', '1.5');
-			});
-			circle.addEventListener('click', () => {
-				onNodeClick?.(node);
-			});
-
-			svgContainer.appendChild(circle);
-
-			// Label (only for top neighbors or if few)
-			if (visibleNeighbors.length <= 15 || node.strength >= visibleNeighbors[4]?.strength) {
-				const text = document.createElementNS(ns, 'text');
-				text.setAttribute('x', String(pos.x));
-				text.setAttribute('y', String(pos.y + nodeSize + 12));
-				text.setAttribute('text-anchor', 'middle');
-				text.setAttribute('fill', 'var(--foreground)');
-				text.setAttribute('font-size', '10');
-				text.setAttribute('class', 'pointer-events-none');
-
-				const label = node.label.length > 20 ? node.label.slice(0, 18) + '...' : node.label;
-				text.textContent = label;
-				svgContainer.appendChild(text);
-			}
-		}
-
-		// Draw center node (selected)
-		const centerCircle = document.createElementNS(ns, 'circle');
-		centerCircle.setAttribute('cx', String(centerX));
-		centerCircle.setAttribute('cy', String(centerY));
-		centerCircle.setAttribute('r', '18');
-
-		const centerConfig = entityTypeColors[selectedNode.type];
-		centerCircle.setAttribute('fill', centerConfig?.color || '#888');
-		centerCircle.setAttribute('stroke', 'var(--foreground)');
-		centerCircle.setAttribute('stroke-width', '3');
-		svgContainer.appendChild(centerCircle);
-
-		// Center label
-		const centerText = document.createElementNS(ns, 'text');
-		centerText.setAttribute('x', String(centerX));
-		centerText.setAttribute('y', String(centerY + 30));
-		centerText.setAttribute('text-anchor', 'middle');
-		centerText.setAttribute('fill', 'var(--foreground)');
-		centerText.setAttribute('font-size', '12');
-		centerText.setAttribute('font-weight', 'bold');
-		centerText.setAttribute('class', 'pointer-events-none');
-		centerText.textContent =
-			selectedNode.label.length > 25
-				? selectedNode.label.slice(0, 23) + '...'
-				: selectedNode.label;
-		svgContainer.appendChild(centerText);
-	}
+		return {
+			width,
+			centerX,
+			centerY,
+			centerColor: entityTypeColors[selectedNode.type]?.color || '#888',
+			centerLabel:
+				selectedNode.label.length > 25
+					? selectedNode.label.slice(0, 23) + '...'
+					: selectedNode.label,
+			edges,
+			nodes: renderNodes
+		};
+	});
 
 	// Icon map for display
 	const iconMap: Record<string, typeof Users> = {
@@ -290,8 +245,87 @@
 
 <div class="space-y-4">
 	<!-- Ego Network SVG -->
-	<div bind:this={containerDiv} class="w-full overflow-hidden rounded-lg border bg-card">
-		<svg bind:this={svgContainer} class="h-[350px] w-full"></svg>
+	<div bind:clientWidth={containerWidth} class="w-full overflow-hidden rounded-lg border bg-card">
+		{#if layout}
+			<svg
+				class="h-[350px] w-full"
+				viewBox="0 0 {layout.width} {svgHeight}"
+				width={layout.width}
+				height={svgHeight}
+			>
+				{#each layout.edges as edge (edge.key)}
+					<line
+						x1={edge.x1}
+						y1={edge.y1}
+						x2={edge.x2}
+						y2={edge.y2}
+						stroke={edge.color}
+						stroke-width={edge.strokeWidth}
+						stroke-opacity="0.5"
+					/>
+					{#if edge.isDirected && edge.arrowPoints}
+						<polygon points={edge.arrowPoints} fill={edge.color} opacity="0.6" />
+					{/if}
+				{/each}
+
+				{#each layout.nodes as renderNode (renderNode.id)}
+					<circle
+						class="ego-node-circle cursor-pointer"
+						cx={renderNode.x}
+						cy={renderNode.y}
+						r={renderNode.size}
+						fill={renderNode.color}
+						stroke="var(--background)"
+						stroke-width="1.5"
+						role="button"
+						tabindex="0"
+						aria-label={renderNode.node.label}
+						onclick={() => onNodeClick?.(renderNode.node)}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								onNodeClick?.(renderNode.node);
+							}
+						}}
+					/>
+					{#if renderNode.showLabel}
+						<text
+							class="pointer-events-none"
+							x={renderNode.x}
+							y={renderNode.y + renderNode.size + 12}
+							text-anchor="middle"
+							fill="var(--foreground)"
+							font-size="10"
+						>
+							{renderNode.label}
+						</text>
+					{/if}
+				{/each}
+
+				<!-- Center node -->
+				<circle
+					cx={layout.centerX}
+					cy={layout.centerY}
+					r="18"
+					fill={layout.centerColor}
+					stroke="var(--foreground)"
+					stroke-width="3"
+				/>
+				<text
+					class="pointer-events-none"
+					x={layout.centerX}
+					y={layout.centerY + 30}
+					text-anchor="middle"
+					fill="var(--foreground)"
+					font-size="12"
+					font-weight="bold"
+				>
+					{layout.centerLabel}
+				</text>
+			</svg>
+		{:else}
+			<div class="h-[350px]"></div>
+		{/if}
 	</div>
 
 	<!-- Connection list grouped by edge type -->
@@ -327,7 +361,8 @@
 					{/each}
 					{#if connections.length > 10}
 						<p class="px-2 text-xs text-muted-foreground">
-							+{connections.length - 10} {t('common.more')}
+							+{connections.length - 10}
+							{t('common.more')}
 						</p>
 					{/if}
 				</div>
@@ -335,3 +370,16 @@
 		{/each}
 	</div>
 </div>
+
+<style>
+	.ego-node-circle {
+		transition:
+			r 0.15s ease,
+			stroke-width 0.15s ease;
+	}
+	.ego-node-circle:hover,
+	.ego-node-circle:focus-visible {
+		stroke-width: 2.5;
+		outline: none;
+	}
+</style>

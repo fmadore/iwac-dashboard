@@ -87,7 +87,11 @@
 		yearRangeData.max ?? metadata?.temporal.max_year ?? 2025
 	]);
 
-	// Local state for slider to avoid heavy re-renders while dragging
+	// Local state for slider to avoid heavy re-renders while dragging.
+	// Bidirectional: slider drags write here, and external URL/yearRange changes
+	// re-sync via the effect below. The $state + $effect pattern is intentional —
+	// $derived would be read-only and the slider needs to write back.
+	// eslint-disable-next-line svelte/prefer-writable-derived
 	let localYearRange = $state<[number, number]>([1912, 2025]);
 
 	// Sync local state with URL state
@@ -149,7 +153,10 @@
 			data: yearIndices.map((i) => s.data[i])
 		}));
 
-		const total = filteredSeries.reduce((sum: number, s: SeriesData) => sum + s.data.reduce((a: number, b: number) => a + b, 0), 0);
+		const total = filteredSeries.reduce(
+			(sum: number, s: SeriesData) => sum + s.data.reduce((a: number, b: number) => a + b, 0),
+			0
+		);
 
 		return {
 			years: filteredYears,
@@ -260,7 +267,7 @@
 								</Select.Trigger>
 								<Select.Content>
 									<Select.Item value="all-countries">{t('filters.all_countries')}</Select.Item>
-									{#each countryOptions() as country}
+									{#each countryOptions() as country (country)}
 										<Select.Item value={country}>{country}</Select.Item>
 									{/each}
 								</Select.Content>

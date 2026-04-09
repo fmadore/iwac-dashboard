@@ -7,7 +7,6 @@
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 
 	type ApiChartData = { labels?: string[]; values?: number[] };
-	type ChartDataItem = { category: string; documents: number; originalKey: string };
 
 	let rawChartData = $state<{ category: string; documents: number }[]>([]);
 	let isLoading = $state(true);
@@ -26,7 +25,7 @@
 	// Reactive chart data that updates with language changes
 	const chartData = $derived.by(() => {
 		// Access languageStore to make this reactive
-		const currentLang = languageStore.current;
+		const _currentLang = languageStore.current;
 
 		const translated = rawChartData.map((item) => ({
 			category: entityTranslationMap[item.category]

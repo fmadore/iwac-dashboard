@@ -10,17 +10,7 @@
 	} from '$lib/components/visualizations/charts/d3/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
-	import {
-		FileText,
-		Tags,
-		Hash,
-		Globe,
-		MapPin,
-		Download,
-		Info,
-		Grid3X3,
-		BookOpen
-	} from '@lucide/svelte';
+	import { FileText, Tags, Hash, Globe, Download, Info, Grid3X3, BookOpen } from '@lucide/svelte';
 
 	// Use URL sync hook
 	const urlSync = useUrlSync();
@@ -116,16 +106,28 @@
 
 			// Load optional data (may not exist for all configurations)
 			try {
-				countryMatrixData = await fetchData<Record<string, CooccurrenceData>>('cooccurrence/matrix-countries.json');
-			} catch { /* optional */ }
+				countryMatrixData = await fetchData<Record<string, CooccurrenceData>>(
+					'cooccurrence/matrix-countries.json'
+				);
+			} catch {
+				/* optional */
+			}
 
 			try {
-				globalWordData = await fetchData<Record<string, TermWordData>>('cooccurrence/words-global.json');
-			} catch { /* optional */ }
+				globalWordData = await fetchData<Record<string, TermWordData>>(
+					'cooccurrence/words-global.json'
+				);
+			} catch {
+				/* optional */
+			}
 
 			try {
-				countryWordData = await fetchData<Record<string, Record<string, TermWordData>>>('cooccurrence/words-countries.json');
-			} catch { /* optional */ }
+				countryWordData = await fetchData<Record<string, Record<string, TermWordData>>>(
+					'cooccurrence/words-countries.json'
+				);
+			} catch {
+				/* optional */
+			}
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Failed to load co-occurrence data';
 			console.error('Error loading co-occurrence data:', err);

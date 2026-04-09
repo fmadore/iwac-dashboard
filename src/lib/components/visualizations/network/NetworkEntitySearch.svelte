@@ -4,7 +4,18 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import type { GlobalNetworkNode, EntityType } from '$lib/types/network.js';
-	import { Search, X, Users, Building2, Calendar, Tag, MapPin, Hash, FileText, BookMarked } from '@lucide/svelte';
+	import {
+		Search,
+		X,
+		Users,
+		Building2,
+		Calendar,
+		Tag,
+		MapPin,
+		Hash,
+		FileText,
+		BookMarked
+	} from '@lucide/svelte';
 
 	interface Props {
 		nodes: GlobalNetworkNode[];
@@ -20,7 +31,7 @@
 	let inputElement = $state<HTMLInputElement | null>(null);
 
 	// Force reactivity on language change
-	const lang = $derived(languageStore.current);
+	const _lang = $derived(languageStore.current);
 
 	// Entity type icons
 	const entityIcons: Record<EntityType, typeof Users> = {
@@ -143,21 +154,21 @@
 		{#if selectedNode}
 			<button
 				type="button"
-				class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+				class="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
 				onclick={clearSelection}
 				aria-label={t('common.clear')}
 			>
 				<X class="h-4 w-4" />
 			</button>
 		{:else}
-			<Search class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+			<Search class="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 		{/if}
 	</div>
 
 	<!-- Dropdown list -->
 	{#if isOpen}
 		<div
-			class="network-search-dropdown absolute top-full left-0 right-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-lg"
+			class="network-search-dropdown absolute top-full right-0 left-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-lg"
 		>
 			<ScrollArea class="h-[320px]">
 				{#if filteredNodes.length === 0}
@@ -176,16 +187,20 @@
 							{@const color = entityColors[node.type]}
 							<button
 								type="button"
-								class="flex w-full items-center gap-2 rounded-sm px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none transition-colors"
+								class="flex w-full items-center gap-2 rounded-sm px-3 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
 								class:bg-accent={selectedNode?.id === node.id}
 								onclick={() => selectNode(node)}
 							>
 								<span style="color: {color}" class="shrink-0">
 									<Icon class="h-4 w-4" />
 								</span>
-								<span class="truncate flex-1 font-medium">{node.label}</span>
+								<span class="flex-1 truncate font-medium">{node.label}</span>
 								<span class="flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
-									<Badge variant="outline" class="h-5 px-1.5 text-[10px]" style="border-color: {color}; color: {color}">
+									<Badge
+										variant="outline"
+										class="h-5 px-1.5 text-[10px]"
+										style="border-color: {color}; color: {color}"
+									>
 										{node.degree}
 									</Badge>
 								</span>

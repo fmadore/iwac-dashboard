@@ -44,7 +44,7 @@
 
 		<div class="flex items-center gap-1">
 			{#if totalPages <= 7}
-				{#each Array(totalPages) as _, i}
+				{#each Array(totalPages) as _, i (i)}
 					<Button
 						variant={currentPage === i + 1 ? 'default' : 'outline'}
 						size="sm"
@@ -70,7 +70,7 @@
 				{/if}
 
 				<!-- Pages around current -->
-				{#each Array(Math.min(3, totalPages - 2)) as _, i}
+				{#each Array(Math.min(3, totalPages - 2)) as _, i (i)}
 					{@const page = Math.max(2, Math.min(currentPage - 1, totalPages - 3)) + i}
 					{#if page > 1 && page < totalPages}
 						<Button

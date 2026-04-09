@@ -13,6 +13,7 @@ Static SvelteKit dashboard for the Islam West Africa Collection (IWAC) database.
 ## IWAC Dataset Skill
 
 **IMPORTANT:** When creating new visualizations or data pipelines, use the `iwac-dataset` skill. It provides:
+
 - Complete dataset schema and field references
 - Loading patterns for all 6 subsets (articles, publications, documents, audiovisual, index, references)
 - Common query patterns for filtering by country, topic, sentiment, dates
@@ -81,9 +82,9 @@ Never use Svelte 4 syntax. Always use `$state`, `$derived`, `$props`, `$effect`:
 
 ```svelte
 <script>
-    let { count = 0 } = $props();
-    const doubled = $derived(count * 2);
-    let items = $state([]);
+	let { count = 0 } = $props();
+	const doubled = $derived(count * 2);
+	let items = $state([]);
 </script>
 ```
 
@@ -107,11 +108,12 @@ All text must use the translation function. Bilingual EN/FR support required:
 
 ```svelte
 <script>
-    import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 </script>
 
 {t('chart.top_countries')}
-{t('chart.languages_in_type', ['Press Article'])}  <!-- with parameters -->
+{t('chart.languages_in_type', ['Press Article'])}
+<!-- with parameters -->
 ```
 
 Charts must update reactively on language change (use `$derived` with `languageStore.current`).

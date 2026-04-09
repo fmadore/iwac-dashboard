@@ -55,7 +55,13 @@ export interface TreemapZoom {
 	resetOnDoubleClick: boolean;
 }
 
-export type TreemapTileMethod = 'squarify' | 'binary' | 'dice' | 'slice' | 'sliceDice' | 'resquarify';
+export type TreemapTileMethod =
+	| 'squarify'
+	| 'binary'
+	| 'dice'
+	| 'slice'
+	| 'sliceDice'
+	| 'resquarify';
 
 export interface TreemapConfig {
 	padding: TreemapPadding;

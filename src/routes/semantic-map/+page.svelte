@@ -47,16 +47,48 @@
 	// Color palettes
 	// ═══════════════════════════════════════════════════
 
-	const COUNTRY_PALETTE = ['#4a9960', '#b8652a', '#c49a2e', '#c4b840', '#4a88b0', '#3a8060', '#888888'];
+	const COUNTRY_PALETTE = [
+		'#4a9960',
+		'#b8652a',
+		'#c49a2e',
+		'#c4b840',
+		'#4a88b0',
+		'#3a8060',
+		'#888888'
+	];
 	const SENTIMENT_PALETTE = ['#22c55e', '#ef4444', '#94a3b8', '#666666'];
 	const POLARITY_PALETTE = ['#15803d', '#22c55e', '#94a3b8', '#ef4444', '#991b1b', '#666666'];
 	const CHART_PALETTE = [
-		'#c47f35', '#3d72b0', '#3d9070', '#7d50c4', '#b0a030',
-		'#c44040', '#3890a0', '#b050a0', '#60a040', '#a06040',
-		'#5060c0', '#c08040', '#4090c0', '#a04070', '#70b060',
-		'#806890', '#c0a060', '#5080a0', '#a08050', '#609060',
-		'#8060b0', '#b07050', '#4070b0', '#908040', '#607090',
-		'#b06080', '#50a080', '#a06090', '#7090a0', '#c06050'
+		'#c47f35',
+		'#3d72b0',
+		'#3d9070',
+		'#7d50c4',
+		'#b0a030',
+		'#c44040',
+		'#3890a0',
+		'#b050a0',
+		'#60a040',
+		'#a06040',
+		'#5060c0',
+		'#c08040',
+		'#4090c0',
+		'#a04070',
+		'#70b060',
+		'#806890',
+		'#c0a060',
+		'#5080a0',
+		'#a08050',
+		'#609060',
+		'#8060b0',
+		'#b07050',
+		'#4070b0',
+		'#908040',
+		'#607090',
+		'#b06080',
+		'#50a080',
+		'#a06090',
+		'#7090a0',
+		'#c06050'
 	];
 
 	const paletteForColorBy = $derived(
@@ -162,7 +194,9 @@
 			selectedPoint = null;
 			hoveredPoint = null;
 
-			const raw = await fetchData<SemanticMapRawData>(`semantic-map/${slug}.json`, { cache: false });
+			const raw = await fetchData<SemanticMapRawData>(`semantic-map/${slug}.json`, {
+				cache: false
+			});
 
 			meta = raw.meta;
 			// Keep original country/topic lists for UI
@@ -268,7 +302,10 @@
 	{:else if meta}
 		<!-- Stats -->
 		<div class="grid gap-4 md:grid-cols-4">
-			<StatsCard title={t('semantic_map.total_articles')} value={columnar?.length ?? meta.totalRecords} />
+			<StatsCard
+				title={t('semantic_map.total_articles')}
+				value={columnar?.length ?? meta.totalRecords}
+			/>
 			<StatsCard title={t('semantic_map.countries')} value={countries.length} />
 			<StatsCard title={t('semantic_map.topics')} value={topics.length} />
 			<StatsCard title={t('semantic_map.embedding_dim')} value={`${meta.embeddingDim}D`} />
@@ -277,11 +314,11 @@
 		<!-- Controls -->
 		<Card.Root>
 			<Card.Content class="py-4">
-				<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:flex-wrap">
+				<div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
 					<!-- Country filter -->
 					{#if countryIndex && countryIndex.countries.length > 0}
 						<div class="flex items-center gap-2">
-							<Label class="whitespace-nowrap text-sm font-medium"
+							<Label class="text-sm font-medium whitespace-nowrap"
 								>{t('semantic_map.filter_country')}:</Label
 							>
 							<Select.Root
@@ -296,7 +333,8 @@
 									{:else if selectedCountry === 'all'}
 										{t('semantic_map.all_countries')}
 									{:else}
-										{countryIndex.countries.find((c) => c.slug === selectedCountry)?.name || selectedCountry}
+										{countryIndex.countries.find((c) => c.slug === selectedCountry)?.name ||
+											selectedCountry}
 									{/if}
 								</Select.Trigger>
 								<Select.Content>
@@ -315,14 +353,10 @@
 
 					<!-- Color by -->
 					<div class="flex items-center gap-2">
-						<Label class="whitespace-nowrap text-sm font-medium"
+						<Label class="text-sm font-medium whitespace-nowrap"
 							>{t('semantic_map.color_by')}:</Label
 						>
-						<Select.Root
-							type="single"
-							value={colorBy}
-							onValueChange={handleColorByChange}
-						>
+						<Select.Root type="single" value={colorBy} onValueChange={handleColorByChange}>
 							<Select.Trigger class="w-48">
 								{t(colorByOptions.find((o) => o.value === colorBy)?.labelKey || '')}
 							</Select.Trigger>
@@ -417,10 +451,10 @@
 				<!-- Selected article panel -->
 				{#if selectedPoint}
 					<div
-						class="absolute right-4 top-4 z-20 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm lg:w-80"
+						class="absolute top-4 right-4 z-20 w-72 rounded-lg border bg-card/95 p-4 shadow-lg backdrop-blur-sm lg:w-80"
 					>
 						<div class="mb-3 flex items-start justify-between gap-2">
-							<h3 class="text-sm font-semibold leading-tight">{selectedPoint.title}</h3>
+							<h3 class="text-sm leading-tight font-semibold">{selectedPoint.title}</h3>
 							<button
 								class="shrink-0 rounded p-1 hover:bg-muted"
 								onclick={() => (selectedPoint = null)}
@@ -459,9 +493,7 @@
 								<div>
 									<span class="text-muted-foreground">{t('semantic_map.topic')}</span>
 									<div class="mt-1">
-										<Badge variant="secondary" class="text-xs"
-											>{selectedPoint.topicLabel}</Badge
-										>
+										<Badge variant="secondary" class="text-xs">{selectedPoint.topicLabel}</Badge>
 									</div>
 								</div>
 							{/if}
@@ -483,7 +515,9 @@
 							{#if selectedPoint.polarity}
 								<div class="flex justify-between">
 									<span class="text-muted-foreground">{t('semantic_map.polarity')}</span>
-									<span class="text-xs">{t(POLARITY_KEY_MAP[selectedPoint.polarity] || 'semantic_map.unknown')}</span>
+									<span class="text-xs"
+										>{t(POLARITY_KEY_MAP[selectedPoint.polarity] || 'semantic_map.unknown')}</span
+									>
 								</div>
 							{/if}
 						</div>
@@ -511,7 +545,7 @@
 				class="pointer-events-none fixed z-50 max-w-xs rounded-lg border bg-card p-3 text-sm shadow-lg"
 				style="left: {tooltipX + 12}px; top: {tooltipY - 12}px; transform: translateY(-100%);"
 			>
-				<p class="font-medium leading-tight">{hoveredPoint.title}</p>
+				<p class="leading-tight font-medium">{hoveredPoint.title}</p>
 				<div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
 					{#if hoveredPoint.country}
 						<span>{hoveredPoint.country}</span>

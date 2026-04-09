@@ -30,7 +30,7 @@
 </script>
 
 <div
-	class="absolute bottom-4 right-4 z-50 w-72 rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm transition-all animate-in fade-in slide-in-from-bottom-2 duration-300"
+	class="absolute right-4 bottom-4 z-50 w-72 animate-in rounded-lg border bg-card/95 shadow-lg backdrop-blur-sm transition-all duration-300 fade-in slide-in-from-bottom-2"
 >
 	<!-- Header -->
 	<div class="flex items-center justify-between border-b px-3 py-2">
@@ -64,7 +64,9 @@
 		<!-- Edge weight connector -->
 		<div class="flex items-center gap-2 px-1">
 			<div class="h-px flex-1 bg-primary/30"></div>
-			<span class="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+			<span
+				class="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
+			>
 				{t('network.weight')}: {data.edge.weight}
 			</span>
 			<div class="h-px flex-1 bg-primary/30"></div>
@@ -98,7 +100,7 @@
 			<div class="mb-1.5 text-xs font-medium text-muted-foreground">
 				{t('network.shared_neighbors', [data.sharedNeighbors.length])}
 			</div>
-			<div class="space-y-1 max-h-28 overflow-y-auto">
+			<div class="max-h-28 space-y-1 overflow-y-auto">
 				{#each data.sharedNeighbors.slice(0, 8) as neighbor (neighbor.id)}
 					<div class="flex items-center gap-1.5 text-xs">
 						<div
@@ -110,7 +112,8 @@
 				{/each}
 				{#if data.sharedNeighbors.length > 8}
 					<div class="text-xs text-muted-foreground">
-						+{data.sharedNeighbors.length - 8} {t('network.more')}
+						+{data.sharedNeighbors.length - 8}
+						{t('network.more')}
 					</div>
 				{/if}
 			</div>

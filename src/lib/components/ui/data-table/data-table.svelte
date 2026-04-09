@@ -139,7 +139,8 @@
 
 	// Reset pagination when search changes
 	$effect(() => {
-		search;
+		// Read `search` to register a reactive dependency, then reset the page.
+		void search;
 		currentPage = 1;
 	});
 
@@ -259,7 +260,9 @@
 						</TableRow>
 					{:else}
 						{#each paginatedRows as row, idx (idx)}
-							<TableRow class={`${rowClass?.(row) ?? ''} ${striped && idx % 2 === 1 ? 'bg-muted/30' : ''}`}>
+							<TableRow
+								class={`${rowClass?.(row) ?? ''} ${striped && idx % 2 === 1 ? 'bg-muted/30' : ''}`}
+							>
 								{#each columns as column (column.key)}
 									{@const value = getCellValue(row, column)}
 									<TableCell

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { languageStore, type Language } from '$lib/stores/translationStore.svelte.js';
+	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { Globe } from '@lucide/svelte';
 
 	function toggleLanguage() {

@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { t } from '$lib/stores/translationStore.svelte.js';
 </script>
 
 <div class="container mx-auto flex min-h-[80vh] items-center justify-center p-4">

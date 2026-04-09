@@ -15,7 +15,7 @@
 	// Translation keys for entity types
 	const typeTranslationKeys: Record<EntityType, string> = {
 		Personnes: 'entity.persons',
-		'Événements': 'entity.events',
+		Événements: 'entity.events',
 		Sujets: 'entity.topics',
 		Organisations: 'entity.organizations'
 	};
@@ -40,7 +40,7 @@
 <div class="w-full">
 	<Tabs value={selectedCategory} onValueChange={handleCategoryChange}>
 		<TabsList class="grid w-full grid-cols-4">
-			{#each categories as { type, icon }}
+			{#each categories as { type, icon } (type)}
 				<TabsTrigger value={type} class="flex items-center gap-2 text-xs sm:text-sm">
 					{#if icon === 'user'}
 						<svg

@@ -25,7 +25,6 @@
 	let nodeSizeBy = $state<NodeSizeBy>('count');
 	let minEdgeWeight = $state(1);
 	let selectedNode = $state<NetworkNode | null>(null);
-	let hoveredNode = $state<NetworkNode | null>(null);
 
 	// Component ref
 	let mapComponent: NetworkMapView | null = $state(null);
@@ -68,8 +67,8 @@
 		selectedNode = node;
 	}
 
-	function handleNodeHover(node: NetworkNode | null) {
-		hoveredNode = node;
+	function handleNodeHover(_node: NetworkNode | null) {
+		// Hover handling reserved for future use
 	}
 
 	function handleClosePanel() {

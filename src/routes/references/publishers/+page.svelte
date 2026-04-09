@@ -110,7 +110,9 @@
 		try {
 			countryLoading = true;
 			const filename = country.toLowerCase().replace(/\s+/g, '-');
-			countryData = await fetchData<PublishersResponse>(`references/publishers-${filename}.json`, { cache: false });
+			countryData = await fetchData<PublishersResponse>(`references/publishers-${filename}.json`, {
+				cache: false
+			});
 		} catch (e) {
 			console.error(`Error loading country data for ${country}:`, e);
 			countryData = null;
@@ -297,6 +299,7 @@
 						>
 							{#snippet cellRenderer({ row, column, value })}
 								{#if column.key === 'publisher' && row.o_id}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 									<a
 										href={getItemUrl(row.o_id)}
 										target="_blank"
@@ -306,6 +309,7 @@
 										{value}
 										<ExternalLink class="h-3 w-3" />
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{:else if column.render}
 									{column.render(row)}
 								{:else}

@@ -110,7 +110,7 @@
 	let {
 		data,
 		periods,
-		title = 'Chart - {0}',
+		title: _title = 'Chart - {0}',
 		maxBars = 10,
 		autoPlay = false,
 		interval = 1000,
@@ -149,7 +149,7 @@
 			colorParsingContext.fillStyle = '#000000';
 			colorParsingContext.fillStyle = value;
 			return colorParsingContext.fillStyle || null;
-		} catch (error) {
+		} catch (_error) {
 			return null;
 		}
 	}
@@ -174,7 +174,8 @@
 		if (!cumulative) return data;
 
 		const cumulativeData: Record<string, BarChartRacePeriodData> = {};
-		const termTotals: Map<string, number> = new Map();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const termTotals: Map<string, number> = new Map(); // Local procedural Map; not reactive state.
 
 		// Initialize with allTerms if provided
 		if (allTerms) {
@@ -231,7 +232,7 @@
 	/**
 	 * Get color for a specific term (consistent across periods)
 	 */
-	function getColorForTerm(term: string, index: number): string {
+	function getColorForTerm(term: string, _index: number): string {
 		if (!useMultipleColors) {
 			return barColor.startsWith('var(--') ? getCSSVariable(barColor.slice(4, -1)) : barColor;
 		}
@@ -318,10 +319,6 @@
 		// Get top N items
 		const topItems = periodData.data.slice(0, maxBars);
 		const labels = topItems.map(([label]) => label);
-		const values = topItems.map(([, value]) => value);
-
-		// Format title with current period
-		const formattedTitle = title.replace('{0}', String(currentPeriod));
 
 		// Resolve CSS variables to actual colors
 		const foregroundColor = getCSSVariable('--foreground');

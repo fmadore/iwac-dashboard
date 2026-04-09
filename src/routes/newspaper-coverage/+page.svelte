@@ -92,7 +92,7 @@
 		<!-- Legend -->
 		<Card class="p-4">
 			<div class="flex flex-wrap gap-4">
-				{#each countries as country}
+				{#each countries as country (country)}
 					<div class="flex items-center gap-2">
 						<div
 							class="h-3 w-3 rounded-sm"

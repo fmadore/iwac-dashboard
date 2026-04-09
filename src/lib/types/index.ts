@@ -9,4 +9,3 @@ export type * from './entity-spatial.js';
 
 // Export map location types (reusable map components)
 export type * from './map-location.js';
-

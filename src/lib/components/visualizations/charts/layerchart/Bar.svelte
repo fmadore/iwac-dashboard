@@ -203,14 +203,12 @@
 					}}
 				>
 					{#snippet tooltip({ context })}
+						{@const payload = tooltipStateToPayload(context.tooltip)}
 						<TooltipPrimitive.Root {context} variant="none">
-							{#snippet children()}
-								{@const payload = tooltipStateToPayload(context.tooltip)}
-								<Tooltip
-									label={tooltipLabelFromPayload(payload)}
-									items={tooltipItemsFromPayload(payload)}
-								/>
-							{/snippet}
+							<Tooltip
+								label={tooltipLabelFromPayload(payload)}
+								items={tooltipItemsFromPayload(payload)}
+							/>
 						</TooltipPrimitive.Root>
 					{/snippet}
 				</BarChart>
@@ -251,14 +249,12 @@
 					}}
 				>
 					{#snippet tooltip({ context })}
+						{@const payload = tooltipStateToPayload(context.tooltip)}
 						<TooltipPrimitive.Root {context} variant="none">
-							{#snippet children()}
-								{@const payload = tooltipStateToPayload(context.tooltip)}
-								<Tooltip
-									label={tooltipLabelFromPayload(payload)}
-									items={tooltipItemsFromPayload(payload)}
-								/>
-							{/snippet}
+							<Tooltip
+								label={tooltipLabelFromPayload(payload)}
+								items={tooltipItemsFromPayload(payload)}
+							/>
 						</TooltipPrimitive.Root>
 					{/snippet}
 				</BarChart>

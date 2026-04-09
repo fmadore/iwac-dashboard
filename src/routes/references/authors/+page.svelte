@@ -87,7 +87,6 @@
 		}
 	}
 
-
 	$effect(() => {
 		loadData();
 	});
@@ -144,7 +143,9 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium text-muted-foreground">Total Publications</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground"
+							>Total Publications</Card.Title
+						>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">
@@ -156,7 +157,9 @@
 
 				<Card.Root>
 					<Card.Header class="pb-3">
-						<Card.Title class="text-sm font-medium text-muted-foreground">Avg Publications per Author</Card.Title>
+						<Card.Title class="text-sm font-medium text-muted-foreground"
+							>Avg Publications per Author</Card.Title
+						>
 					</Card.Header>
 					<Card.Content>
 						<div class="text-2xl font-bold">
@@ -178,7 +181,7 @@
 				</Card.Header>
 				<Card.Content>
 					<DataTable
-						data={data}
+						{data}
 						columns={tableColumns}
 						searchPlaceholder={t('common.search')}
 						noResultsText={t('table.no_results')}
@@ -188,6 +191,7 @@
 					>
 						{#snippet cellRenderer({ row, column, value })}
 							{#if column.key === 'author' && row.o_id}
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 								<a
 									href={getItemUrl(row.o_id)}
 									target="_blank"
@@ -197,6 +201,7 @@
 									{value}
 									<ExternalLink class="h-3 w-3" />
 								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{:else if column.render}
 								{column.render(row)}
 							{:else}

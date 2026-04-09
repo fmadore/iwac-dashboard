@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { entitySpatialStore } from '$lib/stores/entitySpatialStore.svelte.js';
-	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
 	import {
 		BaseMap,
@@ -24,7 +23,7 @@
 	const currentEntity = $derived(entitySpatialStore.currentEntity);
 
 	// Force reactivity on language change
-	const lang = $derived(languageStore.current);
+	const _lang = $derived(languageStore.current);
 
 	// Loading state (we use BaseMap's built-in loading now)
 	let mapLoading = $state(false);
@@ -98,12 +97,12 @@
 		style="height: {height};"
 		data-testid="entity-map-container"
 	>
-		<BaseMap height={height} bounds={bounds} zoom={4} maxZoom={8}>
+		<BaseMap {height} {bounds} zoom={4} maxZoom={8}>
 			{#if circleData.length > 0}
 				<CircleLayer
 					data={circleData}
 					radiusRange={[8, 35]}
-					selectedId={selectedId}
+					{selectedId}
 					onHover={handleHover}
 					onClick={handleClick}
 				/>
@@ -111,7 +110,11 @@
 		</BaseMap>
 
 		<!-- Hover popover -->
-		<MapLocationPopover location={hoveredLocation} position={popoverPosition} itemLabel="articles" />
+		<MapLocationPopover
+			location={hoveredLocation}
+			position={popoverPosition}
+			itemLabel="articles"
+		/>
 	</div>
 
 	{#if !mapLoading && locations.length === 0 && currentEntity}

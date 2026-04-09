@@ -63,7 +63,7 @@ export function useUrlSync() {
 	});
 
 	// Create reactive filter state getter that depends on the trigger
-	const filters = $derived.by<FilterState>(() => {
+	const _filters = $derived.by<FilterState>(() => {
 		// Access the trigger to create dependency
 		const _ = updateTrigger;
 

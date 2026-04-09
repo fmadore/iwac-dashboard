@@ -15,11 +15,7 @@
 	import { browser } from '$app/environment';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import {
-		isDarkTheme,
-		createThemeObserver,
-		getThemeColors
-	} from './utils/theme.js';
+	import { isDarkTheme, createThemeObserver } from './utils/theme.js';
 	import { createRasterStyle } from './types.js';
 	import { WEST_AFRICA_CENTER, DEFAULT_ZOOM } from './utils/coordinates.js';
 
@@ -175,9 +171,9 @@
 	</div>
 
 	{#if mapLoading}
-		<div class="absolute inset-0 flex items-center justify-center bg-background/80 rounded-xl">
+		<div class="absolute inset-0 flex items-center justify-center rounded-xl bg-background/80">
 			<div class="text-center">
-				<Skeleton class="h-8 w-32 mx-auto mb-2" />
+				<Skeleton class="mx-auto mb-2 h-8 w-32" />
 				<p class="text-sm text-muted-foreground">{t('common.loading')}</p>
 			</div>
 		</div>

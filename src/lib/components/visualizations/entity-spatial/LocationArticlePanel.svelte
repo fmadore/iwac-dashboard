@@ -101,7 +101,7 @@
 								class="rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent/50"
 							>
 								<div class="mb-2 flex items-start justify-between gap-2">
-									<h4 class="line-clamp-2 text-sm font-medium leading-tight">
+									<h4 class="line-clamp-2 text-sm leading-tight font-medium">
 										{article.title || t('entity_spatial.untitled')}
 									</h4>
 									<Badge variant="secondary" class="shrink-0 text-xs">

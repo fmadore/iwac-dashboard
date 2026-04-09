@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { browser } from '$app/environment';
-	import type { GlobalNetworkNode, GlobalNetworkEdge, NodeSizeBy, EntityType } from '$lib/types/network.js';
+	import type {
+		GlobalNetworkNode,
+		GlobalNetworkEdge,
+		NodeSizeBy,
+		EntityType
+	} from '$lib/types/network.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
 	import { Maximize2, Minimize2 } from '@lucide/svelte';
 	import { getEntityColorsHex, getEdgeColorsHex, resolveCSSColor } from '$lib/constants/theme.js';
@@ -131,17 +136,23 @@
 		if (!wrapperElement) return;
 
 		if (!document.fullscreenElement) {
-			wrapperElement.requestFullscreen().then(() => {
-				isFullscreen = true;
-			}).catch((err) => {
-				console.error('Failed to enter fullscreen:', err);
-			});
+			wrapperElement
+				.requestFullscreen()
+				.then(() => {
+					isFullscreen = true;
+				})
+				.catch((err) => {
+					console.error('Failed to enter fullscreen:', err);
+				});
 		} else {
-			document.exitFullscreen().then(() => {
-				isFullscreen = false;
-			}).catch((err) => {
-				console.error('Failed to exit fullscreen:', err);
-			});
+			document
+				.exitFullscreen()
+				.then(() => {
+					isFullscreen = false;
+				})
+				.catch((err) => {
+					console.error('Failed to exit fullscreen:', err);
+				});
 		}
 	}
 
@@ -164,13 +175,17 @@
 	});
 
 	// Cache layout positions to reuse when nodes reappear
-	let positionCache: Map<string, { x: number; y: number }> = new Map();
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	let positionCache: Map<string, { x: number; y: number }> = new Map(); // Procedural layout cache; not reactive state.
 
 	// Get top connections for a node
-	function getTopConnections(nodeId: string, limit: number = 5): Array<{ node: GlobalNetworkNode; weight: number }> {
+	function getTopConnections(
+		nodeId: string,
+		limit: number = 5
+	): Array<{ node: GlobalNetworkNode; weight: number }> {
 		if (!nodeId) return [];
 
-		const nodeMap = new Map(nodes.map(n => [n.id, n]));
+		const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 		const connections: Array<{ node: GlobalNetworkNode; weight: number }> = [];
 
 		for (const edge of edges) {
@@ -190,9 +205,7 @@
 		}
 
 		// Sort by weight descending and take top N
-		return connections
-			.sort((a, b) => b.weight - a.weight)
-			.slice(0, limit);
+		return connections.sort((a, b) => b.weight - a.weight).slice(0, limit);
 	}
 
 	// Resolve entity colors from CSS variables (for Sigma.js canvas rendering)
@@ -234,11 +247,7 @@
 
 		for (const node of nodes) {
 			const value =
-				nodeSizeBy === 'count'
-					? node.count
-					: nodeSizeBy === 'degree'
-						? node.degree
-						: node.strength;
+				nodeSizeBy === 'count' ? node.count : nodeSizeBy === 'degree' ? node.degree : node.strength;
 			sizes[node.id] = value;
 			if (value > maxValue) maxValue = value;
 		}
@@ -339,10 +348,20 @@
 			]);
 
 			type GraphConstructorType = new () => GraphInstance;
-			const GraphModule = graphologyModule as unknown as { default?: GraphConstructorType; MultiGraph?: GraphConstructorType };
-			const ResolvedGraphClass = GraphModule.default ?? (graphologyModule as unknown as GraphConstructorType);
+			const GraphModule = graphologyModule as unknown as {
+				default?: GraphConstructorType;
+				MultiGraph?: GraphConstructorType;
+			};
+			const ResolvedGraphClass =
+				GraphModule.default ?? (graphologyModule as unknown as GraphConstructorType);
 			// forceAtlas2Module.default holds the IForceAtlas2Layout with .assign()
-			const forceAtlas2 = (forceAtlas2Module as unknown as { default: { assign: (graph: GraphInstance, params: ForceAtlas2SynchronousLayoutParameters) => void } }).default;
+			const forceAtlas2 = (
+				forceAtlas2Module as unknown as {
+					default: {
+						assign: (graph: GraphInstance, params: ForceAtlas2SynchronousLayoutParameters) => void;
+					};
+				}
+			).default;
 			const { createNodeBorderProgram } = nodeBorderModule;
 			const EdgeCurveProgram = edgeCurveModule.default;
 
@@ -432,7 +451,7 @@
 			// Apply layout based on type
 			if (layoutType === 'circular') {
 				// Circular layout - arrange nodes in a circle, grouped by entity type
-				const entityTypes = [...new Set(nodes.map(n => n.type))];
+				const entityTypes = [...new Set(nodes.map((n) => n.type))];
 				const nodesByType: Record<string, string[]> = {};
 
 				graph.forEachNode((nodeId: string, attrs: Attributes) => {
@@ -462,7 +481,8 @@
 				graph.setNodeAttribute(centerNode, 'y', 0);
 
 				// Get neighbors at different distances
-				const visited = new Set<string>([centerNode]);
+				// eslint-disable-next-line svelte/prefer-svelte-reactivity
+				const visited = new Set<string>([centerNode]); // Local procedural Set; not reactive state.
 				const rings: string[][] = [[]];
 
 				// First ring: direct neighbors
@@ -677,11 +697,12 @@
 				nodeReducer: (node, data) => {
 					// Edge focus mode — highlight endpoints and shared neighbors
 					if (focusedEdgeEndpoints) {
-						const isEndpoint = node === focusedEdgeEndpoints.source || node === focusedEdgeEndpoints.target;
-						const isSharedNeighbor = !isEndpoint && (
-							graph.hasEdge(node, focusedEdgeEndpoints.source) ||
-							graph.hasEdge(node, focusedEdgeEndpoints.target)
-						);
+						const isEndpoint =
+							node === focusedEdgeEndpoints.source || node === focusedEdgeEndpoints.target;
+						const isSharedNeighbor =
+							!isEndpoint &&
+							(graph.hasEdge(node, focusedEdgeEndpoints.source) ||
+								graph.hasEdge(node, focusedEdgeEndpoints.target));
 
 						if (isEndpoint) {
 							return {
@@ -714,7 +735,8 @@
 					const isSelected = node === selectedNodeId;
 					const isHovered = node === hoveredNodeId;
 					const isNeighbor = selectedNodeId && graph.hasEdge(node, selectedNodeId);
-					const isHoveredNeighbor = hoveredNodeId && !selectedNodeId && graph.hasEdge(node, hoveredNodeId);
+					const isHoveredNeighbor =
+						hoveredNodeId && !selectedNodeId && graph.hasEdge(node, hoveredNodeId);
 
 					// Hover effect (when no selection)
 					if (isHovered && !selectedNodeId) {
@@ -804,8 +826,10 @@
 					if (focusedEdgeEndpoints) {
 						const isFocusedEdge = edge === focusedEdgeId;
 						const touchesEndpoint =
-							source === focusedEdgeEndpoints.source || source === focusedEdgeEndpoints.target ||
-							target === focusedEdgeEndpoints.source || target === focusedEdgeEndpoints.target;
+							source === focusedEdgeEndpoints.source ||
+							source === focusedEdgeEndpoints.target ||
+							target === focusedEdgeEndpoints.source ||
+							target === focusedEdgeEndpoints.target;
 
 						if (isFocusedEdge) {
 							return {
@@ -827,10 +851,12 @@
 						return { ...data, hidden: true };
 					}
 
-					const isConnectedToHovered = hoveredNodeId && !selectedNodeId &&
+					const isConnectedToHovered =
+						hoveredNodeId &&
+						!selectedNodeId &&
 						(source === hoveredNodeId || target === hoveredNodeId);
-					const isConnectedToSelected = selectedNodeId &&
-						(source === selectedNodeId || target === selectedNodeId);
+					const isConnectedToSelected =
+						selectedNodeId && (source === selectedNodeId || target === selectedNodeId);
 
 					// Hover effect on edges - show label
 					if (isConnectedToHovered) {
@@ -965,7 +991,7 @@
 		focusedEdgeEndpoints = { source, target };
 
 		// Build EdgeFocusData for the callback
-		const nodeMap = new Map(nodes.map(n => [n.id, n]));
+		const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 		const sourceNode = nodeMap.get(source);
 		const targetNode = nodeMap.get(target);
 		if (!sourceNode || !targetNode) return;
@@ -999,10 +1025,9 @@
 			const dist = Math.sqrt(dx * dx + dy * dy);
 			const ratio = Math.min(0.5, Math.max(0.08, dist * 2.5));
 
-			sigmaInstance.getCamera().animate(
-				{ x: midX, y: midY, ratio },
-				{ duration: 500, easing: 'quadraticInOut' }
-			);
+			sigmaInstance
+				.getCamera()
+				.animate({ x: midX, y: midY, ratio }, { duration: 500, easing: 'quadraticInOut' });
 		}
 	}
 
@@ -1182,7 +1207,7 @@
 	class="relative h-full w-full"
 	class:fullscreen-wrapper={isFullscreen}
 >
-	<div bind:this={containerElement} class="h-full w-full rounded-lg bg-card border"></div>
+	<div bind:this={containerElement} class="h-full w-full rounded-lg border bg-card"></div>
 
 	<!-- Fullscreen button -->
 	{#if showFullscreenButton}
@@ -1202,9 +1227,12 @@
 	{#if isLayoutRunning}
 		<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-background/80">
 			<div class="text-center">
-				<div class="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+				<div
+					class="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"
+				></div>
 				<p class="mt-2 text-sm text-muted-foreground">
-					{t('network.computing_layout')} {layoutProgress}%
+					{t('network.computing_layout')}
+					{layoutProgress}%
 				</p>
 			</div>
 		</div>
@@ -1212,18 +1240,16 @@
 
 	<!-- Rich Tooltip -->
 	{#if tooltipVisible && tooltipNode}
-		{@const nodeColor = entityTypeColors?.[tooltipNode.type]?.color ?? getNodeColor(tooltipNode.type)}
+		{@const nodeColor =
+			entityTypeColors?.[tooltipNode.type]?.color ?? getNodeColor(tooltipNode.type)}
 		<div
 			class="pointer-events-none absolute z-50 max-w-xs rounded-lg border bg-popover/95 p-3 text-popover-foreground shadow-lg backdrop-blur-sm"
 			style={tooltipStyle}
 		>
 			<!-- Header -->
 			<div class="mb-2 flex items-center gap-2">
-				<div
-					class="h-3 w-3 shrink-0 rounded-full"
-					style="background-color: {nodeColor}"
-				></div>
-				<span class="font-semibold leading-tight">{tooltipNode.label}</span>
+				<div class="h-3 w-3 shrink-0 rounded-full" style="background-color: {nodeColor}"></div>
+				<span class="leading-tight font-semibold">{tooltipNode.label}</span>
 			</div>
 
 			<!-- Type Badge -->
@@ -1231,7 +1257,9 @@
 				class="mb-2 inline-block rounded px-1.5 py-0.5 text-xs font-medium"
 				style="background-color: {nodeColor}20; color: {nodeColor}"
 			>
-				{entityTypeColors?.[tooltipNode.type]?.label ? t(entityTypeColors[tooltipNode.type].label) : tooltipNode.type}
+				{entityTypeColors?.[tooltipNode.type]?.label
+					? t(entityTypeColors[tooltipNode.type].label)
+					: tooltipNode.type}
 			</div>
 
 			<!-- Stats Grid -->
@@ -1253,12 +1281,15 @@
 			<!-- Top Connections -->
 			{#if tooltipConnections.length > 0}
 				<div class="border-t pt-2">
-					<div class="mb-1 text-xs font-medium text-muted-foreground">{t('network.top_connections')}:</div>
+					<div class="mb-1 text-xs font-medium text-muted-foreground">
+						{t('network.top_connections')}:
+					</div>
 					<div class="space-y-0.5">
 						{#each tooltipConnections as conn (conn.node.id)}
-							{@const connColor = entityTypeColors?.[conn.node.type]?.color ?? getNodeColor(conn.node.type)}
+							{@const connColor =
+								entityTypeColors?.[conn.node.type]?.color ?? getNodeColor(conn.node.type)}
 							<div class="flex items-center justify-between gap-2 text-xs">
-								<div class="flex items-center gap-1.5 min-w-0">
+								<div class="flex min-w-0 items-center gap-1.5">
 									<div
 										class="h-2 w-2 shrink-0 rounded-full"
 										style="background-color: {connColor}"

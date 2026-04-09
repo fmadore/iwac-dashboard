@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SvelteSet } from 'svelte/reactivity';
 	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
@@ -8,13 +9,18 @@
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { NetworkGraph, NetworkEntitySearch, EdgeFocusOverlay, type LayoutType, type EdgeFocusData } from '$lib/components/visualizations/network/index.js';
+	import {
+		NetworkGraph,
+		NetworkEntitySearch,
+		EdgeFocusOverlay,
+		type LayoutType,
+		type EdgeFocusData
+	} from '$lib/components/visualizations/network/index.js';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { useUrlSync } from '$lib/hooks/useUrlSync.svelte.js';
 	import type {
 		GlobalNetworkData,
 		GlobalNetworkNode,
-		GlobalNetworkEdge,
 		EntityType,
 		NodeSizeBy
 	} from '$lib/types/network.js';
@@ -112,7 +118,8 @@
 		);
 
 		// Get all neighbor IDs from these edges
-		const neighborIds = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const neighborIds = new Set<string>(); // Local procedural Set; not reactive state.
 		neighborIds.add(selectedId);
 		for (const edge of egoEdges) {
 			neighborIds.add(edge.source);
@@ -312,7 +319,7 @@
 	}
 
 	function toggleEntityType(type: EntityType) {
-		const newSet = new Set(enabledTypes);
+		const newSet = new SvelteSet(enabledTypes);
 		if (newSet.has(type)) {
 			// Don't allow disabling all types
 			if (newSet.size > 1) {
@@ -375,15 +382,19 @@
 							{@const isEnabled = enabledTypes.has(type as EntityType)}
 							{@const count = nodeCountsByType[type as EntityType]}
 							<button
-								class="flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs sm:text-sm sm:px-3 sm:py-1.5 sm:gap-2 transition-all"
+								class="flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-all sm:gap-2 sm:px-3 sm:py-1.5 sm:text-sm"
 								class:opacity-40={!isEnabled}
 								style:background-color={isEnabled ? `${config.color}20` : 'transparent'}
 								style:border-color={config.color}
 								onclick={() => toggleEntityType(type as EntityType)}
 							>
-								<span style="color: {config.color}"><Icon class="h-3.5 w-3.5 sm:h-4 sm:w-4" /></span>
-								<span class="hidden xs:inline">{t(config.label)}</span>
-								<Badge variant="secondary" class="h-4 px-1 text-[10px] sm:ml-1 sm:h-5 sm:px-1.5 sm:text-xs">{count}</Badge>
+								<span style="color: {config.color}"><Icon class="h-3.5 w-3.5 sm:h-4 sm:w-4" /></span
+								>
+								<span class="xs:inline hidden">{t(config.label)}</span>
+								<Badge
+									variant="secondary"
+									class="h-4 px-1 text-[10px] sm:ml-1 sm:h-5 sm:px-1.5 sm:text-xs">{count}</Badge
+								>
 							</button>
 						{/each}
 					</div>
@@ -399,7 +410,7 @@
 					<div class="w-full sm:w-72 lg:w-80">
 						<NetworkEntitySearch
 							nodes={filteredNodes}
-							selectedNode={selectedNode}
+							{selectedNode}
 							onSelect={handleSearchSelect}
 						/>
 					</div>
@@ -410,7 +421,7 @@
 						<div class="flex items-center gap-2">
 							<Label class="text-sm font-medium whitespace-nowrap">{t('network.node_size')}:</Label>
 							<Select.Root type="single" value={nodeSizeBy} onValueChange={handleNodeSizeChange}>
-								<Select.Trigger class="flex-1 min-w-0">
+								<Select.Trigger class="min-w-0 flex-1">
 									{t(nodeSizeOptions.find((o) => o.value === nodeSizeBy)?.label || '')}
 								</Select.Trigger>
 								<Select.Content>
@@ -440,7 +451,9 @@
 
 						<!-- Edge Weight Filter -->
 						<div class="flex items-center gap-2">
-							<Label class="text-sm font-medium whitespace-nowrap">{t('network.min_edge_weight')}:</Label>
+							<Label class="text-sm font-medium whitespace-nowrap"
+								>{t('network.min_edge_weight')}:</Label
+							>
 							<div class="flex flex-1 items-center gap-2">
 								<Slider
 									type="single"
@@ -459,7 +472,7 @@
 						<div class="flex items-center gap-2">
 							<Label class="text-sm font-medium whitespace-nowrap">{t('network.layout')}:</Label>
 							<Select.Root type="single" value={layoutType} onValueChange={handleLayoutChange}>
-								<Select.Trigger class="flex-1 min-w-0">
+								<Select.Trigger class="min-w-0 flex-1">
 									{@const currentLayout = layoutOptions.find((o) => o.value === layoutType)}
 									{#if currentLayout}
 										<span class="flex items-center gap-2">
@@ -562,9 +575,9 @@
 
 				<!-- Focus Mode Indicator (bottom-right, subtle) -->
 				{#if focusMode && selectedNode}
-					<div class="absolute bottom-4 right-4 z-10">
+					<div class="absolute right-4 bottom-4 z-10">
 						<Badge variant="secondary" class="text-xs">
-							<Focus class="h-3 w-3 mr-1" />
+							<Focus class="mr-1 h-3 w-3" />
 							{t('network.focus_mode')}
 						</Badge>
 					</div>
@@ -601,7 +614,6 @@
 						onClose={handleCloseEdgeFocus}
 					/>
 				{/if}
-
 			</div>
 		</Card.Root>
 
@@ -613,7 +625,7 @@
 					{@const NodeIcon = entityTypeConfig[selectedNode.type].icon}
 					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<!-- Node Info -->
-						<div class="flex items-center gap-3 min-w-0">
+						<div class="flex min-w-0 items-center gap-3">
 							<div
 								class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
 								style="background-color: {nodeColor}20"
@@ -624,7 +636,11 @@
 							</div>
 							<div class="min-w-0">
 								<h3 class="truncate font-semibold">{selectedNode.label}</h3>
-								<Badge variant="outline" class="text-xs" style="border-color: {nodeColor}; color: {nodeColor}">
+								<Badge
+									variant="outline"
+									class="text-xs"
+									style="border-color: {nodeColor}; color: {nodeColor}"
+								>
 									{t(entityTypeConfig[selectedNode.type].label)}
 								</Badge>
 							</div>

@@ -302,10 +302,7 @@ describe('createPaginatedFetcher', () => {
 		const result = await fetcher.fetchNextPage();
 
 		expect(result).toEqual(page0);
-		expect(mockFetch).toHaveBeenCalledWith(
-			'/data/topics/page-0.json',
-			expect.anything()
-		);
+		expect(mockFetch).toHaveBeenCalledWith('/data/topics/page-0.json', expect.anything());
 	});
 
 	it('multiple fetchNextPage calls increment page number', async () => {

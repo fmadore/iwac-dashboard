@@ -2,7 +2,7 @@
 	import { Chart, Svg, Spline, Axis, Highlight, Tooltip as TooltipPrimitive } from 'layerchart';
 	import { scaleLinear, scalePoint } from 'd3-scale';
 	import Tooltip, { type TooltipItem } from './Tooltip.svelte';
-	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 
 	interface KeywordSeries {
 		keyword: string;
@@ -23,7 +23,8 @@
 		if (series.length === 0) return [];
 
 		// Get all unique years across all series
-		const allYears = new Set<number>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const allYears = new Set<number>(); // Local procedural Set; not reactive state.
 		series.forEach((s) => s.years.forEach((y) => allYears.add(y)));
 		const sortedYears = Array.from(allYears).sort((a, b) => a - b);
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fetchData, prefetchData } from '$lib/utils/dataFetcher.js';
+	import { prefetchData } from '$lib/utils/dataFetcher.js';
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
@@ -126,38 +126,11 @@
 		});
 	});
 
-
 	// Max frequency for bar width calculation
 	let maxFrequency = $derived(currentData.length > 0 ? currentData[0][1] : 1);
 
 	let availableCountries = $derived(metadata?.countries || []);
 	let availableYears = $derived(metadata?.years || []);
-
-	function getCurrentData(): [string, number][] {
-		switch (viewMode) {
-			case 'country':
-				return selectedCountry && countryData[selectedCountry]
-					? countryData[selectedCountry].data
-					: [];
-			case 'temporal':
-				return selectedYear && temporalData[selectedYear] ? temporalData[selectedYear].data : [];
-			default:
-				return globalData ? globalData.data : [];
-		}
-	}
-
-	function getCurrentMetrics() {
-		switch (viewMode) {
-			case 'country':
-				return selectedCountry && countryData[selectedCountry]
-					? countryData[selectedCountry]
-					: null;
-			case 'temporal':
-				return selectedYear && temporalData[selectedYear] ? temporalData[selectedYear] : null;
-			default:
-				return globalData;
-		}
-	}
 
 	async function loadWordCloudData() {
 		try {
@@ -165,13 +138,19 @@
 			error = null;
 
 			// Load all data files
-			const [globalResult, countryResult, temporalResult, metadataResult] =
-				await prefetchData<[WordCloudData, Record<string, WordCloudData>, Record<string, WordCloudData>, WordCloudMetadata]>([
-					'wordcloud-global.json',
-					'wordcloud-countries.json',
-					'wordcloud-temporal.json',
-					'wordcloud-metadata.json'
-				]);
+			const [globalResult, countryResult, temporalResult, metadataResult] = await prefetchData<
+				[
+					WordCloudData,
+					Record<string, WordCloudData>,
+					Record<string, WordCloudData>,
+					WordCloudMetadata
+				]
+			>([
+				'wordcloud-global.json',
+				'wordcloud-countries.json',
+				'wordcloud-temporal.json',
+				'wordcloud-metadata.json'
+			]);
 
 			globalData = globalResult;
 			countryData = countryResult;
@@ -357,17 +336,16 @@
 				<div class="flex justify-center">
 					<WordCloud
 						data={currentData}
-						aspectRatio={2}
 						colorScheme="category10"
 						fontFamily="Inter, sans-serif"
 						minFontSize={12}
 						maxFontSize={60}
 						padding={1}
-						hover={(word, event) => {
+						hover={(word) => {
 							// Add hover tooltip functionality here if needed
 							console.log('Hovered word:', word);
 						}}
-						click={(word, event) => {
+						click={(word) => {
 							// Add click functionality here if needed
 							console.log('Clicked word:', word);
 						}}

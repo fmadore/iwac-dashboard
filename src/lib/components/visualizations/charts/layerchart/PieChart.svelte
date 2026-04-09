@@ -276,20 +276,16 @@
 						}}
 					>
 						{#snippet tooltip({ context })}
+							{@const payload = tooltipStateToPayload(context.tooltip) as PieTooltipPayloadItem[]}
+							{@const data = context.tooltip?.data as Record<string, unknown> | undefined}
 							<TooltipPrimitive.Root {context} variant="none">
-								{#snippet children()}
-									{@const payload = tooltipStateToPayload(
-										context.tooltip
-									) as PieTooltipPayloadItem[]}
-									{@const data = context.tooltip?.data as Record<string, unknown> | undefined}
-									<Tooltip
-										label={String(
-											data?.label ?? data?.name ?? payload[0]?.label ?? payload[0]?.name ?? ''
-										)}
-										items={tooltipItemsFromPayload(payload)}
-										indicator="dot"
-									/>
-								{/snippet}
+								<Tooltip
+									label={String(
+										data?.label ?? data?.name ?? payload[0]?.label ?? payload[0]?.name ?? ''
+									)}
+									items={tooltipItemsFromPayload(payload)}
+									indicator="dot"
+								/>
 							</TooltipPrimitive.Root>
 						{/snippet}
 					</PieChart>

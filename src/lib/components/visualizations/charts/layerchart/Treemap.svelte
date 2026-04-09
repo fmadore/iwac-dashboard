@@ -15,7 +15,12 @@
 	} from 'layerchart';
 	import { Treemap } from 'layerchart';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import type { TreemapData, TreemapNode, TreemapConfig, TreemapTileMethod } from '$lib/types/treemap.js';
+	import type {
+		TreemapData,
+		TreemapNode,
+		TreemapConfig,
+		TreemapTileMethod
+	} from '$lib/types/treemap.js';
 	import ChartTooltip, { type TooltipItem } from './Tooltip.svelte';
 
 	// Props - compatible interface with CustomTreemap
@@ -244,15 +249,17 @@
 												if (!n.parent) return false;
 												// Check if this node is a descendant of the active domain
 												const ancestors = n.ancestors();
-												return ancestors.some((a: TreemapNode) => getNodeKey(a as TreemapNode) === activeKey);
+												return ancestors.some(
+													(a: TreemapNode) => getNodeKey(a as TreemapNode) === activeKey
+												);
 											})}
 											{#each visibleNodes as node (getNodeKey(node))}
 												<Group
 													x={xScale(node.x0)}
 													y={yScale(node.y0)}
 													onclick={() => {
-													onNodeClick?.(node as TreemapNode);
-													if (node.children) selectedNested = node as TreemapNode;
+														onNodeClick?.(node as TreemapNode);
+														if (node.children) selectedNested = node as TreemapNode;
 													}}
 													onpointermove={(e) => {
 														onNodeHover?.(node as TreemapNode);

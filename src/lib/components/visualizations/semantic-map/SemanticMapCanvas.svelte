@@ -231,7 +231,8 @@
 		offCtx.clearRect(0, 0, BUFFER_SIZE, BUFFER_SIZE);
 
 		// Group by palette index
-		const groups = new Map<number, number[]>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const groups = new Map<number, number[]>(); // Local procedural Map; not reactive state.
 		const hl = highlightedGroup;
 
 		for (let i = 0; i < pointCount; i++) {
@@ -448,8 +449,10 @@
 
 		const plotW = width - PADDING * 2;
 		const plotH = height - PADDING * 2;
-		offsetX = mouseX - PADDING - ((mouseX - PADDING - offsetX) / (plotW * scale)) * plotW * newScale;
-		offsetY = mouseY - PADDING - ((mouseY - PADDING - offsetY) / (plotH * scale)) * plotH * newScale;
+		offsetX =
+			mouseX - PADDING - ((mouseX - PADDING - offsetX) / (plotW * scale)) * plotW * newScale;
+		offsetY =
+			mouseY - PADDING - ((mouseY - PADDING - offsetY) / (plotH * scale)) * plotH * newScale;
 		scale = newScale;
 	}
 
@@ -516,7 +519,12 @@
 	}
 </script>
 
-<div bind:this={container} class="h-full w-full" role="img" aria-label={t('semantic_map.canvas_aria')}>
+<div
+	bind:this={container}
+	class="h-full w-full"
+	role="img"
+	aria-label={t('semantic_map.canvas_aria')}
+>
 	<canvas
 		bind:this={canvas}
 		class="h-full w-full cursor-grab active:cursor-grabbing"

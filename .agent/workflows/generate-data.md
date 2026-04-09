@@ -53,5 +53,6 @@ description: Generate static JSON data files from Python scripts
 ## Output
 
 Generated JSON files are saved to:
+
 - `static/data/` - For development
 - `build/data/` - For production (if build exists)

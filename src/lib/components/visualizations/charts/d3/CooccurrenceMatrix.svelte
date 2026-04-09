@@ -30,7 +30,21 @@
 
 	let containerElement: HTMLDivElement | null = $state(null);
 	let svgElement: SVGSVGElement | null = $state(null);
-	let tooltip: HTMLDivElement | null = $state(null);
+	let tooltipEl: HTMLDivElement | null = $state(null);
+
+	type TooltipState =
+		| { visible: false }
+		| {
+				visible: true;
+				left: number;
+				top: number;
+				term1: string;
+				term2: string;
+				value: number;
+				isDiagonal: boolean;
+		  };
+
+	let tooltipState = $state<TooltipState>({ visible: false });
 	// Combined D3 module with methods from d3-selection, d3-scale, and d3-scale-chromatic
 	interface D3Module {
 		select: typeof import('d3-selection').select;
@@ -106,13 +120,10 @@
 		// Simple hierarchical clustering based on co-occurrence similarity
 		if (terms.length <= 2) return terms;
 
-		// Compute similarity matrix (normalized co-occurrence)
-		const n = terms.length;
-		const indices = terms.map((t) => originalTerms.indexOf(t));
-
 		// Use greedy nearest neighbor ordering
 		const ordered: string[] = [];
-		const remaining = new Set(terms);
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const remaining = new Set(terms); // Local procedural Set; not reactive state.
 
 		// Start with term with highest total co-occurrence
 		let maxTotal = -1;
@@ -233,7 +244,7 @@
 	function renderMatrix() {
 		if (!svgElement || !d3Module || !data || orderedMatrix.length === 0) return;
 
-		const { select, scaleLinear, scaleSequential, interpolateBlues } = d3Module;
+		const { select, interpolateBlues } = d3Module;
 
 		// Clear previous content
 		const svg = select(svgElement);
@@ -252,7 +263,6 @@
 		// Get theme colors
 		const foregroundColor = getCSSVariable('--foreground');
 		const borderColor = getCSSVariable('--border');
-		const mutedColor = getCSSVariable('--muted-foreground');
 
 		// Create main group
 		const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -345,6 +355,26 @@
 			.text((d: string) => d);
 	}
 
+	function computeTooltipPosition(event: MouseEvent): { left: number; top: number } {
+		const padding = 10;
+		// Measure existing tooltip if it's already visible; fall back to a sensible default
+		// for the first show (will be corrected on the next mousemove).
+		const rect = tooltipEl?.getBoundingClientRect();
+		const w = rect?.width ?? 0;
+		const h = rect?.height ?? 0;
+
+		let left = event.clientX + padding;
+		let top = event.clientY + padding;
+
+		if (left + w > window.innerWidth - padding) {
+			left = event.clientX - w - padding;
+		}
+		if (top + h > window.innerHeight - padding) {
+			top = event.clientY - h - padding;
+		}
+		return { left, top };
+	}
+
 	function showTooltip(
 		event: MouseEvent,
 		term1: string,
@@ -352,47 +382,18 @@
 		value: number,
 		isDiagonal: boolean
 	) {
-		if (!tooltip) return;
-
-		let content = '';
-		if (isDiagonal) {
-			content = `<strong>${term1}</strong><br/>${t('cooccurrence.term_count')}: ${value.toLocaleString()}`;
-		} else {
-			content = `<strong>${term1}</strong> ↔ <strong>${term2}</strong><br/>${t('cooccurrence.cooccurrences')}: ${value.toLocaleString()}`;
-		}
-
-		tooltip.innerHTML = content;
-		tooltip.style.display = 'block';
-		updateTooltipPosition(event);
+		const { left, top } = computeTooltipPosition(event);
+		tooltipState = { visible: true, left, top, term1, term2, value, isDiagonal };
 	}
 
 	function updateTooltipPosition(event: MouseEvent) {
-		if (!tooltip) return;
-
-		// Position tooltip avoiding screen edges
-		const tooltipRect = tooltip.getBoundingClientRect();
-		const padding = 10;
-
-		let left = event.clientX + padding;
-		let top = event.clientY + padding;
-
-		// Adjust if tooltip would go off right edge
-		if (left + tooltipRect.width > window.innerWidth - padding) {
-			left = event.clientX - tooltipRect.width - padding;
-		}
-
-		// Adjust if tooltip would go off bottom edge
-		if (top + tooltipRect.height > window.innerHeight - padding) {
-			top = event.clientY - tooltipRect.height - padding;
-		}
-
-		tooltip.style.left = `${left}px`;
-		tooltip.style.top = `${top}px`;
+		if (!tooltipState.visible) return;
+		const { left, top } = computeTooltipPosition(event);
+		tooltipState = { ...tooltipState, left, top };
 	}
 
 	function hideTooltip() {
-		if (!tooltip) return;
-		tooltip.style.display = 'none';
+		tooltipState = { visible: false };
 	}
 </script>
 
@@ -422,10 +423,22 @@
 		</div>
 
 		<!-- Tooltip -->
-		<div
-			bind:this={tooltip}
-			class="pointer-events-none fixed z-50 hidden rounded-md border border-border bg-popover px-3 py-2 text-sm text-popover-foreground shadow-md"
-		></div>
+		{#if tooltipState.visible}
+			<div
+				bind:this={tooltipEl}
+				class="pointer-events-none fixed z-50 rounded-md border border-border bg-popover px-3 py-2 text-sm text-popover-foreground shadow-md"
+				style="left: {tooltipState.left}px; top: {tooltipState.top}px;"
+			>
+				{#if tooltipState.isDiagonal}
+					<strong>{tooltipState.term1}</strong><br />
+					{t('cooccurrence.term_count')}: {tooltipState.value.toLocaleString()}
+				{:else}
+					<strong>{tooltipState.term1}</strong>
+					↔ <strong>{tooltipState.term2}</strong><br />
+					{t('cooccurrence.cooccurrences')}: {tooltipState.value.toLocaleString()}
+				{/if}
+			</div>
+		{/if}
 	{/if}
 </div>
 

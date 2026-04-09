@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import {
 		BarChart3,
@@ -32,45 +32,49 @@
 	import { t } from '$lib/stores/translationStore.svelte.js';
 
 	const overviewItems = [
-		{ href: `${base}/`, icon: Home, label: 'nav.overview' },
-		{ href: `${base}/countries`, icon: Globe2, label: 'nav.countries' },
-		{ href: `${base}/languages`, icon: Languages, label: 'nav.languages' },
-		{ href: `${base}/newspaper-coverage`, icon: CalendarRange, label: 'nav.newspaper_coverage' },
-		{ href: `${base}/timeline`, icon: Calendar, label: 'nav.timeline' },
-		{ href: `${base}/entities`, icon: FileType, label: 'nav.entities' },
-		{ href: `${base}/categories`, icon: Tag, label: 'nav.categories' }
+		{ href: resolve('/'), icon: Home, label: 'nav.overview' },
+		{ href: resolve('/countries'), icon: Globe2, label: 'nav.countries' },
+		{ href: resolve('/languages'), icon: Languages, label: 'nav.languages' },
+		{ href: resolve('/newspaper-coverage'), icon: CalendarRange, label: 'nav.newspaper_coverage' },
+		{ href: resolve('/timeline'), icon: Calendar, label: 'nav.timeline' },
+		{ href: resolve('/entities'), icon: FileType, label: 'nav.entities' },
+		{ href: resolve('/categories'), icon: Tag, label: 'nav.categories' }
 	];
 
 	const referencesItems = [
-		{ href: `${base}/references/by-year`, icon: BookMarked, label: 'nav.references_by_year' },
-		{ href: `${base}/references/treemap`, icon: TreePine, label: 'nav.treemap' },
-		{ href: `${base}/references/authors`, icon: User, label: 'nav.top_authors' },
-		{ href: `${base}/references/publishers`, icon: Building2, label: 'nav.publishers' },
-		{ href: `${base}/references/coauthor-network`, icon: Users, label: 'nav.coauthor_network' },
-		{ href: `${base}/references/subject-cooccurrence`, icon: Waypoints, label: 'nav.subject_cooccurrence' },
-		{ href: `${base}/references/provenance-map`, icon: MapPin, label: 'nav.provenance_map' }
+		{ href: resolve('/references/by-year'), icon: BookMarked, label: 'nav.references_by_year' },
+		{ href: resolve('/references/treemap'), icon: TreePine, label: 'nav.treemap' },
+		{ href: resolve('/references/authors'), icon: User, label: 'nav.top_authors' },
+		{ href: resolve('/references/publishers'), icon: Building2, label: 'nav.publishers' },
+		{ href: resolve('/references/coauthor-network'), icon: Users, label: 'nav.coauthor_network' },
+		{
+			href: resolve('/references/subject-cooccurrence'),
+			icon: Waypoints,
+			label: 'nav.subject_cooccurrence'
+		},
+		{ href: resolve('/references/provenance-map'), icon: MapPin, label: 'nav.provenance_map' }
 	];
 
 	const textualAnalysisItems = [
-		{ href: `${base}/words`, icon: BookOpen, label: 'nav.words' },
-		{ href: `${base}/keywords`, icon: Hash, label: 'nav.keywords' },
-		{ href: `${base}/scary`, icon: BarChart3, label: 'nav.scary_words' },
-		{ href: `${base}/cooccurrence`, icon: Grid3X3, label: 'nav.cooccurrence' },
-		{ href: `${base}/topics`, icon: BrainCircuit, label: 'nav.topics' },
-		{ href: `${base}/topic-network`, icon: Network, label: 'nav.topic_network' },
-		{ href: `${base}/semantic-map`, icon: ChartScatter, label: 'nav.semantic_map' }
+		{ href: resolve('/words'), icon: BookOpen, label: 'nav.words' },
+		{ href: resolve('/keywords'), icon: Hash, label: 'nav.keywords' },
+		{ href: resolve('/scary'), icon: BarChart3, label: 'nav.scary_words' },
+		{ href: resolve('/cooccurrence'), icon: Grid3X3, label: 'nav.cooccurrence' },
+		{ href: resolve('/topics'), icon: BrainCircuit, label: 'nav.topics' },
+		{ href: resolve('/topic-network'), icon: Network, label: 'nav.topic_network' },
+		{ href: resolve('/semantic-map'), icon: ChartScatter, label: 'nav.semantic_map' }
 	];
 
 	const spatialAnalysisItems = [
-		{ href: `${base}/spatial/world-map`, icon: MapPin, label: 'nav.world_map' },
-		{ href: `${base}/spatial/sources`, icon: Newspaper, label: 'nav.sources' },
-		{ href: `${base}/entity-spatial`, icon: UserCircle, label: 'nav.entity_spatial' }
+		{ href: resolve('/spatial/world-map'), icon: MapPin, label: 'nav.world_map' },
+		{ href: resolve('/spatial/sources'), icon: Newspaper, label: 'nav.sources' },
+		{ href: resolve('/entity-spatial'), icon: UserCircle, label: 'nav.entity_spatial' }
 	];
 
 	const networkAnalysisItems = [
-		{ href: `${base}/network`, icon: Share2, label: 'nav.network' },
-		{ href: `${base}/network-map`, icon: Network, label: 'nav.network_map' },
-		{ href: `${base}/knowledge-graph`, icon: GitFork, label: 'nav.knowledge_graph' }
+		{ href: resolve('/network'), icon: Share2, label: 'nav.network' },
+		{ href: resolve('/network-map'), icon: Network, label: 'nav.network_map' },
+		{ href: resolve('/knowledge-graph'), icon: GitFork, label: 'nav.knowledge_graph' }
 	];
 </script>
 
@@ -101,10 +105,12 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- item.href is built via resolve() above. -->
 									<a href={item.href} {...props}>
 										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/snippet}
 							</Sidebar.MenuButton>
 						</Sidebar.MenuItem>
@@ -120,10 +126,12 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- item.href is built via resolve() above. -->
 									<a href={item.href} {...props}>
 										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/snippet}
 							</Sidebar.MenuButton>
 						</Sidebar.MenuItem>
@@ -139,10 +147,12 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- item.href is built via resolve() above. -->
 									<a href={item.href} {...props}>
 										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/snippet}
 							</Sidebar.MenuButton>
 						</Sidebar.MenuItem>
@@ -158,10 +168,12 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- item.href is built via resolve() above. -->
 									<a href={item.href} {...props}>
 										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/snippet}
 							</Sidebar.MenuButton>
 						</Sidebar.MenuItem>
@@ -177,10 +189,12 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- item.href is built via resolve() above. -->
 									<a href={item.href} {...props}>
 										<item.icon class="h-4 w-4" />
 										<span>{t(item.label)}</span>
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/snippet}
 							</Sidebar.MenuButton>
 						</Sidebar.MenuItem>

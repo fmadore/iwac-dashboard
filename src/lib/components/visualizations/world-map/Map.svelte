@@ -4,7 +4,6 @@
 	import { base } from '$app/paths';
 	import { mapDataStore } from '$lib/stores/mapDataStore.svelte.js';
 	import { t } from '$lib/stores/translationStore.svelte.js';
-	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
 	import {
 		BaseMap,
@@ -15,7 +14,7 @@
 	} from '$lib/components/visualizations/maplibre/index.js';
 	import type { GeoJsonData, LocationData } from '$lib/types/worldmap.js';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
-	import { scaleLinear, scaleSqrt } from 'd3-scale';
+	import { scaleLinear } from 'd3-scale';
 
 	// Props
 	let { height = '600px' }: { height?: string } = $props();
@@ -32,7 +31,7 @@
 		'#fdba74', // orange-300
 		'#fb923c', // orange-400
 		'#f97316', // orange-500
-		'#ea580c'  // orange-600
+		'#ea580c' // orange-600
 	]);
 
 	// Legend state
@@ -59,8 +58,6 @@
 	const viewMode = $derived(mapDataStore.viewMode);
 	const locations = $derived(mapDataStore.filteredLocations);
 	const countryCounts = $derived(mapDataStore.filteredCountryCounts);
-	const selectedSourceCountry = $derived(mapDataStore.selectedSourceCountry);
-	const selectedYearRange = $derived(mapDataStore.selectedYearRange);
 
 	function syncThemeDerivedValues() {
 		if (!browser) return;
@@ -79,7 +76,7 @@
 			'#fdba74', // orange-300
 			'#fb923c', // orange-400
 			'#f97316', // orange-500
-			'#ea580c'  // orange-600
+			'#ea580c' // orange-600
 		];
 	}
 
@@ -221,7 +218,7 @@
 
 <div class="map-wrapper relative">
 	<div class="relative z-0" data-testid="map-container">
-		<BaseMap height={height} center={[2, 8]} zoom={4}>
+		<BaseMap {height} center={[2, 8]} zoom={4}>
 			{#if viewMode === 'bubbles' && circleData.length > 0}
 				<CircleLayer
 					data={circleData}
@@ -254,7 +251,7 @@
 
 	{#if dataLoading}
 		<div
-			class="absolute top-4 left-1/2 -translate-x-1/2 bg-card px-4 py-2 rounded-lg shadow-lg border border-border"
+			class="absolute top-4 left-1/2 -translate-x-1/2 rounded-lg border border-border bg-card px-4 py-2 shadow-lg"
 		>
 			<p class="text-sm text-muted-foreground">{t('common.loading')}</p>
 		</div>
@@ -262,11 +259,13 @@
 
 	<!-- Bubble Legend -->
 	{#if showLegend && viewMode === 'bubbles' && legendItems.length > 0 && !dataLoading}
-		<div class="absolute bottom-4 left-4 bg-card p-3 rounded-lg shadow-lg border border-border z-10">
-			<div class="flex items-center justify-between mb-2">
+		<div
+			class="absolute bottom-4 left-4 z-10 rounded-lg border border-border bg-card p-3 shadow-lg"
+		>
+			<div class="mb-2 flex items-center justify-between">
 				<span class="text-xs font-semibold text-foreground">{t('worldmap.article_count')}</span>
 				<button
-					class="text-muted-foreground hover:text-foreground transition-colors"
+					class="text-muted-foreground transition-colors hover:text-foreground"
 					onclick={() => (showLegend = false)}
 					aria-label="Close legend"
 				>
@@ -287,9 +286,9 @@
 				</button>
 			</div>
 			<div class="flex items-center gap-4">
-				{#each legendItems as item}
+				{#each legendItems as item (item.label)}
 					<div class="flex items-center gap-1.5">
-						<span class="w-3 h-3 rounded-full" style="background: {item.color}"></span>
+						<span class="h-3 w-3 rounded-full" style="background: {item.color}"></span>
 						<span class="text-xs text-muted-foreground">{item.label}</span>
 					</div>
 				{/each}
@@ -300,7 +299,7 @@
 	<!-- Legend Toggle -->
 	{#if !showLegend && viewMode === 'bubbles' && legendItems.length > 0 && !dataLoading}
 		<button
-			class="absolute bottom-4 left-4 bg-card p-2 rounded-lg shadow-lg border border-border hover:bg-accent transition-colors z-10"
+			class="absolute bottom-4 left-4 z-10 rounded-lg border border-border bg-card p-2 shadow-lg transition-colors hover:bg-accent"
 			onclick={() => (showLegend = true)}
 			aria-label="Show legend"
 		>

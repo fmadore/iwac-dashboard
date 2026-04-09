@@ -60,9 +60,7 @@
 			const isHovered = hoveredId !== null && point.id === hoveredId;
 
 			// Subtle stroke - slightly darker than fill for definition
-			const strokeColor = isSelected
-				? colors.primary
-				: darkenColor(color, 0.15);
+			const strokeColor = isSelected ? colors.primary : darkenColor(color, 0.15);
 
 			return createPointFeature(point.id, point.lng, point.lat, {
 				...point,

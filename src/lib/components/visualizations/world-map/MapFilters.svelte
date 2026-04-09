@@ -59,9 +59,7 @@
 		}
 	}
 
-	const hasActiveFilters = $derived(
-		selectedSourceCountry !== null || selectedYearRange !== null
-	);
+	const hasActiveFilters = $derived(selectedSourceCountry !== null || selectedYearRange !== null);
 
 	// Format year range display
 	const yearRangeDisplay = $derived(() => {
@@ -76,7 +74,7 @@
 	<!-- Country Picker -->
 	<div class="filter-group flex items-center gap-2">
 		<Globe size={16} class="text-muted-foreground" />
-		<Select.Root 
+		<Select.Root
 			type="single"
 			value={selectedSourceCountry ?? 'all'}
 			onValueChange={handleCountryChange}
@@ -87,7 +85,7 @@
 			<Select.Content>
 				<Select.Item value="all">{t('worldmap.filter.all_countries')}</Select.Item>
 				<Select.Separator />
-				{#each availableSourceCountries as country}
+				{#each availableSourceCountries as country (country)}
 					<Select.Item value={country}>{country}</Select.Item>
 				{/each}
 			</Select.Content>
@@ -109,7 +107,7 @@
 						step={1}
 						class="w-50"
 					/>
-					<span class="text-sm text-muted-foreground whitespace-nowrap min-w-22.5">
+					<span class="min-w-22.5 text-sm whitespace-nowrap text-muted-foreground">
 						{yearRangeDisplay()}
 					</span>
 				</div>
@@ -119,12 +117,7 @@
 
 	<!-- Reset Button -->
 	{#if hasActiveFilters}
-		<Button
-			variant="ghost"
-			size="sm"
-			onclick={handleResetFilters}
-			class="gap-1"
-		>
+		<Button variant="ghost" size="sm" onclick={handleResetFilters} class="gap-1">
 			<RotateCcw size={14} />
 			{t('worldmap.filter.reset')}
 		</Button>

@@ -110,8 +110,8 @@ declare module 'd3-selection' {
 	export interface Transition<
 		GElement extends d3.BaseType,
 		Datum,
-		PElement extends d3.BaseType,
-		PDatum
+		_PElement extends d3.BaseType,
+		_PDatum
 	> {
 		attr(
 			name: string,
@@ -134,6 +134,7 @@ declare module 'd3-selection' {
 		delay(milliseconds: number | ((d: Datum, i: number, group: GElement[]) => number)): this;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 	export interface BaseType {}
 	export interface EnterElement {
 		ownerDocument: Document;

@@ -23,7 +23,12 @@
 		itemLabel?: string;
 	}
 
-	let { location, onClose, itemBaseUrl = 'https://islam.zmo.de/s/westafrica/item/', itemLabel = 'publications' }: Props = $props();
+	let {
+		location,
+		onClose,
+		itemBaseUrl = 'https://islam.zmo.de/s/westafrica/item/',
+		itemLabel = 'publications'
+	}: Props = $props();
 
 	// Force reactivity on language change
 	const lang = $derived(languageStore.current);
@@ -64,7 +69,7 @@
 					<Button
 						variant="ghost"
 						size="sm"
-						class="h-8 w-8 p-0 shrink-0"
+						class="h-8 w-8 shrink-0 p-0"
 						href={location.externalUrl}
 						target="_blank"
 						rel="noopener noreferrer"
@@ -95,7 +100,8 @@
 						<Badge variant="outline">{location.country}</Badge>
 					{/if}
 					<span class="text-sm text-muted-foreground">
-						{items.length} {t(`map_popup.${itemLabel}`)}
+						{items.length}
+						{t(`map_popup.${itemLabel}`)}
 					</span>
 					{#if location.yearRange}
 						<span class="text-sm text-muted-foreground">
@@ -112,7 +118,7 @@
 								class="rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent/50"
 							>
 								<div class="mb-2 flex items-start justify-between gap-2">
-									<h4 class="line-clamp-2 text-sm font-medium leading-tight">
+									<h4 class="line-clamp-2 text-sm leading-tight font-medium">
 										{item.title || t('map_popup.untitled')}
 									</h4>
 									<Badge variant="secondary" class="shrink-0 text-xs">

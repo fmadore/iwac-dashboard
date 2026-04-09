@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+	import { t } from '$lib/stores/translationStore.svelte.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Search } from '@lucide/svelte';
 
 	// Props
@@ -33,20 +32,20 @@
 	// Filter words based on search
 	const filteredWords = $derived.by(() => {
 		if (!data?.words) return [];
-		
+
 		let words = data.words;
-		
+
 		// Filter by search
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
-			words = words.filter(w => w.word.toLowerCase().includes(query));
+			words = words.filter((w) => w.word.toLowerCase().includes(query));
 		}
-		
+
 		// Limit if not showing all
 		if (!showAll && !searchQuery.trim()) {
 			words = words.slice(0, maxDisplayed);
 		}
-		
+
 		return words;
 	});
 
@@ -62,7 +61,7 @@
 <div class="space-y-4">
 	<!-- Search -->
 	<div class="relative">
-		<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+		<Search class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 		<Input
 			type="text"
 			placeholder={t('words.search_words')}
@@ -110,10 +109,7 @@
 		<!-- Show more/less -->
 		{#if hasMore && !searchQuery.trim()}
 			<div class="text-center">
-				<button
-					class="text-sm text-primary hover:underline"
-					onclick={() => showAll = !showAll}
-				>
+				<button class="text-sm text-primary hover:underline" onclick={() => (showAll = !showAll)}>
 					{showAll ? t('words.show_less') : t('words.show_more')}
 				</button>
 			</div>

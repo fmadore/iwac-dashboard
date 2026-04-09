@@ -10,17 +10,12 @@
 		itemLabel?: string;
 	}
 
-	let { location, position, itemLabel = 'publications' }: Props = $props();
+	let { location, position, itemLabel: _itemLabel = 'publications' }: Props = $props();
 
 	// Force reactivity on language change
-	const lang = $derived(languageStore.current);
+	const _lang = $derived(languageStore.current);
 
 	const isVisible = $derived(location !== null && position !== null);
-
-	function getItemLabel(count: number): string {
-		// Use provided label or default to publications
-		return t(`map_popup.${itemLabel}`, [count.toString()]) || `${count} ${itemLabel}`;
-	}
 </script>
 
 {#if isVisible && location && position}
@@ -29,7 +24,9 @@
 		style="
 			left: {position.x}px;
 			top: {position.y}px;
-			transform: translateX(-50%) {position.placement === 'top' ? 'translateY(-100%)' : 'translateY(8px)'};
+			transform: translateX(-50%) {position.placement === 'top'
+			? 'translateY(-100%)'
+			: 'translateY(8px)'};
 		"
 		role="tooltip"
 	>
@@ -37,6 +34,7 @@
 			<!-- Location name with optional external link -->
 			<div class="popover-header">
 				{#if location.externalUrl}
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 					<a
 						href={location.externalUrl}
 						target="_blank"
@@ -46,6 +44,7 @@
 						<span class="location-name">{location.name}</span>
 						<ExternalLink class="h-3.5 w-3.5 shrink-0" />
 					</a>
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				{:else}
 					<span class="location-name">{location.name}</span>
 				{/if}

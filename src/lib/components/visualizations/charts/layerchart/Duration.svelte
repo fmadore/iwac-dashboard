@@ -88,8 +88,10 @@
 		if (chartData.length === 0) return [new Date(1955, 0, 1), new Date(2030, 11, 31)];
 
 		const allDates = chartData.flatMap((d) => [d.startDate, d.endDate]);
-		const minDate = new Date(Math.min(...allDates.map((d) => d.getTime())));
-		const maxDate = new Date(Math.max(...allDates.map((d) => d.getTime())));
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const minDate = new Date(Math.min(...allDates.map((d) => d.getTime()))); // Local procedural Date; not reactive state.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const maxDate = new Date(Math.max(...allDates.map((d) => d.getTime()))); // Local procedural Date; not reactive state.
 
 		// Add some padding
 		minDate.setFullYear(minDate.getFullYear() - 3);
@@ -176,7 +178,7 @@
 					<!-- X Axis -->
 					<g transform="translate(0, {innerHeight})">
 						<line x1="0" y1="0" x2={innerWidth} y2="0" stroke="currentColor" stroke-opacity="0.2" />
-						{#each xTicks as tick}
+						{#each xTicks as tick (tick.getTime())}
 							{@const x = xScale(tick)}
 							<g transform="translate({x}, 0)">
 								<line y2="6" stroke="currentColor" stroke-opacity="0.4" />
@@ -188,7 +190,7 @@
 					</g>
 
 					<!-- Y Axis -->
-					{#each newspaperNames as name}
+					{#each newspaperNames as name (name)}
 						{@const y = (yScale(name) ?? 0) + yScale.bandwidth() / 2}
 						<text
 							x="-10"

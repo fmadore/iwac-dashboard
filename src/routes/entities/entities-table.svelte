@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { base } from '$app/paths';
 	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { DataTable } from '$lib/components/ui/data-table/index.js';
@@ -38,7 +39,8 @@
 	);
 
 	const availableCountries = $derived.by(() => {
-		const countriesSet = new Set<string>();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const countriesSet = new Set<string>(); // Local procedural Set; not reactive state.
 		rows.forEach((r) => {
 			if (r.countries) {
 				// Split by pipe (|) and trim whitespace
@@ -74,7 +76,7 @@
 
 	// Toggle facet selection - Create new Set for reactivity
 	function toggleType(type: string) {
-		const newSet = new Set(selectedTypes);
+		const newSet = new SvelteSet(selectedTypes);
 		if (newSet.has(type)) {
 			newSet.delete(type);
 		} else {
@@ -84,7 +86,7 @@
 	}
 
 	function toggleCountry(country: string) {
-		const newSet = new Set(selectedCountries);
+		const newSet = new SvelteSet(selectedCountries);
 		if (newSet.has(country)) {
 			newSet.delete(country);
 		} else {
@@ -211,7 +213,7 @@
 				<DropdownMenu.Label>{t('table.type')}</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<div class="max-h-64 overflow-y-auto">
-					{#each availableTypesTranslated as { original, translated }}
+					{#each availableTypesTranslated as { original, translated } (original)}
 						<DropdownMenu.CheckboxItem
 							checked={selectedTypes.has(original)}
 							onCheckedChange={() => toggleType(original)}
@@ -245,7 +247,7 @@
 				<DropdownMenu.Label>{t('table.countries')}</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<div class="max-h-64 overflow-y-auto">
-					{#each availableCountries as country}
+					{#each availableCountries as country (country)}
 						<DropdownMenu.CheckboxItem
 							checked={selectedCountries.has(country)}
 							onCheckedChange={() => toggleCountry(country)}
@@ -270,7 +272,7 @@
 	{#if hasActiveFilters}
 		{#key languageStore.current}
 			<div class="flex flex-wrap items-center gap-2">
-				{#each [...selectedTypes] as type}
+				{#each [...selectedTypes] as type (type)}
 					<Badge variant="secondary" class="gap-1 pr-1">
 						<span class="text-xs"
 							>{t('table.type')}: {(() => {
@@ -288,7 +290,7 @@
 						</button>
 					</Badge>
 				{/each}
-				{#each [...selectedCountries] as country}
+				{#each [...selectedCountries] as country (country)}
 					<Badge variant="secondary" class="gap-1 pr-1">
 						<span class="text-xs">{t('table.countries')}: {country}</span>
 						<button
@@ -322,6 +324,7 @@
 		{#snippet cellRenderer({ row, column, value })}
 			{#if column.key === 'Titre'}
 				{#if row.Titre}
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 					<a
 						href={entityUrl(row)}
 						target="_blank"
@@ -331,6 +334,7 @@
 					>
 						{row.Titre}
 					</a>
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				{:else}
 					<span class="block truncate">—</span>
 				{/if}
@@ -348,7 +352,7 @@
 			{:else if column.key === 'countries'}
 				{#if row.countries}
 					<div class="flex flex-wrap gap-1">
-						{#each row.countries.split('|').map(c => c.trim()) as country}
+						{#each row.countries.split('|').map((c) => c.trim()) as country (country)}
 							<Badge variant="outline" class="text-xs">
 								{country}
 							</Badge>

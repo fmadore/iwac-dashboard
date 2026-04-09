@@ -54,6 +54,7 @@
 ## Remaining Work
 
 ### Phase 2b: ResizeObserver Composable
+
 **Priority: Medium** | **Effort: 30m** | **Impact: Medium**
 
 6 components use ResizeObserver with inconsistent patterns ($effect vs onMount vs function-based). Create a shared `useResizeObserver.svelte.ts` composable.
@@ -61,38 +62,44 @@
 **Components to update:** Bar.svelte, BarChartRace.svelte, CooccurrenceMatrix.svelte, TimelineChart.svelte, SemanticMapCanvas.svelte, Wordcloud.svelte
 
 ### Phase 3b: Remaining Dead Code
+
 **Priority: Low** | **Effort: 10m** | **Impact: Low**
 
 - `src/routes/newspaper-coverage/+page.svelte` uses hardcoded `placeholderData`
 - `e2e/demo.test.ts` is a minimal placeholder test
 
 ### Phase 6b: Python Script Consistency
+
 **Priority: Medium** | **Effort: 2h** | **Impact: Medium**
 
 9 of 17 generator scripts don't use `iwac_utils.py` shared utilities. Migrate them for consistency.
 
 ### Phase 7: Type Safety
+
 **Priority: Medium** | **Effort: 1h** | **Impact: Medium**
 
 - Remove remaining `any` types in tooltip handlers
 - Type NetworkGraph `sigmaInstance` and `graphInstance` with proper Sigma.js imports
 
 ### Phase 9: Component Decomposition
+
 **Priority: Low** | **Effort: 4h+** | **Impact: Medium**
 
 Large components that could be split:
 
-| Component | Lines | Candidates for Extraction |
-|-----------|-------|--------------------------|
-| NetworkGraph.svelte | 1090 | Tooltip logic, legend, layout init |
-| BarChartRace.svelte | 599 | Animation setup, scale calculations |
-| SemanticMapCanvas.svelte | 540 | UMAP init, rendering pipeline |
-| CooccurrenceMatrix.svelte | 456 | Heatmap rendering, interactions |
+| Component                 | Lines | Candidates for Extraction           |
+| ------------------------- | ----- | ----------------------------------- |
+| NetworkGraph.svelte       | 1090  | Tooltip logic, legend, layout init  |
+| BarChartRace.svelte       | 599   | Animation setup, scale calculations |
+| SemanticMapCanvas.svelte  | 540   | UMAP init, rendering pipeline       |
+| CooccurrenceMatrix.svelte | 456   | Heatmap rendering, interactions     |
 
 ### Phase 10: Test Expansion
+
 **Priority: Medium** | **Effort: 2h** | **Impact: High**
 
 Current coverage: ~13% of JS/TS code. Priority additions:
+
 - `urlManager.svelte.ts` — URL sync, state mutations (35-50 tests)
 - `useFilters.svelte.ts` — filter logic, mutual exclusivity (30-45 tests)
 - `storage-check.ts` — cross-origin safety (15-25 tests)
@@ -102,15 +109,15 @@ Current coverage: ~13% of JS/TS code. Priority additions:
 
 ## Summary
 
-| Phase | Status | Tests Added |
-|-------|--------|-------------|
-| 1. Theme/CSS | ✅ Done | 29 |
-| 2. Shared Utils | ✅ Done | 96 |
-| 3. Dead Code | ✅ Done | — |
-| 4. Data Fetching | ✅ Done | 32 |
-| 5. i18n | ✅ Done | 37 |
-| 6. CI | ✅ Partial | — |
-| 7. Types | Remaining | — |
-| 8. Testing | ✅ Done | 194 total |
-| 9. Decomposition | Remaining | — |
-| 10. Test Expansion | Remaining | — |
+| Phase              | Status     | Tests Added |
+| ------------------ | ---------- | ----------- |
+| 1. Theme/CSS       | ✅ Done    | 29          |
+| 2. Shared Utils    | ✅ Done    | 96          |
+| 3. Dead Code       | ✅ Done    | —           |
+| 4. Data Fetching   | ✅ Done    | 32          |
+| 5. i18n            | ✅ Done    | 37          |
+| 6. CI              | ✅ Partial | —           |
+| 7. Types           | Remaining  | —           |
+| 8. Testing         | ✅ Done    | 194 total   |
+| 9. Decomposition   | Remaining  | —           |
+| 10. Test Expansion | Remaining  | —           |

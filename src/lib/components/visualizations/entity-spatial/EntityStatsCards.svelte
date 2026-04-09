@@ -14,7 +14,7 @@
 	let { articleCount, countries, dateRange }: Props = $props();
 
 	// Force reactivity on language change
-	const lang = $derived(languageStore.current);
+	const _lang = $derived(languageStore.current);
 
 	// Format date range for display
 	const formattedDateRange = $derived.by(() => {

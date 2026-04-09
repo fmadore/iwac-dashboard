@@ -17,7 +17,7 @@
 
 	// Accept any FeatureCollection-like structure
 	interface Props {
-		geoJson: { type: 'FeatureCollection'; features: GeoFeature[] };
+		geoJson: { features: GeoFeature[] };
 		data: ChoroplethData;
 		colorRange?: string[];
 		scaleMode?: 'linear' | 'log' | 'quantile';
@@ -33,7 +33,7 @@
 		'#fdba74', // orange-300
 		'#fb923c', // orange-400
 		'#f97316', // orange-500
-		'#ea580c'  // orange-600
+		'#ea580c' // orange-600
 	];
 
 	let {
@@ -48,7 +48,6 @@
 	const SOURCE_ID = 'choropleth-source';
 	const FILL_LAYER_ID = 'choropleth-fill';
 	const LINE_LAYER_ID = 'choropleth-line';
-	const HIGHLIGHT_LAYER_ID = 'choropleth-highlight';
 
 	const mapContext = getContext<MapContext>(MAP_CONTEXT_KEY);
 	let map: MapLibreMap | null = null;
@@ -195,9 +194,7 @@
 
 		if (countryName && value !== null) {
 			const articleText =
-				value === 1
-					? t('worldmap.article')
-					: t('worldmap.articles', [value.toLocaleString()]);
+				value === 1 ? t('worldmap.article') : t('worldmap.articles', [value.toLocaleString()]);
 			infoControl.innerHTML = `
 				<h4 style="margin: 0 0 4px 0; font-weight: 600;">${countryName}</h4>
 				<p style="margin: 0;">${articleText}</p>
@@ -304,12 +301,7 @@
 				source: SOURCE_ID,
 				paint: {
 					'fill-color': ['get', 'fillColor'],
-					'fill-opacity': [
-						'case',
-						['boolean', ['feature-state', 'hover'], false],
-						0.9,
-						0.7
-					]
+					'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.9, 0.7]
 				}
 			});
 		}
@@ -328,12 +320,7 @@
 						colors.primary,
 						colors.border
 					],
-					'line-width': [
-						'case',
-						['boolean', ['feature-state', 'hover'], false],
-						2,
-						0.5
-					]
+					'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 2, 0.5]
 				}
 			});
 		}

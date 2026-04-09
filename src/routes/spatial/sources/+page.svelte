@@ -3,7 +3,11 @@
 	import { onMount } from 'svelte';
 	import { StatsCard } from '$lib/components/dashboard/index.js';
 	import { MapLocationPopover } from '$lib/components/visualizations/map/index.js';
-	import { BaseMap, CircleLayer, type CircleDataPoint } from '$lib/components/visualizations/maplibre/index.js';
+	import {
+		BaseMap,
+		CircleLayer,
+		type CircleDataPoint
+	} from '$lib/components/visualizations/maplibre/index.js';
 	import { fetchData } from '$lib/utils/dataFetcher.js';
 	import type { MapLocation, PopoverPosition } from '$lib/types/map-location.js';
 
@@ -151,11 +155,7 @@
 			<div class="relative" style="z-index: 0;">
 				<BaseMap height="500px" center={[0, 10]} zoom={4}>
 					{#if circleData.length > 0}
-						<CircleLayer
-							data={circleData}
-							radiusRange={[8, 28]}
-							onHover={handleHover}
-						/>
+						<CircleLayer data={circleData} radiusRange={[8, 28]} onHover={handleHover} />
 					{/if}
 				</BaseMap>
 				<!-- Hover popover -->
@@ -183,16 +183,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each data?.sources.slice(0, 20) ?? [] as source}
+						{#each data?.sources.slice(0, 20) ?? [] as source (source.id ?? source.name)}
 							<tr class="border-b hover:bg-muted/30">
 								<td class="p-3">
 									{#if source.id}
+										<!-- eslint-disable svelte/no-navigation-without-resolve -- External link, resolve() is for internal routes only. -->
 										<a
 											href={getSourceUrl(source.id)}
 											target="_blank"
 											rel="noopener noreferrer"
 											class="text-primary hover:underline">{source.name}</a
 										>
+										<!-- eslint-enable svelte/no-navigation-without-resolve -->
 									{:else}
 										{source.name}
 									{/if}

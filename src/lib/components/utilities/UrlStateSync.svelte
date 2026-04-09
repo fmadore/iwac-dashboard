@@ -15,7 +15,6 @@
 	import { urlManager } from '$lib/stores/urlManager.svelte.js';
 	import { languageStore } from '$lib/stores/translationStore.svelte.js';
 	import { mode, setMode } from 'mode-watcher';
-	import { isStorageAvailable } from '$lib/utils/storage-check.js';
 	import type { Language } from '$lib/stores/translationStore.svelte.js';
 	import type { Theme } from '$lib/stores/urlManager.svelte.js';
 
@@ -43,7 +42,17 @@
 		spatial: new Set(['lang', 'theme', 'view']),
 		network: new Set(['lang', 'theme', 'entity', 'focus']),
 		'network-map': new Set(['lang', 'theme']),
-		keywords: new Set(['lang', 'theme', 'type', 'view', 'facet', 'country', 'newspaper', 'topN', 'keywords'])
+		keywords: new Set([
+			'lang',
+			'theme',
+			'type',
+			'view',
+			'facet',
+			'country',
+			'newspaper',
+			'topN',
+			'keywords'
+		])
 	};
 
 	function pruneUrlParamsForRoute(pathname: string) {

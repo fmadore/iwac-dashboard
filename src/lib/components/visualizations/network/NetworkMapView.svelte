@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { t } from '$lib/stores/translationStore.svelte.js';
 	import {
 		BaseMap,
 		CircleLayer,
@@ -122,7 +121,7 @@
 		// BaseMap handles this via bounds prop reactivity
 	}
 
-	export function focusNode(nodeId: string) {
+	export function focusNode(_nodeId: string) {
 		// This would require a ref to the map, which we could add later
 	}
 </script>

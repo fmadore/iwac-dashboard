@@ -28,44 +28,44 @@ The entry point provides key statistics at a glance: total documents, language d
 
 ### Geographic Analysis
 
-| Page | What You Can Discover |
-|------|----------------------|
-| **Country Distribution** | Which West African countries have the most documentation? Interactive treemap showing document density by nation. |
-| **World Map** | Geographic spread of the collection visualized on an interactive choropleth map. |
-| **Sources Map** | Where are the newspapers and publication sources located? |
+| Page                            | What You Can Discover                                                                                                                                                        |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Country Distribution**        | Which West African countries have the most documentation? Interactive treemap showing document density by nation.                                                            |
+| **World Map**                   | Geographic spread of the collection visualized on an interactive choropleth map.                                                                                             |
+| **Sources Map**                 | Where are the newspapers and publication sources located?                                                                                                                    |
 | **Entity Geographic Footprint** | Select any person, organization, or topic and see where they appear across the region. Track an imam's influence, an organization's reach, or a concept's geographic spread. |
 
 ### Temporal Analysis
 
-| Page | What You Can Discover |
-|------|----------------------|
-| **Timeline** | How has coverage of Islam in West Africa evolved over time? View growth trajectories, monthly additions, and identify periods of intensive documentation. |
-| **Categories Over Time** | How has the composition of document types changed across decades? |
-| **References by Year** | Publication patterns and bibliographic trends across time periods. |
+| Page                     | What You Can Discover                                                                                                                                     |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Timeline**             | How has coverage of Islam in West Africa evolved over time? View growth trajectories, monthly additions, and identify periods of intensive documentation. |
+| **Categories Over Time** | How has the composition of document types changed across decades?                                                                                         |
+| **References by Year**   | Publication patterns and bibliographic trends across time periods.                                                                                        |
 
 ### Textual Analysis
 
-| Page | What You Can Discover |
-|------|----------------------|
-| **Word Cloud & Frequency** | What terms appear most frequently? Filter by country or year to see regional and temporal variations in terminology. |
-| **Word Co-occurrence** | Which terms appear together? Identify semantic clusters and conceptual relationships in the literature. |
-| **Topic Modeling** | What themes emerge from automated analysis? Browse detected topics and their prevalence. |
-| **Sensitive Terms** | Track concerning or problematic terminology over time. Useful for critical discourse analysis and understanding media framing. |
+| Page                       | What You Can Discover                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **Word Cloud & Frequency** | What terms appear most frequently? Filter by country or year to see regional and temporal variations in terminology.           |
+| **Word Co-occurrence**     | Which terms appear together? Identify semantic clusters and conceptual relationships in the literature.                        |
+| **Topic Modeling**         | What themes emerge from automated analysis? Browse detected topics and their prevalence.                                       |
+| **Sensitive Terms**        | Track concerning or problematic terminology over time. Useful for critical discourse analysis and understanding media framing. |
 
 ### Network Analysis
 
-| Page | What You Can Discover |
-|------|----------------------|
-| **Entity Network** | How are people, organizations, places, and topics connected? Interactive graph showing relationships based on co-mentions in documents. |
-| **Spatial Network** | Which locations are mentioned together? Geographic clusters and regional connections visualized on a map. |
+| Page                | What You Can Discover                                                                                                                   |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Entity Network**  | How are people, organizations, places, and topics connected? Interactive graph showing relationships based on co-mentions in documents. |
+| **Spatial Network** | Which locations are mentioned together? Geographic clusters and regional connections visualized on a map.                               |
 
 ### Entity & Reference Data
 
-| Page | What You Can Discover |
-|------|----------------------|
-| **Entity Index** | Searchable directory of all persons, organizations, events, locations, and topics extracted from the collection. |
-| **Language Distribution** | What languages are represented? Breakdown by document type and country. |
-| **Top Authors** | Who has contributed most to the scholarly literature? Publication counts and activity periods. |
+| Page                      | What You Can Discover                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Entity Index**          | Searchable directory of all persons, organizations, events, locations, and topics extracted from the collection. |
+| **Language Distribution** | What languages are represented? Breakdown by document type and country.                                          |
+| **Top Authors**           | Who has contributed most to the scholarly literature? Publication counts and activity periods.                   |
 
 ---
 
@@ -74,23 +74,28 @@ The entry point provides key statistics at a glance: total documents, language d
 The dashboard helps researchers investigate questions such as:
 
 **Geographic patterns**
+
 - Where is Islamic practice and scholarship most documented in francophone West Africa?
 - How does coverage differ between coastal and Sahelian countries?
 
 **Temporal dynamics**
+
 - How has media attention to Islam in West Africa changed since independence?
 - What events correlate with spikes in documentation?
 
 **Actors and networks**
+
 - Who are the key religious leaders, scholars, and organizations mentioned?
 - How are different actors connected through co-mentions?
 
 **Discourse analysis**
+
 - What terminology characterizes coverage of Islam in this region?
 - How do word patterns differ between countries or time periods?
 - What potentially problematic framings appear in the sources?
 
 **Entity tracking**
+
 - Where does a specific religious leader appear in the documentary record?
 - What is the geographic footprint of a particular Islamic organization?
 
@@ -112,6 +117,7 @@ The dashboard helps researchers investigate questions such as:
 All data comes from the [Islam West Africa Collection](https://huggingface.co/datasets/fmadore/islam-west-africa-collection) on Hugging Face, a curated dataset documenting how francophone West African newspapers have covered Islam and Muslims from the colonial period to the present.
 
 The collection includes:
+
 - **Articles**: Press coverage from major West African newspapers
 - **Publications**: Academic papers, books, and scholarly works
 - **Documents**: Archival materials and unpublished texts

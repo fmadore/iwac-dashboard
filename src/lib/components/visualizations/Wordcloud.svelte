@@ -6,7 +6,6 @@
 
 	interface Props {
 		data?: [string, number][];
-		aspectRatio?: number; // width / height ratio (default 2:1)
 		backgroundColor?: string;
 		fontFamily?: string;
 		colorScheme?:
@@ -30,7 +29,6 @@
 
 	const {
 		data = [],
-		aspectRatio = 2,
 		backgroundColor = 'transparent',
 		fontFamily = 'Inter, sans-serif',
 		colorScheme = 'category10',
@@ -48,7 +46,6 @@
 	let d3: typeof import('d3-selection') | undefined;
 	let colorScale: string[];
 	let isRendering = $state(false);
-	let words = $state<Word[]>([]);
 	const containerSize = useResizeObserver(() => containerElement);
 	const containerWidth = $derived(containerSize.width || 800);
 	const containerHeight = $derived(containerSize.height || 400);
@@ -201,7 +198,6 @@
 			.font(fontFamily)
 			.fontSize((d: Word) => d.size)
 			.on('end', (placedWords: Word[]) => {
-				words = placedWords;
 				drawWords(placedWords);
 				isRendering = false;
 			});
@@ -250,7 +246,13 @@
 		const textSelection = text.style('opacity', 0);
 		// d3-transition augments Selection with .transition() when imported
 		const transitionable = textSelection as typeof textSelection & {
-			transition?: () => { duration: (ms: number) => { delay: (fn: (d: Word, i: number) => number) => { style: (name: string, value: string) => void } } };
+			transition?: () => {
+				duration: (ms: number) => {
+					delay: (fn: (d: Word, i: number) => number) => {
+						style: (name: string, value: string) => void;
+					};
+				};
+			};
 		};
 		if (typeof transitionable.transition === 'function') {
 			transitionable
@@ -266,18 +268,18 @@
 	// Re-render when data or settings change, or container size changes
 	$effect(() => {
 		// Read all reactive dependencies synchronously to ensure tracking
-		const currentData = data;
-		const currentWidth = containerWidth;
-		const currentHeight = containerHeight;
-		const currentColorScheme = colorScheme;
-		const currentMinFontSize = minFontSize;
-		const currentMaxFontSize = maxFontSize;
-		const currentPadding = padding;
-		const currentMinRotation = minRotation;
-		const currentMaxRotation = maxRotation;
-		const currentFontFamily = fontFamily;
+		const _currentData = data;
+		const _currentWidth = containerWidth;
+		const _currentHeight = containerHeight;
+		const _currentColorScheme = colorScheme;
+		const _currentMinFontSize = minFontSize;
+		const _currentMaxFontSize = maxFontSize;
+		const _currentPadding = padding;
+		const _currentMinRotation = minRotation;
+		const _currentMaxRotation = maxRotation;
+		const _currentFontFamily = fontFamily;
 
-		if (svgElement && d3 && currentData && colorScale && getD3CloudGlobal().d3?.layout?.cloud) {
+		if (svgElement && d3 && _currentData && colorScale && getD3CloudGlobal().d3?.layout?.cloud) {
 			// Use untrack to prevent state updates within renderWordCloud from triggering this effect again
 			untrack(() => {
 				renderWordCloud();

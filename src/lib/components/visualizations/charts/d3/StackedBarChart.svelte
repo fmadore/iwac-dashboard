@@ -43,11 +43,6 @@
 	}: Props = $props();
 	let containerWidth = $state(0);
 	let context = $state<ChartState>();
-	let mounted = $state(false);
-
-	$effect(() => {
-		mounted = true;
-	});
 
 	// Track hidden series for legend toggling
 	const hiddenSeries = new SvelteSet<string>();
@@ -193,7 +188,7 @@
 	role="img"
 	aria-label={t('chart.documents_by_type_over_years_aria')}
 >
-	{#if mounted && containerWidth > 0 && chartData.length > 0 && seriesDefs.length > 0}
+	{#if containerWidth > 0 && chartData.length > 0 && seriesDefs.length > 0}
 		<!-- Chart area takes remaining space -->
 		<div class="min-h-0 flex-1">
 			<ChartContainer config={chartConfig} class="aspect-auto h-full w-full min-w-0 justify-start">
@@ -243,14 +238,12 @@
 					{/snippet}
 
 					{#snippet tooltip({ context })}
+						{@const payload = tooltipStateToPayload(context.tooltip)}
 						<TooltipPrimitive.Root {context} variant="none">
-							{#snippet children()}
-								{@const payload = tooltipStateToPayload(context.tooltip)}
-								<Tooltip
-									label={tooltipLabelFromPayload(payload)}
-									items={tooltipItemsFromPayload(payload)}
-								/>
-							{/snippet}
+							<Tooltip
+								label={tooltipLabelFromPayload(payload)}
+								items={tooltipItemsFromPayload(payload)}
+							/>
 						</TooltipPrimitive.Root>
 					{/snippet}
 				</BarChart>

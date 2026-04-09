@@ -87,7 +87,9 @@
 		try {
 			countryLoading = true;
 			const filename = country.toLowerCase().replace(/\s+/g, '-');
-			countryData = await fetchData<ByYearData>(`references/by-year-${filename}.json`, { cache: false });
+			countryData = await fetchData<ByYearData>(`references/by-year-${filename}.json`, {
+				cache: false
+			});
 		} catch (e) {
 			console.error(`Error loading country data for ${country}:`, e);
 			countryData = null;
@@ -212,7 +214,7 @@
 								</Select.Trigger>
 								<Select.Content>
 									<Select.Item value="all-countries">{t('filters.all_countries')}</Select.Item>
-									{#each countryOptions as country}
+									{#each countryOptions as country (country)}
 										<Select.Item value={country}>{country}</Select.Item>
 									{/each}
 								</Select.Content>

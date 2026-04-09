@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { translations, languageStore, t, type Language } from './translationStore.svelte.js';
+import { translations, languageStore, t } from './translationStore.svelte.js';
 
 // ── translations object structure ────────────────────────────────────
 
@@ -172,9 +172,7 @@ describe('t() function - parameter substitution', () => {
 
 	it('replaces {0} placeholder with provided parameter', () => {
 		// 'chart.languages_in_type': 'Languages in {0}'
-		expect(t('chart.languages_in_type', ['Press Article'])).toBe(
-			'Languages in Press Article'
-		);
+		expect(t('chart.languages_in_type', ['Press Article'])).toBe('Languages in Press Article');
 	});
 
 	it('replaces multiple placeholders {0} and {1}', () => {

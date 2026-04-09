@@ -235,14 +235,16 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
-	
+
 	html {
 		scroll-behavior: smooth;
 	}
 
 	body {
 		@apply bg-background text-foreground;
-		font-feature-settings: "rlig" 1, "calt" 1;
+		font-feature-settings:
+			'rlig' 1,
+			'calt' 1;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		overflow-x: hidden;
@@ -259,7 +261,7 @@
 	}
 
 	::-webkit-scrollbar-thumb {
-		@apply bg-muted-foreground/20 rounded-full border-2 border-background;
+		@apply rounded-full border-2 border-background bg-muted-foreground/20;
 	}
 
 	::-webkit-scrollbar-thumb:hover {

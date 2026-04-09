@@ -217,7 +217,9 @@ export function useFilters(config: FilterConfig = {}): UseFiltersReturn {
 			}
 		}
 
-		// Handle mutual exclusivity - collect all keys to clear
+		// Handle mutual exclusivity - collect all keys to clear.
+		// Local procedural Set; not reactive state — SvelteSet is unnecessary here.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const keysToClear = new Set<FilterKey>();
 		for (const key of Object.keys(updates) as FilterKey[]) {
 			const exclusiveKeys = getMutuallyExclusiveKeys(key);
@@ -292,6 +294,8 @@ export function useFilters(config: FilterConfig = {}): UseFiltersReturn {
 		// Access trigger to create dependency
 		const _ = updateTrigger;
 
+		// Local procedural Set; not reactive state.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const excludeSet = new Set([...SYSTEM_KEYS, ...excludeFromActive]);
 		return urlManager.keys().filter((k) => !excludeSet.has(k as FilterKey));
 	});

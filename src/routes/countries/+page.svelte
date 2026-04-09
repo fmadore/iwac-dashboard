@@ -56,7 +56,7 @@
 		selectedNode = selectedNode?.data.name === node.data.name ? null : node;
 	}
 
-	function handleNodeHover(node: TreemapNode | null) {
+	function handleNodeHover(_node: TreemapNode | null) {
 		// Handle hover if needed
 	}
 </script>

@@ -1,9 +1,11 @@
 # IWAC Dashboard - Agent Rules
 
 ## Project Overview
+
 Static SvelteKit dashboard for the **Islam West Africa Collection (IWAC)**, fully prerendered for static hosting.
 
 **Tech Stack:**
+
 - **Framework**: Svelte 5 (Runes mode only), SvelteKit with `@sveltejs/adapter-static`
 - **UI**: shadcn-svelte components from `$lib/components/ui`
 - **Styling**: Tailwind CSS v4 with CSS custom properties (OKLCH color space)
@@ -17,12 +19,14 @@ Static SvelteKit dashboard for the **Islam West Africa Collection (IWAC)**, full
 ## ⚠️ Core Principles (MUST FOLLOW)
 
 ### 1. MODULARITY FIRST
+
 - **Reuse over recreate** - Check existing components before creating new ones
 - **shadcn-svelte is mandatory** - NEVER create custom Button, Card, Table, Input, etc.
 - **Compose, don't duplicate** - Build complex UIs from existing atomic components
 - **Single responsibility** - Each component does one thing well
 
 ### 2. DESIGN TOKENS ONLY
+
 - **NEVER hardcode colors** - Always use `var(--*)` from `src/app.css`
 - **NEVER use Tailwind color classes** like `bg-blue-500`, `text-gray-600`
 - **All colors come from CSS variables** - `--background`, `--primary`, `--chart-1`, etc.
@@ -30,17 +34,18 @@ Static SvelteKit dashboard for the **Islam West Africa Collection (IWAC)**, full
 
 ```svelte
 <!-- ✅ CORRECT -->
-<div class="bg-background text-foreground border-border">
-  <span class="text-muted-foreground">Muted</span>
+<div class="border-border bg-background text-foreground">
+	<span class="text-muted-foreground">Muted</span>
 </div>
 
 <!-- ❌ FORBIDDEN -->
-<div class="bg-slate-100 text-gray-900 border-gray-200">
-  <span class="text-gray-500">Muted</span>
+<div class="border-gray-200 bg-slate-100 text-gray-900">
+	<span class="text-gray-500">Muted</span>
 </div>
 ```
 
 ### 3. SINGLE SOURCE OF TRUTH
+
 - **Styles** → `src/app.css` (CSS variables only)
 - **Translations** → `translationStore.svelte.ts` (all user-facing text)
 - **Components** → `$lib/components/ui/*` (shadcn-svelte)
@@ -51,67 +56,72 @@ Static SvelteKit dashboard for the **Islam West Africa Collection (IWAC)**, full
 ## Critical Rules
 
 ### 1. Svelte 5 Runes Mode Only
+
 **NEVER use Svelte 4 syntax.** This project has `runes: true` in `svelte.config.js`.
 
 ```svelte
 <script>
-  // ✅ Correct - Svelte 5 Runes
-  let { count = 0 } = $props();
-  const doubled = $derived(count * 2);
-  let items = $state([]);
-  
-  $effect(() => {
-    console.log('Count changed:', count);
-  });
+	// ✅ Correct - Svelte 5 Runes
+	let { count = 0 } = $props();
+	const doubled = $derived(count * 2);
+	let items = $state([]);
+
+	$effect(() => {
+		console.log('Count changed:', count);
+	});
 </script>
 ```
 
 ```svelte
 <script>
-  // ❌ NEVER - Svelte 4 patterns
-  export let count = 0;
-  $: doubled = count * 2;
-  import { writable } from 'svelte/store';
+	// ❌ NEVER - Svelte 4 patterns
+	export let count = 0;
+	$: doubled = count * 2;
+	import { writable } from 'svelte/store';
 </script>
 ```
 
 **Store Pattern (Class-based with Runes):**
+
 ```typescript
 // ✅ Correct store pattern
 class MyStore {
-  value = $state<string>('');
-  items = $state<Item[]>([]);
-  
-  get computed() {
-    return this.items.length;
-  }
-  
-  set(newValue: string) {
-    this.value = newValue;
-  }
+	value = $state<string>('');
+	items = $state<Item[]>([]);
+
+	get computed() {
+		return this.items.length;
+	}
+
+	set(newValue: string) {
+		this.value = newValue;
+	}
 }
 export const myStore = new MyStore();
 ```
 
 ### 2. UI Components (shadcn-svelte)
+
 - Always import from `$lib/components/ui/*`
 - Never create custom basic UI components (Button, Card, Table, etc.)
 - Available components: badge, button, card, chart, data-table, dialog, dropdown-menu, input, label, scroll-area, select, separator, sheet, sidebar, skeleton, slider, table, tabs, toggle, tooltip
 
 ```svelte
 <script>
-  import { Button } from '$lib/components/ui/button/index.js';
-  import { Card } from '$lib/components/ui/card/index.js';
-  import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Card } from '$lib/components/ui/card/index.js';
+	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 </script>
 ```
 
 ### 3. Styling & Theming
+
 - **ALWAYS** use CSS variables from `src/app.css`
 - **NEVER** hardcode colors
 - Color system uses OKLCH for perceptual uniformity
 
 **Available CSS Variables:**
+
 - Layout: `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`
 - Interactive: `--primary`, `--secondary`, `--muted`, `--accent`, `--destructive`
 - Borders: `--border`, `--input`, `--ring`
@@ -123,38 +133,41 @@ export const myStore = new MyStore();
 ```svelte
 <!-- ✅ Correct -->
 <div class="bg-background text-foreground">
-  <div class="border border-border bg-card text-card-foreground">
-    <span class="text-muted-foreground">Muted text</span>
-  </div>
+	<div class="border border-border bg-card text-card-foreground">
+		<span class="text-muted-foreground">Muted text</span>
+	</div>
 </div>
 
 <!-- ❌ Wrong - Never hardcode colors -->
 <div class="bg-blue-500 text-white">
-  <span class="text-gray-500">Muted</span>
+	<span class="text-gray-500">Muted</span>
 </div>
 ```
 
 ### 4. Internationalization (i18n)
+
 - **Bilingual (EN/FR)**: ALL user-facing text must use `$t('key')`
 - Translation store: `$lib/stores/translationStore.svelte.ts`
 - Charts must update reactively with language changes
 
 ```svelte
 <script>
-  import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
-  
-  // Reactive chart labels
-  const chartTitle = $derived(t('chart.title'));
+	import { t, languageStore } from '$lib/stores/translationStore.svelte.js';
+
+	// Reactive chart labels
+	const chartTitle = $derived(t('chart.title'));
 </script>
 
 <h1>{t('app.title')}</h1>
 <p>{t('stats.total_items')}</p>
 
 <!-- With parameters -->
-<span>{t('table.rows_count', [100])}</span> <!-- "100 rows" -->
+<span>{t('table.rows_count', [100])}</span>
+<!-- "100 rows" -->
 ```
 
 ### 5. Static Data Flow
+
 - Python scripts (`scripts/`) generate JSON in `static/data/`
 - All data loaded via `fetch()` from `/data/*.json`
 - Use stores to manage data state
@@ -162,31 +175,32 @@ export const myStore = new MyStore();
 
 ```svelte
 <script>
-  import { base } from '$app/paths';
-  
-  let data = $state<MyData[]>([]);
-  let loading = $state(true);
-  let error = $state<string | null>(null);
-  
-  async function loadData() {
-    try {
-      const response = await fetch(`${base}/data/my-data.json`);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      data = await response.json();
-    } catch (e) {
-      error = e instanceof Error ? e.message : 'Failed to load data';
-    } finally {
-      loading = false;
-    }
-  }
-  
-  $effect(() => {
-    loadData();
-  });
+	import { base } from '$app/paths';
+
+	let data = $state<MyData[]>([]);
+	let loading = $state(true);
+	let error = $state<string | null>(null);
+
+	async function loadData() {
+		try {
+			const response = await fetch(`${base}/data/my-data.json`);
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+			data = await response.json();
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to load data';
+		} finally {
+			loading = false;
+		}
+	}
+
+	$effect(() => {
+		loadData();
+	});
 </script>
 ```
 
 ### 6. Page Configuration (Static Only)
+
 - **ALL pages** must export `prerender = true`
 - NO `+server.ts` files (static site only)
 - Use `+page.ts` for load functions
@@ -197,12 +211,13 @@ export const prerender = true;
 
 // Optional: preload data
 export async function load({ fetch }) {
-  const response = await fetch('/data/my-data.json');
-  return { data: await response.json() };
+	const response = await fetch('/data/my-data.json');
+	return { data: await response.json() };
 }
 ```
 
 ### 7. Visualization Priority
+
 1. **LayerChart** (preferred for new charts)
 2. **D3.js** (custom visualizations, treemaps, word clouds)
 3. **ECharts** (complex charts with many options)
@@ -210,6 +225,7 @@ export async function load({ fetch }) {
 Chart components are in `$lib/components/visualizations/charts/` (organized by library: `d3/` or `layerchart/`).
 
 ### 8. TypeScript
+
 - Strict TypeScript required
 - Types defined in `$lib/types/index.ts`
 - Always type component props, store state, and function parameters
@@ -246,6 +262,7 @@ static/data/               # Generated JSON data files
 ```
 
 **Import Pattern (use barrel exports with `/index.js`):**
+
 ```ts
 import { AppSidebar } from '$lib/components/layout/index.js';
 import { StatsCard } from '$lib/components/dashboard/index.js';
@@ -254,7 +271,6 @@ import { Bar, PieChart, Treemap } from '$lib/components/visualizations/charts/la
 import { NetworkGraph } from '$lib/components/visualizations/network/index.js';
 import { WorldMapVisualization } from '$lib/components/visualizations/world-map/index.js';
 ```
-
 
 ---
 
@@ -277,50 +293,53 @@ Before submitting any code:
 ## Common Patterns
 
 ### Loading State Pattern
+
 ```svelte
 <script>
-  let loading = $state(true);
-  let error = $state<string | null>(null);
-  let data = $state<Data | null>(null);
+	let loading = $state(true);
+	let error = $state<string | null>(null);
+	let data = $state<Data | null>(null);
 </script>
 
 {#if loading}
-  <Skeleton class="h-8 w-full" />
+	<Skeleton class="h-8 w-full" />
 {:else if error}
-  <p class="text-destructive">{t('common.error')}: {error}</p>
+	<p class="text-destructive">{t('common.error')}: {error}</p>
 {:else if data}
-  <!-- Render data -->
+	<!-- Render data -->
 {/if}
 ```
 
 ### Stats Card Pattern
+
 ```svelte
 <Card class="p-6">
-  <div class="flex items-center justify-between">
-    <div>
-      <p class="text-sm font-medium text-muted-foreground">{t('stats.label')}</p>
-      <h3 class="text-2xl font-bold">{value.toLocaleString()}</h3>
-    </div>
-    <Icon class="h-8 w-8 text-muted-foreground" />
-  </div>
+	<div class="flex items-center justify-between">
+		<div>
+			<p class="text-sm font-medium text-muted-foreground">{t('stats.label')}</p>
+			<h3 class="text-2xl font-bold">{value.toLocaleString()}</h3>
+		</div>
+		<Icon class="h-8 w-8 text-muted-foreground" />
+	</div>
 </Card>
 ```
 
 ### Reactive Chart with i18n
+
 ```svelte
 <script>
-  import { languageStore, t } from '$lib/stores/translationStore.svelte.js';
-  
-  // Force chart re-render on language change
-  const chartKey = $derived(`chart-${languageStore.current}`);
-  const labels = $derived({
-    title: t('chart.title'),
-    xAxis: t('chart.xAxis'),
-    yAxis: t('chart.yAxis')
-  });
+	import { languageStore, t } from '$lib/stores/translationStore.svelte.js';
+
+	// Force chart re-render on language change
+	const chartKey = $derived(`chart-${languageStore.current}`);
+	const labels = $derived({
+		title: t('chart.title'),
+		xAxis: t('chart.xAxis'),
+		yAxis: t('chart.yAxis')
+	});
 </script>
 
 {#key chartKey}
-  <MyChart {labels} {data} />
+	<MyChart {labels} {data} />
 {/key}
 ```

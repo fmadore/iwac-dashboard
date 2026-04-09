@@ -239,6 +239,8 @@ class UrlManager {
 	private writeToUrl() {
 		if (!browser || !this.urlWritingEnabled) return;
 
+		// Local, non-reactive URLSearchParams used only to build a query string.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const params = new URLSearchParams();
 
 		// Add all non-empty values to params
@@ -254,6 +256,7 @@ class UrlManager {
 
 		// Only update if URL search params actually changed
 		if (newSearch !== currentUrl.search.slice(1)) {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			const url = new URL(window.location.origin + window.location.pathname);
 			url.search = newSearch;
 

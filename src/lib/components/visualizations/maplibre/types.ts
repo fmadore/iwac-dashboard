@@ -1,5 +1,3 @@
-import type { LngLatLike } from 'maplibre-gl';
-
 /**
  * Base data point for circle layer
  */

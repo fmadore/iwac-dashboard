@@ -71,10 +71,13 @@
 
 	// Non-reactive references (bind:this doesn't need $state)
 	let chartContainer = $state<HTMLDivElement | null>(null);
-	let barChartRace = $state<{ play: () => void; pause: () => void; reset: () => void } | null>(null);
+	let barChartRace = $state<{ play: () => void; pause: () => void; reset: () => void } | null>(
+		null
+	);
 
 	// Color management for consistent term colors
-	const termColorMap = new Map<string, string>();
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const termColorMap = new Map<string, string>(); // Procedural color cache; not reactive state.
 	const chartColors = [
 		'--chart-1',
 		'--chart-2',
@@ -104,7 +107,7 @@
 			colorParsingContext.fillStyle = '#000000';
 			colorParsingContext.fillStyle = value;
 			return colorParsingContext.fillStyle || null;
-		} catch (error) {
+		} catch (_error) {
 			return null;
 		}
 	}
@@ -190,13 +193,12 @@
 			error = null;
 
 			// Load all data files
-			const [temporalResult, countryResult, globalResult, metadataResult] =
-				await Promise.all([
-					fetchData<Record<string, TermData>>('scary-terms-temporal.json'),
-					fetchData<Record<string, TermData>>('scary-terms-countries.json'),
-					fetchData<TermData>('scary-terms-global.json'),
-					fetchData<MetadataType>('scary-terms-metadata.json')
-				]);
+			const [temporalResult, countryResult, globalResult, metadataResult] = await Promise.all([
+				fetchData<Record<string, TermData>>('scary-terms-temporal.json'),
+				fetchData<Record<string, TermData>>('scary-terms-countries.json'),
+				fetchData<TermData>('scary-terms-global.json'),
+				fetchData<MetadataType>('scary-terms-metadata.json')
+			]);
 
 			temporalData = temporalResult;
 			countryData = countryResult;
@@ -350,7 +352,6 @@
 
 		const data = countryData[selectedCountry];
 		const terms = data.data.map(([term]) => term);
-		const values = data.data.map(([, count]) => count);
 
 		// Resolve CSS variables
 		const foregroundColor = getCSSVariable('--foreground');
@@ -449,7 +450,6 @@
 		if (!chartInstance || !globalData) return;
 
 		const terms = globalData.data.map(([term]) => term);
-		const values = globalData.data.map(([, count]) => count);
 
 		// Resolve CSS variables
 		const foregroundColor = getCSSVariable('--foreground');
@@ -631,11 +631,6 @@
 
 	// Get the current year being displayed
 	const currentYear = $derived(availableYears[currentYearIndex] ?? 0);
-
-	// Calculate progress percentage
-	const progressPercent = $derived(
-		availableYears.length > 1 ? (currentYearIndex / (availableYears.length - 1)) * 100 : 0
-	);
 
 	// Get top term for current view
 	const topTerm = $derived(() => {
@@ -820,7 +815,7 @@
 									{selectedCountry || t('words.select_country')}
 								</Select.Trigger>
 								<Select.Content>
-									{#each availableCountries as country}
+									{#each availableCountries as country (country)}
 										<Select.Item value={country}>{country}</Select.Item>
 									{/each}
 								</Select.Content>
@@ -964,13 +959,13 @@
 				</Card.Header>
 				<Card.Content>
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						{#each Object.entries(metadata.term_definitions) as [family, variants]}
+						{#each Object.entries(metadata.term_definitions) as [family, variants] (family)}
 							<div
 								class="group rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50"
 							>
 								<h4 class="mb-2 font-semibold text-foreground capitalize">{family}</h4>
 								<div class="flex flex-wrap gap-1.5">
-									{#each variants as variant}
+									{#each variants as variant (variant)}
 										<Badge variant="outline" class="text-xs font-normal">{variant}</Badge>
 									{/each}
 								</div>
