@@ -218,6 +218,8 @@
 							fill={getCountryColor(item.country)}
 							rx={4}
 							ry={4}
+							role="graphics-symbol"
+							aria-label={`${item.name}: ${item.periodLabel} (${item.country}) - ${item.totalArticles.toLocaleString()} articles`}
 							class="cursor-pointer transition-opacity duration-200 hover:opacity-70"
 							onpointermove={(e) => showTooltip(e, item)}
 							onpointerleave={hideTooltip}
