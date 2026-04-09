@@ -259,6 +259,7 @@
 													y={yScale(node.y0)}
 													onclick={() => {
 														onNodeClick?.(node as TreemapNode);
+														selectedNode = node as TreemapNode;
 														if (node.children) selectedNested = node as TreemapNode;
 													}}
 													onpointermove={(e) => {
@@ -277,12 +278,15 @@
 													{@const isParent = !!node.children}
 													{@const isCountry = nodeDepth === 1}
 													{@const isDocType = nodeDepth === 2}
+													{@const isSelected =
+														selectedNode != null &&
+														getNodeKey(node) === getNodeKey(selectedNode as TreemapNode)}
 													<g transition:fade={{ duration: 600 }}>
 														<Rect
 															width={nodeWidth}
 															height={nodeHeight}
-															stroke="var(--border)"
-															stroke-width={1}
+															stroke={isSelected ? 'var(--primary)' : 'var(--border)'}
+															stroke-width={isSelected ? 3 : 1}
 															fill={nodeColor}
 															fillOpacity={isParent ? 0.4 : 0.9}
 															rx={isCountry ? 6 : isDocType ? 3 : 2}

@@ -84,6 +84,7 @@
 
 <TooltipPrimitive.Root variant="none">
 	<div
+		bind:this={ref}
 		class={cn(
 			'grid min-w-36 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl',
 			className
