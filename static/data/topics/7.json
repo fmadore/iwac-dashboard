@@ -1064,12 +1064,12 @@
       "o:source": null,
       "sentiment_label": null,
       "sentiment_score": null,
-      "gemini_centralite_islam_musulmans": "Central",
-      "gemini_centralite_justification": "L'islam et les musulmans sont cités comme l'un des piliers du dialogue interreligieux au Burkina Faso, aux côtés du christianisme, dans le cadre d'une réforme de l'ONAFAR.",
+      "gemini_centralite_islam_musulmans": "Secondaire",
+      "gemini_centralite_justification": "L'islam et les musulmans sont mentionnés comme l'un des piliers du dialogue interreligieux au Burkina Faso, mais le texte se focalise sur l'intégration des religions traditionnelles.",
       "gemini_polarite": "Neutre",
-      "gemini_polarite_justification": "Le ton est factuel et constructif ; bien que l'auteur critique la domination du dialogue 'islamo-chrétien', il appelle à une collaboration inclusive sans dénigrer la foi musulmane elle-même.",
+      "gemini_polarite_justification": "Le texte traite l'islam et les musulmans de manière factuelle en tant que composantes de l'ONAFAR, tout en critiquant l'hégémonie du dialogue 'islamo-chrétien' sans hostilité envers la foi musulmane elle-même.",
       "gemini_subjectivite_score": 3.0,
-      "gemini_subjectivite_justification": "Le texte mélange des faits institutionnels avec les opinions engagées d'une association qui appelle à la fin de la stigmatisation des religions traditionnelles par les leaders musulmans et chrétiens."
+      "gemini_subjectivite_justification": "Le texte mélange des faits institutionnels avec les opinions engagées d'une association qui plaide pour une réforme de la représentation religieuse."
     },
     {
       "topic_id": 7.0,
@@ -1087,12 +1087,12 @@
       "o:source": null,
       "sentiment_label": null,
       "sentiment_score": null,
-      "gemini_centralite_islam_musulmans": "Secondaire",
-      "gemini_centralite_justification": "L'islam et les musulmans sont mentionnés comme l'un des piliers du dialogue interreligieux au Burkina Faso, mais le texte se focalise sur l'intégration des religions traditionnelles.",
+      "gemini_centralite_islam_musulmans": "Central",
+      "gemini_centralite_justification": "L'islam et les musulmans sont cités comme l'un des piliers du dialogue interreligieux au Burkina Faso, aux côtés du christianisme, dans le cadre d'une réforme de l'ONAFAR.",
       "gemini_polarite": "Neutre",
-      "gemini_polarite_justification": "Le texte traite l'islam et les musulmans de manière factuelle en tant que composantes de l'ONAFAR, tout en critiquant l'hégémonie du dialogue 'islamo-chrétien' sans hostilité envers la foi musulmane elle-même.",
+      "gemini_polarite_justification": "Le ton est factuel et constructif ; bien que l'auteur critique la domination du dialogue 'islamo-chrétien', il appelle à une collaboration inclusive sans dénigrer la foi musulmane elle-même.",
       "gemini_subjectivite_score": 3.0,
-      "gemini_subjectivite_justification": "Le texte mélange des faits institutionnels avec les opinions engagées d'une association qui plaide pour une réforme de la représentation religieuse."
+      "gemini_subjectivite_justification": "Le texte mélange des faits institutionnels avec les opinions engagées d'une association qui appelle à la fin de la stigmatisation des religions traditionnelles par les leaders musulmans et chrétiens."
     },
     {
       "topic_id": 7.0,
