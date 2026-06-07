@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T03:06:52.166624Z",
+  "generated_at": "2026-06-07T03:06:46.895887Z",
   "total_records": 13859,
   "records_with_country": 13859,
   "subsets_processed": [
@@ -24,8 +24,8 @@
     "Publication islamique"
   ],
   "subsets_with_newspaper": [
-    "publications",
-    "articles"
+    "articles",
+    "publications"
   ],
   "structure": {
     "level_1": "Countries (from country column)",
