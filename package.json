@@ -97,7 +97,7 @@
 		"graphology": "^0.26.0",
 		"graphology-layout-forceatlas2": "^0.10.1",
 		"graphology-types": "^0.24.8",
-		"layerchart": "^2.0.0-next.51",
+		"layerchart": "^2.0.0-next.53",
 		"maplibre-gl": "^5.22.0",
 		"mode-watcher": "^1.1.0",
 		"sigma": "^3.0.2"
